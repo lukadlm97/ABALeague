@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.ConsoleApp", "OpenData.Basetball.AbaLeague.ConsoleApp\OpenData.Basetball.AbaLeague.ConsoleApp.csproj", "{62BB9C60-B49C-4BD7-A6C1-591B21AD1E41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basetball.AbaLeague.Domain", "OpenData.Basetball.AbaLeague.Domain\OpenData.Basetball.AbaLeague.Domain.csproj", "{67ED3FA8-0CBB-4257-9060-BD335F45A33B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basetball.AbaLeague.Persistence", "OpenData.Basetball.AbaLeague.Persistence\OpenData.Basetball.AbaLeague.Persistence.csproj", "{AF2D263D-0C66-4918-8CC9-4F192F314B28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basetball.AbaLeague.ImportExecutor", "OpenData.Basetball.AbaLeague.ImportExecutor\OpenData.Basetball.AbaLeague.ImportExecutor.csproj", "{93DD17EB-E83F-4CB1-BDEE-811DE525B262}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62BB9C60-B49C-4BD7-A6C1-591B21AD1E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62BB9C60-B49C-4BD7-A6C1-591B21AD1E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62BB9C60-B49C-4BD7-A6C1-591B21AD1E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62BB9C60-B49C-4BD7-A6C1-591B21AD1E41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67ED3FA8-0CBB-4257-9060-BD335F45A33B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67ED3FA8-0CBB-4257-9060-BD335F45A33B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67ED3FA8-0CBB-4257-9060-BD335F45A33B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67ED3FA8-0CBB-4257-9060-BD335F45A33B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF2D263D-0C66-4918-8CC9-4F192F314B28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF2D263D-0C66-4918-8CC9-4F192F314B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF2D263D-0C66-4918-8CC9-4F192F314B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF2D263D-0C66-4918-8CC9-4F192F314B28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93DD17EB-E83F-4CB1-BDEE-811DE525B262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93DD17EB-E83F-4CB1-BDEE-811DE525B262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93DD17EB-E83F-4CB1-BDEE-811DE525B262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93DD17EB-E83F-4CB1-BDEE-811DE525B262}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B122BC63-90F7-4187-BFE8-8B80D6E15DF1}
+	EndGlobalSection
+EndGlobal
