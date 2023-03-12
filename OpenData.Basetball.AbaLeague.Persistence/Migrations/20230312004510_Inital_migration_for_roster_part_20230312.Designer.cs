@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OpenData.Basetball.AbaLeague.Persistence;
 
@@ -11,9 +12,11 @@ using OpenData.Basetball.AbaLeague.Persistence;
 namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 {
     [DbContext(typeof(AbaLeagueDbContext))]
-    partial class AbaLeagueDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230312004510_Inital_migration_for_roster_part_20230312")]
+    partial class Inital_migration_for_roster_part_20230312
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -16,6 +16,11 @@ namespace OpenData.Basetball.AbaLeague.Persistence
 
         public DbSet<Player> Players { get; set; }
         public DbSet<Position> Positions { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<League> Leagues { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<SeasonResources> SeasonResources { get; set; }
+        public DbSet<RosterItem> RosterItems { get; set; }
   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,6 +35,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence
                             Id = (short)e,
                             Name = e.ToString()
                         }));
+            modelBuilder.Entity<Domain.Models.SeasonResources>().HasNoKey();
         }
     }
 }

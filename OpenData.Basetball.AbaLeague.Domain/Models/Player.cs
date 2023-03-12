@@ -19,6 +19,8 @@ namespace OpenData.Basetball.AbaLeague.Domain.Models
         public string Nationality { get; set; }
         public virtual Position Position { get; set; }
         public short PositionId { get; set; }
+        public virtual Country Country { get; set; }
+        public int CountryId { get; set; }
         [NotMapped]
         public PositionEnum PositionEnum => (PositionEnum)PositionId;
     }
