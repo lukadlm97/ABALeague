@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using OpenData.Basetball.AbaLeague.Domain.Models;
+using OpenData.Basetball.AbaLeague.Domain.Entities;
+using OpenData.Basetball.AbaLeague.Domain.Enums;
 
 namespace OpenData.Basetball.AbaLeague.Persistence
 {
-    public sealed class AbaLeagueDbContext:DbContext
+    public sealed class AbaLeagueDbContext : AuditableDbContext
     {
         public AbaLeagueDbContext(DbContextOptions contextOptions) : base(contextOptions)
         {
@@ -25,17 +26,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AbaLeagueDbContext).Assembly);
-            modelBuilder.Entity<Position>()
-                .HasData(Enum.GetValues(typeof(PositionEnum))
-                    .Cast<PositionEnum>()
-                    .Select(e => 
-                        new Position()
-                        {
-                            Id = (short)e,
-                            Name = e.ToString()
-                        }));
-            modelBuilder.Entity<Domain.Models.SeasonResources>().HasNoKey();
         }
     }
 }

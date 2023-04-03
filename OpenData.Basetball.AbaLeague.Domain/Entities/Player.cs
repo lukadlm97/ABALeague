@@ -5,13 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenData.Basetball.AbaLeague.Domain.Common;
+using OpenData.Basetball.AbaLeague.Domain.Enums;
 
-namespace OpenData.Basetball.AbaLeague.Domain.Models
+namespace OpenData.Basetball.AbaLeague.Domain.Entities
 {
-    public class Player
+    public class Player:AuditEntity
     {
-        [Key]
-        public int ID { get; set; }
 
         public string Name { get; set; }
         public int Height { get; set; }

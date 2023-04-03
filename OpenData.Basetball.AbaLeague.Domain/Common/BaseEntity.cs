@@ -5,14 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenData.Basetball.AbaLeague.Domain.Models
+namespace OpenData.Basetball.AbaLeague.Domain.Common
 {
-    public class Position
+    public class BaseEntity
     {
         [Key]
-        public short Id { get; set; }
-
-        [Required, MaxLength(25)]
-        public string Name { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using OpenData.Basetball.AbaLeague.Domain.Common;
 
-namespace OpenData.Basetball.AbaLeague.Domain.Models
+namespace OpenData.Basetball.AbaLeague.Domain.Entities
 {
-    public class Team
+    public class Team:AuditEntity
     {
-        [Key]
-        public int ID { get; set; }
+      
         public string Name { get; set; }
         public string ShortCode { get; set; }
         public string City { get; set; }

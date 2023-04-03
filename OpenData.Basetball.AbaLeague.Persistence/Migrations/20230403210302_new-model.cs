@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Inital_migration_for_roster_part_20230312 : Migration
+    public partial class newmodel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,17 +32,21 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                 name: "Leagues",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OfficalName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShortName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Season = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TeamParticipansUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StandingUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StandingUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Leagues", x => x.ID);
+                    table.PrimaryKey("PK_Leagues", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,18 +66,22 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShortCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Venue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: true)
+                    CountryId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Teams", x => x.ID);
+                    table.PrimaryKey("PK_Teams", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Teams_Countries_CountryId",
                         column: x => x.CountryId,
@@ -85,18 +93,22 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                 name: "Players",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Height = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PositionId = table.Column<short>(type: "smallint", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false)
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Players", x => x.ID);
+                    table.PrimaryKey("PK_Players", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Players_Countries_CountryId",
                         column: x => x.CountryId,
@@ -125,13 +137,13 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         name: "FK_SeasonResources_Leagues_LeagueId",
                         column: x => x.LeagueId,
                         principalTable: "Leagues",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SeasonResources_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -145,7 +157,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     LeagueId = table.Column<int>(type: "int", nullable: false),
                     DateOfInsertion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndOfActivePeriod = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TeamID = table.Column<int>(type: "int", nullable: true)
+                    TeamId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -154,19 +166,19 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         name: "FK_RosterItems_Leagues_LeagueId",
                         column: x => x.LeagueId,
                         principalTable: "Leagues",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RosterItems_Players_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Players",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RosterItems_Teams_TeamID",
-                        column: x => x.TeamID,
+                        name: "FK_RosterItems_Teams_TeamId",
+                        column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -202,9 +214,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                 column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RosterItems_TeamID",
+                name: "IX_RosterItems_TeamId",
                 table: "RosterItems",
-                column: "TeamID");
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SeasonResources_LeagueId",

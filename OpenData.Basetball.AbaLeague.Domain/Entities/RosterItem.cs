@@ -4,13 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenData.Basetball.AbaLeague.Domain.Common;
 
-namespace OpenData.Basetball.AbaLeague.Domain.Models
+namespace OpenData.Basetball.AbaLeague.Domain.Entities
 {
-    public class RosterItem
+    public class RosterItem:BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
 
         public virtual Player Player { get; set; }
         public virtual League League { get; set; }

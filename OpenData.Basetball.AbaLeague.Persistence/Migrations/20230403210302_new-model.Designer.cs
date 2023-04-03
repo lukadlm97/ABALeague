@@ -12,8 +12,8 @@ using OpenData.Basetball.AbaLeague.Persistence;
 namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 {
     [DbContext(typeof(AbaLeagueDbContext))]
-    [Migration("20230312004510_Inital_migration_for_roster_part_20230312")]
-    partial class Inital_migration_for_roster_part_20230312
+    [Migration("20230403210302_new-model")]
+    partial class newmodel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.Country", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Country", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,13 +51,20 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.League", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.League", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("OfficalName")
                         .IsRequired()
@@ -79,21 +86,35 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.Property<string>("UpdateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Leagues");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.Player", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Player", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -112,7 +133,14 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Property<short>("PositionId")
                         .HasColumnType("smallint");
 
-                    b.HasKey("ID");
+                    b.Property<string>("UpdateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
@@ -121,7 +149,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.Position", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Position", b =>
                 {
                     b.Property<short>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,7 +194,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.RosterItem", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.RosterItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,7 +214,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TeamID")
+                    b.Property<int?>("TeamId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -195,12 +223,12 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.HasIndex("TeamID");
+                    b.HasIndex("TeamId");
 
                     b.ToTable("RosterItems");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.SeasonResources", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources", b =>
                 {
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
@@ -219,13 +247,13 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.ToTable("SeasonResources");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.Team", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Team", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
@@ -237,6 +265,13 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Property<int?>("CountryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -245,26 +280,33 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UpdateBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Venue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.Player", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Player", b =>
                 {
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Models.Country", "Country")
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Models.Position", "Position")
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -275,38 +317,38 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Navigation("Position");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.RosterItem", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.RosterItem", b =>
                 {
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Models.League", "League")
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.League", "League")
                         .WithMany()
                         .HasForeignKey("LeagueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Models.Player", "Player")
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Models.Team", null)
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.Team", null)
                         .WithMany("RosterItems")
-                        .HasForeignKey("TeamID");
+                        .HasForeignKey("TeamId");
 
                     b.Navigation("League");
 
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.SeasonResources", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources", b =>
                 {
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Models.League", "League")
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.League", "League")
                         .WithMany()
                         .HasForeignKey("LeagueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Models.Team", "Team")
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,16 +359,16 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.Team", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Team", b =>
                 {
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Models.Country", "Country")
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId");
 
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Models.Team", b =>
+            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Team", b =>
                 {
                     b.Navigation("RosterItems");
                 });
