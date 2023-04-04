@@ -27,7 +27,7 @@ namespace OpenData.Basetball.AbaLeague.ImportExecutor.Services
             {
                 var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-                /*
+                
                 var player = new Player()
                 {
                     PositionId = (short)PositionEnum.Center,
@@ -46,8 +46,8 @@ namespace OpenData.Basetball.AbaLeague.ImportExecutor.Services
                 else
                 {
                     Console.WriteLine("Can't insert!!!");
-                }*/
-                var player = await unitOfWork.PlayerRepository.Get(2);
+                }
+                 player = await unitOfWork.PlayerRepository.Get(1);
                 player.Height = -1;
 
                 await unitOfWork.PlayerRepository.Update(player);

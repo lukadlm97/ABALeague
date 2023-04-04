@@ -23,13 +23,14 @@ static IHostBuilder CreateHostBuilder(string[] args)
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
-            services.AddDbContextPool<AbaLeagueDbContext>(builder =>
+           /* services.AddDbContextPool<AbaLeagueDbContext>(builder =>
             {
                 var connectionString = configuration.GetConnectionString("Database");
 
                 builder.UseSqlServer(connectionString);
-            });
+            });*/
             services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.ConfigurePersistenceServices(configuration);
             services.AddHostedService<SimpleImporter>();
         });
