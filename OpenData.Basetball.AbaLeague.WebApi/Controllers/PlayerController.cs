@@ -30,5 +30,17 @@ namespace OpenData.Basetball.AbaLeague.WebApi.Controllers
                 Ok(player):
                 NotFound();
         }
+
+        [HttpGet("logging")]
+        public async Task<IActionResult> Test(CancellationToken cancellationToken = default)
+        {
+            _logger.LogCritical("LogCritical");
+            _logger.LogInformation("LogInformation");
+            _logger.LogError("LogError");
+            _logger.LogCritical("LogCritical"); 
+            _logger.LogDebug("LogDebug");
+            return Ok();
+        }
+
     }
 }

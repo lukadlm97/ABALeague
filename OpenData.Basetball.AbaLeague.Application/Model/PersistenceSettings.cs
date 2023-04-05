@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OpenData.Basetball.AbaLeague.Application.Model
 {
     public class PersistenceSettings
     {
-        public bool UseInMemory { get; set; }
-        public bool MSSQL { get; set; }
-        public bool PostgreSQL { get; set; }
+        public bool UseInMemory { get; set; } = false;
+        [Required]
+        public string Database { get; set; }
     }
 }

@@ -13,6 +13,30 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
+            builder.HasData(new List<Country>()
+            {
+                new Country()
+                {
+                    Id = 1,
+                    CodeIso = "SRB",
+                    CodeIso2 = "RS",
+                    Name = "Serbia"
+                },
+                new Country()
+                {
+                    Id = 2,
+                    CodeIso = "BIH",
+                    CodeIso2 = "BH",
+                    Name = "Bosnia and Herzegovina"
+                },
+                new Country()
+                {
+                    Id = 3,
+                    CodeIso = "CRO",
+                    CodeIso2 = "HR",
+                    Name = "Croatia"
+                },
+            });
         }
     }
 }

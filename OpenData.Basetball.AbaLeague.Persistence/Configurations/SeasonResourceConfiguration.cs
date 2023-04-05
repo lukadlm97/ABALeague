@@ -9,6 +9,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Configurations
         public void Configure(EntityTypeBuilder<SeasonResources> builder)
         {
             builder.HasNoKey();
+          
         }
     }
 }
