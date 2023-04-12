@@ -1,3 +1,4 @@
+using System.Threading.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using OpenData.Basetball.AbaLeague.Application.Model;
 using OpenData.Basetball.AbaLeague.Persistence;
@@ -32,6 +33,57 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress.ToString(),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 1,
+                QueueLimit = 0,
+                Window = TimeSpan.FromMinutes(1)
+            }));
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = 429;
+        if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+        {
+            await context.HttpContext.Response.WriteAsync(
+                $"Too many requests. Please try again after {retryAfter.TotalMinutes} minute(s). " +
+                $"Read more about our rate limits at https://example.org/docs/ratelimiting.", cancellationToken: token);
+        }
+        else
+        {
+            await context.HttpContext.Response.WriteAsync(
+                "Too many requests. Please try again later. " +
+                "Read more about our rate limits at https://example.org/docs/ratelimiting.", cancellationToken: token);
+        }
+    };
+});
+/*
+options.GlobalLimiter = PartitionedRateLimiter.CreateChained(
+    PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(httpContext.Connection.RemoteIpAddress.ToString(), partition =>
+            new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 600,
+                Window = TimeSpan.FromMinutes(1)
+            })),
+    PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(httpContext.Connection.RemoteIpAddress.ToString(), partition =>
+            new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 6000,
+                Window = TimeSpan.FromHours(1)
+            })));
+});
+*/
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,11 +94,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseRateLimiter();
 
 app.UseAuthorization();
 
 app.MapControllers();
-app = MigrateDatabase(app);
+//app = MigrateDatabase(app);
 app.Run();
 
 
