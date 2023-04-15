@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.ConsoleApp", "OpenData.Basetball.AbaLeague.ConsoleApp\OpenData.Basetball.AbaLeague.ConsoleApp.csproj", "{62BB9C60-B49C-4BD7-A6C1-591B21AD1E41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.ConsoleApp", "OpenData.Basetball.AbaLeague.ConsoleApp\OpenData.Basketball.AbaLeague.ConsoleApp.csproj", "{62BB9C60-B49C-4BD7-A6C1-591B21AD1E41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.Domain", "OpenData.Basetball.AbaLeague.Domain\OpenData.Basetball.AbaLeague.Domain.csproj", "{67ED3FA8-0CBB-4257-9060-BD335F45A33B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.Domain", "OpenData.Basetball.AbaLeague.Domain\OpenData.Basketball.AbaLeague.Domain.csproj", "{67ED3FA8-0CBB-4257-9060-BD335F45A33B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.Persistence", "OpenData.Basetball.AbaLeague.Persistence\OpenData.Basetball.AbaLeague.Persistence.csproj", "{AF2D263D-0C66-4918-8CC9-4F192F314B28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.Persistence", "OpenData.Basetball.AbaLeague.Persistence\OpenData.Basketball.AbaLeague.Persistence.csproj", "{AF2D263D-0C66-4918-8CC9-4F192F314B28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.ImportExecutor", "OpenData.Basetball.AbaLeague.ImportExecutor\OpenData.Basetball.AbaLeague.ImportExecutor.csproj", "{93DD17EB-E83F-4CB1-BDEE-811DE525B262}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.ImportExecutor", "OpenData.Basetball.AbaLeague.ImportExecutor\OpenData.Basketball.AbaLeague.ImportExecutor.csproj", "{93DD17EB-E83F-4CB1-BDEE-811DE525B262}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.WebApi", "OpenData.Basetball.AbaLeague.WebApi\OpenData.Basetball.AbaLeague.WebApi.csproj", "{C1302A43-0AA1-467F-80ED-882DD54BEA38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.WebApi", "OpenData.Basetball.AbaLeague.WebApi\OpenData.Basketball.AbaLeague.WebApi.csproj", "{C1302A43-0AA1-467F-80ED-882DD54BEA38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.Application", "OpenData.Basetball.AbaLeague.Application\OpenData.Basetball.AbaLeague.Application.csproj", "{D04A3B48-8CCF-46AF-91C4-900316454C2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.Application", "OpenData.Basetball.AbaLeague.Application\OpenData.Basketball.AbaLeague.Application.csproj", "{D04A3B48-8CCF-46AF-91C4-900316454C2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basetball.AbaLeague.Application.UnitTests", "OpenData.Basetball.AbaLeague.UnitTest\OpenData.Basetball.AbaLeague.Application.UnitTests.csproj", "{47538AD3-E285-4782-85F8-32BBE87250A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.Application.UnitTests", "OpenData.Basetball.AbaLeague.UnitTest\OpenData.Basketball.AbaLeague.Application.UnitTests.csproj", "{47538AD3-E285-4782-85F8-32BBE87250A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basetball.AbaLeague.Crawler", "OpenData.Basetball.AbaLeague.Crawler\OpenData.Basetball.AbaLeague.Crawler.csproj", "{793E82F6-6F03-4C6F-9587-F85370FCE609}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{47538AD3-E285-4782-85F8-32BBE87250A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47538AD3-E285-4782-85F8-32BBE87250A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47538AD3-E285-4782-85F8-32BBE87250A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{793E82F6-6F03-4C6F-9587-F85370FCE609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{793E82F6-6F03-4C6F-9587-F85370FCE609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{793E82F6-6F03-4C6F-9587-F85370FCE609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{793E82F6-6F03-4C6F-9587-F85370FCE609}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

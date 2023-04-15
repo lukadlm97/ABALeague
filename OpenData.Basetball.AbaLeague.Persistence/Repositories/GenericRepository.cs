@@ -11,34 +11,34 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<T> Add(T entity)
+        public async Task<T> Add(T entity, CancellationToken cancellationToken = default)
         {
-            await _dbContext.AddAsync(entity);
+            await _dbContext.AddAsync(entity,cancellationToken);
             return entity;
         }
 
-        public async Task Delete(T entity)
+        public async Task Delete(T entity, CancellationToken cancellationToken = default)
         {
             _dbContext.Set<T>().Remove(entity);
         }
 
-        public async Task<bool> Exists(int id)
+        public async Task<bool> Exists(int id, CancellationToken cancellationToken = default)
         {
-            var entity = await Get(id);
+            var entity = await Get(id,cancellationToken);
             return entity != null;
         }
 
-        public async Task<T> Get(int id)
+        public async Task<T> Get(int id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            return await _dbContext.FindAsync<T>(id,cancellationToken);
         }
 
-        public async Task<IReadOnlyList<T>> GetAll()
+        public async Task<IReadOnlyList<T>> GetAll(CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return await _dbContext.Set<T>().ToListAsync(cancellationToken);
         }
 
-        public async Task Update(T entity)
+        public async Task Update(T entity, CancellationToken cancellationToken = default)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
         }

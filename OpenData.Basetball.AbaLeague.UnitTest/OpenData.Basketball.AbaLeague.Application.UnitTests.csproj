@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Application\OpenData.Basetball.AbaLeague.Application.csproj" />
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Persistence\OpenData.Basetball.AbaLeague.Persistence.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Application\OpenData.Basketball.AbaLeague.Application.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Persistence\OpenData.Basketball.AbaLeague.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

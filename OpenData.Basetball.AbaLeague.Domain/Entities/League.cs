@@ -13,7 +13,7 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public string OfficalName { get; set; }
         public string ShortName { get; set; }
         public string Season { get; set; }
-        public string TeamParticipansUrl { get; set; }
+       // public string TeamParticipansUrl { get; set; }
         public string StandingUrl { get; set; }
 
 

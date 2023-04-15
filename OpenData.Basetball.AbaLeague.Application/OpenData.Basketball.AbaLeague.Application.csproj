@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Domain\OpenData.Basetball.AbaLeague.Domain.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Domain\OpenData.Basketball.AbaLeague.Domain.csproj" />
   </ItemGroup>
 
 </Project>

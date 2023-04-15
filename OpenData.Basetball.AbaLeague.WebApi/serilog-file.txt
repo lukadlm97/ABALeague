@@ -250,3 +250,642 @@ FROM [Players] AS [p]
 [00:09:53 INF] Request finished HTTP/2 GET https://localhost:7101//Player - - - 429 - - 4.6305ms
 [00:09:53 INF] Request starting HTTP/2 GET https://localhost:7101/favicon.ico - -
 [00:09:53 INF] Request finished HTTP/2 GET https://localhost:7101/favicon.ico - - - 429 - - 1.6091ms
+[01:10:46 INF] Now listening on: https://localhost:7101
+[01:10:46 INF] Now listening on: http://localhost:5222
+[01:10:46 INF] Application started. Press Ctrl+C to shut down.
+[01:10:46 INF] Hosting environment: Development
+[01:10:46 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[01:10:49 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[01:10:50 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 555.3611ms
+[01:10:50 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[01:10:50 INF] Request starting HTTP/2 GET https://localhost:7101/_framework/aspnetcore-browser-refresh.js - -
+[01:10:50 INF] Request finished HTTP/2 GET https://localhost:7101/_framework/aspnetcore-browser-refresh.js - - - 200 12040 application/javascript;+charset=utf-8 58.7460ms
+[01:10:50 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[01:10:50 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[01:10:50 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 200 628 image/png 20.3285ms
+[01:10:50 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 486.9771ms
+[01:10:51 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[01:10:51 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 237.2606ms
+[01:10:55 INF] Request starting HTTP/2 GET https://localhost:7101/Player - -
+[01:10:55 INF] Executing endpoint 'OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basetball.AbaLeague.WebApi)'
+[01:10:55 INF] Route matched with {action = "Get", controller = "Player"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController (OpenData.Basetball.AbaLeague.WebApi).
+[01:10:56 INF] Executing action method OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basetball.AbaLeague.WebApi) - Validation state: "Valid"
+[01:11:00 INF] Executed DbCommand (56ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CountryId], [p].[CreatedBy], [p].[CreatedDate], [p].[DateOfBirth], [p].[Height], [p].[Name], [p].[Nationality], [p].[PositionId], [p].[UpdateBy], [p].[UpdatedDate]
+FROM [Players] AS [p]
+[01:11:00 INF] Executed action method OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basetball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 4274.3857ms.
+[01:11:00 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Player, OpenData.Basetball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[01:11:00 INF] Executed action OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basetball.AbaLeague.WebApi) in 4798.6495ms
+[01:11:00 INF] Executed endpoint 'OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basetball.AbaLeague.WebApi)'
+[01:11:00 INF] Request finished HTTP/2 GET https://localhost:7101/Player - - - 200 - application/json;+charset=utf-8 4922.3461ms
+[16:36:26 INF] Now listening on: https://localhost:7101
+[16:36:27 INF] Now listening on: http://localhost:5222
+[16:36:27 INF] Application started. Press Ctrl+C to shut down.
+[16:36:27 INF] Hosting environment: Development
+[16:36:27 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:36:30 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:36:32 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:36:32 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 1887.3228ms
+[16:36:32 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - -
+[16:36:32 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:36:32 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[16:36:32 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[16:36:32 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - - - 0 143943 text/css 446.5742ms
+[16:36:32 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[16:36:32 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 197.3846ms
+[16:36:32 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 698.6703ms
+[16:36:33 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:36:33 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 207.9172ms
+[16:36:39 INF] Request starting HTTP/2 GET https://localhost:7101/Team - -
+[16:36:39 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:36:39 INF] Route matched with {action = "GetTeams", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTeams(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[16:36:39 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) in 98.5236ms
+[16:36:39 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:36:39 ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts.IAbaLeagueFetcher' while attempting to activate 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method9(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.InvokeInternal(HttpContext context, EnableRateLimitingAttribute enableRateLimitingAttribute)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[16:36:39 INF] Request finished HTTP/2 GET https://localhost:7101/Team - - - 500 - text/plain;+charset=utf-8 435.7450ms
+[16:37:33 INF] Now listening on: https://localhost:7101
+[16:37:33 INF] Now listening on: http://localhost:5222
+[16:37:33 INF] Application started. Press Ctrl+C to shut down.
+[16:37:33 INF] Hosting environment: Development
+[16:37:33 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:37:34 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:37:35 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:37:35 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:37:35 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - -
+[16:37:35 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 754.4644ms
+[16:37:35 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[16:37:36 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[16:37:36 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - - - 0 143943 text/css 973.3287ms
+[16:37:36 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[16:37:36 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 743.0714ms
+[16:37:36 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 1208.3707ms
+[16:37:37 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:37:37 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 293.9555ms
+[16:37:42 INF] Request starting HTTP/2 GET https://localhost:7101/Team - -
+[16:37:42 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:37:42 INF] Route matched with {action = "GetTeams", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTeams(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[16:37:42 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) in 117.0851ms
+[16:37:42 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:37:42 ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts.IAbaLeagueFetcher' while attempting to activate 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method9(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.InvokeInternal(HttpContext context, EnableRateLimitingAttribute enableRateLimitingAttribute)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[16:37:42 INF] Request finished HTTP/2 GET https://localhost:7101/Team - - - 500 - text/plain;+charset=utf-8 450.7861ms
+[16:41:47 INF] Now listening on: https://localhost:7101
+[16:41:47 INF] Now listening on: http://localhost:5222
+[16:41:47 INF] Application started. Press Ctrl+C to shut down.
+[16:41:47 INF] Hosting environment: Development
+[16:41:47 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:41:50 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:41:51 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:41:51 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 1278.0652ms
+[16:41:51 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:41:51 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 222.0839ms
+[16:41:51 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[16:41:52 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[16:41:52 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 457.8525ms
+[16:41:52 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:41:52 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 195.6728ms
+[16:43:49 INF] Now listening on: https://localhost:7101
+[16:43:49 INF] Now listening on: http://localhost:5222
+[16:43:50 INF] Application started. Press Ctrl+C to shut down.
+[16:43:50 INF] Hosting environment: Development
+[16:43:50 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:43:50 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:43:51 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:43:51 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 515.7366ms
+[16:43:51 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:43:51 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 131.4521ms
+[16:43:51 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[16:43:51 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:43:51 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[16:43:51 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 188.6588ms
+[16:43:51 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 146.0502ms
+[16:44:00 INF] Request starting HTTP/2 GET https://localhost:7101/Team - -
+[16:44:00 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:44:00 INF] Route matched with {action = "GetTeams", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTeams(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[16:44:00 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[16:48:27 INF] Now listening on: https://localhost:7101
+[16:48:27 INF] Now listening on: http://localhost:5222
+[16:48:27 INF] Application started. Press Ctrl+C to shut down.
+[16:48:27 INF] Hosting environment: Development
+[16:48:27 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:48:27 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:48:28 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:48:28 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 288.2297ms
+[16:48:28 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:48:28 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 52.5384ms
+[16:48:28 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:48:28 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 151.4010ms
+[16:48:45 INF] Request starting HTTP/2 GET https://localhost:7101/Team - -
+[16:48:45 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:48:45 INF] Route matched with {action = "GetTeams", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTeams(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[16:48:45 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[16:49:11 INF]  
+                                                <td>1</td>
+                                                <td>
+                                                	<a href="https://www.aba-liga.com/team/22/22/1/0/partizan-mozzart-bet/">
+														Partizan Mozzart Bet                                                    </a>
+                                                </td>
+                                                <td>
+													24                                                </td>
+                                                <td>
+													22                                                </td>
+                                                <td>
+													2                                                </td> 
+                                                <td>
+													2253:1865                                                </td> 
+                                                <td>
+													388                                                </td> 
+                                                <td>
+													46                                                </td>
+                                            
+[16:51:13 INF] Now listening on: https://localhost:7101
+[16:51:13 INF] Now listening on: http://localhost:5222
+[16:51:13 INF] Application started. Press Ctrl+C to shut down.
+[16:51:13 INF] Hosting environment: Development
+[16:51:13 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:51:13 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:51:14 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:51:14 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 264.5971ms
+[16:51:14 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - -
+[16:51:14 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:51:14 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[16:51:14 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - - - 0 143943 text/css 130.5603ms
+[16:51:14 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 170.5025ms
+[16:51:14 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[16:51:14 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[16:51:14 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:51:14 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 99.2936ms
+[16:51:14 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 104.2198ms
+[16:51:19 INF] Request starting HTTP/2 GET https://localhost:7101/Team - -
+[16:51:19 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:51:19 INF] Route matched with {action = "GetTeams", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTeams(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[16:51:19 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[16:52:06 INF] Now listening on: https://localhost:7101
+[16:52:06 INF] Now listening on: http://localhost:5222
+[16:52:06 INF] Application started. Press Ctrl+C to shut down.
+[16:52:06 INF] Hosting environment: Development
+[16:52:06 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:52:07 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:52:07 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:52:07 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 291.5344ms
+[16:52:07 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - -
+[16:52:07 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:52:08 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[16:52:08 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - - - 0 143943 text/css 123.9891ms
+[16:52:08 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 144.4883ms
+[16:52:08 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[16:52:08 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[16:52:08 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 98.1969ms
+[16:52:08 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:52:08 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 95.0403ms
+[16:52:12 INF] Request starting HTTP/2 GET https://localhost:7101/Team - -
+[16:52:13 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:52:13 INF] Route matched with {action = "GetTeams", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTeams(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[16:52:13 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[16:53:12 INF] 
+                                                	<a href="https://www.aba-liga.com/team/22/22/1/0/partizan-mozzart-bet/">
+														Partizan Mozzart Bet                                                    </a>
+                                                
+[16:55:27 INF] Now listening on: https://localhost:7101
+[16:55:27 INF] Now listening on: http://localhost:5222
+[16:55:27 INF] Application started. Press Ctrl+C to shut down.
+[16:55:27 INF] Hosting environment: Development
+[16:55:27 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:55:27 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:55:28 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:55:28 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 235.2730ms
+[16:55:28 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:55:28 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 55.3813ms
+[16:55:28 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:55:28 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 94.8409ms
+[16:55:37 INF] Request starting HTTP/2 GET https://localhost:7101/Team - -
+[16:55:37 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:55:37 INF] Route matched with {action = "GetTeams", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTeams(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[16:55:37 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[16:55:51 INF] 
+														Partizan Mozzart Bet                                                    
+[16:57:21 INF] Now listening on: https://localhost:7101
+[16:57:21 INF] Now listening on: http://localhost:5222
+[16:57:21 INF] Application started. Press Ctrl+C to shut down.
+[16:57:21 INF] Hosting environment: Development
+[16:57:21 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[16:57:22 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[16:57:22 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[16:57:22 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 234.5657ms
+[16:57:22 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[16:57:22 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 40.7393ms
+[16:57:22 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[16:57:22 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 107.5099ms
+[16:58:02 INF] Request starting HTTP/2 GET https://localhost:7101/Team - -
+[16:58:02 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:58:02 INF] Route matched with {action = "GetTeams", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTeams(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[16:58:02 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[16:58:07 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 4353.6413ms.
+[16:58:07 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[16:58:07 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi) in 4478.9407ms
+[16:58:07 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.GetTeams (OpenData.Basketball.AbaLeague.WebApi)'
+[16:58:07 INF] Request finished HTTP/2 GET https://localhost:7101/Team - - - 200 - application/json;+charset=utf-8 4554.6392ms
+[17:13:37 INF] Now listening on: https://localhost:7101
+[17:13:37 INF] Now listening on: http://localhost:5222
+[17:13:37 INF] Application started. Press Ctrl+C to shut down.
+[17:13:37 INF] Hosting environment: Development
+[17:13:37 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:13:38 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:13:38 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:13:38 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 327.1951ms
+[17:13:38 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - -
+[17:13:38 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:13:38 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[17:13:38 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[17:13:39 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - - - 0 143943 text/css 342.5336ms
+[17:13:39 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[17:13:39 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 290.1046ms
+[17:13:39 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 563.2261ms
+[17:13:39 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:13:39 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 196.5957ms
+[17:13:46 INF] Request starting HTTP/2 GET https://localhost:7101/League - -
+[17:13:46 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:13:46 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:13:46 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:13:49 INF] Executed DbCommand (52ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+[17:13:49 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 2979.6004ms.
+[17:13:49 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.League, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[17:13:49 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 3334.9112ms
+[17:13:49 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:13:49 INF] Request finished HTTP/2 GET https://localhost:7101/League - - - 200 - application/json;+charset=utf-8 3431.7847ms
+[17:18:18 INF] Now listening on: https://localhost:7101
+[17:18:18 INF] Now listening on: http://localhost:5222
+[17:18:18 INF] Application started. Press Ctrl+C to shut down.
+[17:18:18 INF] Hosting environment: Development
+[17:18:18 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:18:19 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:18:19 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:18:19 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 357.8987ms
+[17:18:19 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:18:19 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 86.9800ms
+[17:18:20 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:18:20 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 243.8451ms
+[17:18:24 INF] Request starting HTTP/2 GET https://localhost:7101/League - -
+[17:18:24 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:18:24 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:18:25 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:18:26 INF] Executed DbCommand (38ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+[17:18:26 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 1427.8457ms.
+[17:18:26 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.League, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[17:18:26 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 1704.7837ms
+[17:18:26 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:18:26 INF] Request finished HTTP/2 GET https://localhost:7101/League - - - 200 - application/json;+charset=utf-8 1787.2522ms
+[17:18:37 INF] Request starting HTTP/2 GET https://localhost:7101/League/id?id=1 - -
+[17:18:37 INF] Request finished HTTP/2 GET https://localhost:7101/League/id?id=1 - - - 429 - - 7.9795ms
+[17:19:22 INF] Now listening on: https://localhost:7101
+[17:19:22 INF] Now listening on: http://localhost:5222
+[17:19:22 INF] Application started. Press Ctrl+C to shut down.
+[17:19:22 INF] Hosting environment: Development
+[17:19:22 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:19:22 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:19:23 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:19:23 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 351.7090ms
+[17:19:23 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - -
+[17:19:23 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:19:23 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[17:19:23 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - - - 0 143943 text/css 236.2255ms
+[17:19:23 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[17:19:23 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[17:19:23 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 270.3472ms
+[17:19:23 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 606.8302ms
+[17:19:24 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:19:24 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 290.9067ms
+[17:19:36 INF] Request starting HTTP/2 GET https://localhost:7101/League/id?id=1 - -
+[17:19:36 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:19:36 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:19:36 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:19:38 INF] Executed DbCommand (58ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[17:19:38 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 1628.6621ms.
+[17:19:38 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.League'.
+[17:19:38 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 1898.9618ms
+[17:19:38 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:19:38 INF] Request finished HTTP/2 GET https://localhost:7101/League/id?id=1 - - - 200 - application/json;+charset=utf-8 1982.4508ms
+[17:20:46 INF] Now listening on: https://localhost:7101
+[17:20:46 INF] Now listening on: http://localhost:5222
+[17:20:46 INF] Application started. Press Ctrl+C to shut down.
+[17:20:46 INF] Hosting environment: Development
+[17:20:46 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:20:47 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:20:47 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:20:47 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 348.1154ms
+[17:20:47 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:20:48 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 117.9116ms
+[17:20:48 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:20:48 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 213.9244ms
+[17:21:05 INF] Request starting HTTP/2 DELETE https://localhost:7101/League/id?id=1 - -
+[17:21:05 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi)'
+[17:21:05 INF] Route matched with {action = "Delete", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Delete(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:21:05 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:21:07 INF] Executed DbCommand (48ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[17:21:07 INF] Executed DbCommand (10ms) [Parameters=[@p0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+DELETE FROM [Leagues]
+OUTPUT 1
+WHERE [Id] = @p0;
+[17:21:07 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.NoContentResult in 1660.5125ms.
+[17:21:07 INF] Executing StatusCodeResult, setting HTTP status code 204
+[17:21:07 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi) in 1924.199ms
+[17:21:07 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi)'
+[17:21:07 INF] Request finished HTTP/2 DELETE https://localhost:7101/League/id?id=1 - - - 204 - - 2009.7351ms
+[17:21:15 INF] Request starting HTTP/2 GET https://localhost:7101/League - -
+[17:21:15 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:21:15 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:21:15 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:21:15 INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+[17:21:15 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 21.632ms.
+[17:21:15 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.League, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[17:21:15 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 62.1836ms
+[17:21:15 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:21:15 INF] Request finished HTTP/2 GET https://localhost:7101/League - - - 200 - application/json;+charset=utf-8 75.4979ms
+[17:21:25 INF] Request starting HTTP/2 DELETE https://localhost:7101/League/id?id=2 - -
+[17:21:25 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi)'
+[17:21:25 INF] Route matched with {action = "Delete", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Delete(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:21:25 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:21:25 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[17:21:25 INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+DELETE FROM [Leagues]
+OUTPUT 1
+WHERE [Id] = @p0;
+[17:21:25 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.NoContentResult in 13.3914ms.
+[17:21:25 INF] Executing StatusCodeResult, setting HTTP status code 204
+[17:21:25 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi) in 33.7957ms
+[17:21:25 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Delete (OpenData.Basketball.AbaLeague.WebApi)'
+[17:21:25 INF] Request finished HTTP/2 DELETE https://localhost:7101/League/id?id=2 - - - 204 - - 39.7894ms
+[17:22:51 INF] Request starting HTTP/2 POST https://localhost:7101/League/id application/json 189
+[17:22:51 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi)'
+[17:22:51 INF] Route matched with {action = "Create", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(OpenData.Basetball.AbaLeague.Domain.Entities.League, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:22:51 INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+[17:22:51 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi) in 32.0725ms
+[17:22:51 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi)'
+[17:22:51 INF] Request finished HTTP/2 POST https://localhost:7101/League/id application/json 189 - 400 - application/problem+json;+charset=utf-8 54.2704ms
+[17:28:33 INF] Now listening on: https://localhost:7101
+[17:28:34 INF] Now listening on: http://localhost:5222
+[17:28:34 INF] Application started. Press Ctrl+C to shut down.
+[17:28:34 INF] Hosting environment: Development
+[17:28:34 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:28:34 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:28:34 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:28:34 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 270.3396ms
+[17:28:34 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - -
+[17:28:34 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:28:34 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[17:28:34 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/swagger-ui.css - - - 0 143943 text/css 137.7056ms
+[17:28:34 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 164.2271ms
+[17:28:34 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[17:28:35 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[17:28:35 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:28:35 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 125.4311ms
+[17:28:35 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 136.0658ms
+[17:28:55 INF] Now listening on: https://localhost:7101
+[17:28:55 INF] Now listening on: http://localhost:5222
+[17:28:55 INF] Application started. Press Ctrl+C to shut down.
+[17:28:55 INF] Hosting environment: Development
+[17:28:55 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:28:56 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:28:56 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:28:56 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 227.5698ms
+[17:28:56 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:28:56 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 48.5981ms
+[17:28:56 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:28:57 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 148.4473ms
+[17:29:55 INF] Request starting HTTP/2 POST https://localhost:7101/League application/json 210
+[17:29:55 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi)'
+[17:29:55 INF] Route matched with {action = "Create", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(OpenData.Basketball.AbaLeague.Application.DTOs.League.LeagueDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:29:55 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:29:57 INF] Executed DbCommand (48ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = DateTime2), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Leagues] ([CreatedBy], [CreatedDate], [OfficalName], [Season], [ShortName], [StandingUrl], [TeamParticipansUrl], [UpdateBy], [UpdatedDate])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[17:29:57 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 2141.4762ms.
+[17:29:57 INF] Executing OkObjectResult, writing value of type 'OpenData.Basketball.AbaLeague.Application.DTOs.League.LeagueDto'.
+[17:29:57 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi) in 2432.288ms
+[17:29:57 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi)'
+[17:29:57 INF] Request finished HTTP/2 POST https://localhost:7101/League application/json 210 - 200 - application/json;+charset=utf-8 2514.5776ms
+[17:30:08 INF] Request starting HTTP/2 GET https://localhost:7101/League - -
+[17:30:08 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:30:08 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:30:08 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:30:09 INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+[17:30:09 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 231.3819ms.
+[17:30:09 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.League, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[17:30:09 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 276.636ms
+[17:30:09 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:30:09 INF] Request finished HTTP/2 GET https://localhost:7101/League - - - 200 - application/json;+charset=utf-8 288.9001ms
+[17:31:43 INF] Request starting HTTP/2 POST https://localhost:7101/League application/json 208
+[17:31:43 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi)'
+[17:31:43 INF] Route matched with {action = "Create", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(OpenData.Basketball.AbaLeague.Application.DTOs.League.LeagueDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:31:43 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:31:43 INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = DateTime2), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Leagues] ([CreatedBy], [CreatedDate], [OfficalName], [Season], [ShortName], [StandingUrl], [TeamParticipansUrl], [UpdateBy], [UpdatedDate])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[17:31:43 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 8.1452ms.
+[17:31:43 INF] Executing OkObjectResult, writing value of type 'OpenData.Basketball.AbaLeague.Application.DTOs.League.LeagueDto'.
+[17:31:43 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi) in 28.6512ms
+[17:31:43 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Create (OpenData.Basketball.AbaLeague.WebApi)'
+[17:31:43 INF] Request finished HTTP/2 POST https://localhost:7101/League application/json 208 - 200 - application/json;+charset=utf-8 35.1932ms
+[17:31:49 INF] Request starting HTTP/2 GET https://localhost:7101/League - -
+[17:31:49 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:31:49 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:31:49 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:31:49 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+[17:31:49 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 5.5692ms.
+[17:31:49 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.League, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[17:31:49 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 24.3974ms
+[17:31:49 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:31:49 INF] Request finished HTTP/2 GET https://localhost:7101/League - - - 200 - application/json;+charset=utf-8 31.9735ms
+[17:32:14 INF] Request starting HTTP/2 GET https://localhost:7101/League/id?id=3 - -
+[17:32:14 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:32:14 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:32:14 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:32:15 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[17:32:15 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 107.9207ms.
+[17:32:15 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.League'.
+[17:32:15 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 133.4204ms
+[17:32:15 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:32:15 INF] Request finished HTTP/2 GET https://localhost:7101/League/id?id=3 - - - 200 - application/json;+charset=utf-8 144.9258ms
+[17:46:45 INF] Now listening on: https://localhost:7101
+[17:46:45 INF] Now listening on: http://localhost:5222
+[17:46:45 INF] Application started. Press Ctrl+C to shut down.
+[17:46:45 INF] Hosting environment: Development
+[17:46:45 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:46:45 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:46:46 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:46:46 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 241.8017ms
+[17:46:46 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:46:46 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 48.6045ms
+[17:46:46 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[17:46:46 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:46:46 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[17:46:46 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 139.5201ms
+[17:46:46 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 138.0572ms
+[17:46:55 INF] Request starting HTTP/2 GET https://localhost:7101/League - -
+[17:46:55 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:46:55 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[17:46:55 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:46:57 INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[TeamParticipansUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+[17:46:58 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 2195.2222ms.
+[17:46:58 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.League, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[17:46:58 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 2455.088ms
+[17:46:58 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:46:58 INF] Request finished HTTP/2 GET https://localhost:7101/League - - - 200 - application/json;+charset=utf-8 2536.7591ms
+[17:47:14 INF] Request starting HTTP/2 GET https://localhost:7101/Team?leagueUrl=https%3A%2F%2Fwww.aba-liga.com%2Fstandings - -
+[17:47:14 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:47:14 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.String, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[17:47:14 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:48:48 INF] Now listening on: https://localhost:7101
+[17:48:48 INF] Now listening on: http://localhost:5222
+[17:48:48 INF] Application started. Press Ctrl+C to shut down.
+[17:48:48 INF] Hosting environment: Development
+[17:48:48 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:48:48 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:48:49 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:48:49 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 345.9462ms
+[17:48:49 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:48:49 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 85.1934ms
+[17:48:49 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:48:49 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 176.2070ms
+[17:48:58 INF] Request starting HTTP/2 GET https://localhost:7101/Team?leagueUrl=https%3A%2F%2Fwww.aba-liga.com%2Fstandings - -
+[17:48:58 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:48:58 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.String, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[17:48:58 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:48:59 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 616.8723ms.
+[17:48:59 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[17:48:59 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 749.6917ms
+[17:48:59 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:48:59 INF] Request finished HTTP/2 GET https://localhost:7101/Team?leagueUrl=https%3A%2F%2Fwww.aba-liga.com%2Fstandings - - - 200 - application/json;+charset=utf-8 834.0133ms
+[17:49:46 INF] Now listening on: https://localhost:7101
+[17:49:46 INF] Now listening on: http://localhost:5222
+[17:49:46 INF] Application started. Press Ctrl+C to shut down.
+[17:49:46 INF] Hosting environment: Development
+[17:49:46 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:49:46 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:49:46 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:49:46 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 219.1890ms
+[17:49:46 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:49:46 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 51.2427ms
+[17:49:47 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:49:47 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 130.9386ms
+[17:49:59 INF] Request starting HTTP/2 GET https://localhost:7101/Team?leagueUrl=https%3A%2F%2Fwww.aba-liga.com%2Fstandings - -
+[17:49:59 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:49:59 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.String, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[17:49:59 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:50:00 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 1221.0166ms
+[17:50:00 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:50:00 ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at AngleSharp.Common.ObjectExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   at AngleSharp.Dom.HtmlCollection`1.get_Item(Int32 index)
+   at OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations.WebPageProcessor.GetTeams(String leagueUrl, CancellationToken cancellationToken) in C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.Crawler\Processors\Implementations\WebPageProcessor.cs:line 26
+   at OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get(String leagueUrl, CancellationToken cancellationToken) in C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi\Controllers\TeamController.cs:line 19
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.InvokeInternal(HttpContext context, EnableRateLimitingAttribute enableRateLimitingAttribute)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[17:50:01 INF] Request finished HTTP/2 GET https://localhost:7101/Team?leagueUrl=https%3A%2F%2Fwww.aba-liga.com%2Fstandings - - - 500 - text/plain;+charset=utf-8 2009.3293ms
+[17:51:10 INF] Now listening on: https://localhost:7101
+[17:51:10 INF] Now listening on: http://localhost:5222
+[17:51:10 INF] Application started. Press Ctrl+C to shut down.
+[17:51:10 INF] Hosting environment: Development
+[17:51:10 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[17:51:10 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/index.html - -
+[17:51:11 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[17:51:11 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/index.html - - - 200 - text/html;charset=utf-8 232.6490ms
+[17:51:11 INF] Request starting HTTP/2 GET https://localhost:7101/_vs/browserLink - -
+[17:51:11 INF] Request finished HTTP/2 GET https://localhost:7101/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 53.7099ms
+[17:51:11 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - -
+[17:51:11 INF] Request starting HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - -
+[17:51:11 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[17:51:11 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/favicon-32x32.png - - - 0 628 image/png 145.3810ms
+[17:51:11 INF] Request finished HTTP/2 GET https://localhost:7101/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 141.0328ms
+[17:51:21 INF] Request starting HTTP/2 GET https://localhost:7101/Team?leagueUrl=https%3A%2F%2Fwww.aba-liga.com%2Fstandings - -
+[17:51:21 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:51:21 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.String, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[17:51:21 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[17:51:22 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 612.3095ms.
+[17:51:22 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[17:51:22 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 724.2891ms
+[17:51:22 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[17:51:22 INF] Request finished HTTP/2 GET https://localhost:7101/Team?leagueUrl=https%3A%2F%2Fwww.aba-liga.com%2Fstandings - - - 200 - application/json;+charset=utf-8 789.2072ms

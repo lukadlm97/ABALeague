@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Application\OpenData.Basetball.AbaLeague.Application.csproj" />
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Domain\OpenData.Basetball.AbaLeague.Domain.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Application\OpenData.Basketball.AbaLeague.Application.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Domain\OpenData.Basketball.AbaLeague.Domain.csproj" />
   </ItemGroup>
 
 </Project>

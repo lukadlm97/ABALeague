@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Persistence\OpenData.Basetball.AbaLeague.Persistence.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Persistence\OpenData.Basketball.AbaLeague.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>

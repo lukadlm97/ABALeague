@@ -19,11 +19,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Configurations
                 {
                     Id = 1,
                     CountryId = 1,
-                    City = "Belgrade",
-                    Capacity = 20000,
+            
                     Name = "Partizan",
                     ShortCode = "PAR",
-                    Venue = "Arena",
                     RosterItems = new List<RosterItem>(),
                     CreatedBy = "Sys",
                     UpdateBy = "Sys",
@@ -34,11 +32,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Configurations
                 {
                     Id = 2,
                     CountryId = 2,
-                    City = "Aleksandrovac",
-                    Capacity = 5000,
+          
                     Name = "Igokea",
                     ShortCode = "IGO",
-                    Venue = "Dom sportova",
                     RosterItems = new List<RosterItem>(),
                     CreatedBy = "Sys",
                     UpdateBy = "Sys",

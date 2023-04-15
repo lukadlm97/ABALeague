@@ -41,7 +41,7 @@ namespace OpenData.Basetball.AbaLeague.Application.UnitTests.Mocks
 
             var mockRepo = new Mock<IPlayerRepository>();
 
-            mockRepo.Setup(r => r.GetAll()).ReturnsAsync(players);
+            mockRepo.Setup(r => r.GetAll(It.IsAny<CancellationToken>())).ReturnsAsync(players);
 
            
             return mockRepo;

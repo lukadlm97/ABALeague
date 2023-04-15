@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
+    <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
@@ -16,9 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Application\OpenData.Basetball.AbaLeague.Application.csproj" />
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Domain\OpenData.Basetball.AbaLeague.Domain.csproj" />
-    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Persistence\OpenData.Basetball.AbaLeague.Persistence.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Application\OpenData.Basketball.AbaLeague.Application.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Crawler\OpenData.Basetball.AbaLeague.Crawler.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Domain\OpenData.Basketball.AbaLeague.Domain.csproj" />
+    <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Persistence\OpenData.Basketball.AbaLeague.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

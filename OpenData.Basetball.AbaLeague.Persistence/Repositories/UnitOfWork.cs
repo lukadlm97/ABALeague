@@ -1,9 +1,5 @@
 ﻿using OpenData.Basetball.AbaLeague.Application.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenData.Basetball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 {
@@ -13,6 +9,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private readonly AbaLeagueDbContext _context;
       //  private readonly IHttpContextAccessor _httpContextAccessor;
         private IPlayerRepository _playerRepository;
+        private IGenericRepository<League> _leagueRepository;
 
 
         public UnitOfWork(AbaLeagueDbContext context
@@ -25,6 +22,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 
         public IPlayerRepository PlayerRepository =>
             _playerRepository ??= new PlayerRepository(_context);
+
+        public IGenericRepository<League> LeagueRepository =>
+            _leagueRepository ??= new GenericRepository<League>(_context);
 
         public void Dispose()
         {

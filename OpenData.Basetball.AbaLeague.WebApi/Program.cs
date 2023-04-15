@@ -1,9 +1,16 @@
+using System.Reflection;
 using System.Threading.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using OpenData.Basetball.AbaLeague.Application.Model;
+using OpenData.Basetball.AbaLeague.Crawler.Configurations;
+using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
+using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
+using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
 using OpenData.Basetball.AbaLeague.Persistence;
+using OpenData.Basetball.AbaLeague.WebApi.Helpers;
 using OpenData.Basetball.AbaLeague.WebApi.Services.Contracts;
 using OpenData.Basetball.AbaLeague.WebApi.Services.Implementations;
+using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,9 +28,41 @@ builder.Services.AddOptions<PersistenceSettings>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+builder.Services.AddOptions<CrawlerSettings>()
+    .BindConfiguration(nameof(CrawlerSettings))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+builder.Services.Scan(scan => scan
+    .FromAssemblies(Assembly.GetAssembly(typeof(AssemblyReference)))
+    .AddClasses(classes=>classes.AssignableTo<IPlayerService>())
+        .AsImplementedInterfaces()
+        .WithScopedLifetime()
+   
+);
+
+builder.Services.Scan(scan =>
+    scan.FromAssemblyOf<ILeagueFetcher>()
+    .AddClasses(classes => classes.AssignableTo<ILeagueFetcher>())
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
+    .FromAssemblyOf<IWebPageProcessor>()
+    .AddClasses(classes => classes.AssignableTo<IWebPageProcessor>())
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
+);
+
+
+builder.Services.Scan(scan => scan.FromAssemblyOf<ILeagueService>()
+    .AddClasses(classes => classes.AssignableTo<ILeagueService>())
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
+);
+
+
 // Add services to the container.
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
-builder.Services.AddScoped<IPlayerService, PlayerService>();
+//builder.Services.AddScoped<IPlayerService, PlayerService>();
 
 builder.Logging.ClearProviders();
 
@@ -42,7 +81,7 @@ builder.Services.AddRateLimiter(options =>
             factory: partition => new FixedWindowRateLimiterOptions
             {
                 AutoReplenishment = true,
-                PermitLimit = 1,
+                PermitLimit = 100,
                 QueueLimit = 0,
                 Window = TimeSpan.FromMinutes(1)
             }));
