@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
+using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
+using OpenData.Basketball.AbaLeague.Application.Services.Implementation;
 
 namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
 {
@@ -7,19 +9,19 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
     [Route("[controller]")]
     public class TeamController : ControllerBase
     {
-        private readonly IWebPageProcessor _webPageProcessor;
+        private readonly ITeamService _teamService;
 
-        public TeamController(IWebPageProcessor webPageProcessor)
+        public TeamController(ITeamService teamService)
         {
-            _webPageProcessor = webPageProcessor;
+            _teamService = teamService;
         }
-        [HttpGet]
-        public async Task<IActionResult> Get(string leagueUrl,CancellationToken cancellationToken)
+        [HttpGet("{leagueId}")]
+        public async Task<IActionResult> Get(int leagueId,CancellationToken cancellationToken)
         {
-            var teams = await _webPageProcessor
-                .GetTeams(leagueUrl,cancellationToken);
+            var teams = await _teamService
+                .Get(leagueId, cancellationToken);
 
-            return Ok(teams);
+            return Ok(new {Existing=teams.existingResulution.Select(x=>x.Item1.Name+"="+x.Item2.Name),New=teams.newly});
         }
     }
 }

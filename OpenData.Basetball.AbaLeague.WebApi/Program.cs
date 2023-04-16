@@ -57,6 +57,9 @@ builder.Services.Scan(scan => scan.FromAssemblyOf<ILeagueService>()
     .AddClasses(classes => classes.AssignableTo<ILeagueService>())
     .AsImplementedInterfaces()
     .WithScopedLifetime()
+    .AddClasses(classes =>classes.AssignableTo<ITeamService>())
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
 );
 
 

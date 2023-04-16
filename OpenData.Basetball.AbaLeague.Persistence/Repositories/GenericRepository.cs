@@ -17,6 +17,12 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
             return entity;
         }
 
+        public async Task<IEnumerable<T>> Add(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+        {
+            await _dbContext.AddRangeAsync(entities,cancellationToken);
+            return entities;
+        }
+
         public async Task Delete(T entity, CancellationToken cancellationToken = default)
         {
             _dbContext.Set<T>().Remove(entity);

@@ -9,7 +9,7 @@ namespace OpenData.Basetball.AbaLeague.WebApi.Services.Implementations
         public async Task<IEnumerable<Player>> GetPlayers(CancellationToken cancellationToken)
         {
             await Task.Delay(100,cancellationToken);
-            return await UnitOfWork.PlayerRepository.GetAll();
+            return (await UnitOfWork.PlayerRepository.GetAll(cancellationToken)).ToList();
         }
 
         public async Task<Player?> GetPlayer(int id, CancellationToken cancellationToken)
