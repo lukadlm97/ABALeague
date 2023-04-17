@@ -7,6 +7,7 @@ using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Team;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 
 namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
@@ -65,32 +66,56 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
         }
 
-        public async Task Add(Team team, CancellationToken cancellationToken)
+        public async Task<Team> Add(TeamDto teamDto, CancellationToken cancellationToken)
         {
+            var team = new Team() 
+                { 
+                    Name = teamDto.Name, 
+                    ShortCode = teamDto.ShortName ?? string.Empty,
+                    RosterItems = new List<RosterItem>()
+                };
             await _unitOfWork.TeamRepository.Add(team, cancellationToken);
             await _unitOfWork.Save();
+            return team;
         }
 
-        public async Task Add(IEnumerable<Team> teams, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Team>> Add(IEnumerable<TeamDto> teamsDto, CancellationToken cancellationToken)
         {
+            List<Team> teams = new List<Team>();
+            foreach (var teamDto in teamsDto)
+            {
+                var team = new Team()
+                {
+                    Name = teamDto.Name,
+                    ShortCode = teamDto.ShortName??string.Empty,
+                    RosterItems = new List<RosterItem>()
+                };
+                teams.Add(team);
+            }
+
             await _unitOfWork.TeamRepository.Add(teams, cancellationToken);
             await _unitOfWork.Save();
+
+            return teams;
         }
 
-        public async Task Update(Team team, CancellationToken cancellationToken)
+        public async Task<Team> Update(int id,TeamDto team, CancellationToken cancellationToken)
         {
-            var existingTeam = await _unitOfWork.TeamRepository.Get(team.Id,cancellationToken);
+            var existingTeam = await _unitOfWork.TeamRepository
+                                        .Get(id,cancellationToken);
             
-            if (existingTeam != null)
+            if (existingTeam == null)
             {
                 throw new ArgumentException();
             }
 
-            existingTeam.Name=team.Name;
-            existingTeam.ShortCode=team.ShortCode;
+            existingTeam.Name=team.Name ?? existingTeam.Name;
+            existingTeam.ShortCode=team.ShortName??existingTeam.ShortCode;
            //TODO existingTeam.CountryId=team.ShortCode;
            await  _unitOfWork.TeamRepository.Update(existingTeam,cancellationToken);
            await  _unitOfWork.Save();
+
+           return existingTeam;
         }
     }
 }

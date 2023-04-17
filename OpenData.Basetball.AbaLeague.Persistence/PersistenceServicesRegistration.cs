@@ -54,6 +54,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence
 
             services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
+            services.AddScoped<ISeasonResourcesRepository, SeasonResourcesRepository>();
 
             return services;
         }

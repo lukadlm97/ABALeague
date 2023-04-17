@@ -13,6 +13,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private IPlayerRepository _playerRepository;
         private ITeamRepository _teamRepository;
         private IGenericRepository<League> _leagueRepository;
+        private ISeasonResourcesRepository _seasonResourcesRepository;
 
 
         public UnitOfWork(AbaLeagueDbContext context
@@ -32,6 +33,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 
         public ITeamRepository TeamRepository =>
             _teamRepository ??= new TeamRepository(_context);
+
+        public ISeasonResourcesRepository SeasonResourcesRepository =>
+            _seasonResourcesRepository ??= new SeasonResourcesRepository(_context);
         public void Dispose()
         {
             _context.Dispose();

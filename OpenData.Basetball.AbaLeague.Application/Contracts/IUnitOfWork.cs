@@ -13,6 +13,7 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         IPlayerRepository PlayerRepository { get; }
         ITeamRepository TeamRepository { get; }
         IGenericRepository<League> LeagueRepository { get; }
+        ISeasonResourcesRepository SeasonResourcesRepository { get; }
         Task Save();
     }
 }

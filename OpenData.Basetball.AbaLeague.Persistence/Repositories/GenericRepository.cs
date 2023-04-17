@@ -5,7 +5,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T:class
     {
-        private readonly AbaLeagueDbContext _dbContext;
+        protected readonly AbaLeagueDbContext _dbContext;
 
         public GenericRepository(AbaLeagueDbContext dbContext)
         {
