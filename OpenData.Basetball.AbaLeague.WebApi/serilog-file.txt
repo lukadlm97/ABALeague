@@ -1690,3 +1690,751 @@ FROM [SeasonResources] AS [s]
 [14:03:45 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi) in 43.307ms
 [14:03:45 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi)'
 [14:03:45 INF] Request finished HTTP/2 GET https://localhost:7101/Season - - - 200 - application/json;+charset=utf-8 55.7490ms
+[21:11:16 INF] Now listening on: http://localhost:5222
+[21:11:16 INF] Application started. Press Ctrl+C to shut down.
+[21:11:16 INF] Hosting environment: Development
+[21:11:16 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[21:11:18 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger - -
+[21:11:18 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger - - - 301 0 - 129.1050ms
+[21:11:18 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[21:11:18 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[21:11:18 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 314.8483ms
+[21:11:19 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/swagger-ui.css - -
+[21:11:19 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/swagger-ui-bundle.js - -
+[21:11:19 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/swagger-ui-standalone-preset.js - -
+[21:11:19 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[21:11:19 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[21:11:19 INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+[21:11:19 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/swagger-ui.css - - - 200 143943 text/css 242.3341ms
+[21:11:19 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 239.6723ms
+[21:11:19 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/swagger-ui-standalone-preset.js - - - 200 339486 text/javascript 242.9564ms
+[21:11:19 INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+[21:11:19 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/swagger-ui-bundle.js - - - 200 1096145 text/javascript 253.4650ms
+[21:11:19 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/favicon-32x32.png - -
+[21:11:19 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[21:11:19 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/favicon-32x32.png - - - 200 628 image/png 6.0294ms
+[21:11:19 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[21:11:19 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 158.5036ms
+[21:11:37 INF] Request starting HTTP/1.1 GET http://localhost:5222/League - -
+[21:11:37 WRN] Failed to determine the https port for redirect.
+[21:11:37 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:11:37 INF] Route matched with {action = "Get", controller = "League"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController (OpenData.Basketball.AbaLeague.WebApi).
+[21:11:37 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:11:41 INF] Executed DbCommand (89ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+[21:11:41 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 4097.5596ms.
+[21:11:41 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.League, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[21:11:41 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi) in 4535.2444ms
+[21:11:41 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.LeagueController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:11:41 INF] Request finished HTTP/1.1 GET http://localhost:5222/League - - - 200 - application/json;+charset=utf-8 4633.1111ms
+[21:11:52 INF] Request starting HTTP/1.1 GET http://localhost:5222/Player - -
+[21:11:52 INF] Executing endpoint 'OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:11:52 INF] Route matched with {action = "Get", controller = "Player"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController (OpenData.Basketball.AbaLeague.WebApi).
+[21:11:52 INF] Executing action method OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:11:53 INF] Executed DbCommand (27ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CountryId], [p].[CreatedBy], [p].[CreatedDate], [p].[DateOfBirth], [p].[Height], [p].[Name], [p].[Nationality], [p].[PositionId], [p].[UpdateBy], [p].[UpdatedDate]
+FROM [Players] AS [p]
+[21:11:53 INF] Executed action method OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 271.8242ms.
+[21:11:53 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Player, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[21:11:53 INF] Executed action OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basketball.AbaLeague.WebApi) in 369.9107ms
+[21:11:53 INF] Executed endpoint 'OpenData.Basetball.AbaLeague.WebApi.Controllers.PlayerController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:11:53 INF] Request finished HTTP/1.1 GET http://localhost:5222/Player - - - 200 - application/json;+charset=utf-8 394.9379ms
+[21:12:06 INF] Request starting HTTP/1.1 GET http://localhost:5222/Season - -
+[21:12:06 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:12:06 INF] Route matched with {action = "Get", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:12:06 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:12:06 INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[TeamId], [s].[LeagueId], [s].[TeamSourceUrl]
+FROM [SeasonResources] AS [s]
+[21:12:06 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 65.8314ms.
+[21:12:06 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[21:12:06 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi) in 125.0284ms
+[21:12:06 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:12:06 INF] Request finished HTTP/1.1 GET http://localhost:5222/Season - - - 200 - application/json;+charset=utf-8 146.3368ms
+[21:13:15 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/existing - -
+[21:13:15 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:13:15 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:13:15 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:13:15 INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:13:15 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 37.4671ms.
+[21:13:15 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[21:13:15 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 75.6496ms
+[21:13:15 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:13:15 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/existing - - - 200 - application/json;+charset=utf-8 89.2961ms
+[21:13:51 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/1 - -
+[21:13:51 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:13:51 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:13:51 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:13:51 INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:13:51 INF] Executed DbCommand (30ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:14:03 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 11337.2616ms
+[21:14:04 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:14:13 ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at OpenData.Basketball.AbaLeague.Application.Services.Implementation.TeamService.Get(Int32 leagueId, CancellationToken cancellationToken) in C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.Application\Services\Implementation\TeamService.cs:line 29
+   at OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get(Int32 leagueId, CancellationToken cancellationToken) in C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi\Controllers\TeamController.cs:line 20
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.InvokeInternal(HttpContext context, EnableRateLimitingAttribute enableRateLimitingAttribute)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[21:14:14 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/1 - - - 500 - text/plain;+charset=utf-8 22317.9596ms
+[21:15:30 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/3 - -
+[21:15:30 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:15:30 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:15:30 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:15:30 INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:15:30 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:15:31 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 1609.3163ms.
+[21:15:31 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:15:31 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 1658.2612ms
+[21:15:31 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:15:31 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/3 - - - 200 - application/json;+charset=utf-8 1671.1846ms
+[21:16:33 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/existing - -
+[21:16:33 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:16:33 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:16:33 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:16:33 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:16:33 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 5.071ms.
+[21:16:33 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[21:16:33 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 29.7341ms
+[21:16:33 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:16:33 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/existing - - - 200 - application/json;+charset=utf-8 41.9703ms
+[21:17:19 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 108
+[21:17:19 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:17:19 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:17:19 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:17:19 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:17:19 INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:17:19 INF] Executed DbCommand (8ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:17:19 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 399.3561ms.
+[21:17:19 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:17:20 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 490.9328ms
+[21:17:20 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:17:20 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 108 - 200 - application/json;+charset=utf-8 510.0957ms
+[21:18:13 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 100
+[21:18:13 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:18:13 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:18:13 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:18:13 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:18:13 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:18:13 INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:18:13 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 15.3129ms.
+[21:18:13 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:18:13 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 39.0725ms
+[21:18:13 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:18:13 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 100 - 200 - application/json;+charset=utf-8 48.6775ms
+[21:18:40 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 102
+[21:18:40 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:18:40 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:18:40 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:18:40 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:18:40 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:18:40 INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:18:40 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 15.397ms.
+[21:18:40 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:18:40 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 57.0205ms
+[21:18:40 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:18:40 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 102 - 200 - application/json;+charset=utf-8 67.2301ms
+[21:19:22 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 105
+[21:19:22 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:19:22 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:19:22 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:19:22 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:19:22 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:19:22 INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:19:22 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 28.7263ms.
+[21:19:22 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:19:22 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 64.5455ms
+[21:19:22 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:19:22 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 105 - 200 - application/json;+charset=utf-8 76.5823ms
+[21:19:37 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 101
+[21:19:37 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:19:37 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:19:38 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:19:38 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:19:38 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:19:38 INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:19:38 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 19.3671ms.
+[21:19:38 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:19:38 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 51.9852ms
+[21:19:38 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:19:38 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 101 - 200 - application/json;+charset=utf-8 65.2416ms
+[21:20:24 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 96
+[21:20:24 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:20:24 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:20:25 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:20:25 INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:20:25 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:20:25 INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:20:25 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 39.2136ms.
+[21:20:25 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:20:25 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 87.8799ms
+[21:20:25 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:20:25 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 96 - 200 - application/json;+charset=utf-8 106.0711ms
+[21:20:38 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 92
+[21:20:38 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:20:38 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:20:38 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:20:38 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:20:38 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:20:38 INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:20:38 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 38.916ms.
+[21:20:38 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:20:38 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 70.8966ms
+[21:20:38 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:20:38 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 92 - 200 - application/json;+charset=utf-8 81.3850ms
+[21:21:25 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 97
+[21:21:25 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:21:25 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:21:25 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:21:25 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:21:26 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:21:26 INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:21:26 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 41.5112ms.
+[21:21:26 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:21:26 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 95.5173ms
+[21:21:26 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:21:26 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 97 - 200 - application/json;+charset=utf-8 110.1241ms
+[21:21:46 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 93
+[21:21:46 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:21:46 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:21:46 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:21:46 INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:21:46 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:21:46 INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:21:46 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 44.4122ms.
+[21:21:46 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:21:46 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 104.49ms
+[21:21:46 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:21:46 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 93 - 200 - application/json;+charset=utf-8 121.7751ms
+[21:22:23 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 94
+[21:22:23 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:22:23 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:22:23 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:22:23 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:22:23 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:22:23 INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:22:23 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 18.2409ms.
+[21:22:23 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:22:23 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 60.2466ms
+[21:22:23 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:22:23 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 94 - 200 - application/json;+charset=utf-8 68.5202ms
+[21:22:41 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 102
+[21:22:41 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:22:41 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:22:41 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:22:41 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:22:41 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:22:41 INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:22:41 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 12.5318ms.
+[21:22:41 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:22:41 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 41.6882ms
+[21:22:41 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:22:41 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 102 - 200 - application/json;+charset=utf-8 50.6410ms
+[21:23:18 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 108
+[21:23:18 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:23:18 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:23:18 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:23:18 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:23:18 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:23:18 INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:23:18 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 29.1195ms.
+[21:23:18 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:23:18 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 76.4104ms
+[21:23:18 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:23:18 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 108 - 200 - application/json;+charset=utf-8 97.3160ms
+[21:23:33 INF] Request starting HTTP/1.1 POST http://localhost:5222/Season application/json 108
+[21:23:33 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:23:33 INF] Route matched with {action = "Add", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Add(OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources.SeasonResourceDto, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:23:33 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:23:33 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:23:33 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+WHERE [t].[Id] = @__p_0
+[21:23:33 INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SeasonResources] ([LeagueId], [TeamId], [TeamSourceUrl])
+VALUES (@p0, @p1, @p2);
+[21:23:33 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 21.1907ms.
+[21:23:33 INF] Executing OkObjectResult, writing value of type 'OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources'.
+[21:23:33 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi) in 49.6287ms
+[21:23:33 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Add (OpenData.Basketball.AbaLeague.WebApi)'
+[21:23:33 INF] Request finished HTTP/1.1 POST http://localhost:5222/Season application/json 108 - 200 - application/json;+charset=utf-8 57.2942ms
+[21:23:41 INF] Request starting HTTP/1.1 GET http://localhost:5222/Season - -
+[21:23:41 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:23:41 INF] Route matched with {action = "Get", controller = "Season"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController (OpenData.Basketball.AbaLeague.WebApi).
+[21:23:41 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:23:41 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[TeamId], [s].[LeagueId], [s].[TeamSourceUrl]
+FROM [SeasonResources] AS [s]
+[21:23:41 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 3.5671ms.
+[21:23:41 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[21:23:41 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi) in 38.3228ms
+[21:23:41 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.SeasonController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:23:41 INF] Request finished HTTP/1.1 GET http://localhost:5222/Season - - - 200 - application/json;+charset=utf-8 48.1205ms
+[21:24:25 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/3 - -
+[21:24:25 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:24:25 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:24:25 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:24:25 INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:24:25 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:24:41 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 15499.3224ms.
+[21:24:41 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:24:41 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 15554.4466ms
+[21:24:41 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:24:41 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/3 - - - 200 - application/json;+charset=utf-8 15578.0101ms
+[21:25:02 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/4 - -
+[21:25:02 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:25:02 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:25:02 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:25:02 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:25:02 INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:25:03 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 337.1259ms.
+[21:25:03 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:25:03 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 374.9511ms
+[21:25:03 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:25:03 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/4 - - - 200 - application/json;+charset=utf-8 388.2318ms
+[21:25:32 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/existing - -
+[21:25:32 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:25:32 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:25:32 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:25:32 INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:25:32 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 32.8626ms.
+[21:25:32 INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[OpenData.Basetball.AbaLeague.Domain.Entities.Team, OpenData.Basketball.AbaLeague.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+[21:25:32 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 86.6639ms
+[21:25:32 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:25:32 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/existing - - - 200 - application/json;+charset=utf-8 125.5837ms
+[21:35:01 INF] Now listening on: http://localhost:5222
+[21:35:01 INF] Application started. Press Ctrl+C to shut down.
+[21:35:01 INF] Hosting environment: Development
+[21:35:01 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[21:35:03 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger - -
+[21:35:03 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[21:35:03 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger - - - 0 - - 114.6060ms
+[21:35:03 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[21:35:03 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 309.8315ms
+[21:35:03 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/swagger-ui.css - -
+[21:35:03 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[21:35:03 INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[21:35:03 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/swagger-ui.css - - - 0 143943 text/css 194.7366ms
+[21:35:03 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 201.4558ms
+[21:35:03 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[21:35:04 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 236.5259ms
+[21:35:16 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/3 - -
+[21:35:16 WRN] Failed to determine the https port for redirect.
+[21:35:16 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:35:16 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:35:16 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:35:42 INF] Executed DbCommand (45ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:35:48 INF] Executed DbCommand (75ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:39:37 INF] Now listening on: http://localhost:5222
+[21:39:37 INF] Application started. Press Ctrl+C to shut down.
+[21:39:37 INF] Hosting environment: Development
+[21:39:37 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[21:39:37 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[21:39:38 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[21:39:38 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 293.2738ms
+[21:39:38 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[21:39:38 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 51.5020ms
+[21:39:38 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/favicon-32x32.png - -
+[21:39:38 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[21:39:38 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[21:39:38 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/favicon-32x32.png - - - 0 628 image/png 144.2301ms
+[21:39:38 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 145.1444ms
+[21:39:48 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/3 - -
+[21:39:48 WRN] Failed to determine the https port for redirect.
+[21:39:48 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:39:48 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:39:48 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:39:54 INF] Executed DbCommand (89ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:39:54 INF] Executed DbCommand (51ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:41:27 INF] Now listening on: http://localhost:5222
+[21:41:27 INF] Application started. Press Ctrl+C to shut down.
+[21:41:27 INF] Hosting environment: Development
+[21:41:27 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[21:41:28 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[21:41:28 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[21:41:28 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 347.2255ms
+[21:41:28 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[21:41:28 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 37.4554ms
+[21:41:29 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[21:41:29 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 191.0427ms
+[21:41:43 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/3 - -
+[21:41:43 WRN] Failed to determine the https port for redirect.
+[21:41:43 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:41:43 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:41:44 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:41:49 INF] Executed DbCommand (89ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:41:49 INF] Executed DbCommand (43ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:42:20 INF] Now listening on: http://localhost:5222
+[21:42:20 INF] Application started. Press Ctrl+C to shut down.
+[21:42:20 INF] Hosting environment: Development
+[21:42:20 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[21:42:21 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[21:42:22 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[21:42:22 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 270.4310ms
+[21:42:22 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[21:42:22 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 47.7505ms
+[21:42:22 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[21:42:22 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 144.8283ms
+[21:42:41 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/3 - -
+[21:42:41 WRN] Failed to determine the https port for redirect.
+[21:42:41 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:42:41 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:42:41 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:42:48 INF] Executed DbCommand (56ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:42:48 INF] Executed DbCommand (51ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:42:49 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 8042.8053ms.
+[21:42:49 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:42:49 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 8668.4937ms
+[21:42:49 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:42:49 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/3 - - - 200 - application/json;+charset=utf-8 8861.7904ms
+[21:43:00 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/4 - -
+[21:43:00 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:43:00 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:43:00 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:43:00 INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:43:00 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:43:01 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 380.0624ms.
+[21:43:01 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:43:01 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 440.6543ms
+[21:43:01 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:43:01 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/4 - - - 200 - application/json;+charset=utf-8 469.7723ms
+[21:49:12 INF] Now listening on: http://localhost:5222
+[21:49:12 INF] Application started. Press Ctrl+C to shut down.
+[21:49:12 INF] Hosting environment: Development
+[21:49:12 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[21:49:13 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[21:49:13 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[21:49:13 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 370.1178ms
+[21:49:13 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[21:49:13 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 35.9361ms
+[21:49:13 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[21:49:14 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 142.4437ms
+[21:49:23 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/4 - -
+[21:49:23 WRN] Failed to determine the https port for redirect.
+[21:49:23 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:49:23 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:49:24 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:49:28 INF] Executed DbCommand (45ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:49:28 INF] Executed DbCommand (56ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:49:29 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 5767.0735ms.
+[21:49:29 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[<>f__AnonymousType1`2[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], OpenData.Basketball.AbaLeague.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:49:30 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 6383.0462ms
+[21:49:30 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:49:30 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/4 - - - 200 - application/json;+charset=utf-8 6511.9895ms
+[21:50:30 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/3 - -
+[21:50:30 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:50:30 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:50:30 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:50:30 INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:50:30 INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:50:37 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 7059.9521ms.
+[21:50:37 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[<>f__AnonymousType1`2[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], OpenData.Basketball.AbaLeague.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:50:37 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 7132.1282ms
+[21:50:37 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:50:37 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/3 - - - 200 - application/json;+charset=utf-8 7153.6346ms
+[21:58:04 INF] Now listening on: http://localhost:5222
+[21:58:04 INF] Application started. Press Ctrl+C to shut down.
+[21:58:04 INF] Hosting environment: Development
+[21:58:04 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[21:58:05 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger - -
+[21:58:05 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[21:58:05 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger - - - 0 - - 78.4827ms
+[21:58:05 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[21:58:05 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 272.4537ms
+[21:58:05 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[21:58:05 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 30.6715ms
+[21:58:05 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[21:58:05 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 148.5884ms
+[21:58:16 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/4 - -
+[21:58:16 WRN] Failed to determine the https port for redirect.
+[21:58:16 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:58:16 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:58:16 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:58:19 INF] Executed DbCommand (83ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:58:20 INF] Executed DbCommand (53ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[BaseUrl], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:58:21 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 4745.3384ms.
+[21:58:21 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[<>f__AnonymousType1`2[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], OpenData.Basketball.AbaLeague.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:58:21 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 5414.8847ms
+[21:58:21 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:58:21 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/4 - - - 200 - application/json;+charset=utf-8 5642.8332ms
+[21:58:40 INF] Now listening on: http://localhost:5222
+[21:58:40 INF] Application started. Press Ctrl+C to shut down.
+[21:58:40 INF] Hosting environment: Development
+[21:58:40 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[21:58:41 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[21:58:41 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[21:58:41 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 250.7807ms
+[21:58:41 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[21:58:41 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 35.7432ms
+[21:58:41 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[21:58:42 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 134.9447ms
+[21:58:53 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/4 - -
+[21:58:53 WRN] Failed to determine the https port for redirect.
+[21:58:53 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:58:53 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:58:54 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:58:57 INF] Executed DbCommand (89ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:58:57 INF] Executed DbCommand (47ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[BaseUrl], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:58:58 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 4627.275ms.
+[21:58:58 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[<>f__AnonymousType1`2[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], OpenData.Basketball.AbaLeague.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:58:58 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 5292.7266ms
+[21:58:58 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:58:59 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/4 - - - 200 - application/json;+charset=utf-8 5475.0444ms
+[21:59:41 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/4 - -
+[21:59:41 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:59:41 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[21:59:41 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[21:59:41 INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[21:59:41 INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[BaseUrl], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[21:59:42 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 321.7054ms.
+[21:59:42 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[<>f__AnonymousType1`2[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], OpenData.Basketball.AbaLeague.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[21:59:42 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 381.7586ms
+[21:59:42 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[21:59:42 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/4 - - - 200 - application/json;+charset=utf-8 401.6909ms
+[22:01:39 INF] Now listening on: http://localhost:5222
+[22:01:39 INF] Application started. Press Ctrl+C to shut down.
+[22:01:39 INF] Hosting environment: Development
+[22:01:39 INF] Content root path: C:\Users\luka.radovanovic\source\repos\OpenData.Basetball.AbaLeague\OpenData.Basetball.AbaLeague.WebApi
+[22:01:40 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/index.html - -
+[22:01:40 WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+[22:01:40 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/index.html - - - 200 - text/html;charset=utf-8 286.7749ms
+[22:01:40 INF] Request starting HTTP/1.1 GET http://localhost:5222/_vs/browserLink - -
+[22:01:40 INF] Request finished HTTP/1.1 GET http://localhost:5222/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 41.2285ms
+[22:01:40 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/favicon-32x32.png - -
+[22:01:40 INF] Request starting HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - -
+[22:01:40 INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+[22:01:40 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/favicon-32x32.png - - - 0 628 image/png 143.2066ms
+[22:01:40 INF] Request finished HTTP/1.1 GET http://localhost:5222/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 165.0239ms
+[22:01:53 INF] Request starting HTTP/1.1 GET http://localhost:5222/Team/draft/4 - -
+[22:01:53 WRN] Failed to determine the https port for redirect.
+[22:01:53 INF] Executing endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[22:01:53 INF] Route matched with {action = "Get", controller = "Team"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32, System.Threading.CancellationToken) on controller OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController (OpenData.Basketball.AbaLeague.WebApi).
+[22:01:53 INF] Executing action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) - Validation state: "Valid"
+[22:01:56 INF] Executed DbCommand (74ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryId], [t].[CreatedBy], [t].[CreatedDate], [t].[Name], [t].[ShortCode], [t].[UpdateBy], [t].[UpdatedDate]
+FROM [Teams] AS [t]
+[22:01:57 INF] Executed DbCommand (52ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [l].[Id], [l].[BaseUrl], [l].[CreatedBy], [l].[CreatedDate], [l].[OfficalName], [l].[Season], [l].[ShortName], [l].[StandingUrl], [l].[UpdateBy], [l].[UpdatedDate]
+FROM [Leagues] AS [l]
+WHERE [l].[Id] = @__p_0
+[22:01:58 INF] Executed action method OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 4645.4065ms.
+[22:01:58 INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[<>f__AnonymousType1`2[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], OpenData.Basketball.AbaLeague.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+[22:01:58 INF] Executed action OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi) in 5153.9795ms
+[22:01:58 INF] Executed endpoint 'OpenData.Basketball.AbaLeague.WebApi.Controllers.TeamController.Get (OpenData.Basketball.AbaLeague.WebApi)'
+[22:01:58 INF] Request finished HTTP/1.1 GET http://localhost:5222/Team/draft/4 - - - 200 - application/json;+charset=utf-8 5278.4326ms

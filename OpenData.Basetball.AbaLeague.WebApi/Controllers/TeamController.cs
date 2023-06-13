@@ -20,7 +20,11 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
             var teams = await _teamService
                 .Get(leagueId, cancellationToken);
 
-            return Ok(new {Existing=teams.existingResulution.Select(x=>x.Item1.Name+"="+x.Item2.Name),New=teams.newly});
+            return Ok(new {Existing=teams.existingResulution.Select(x=>x.Item1.Name+"("+x.Item1.Url+")"+"="+x.Item2.Name + "(" + x.Item2.Url + ")"),New=teams.newly.Select(x=>new 
+            {
+                Name=x.Name,
+                Url=x.Url
+            })});
         }
 
         [HttpGet("existing")]

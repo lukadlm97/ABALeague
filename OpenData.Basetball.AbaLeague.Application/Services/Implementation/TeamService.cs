@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
-using OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Team;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
@@ -22,29 +17,30 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             _unitOfWork = unitOfWork;
             _webPageProcessor = webPageProcessor;
         }
-        public async Task<(IEnumerable<(Team,Team)> existingResulution,IEnumerable<Team> newly)> Get(int leagueId, CancellationToken cancellationToken)
+        public async Task<(IEnumerable<(TeamSugestionDTO, TeamSugestionDTO)> existingResulution,IEnumerable<TeamSugestionDTO> newly)> Get(int leagueId, CancellationToken cancellationToken)
         {
             var teams = await GetExisting(cancellationToken);
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var leagueTeams = await _webPageProcessor.GetTeams(league.StandingUrl, cancellationToken);
 
-            List<(Team,Team)> existingTeams = new List<(Team, Team)>();
-            List<Team> newTeams = new List<Team>();
+            List<(TeamSugestionDTO, TeamSugestionDTO)> existingTeams = new List<(TeamSugestionDTO, TeamSugestionDTO)>();
+            List<TeamSugestionDTO> newTeams = new List<TeamSugestionDTO>();
 
             foreach (var leagueTeam in leagueTeams)
             {
-                if (teams!=null && teams.Any(x => leagueTeam.Name.ToLower()
+                if (teams!=null && teams.Any(x => leagueTeam.name.ToLower()
                         .Contains(x.Name.ToLower())))
                 {
                     var existingTeam = teams
-                            .FirstOrDefault(x => leagueTeam.Name.ToLower()
+                            .FirstOrDefault(x => leagueTeam.name.ToLower()
                             .Contains(x.Name.ToLower()))
 
                         ;
                     if (existingTeam != null)
                     {
 
-                        existingTeams.Add((existingTeam,leagueTeam));
+                        existingTeams.Add((new TeamSugestionDTO(existingTeam.Name,string.Empty,existingTeam.ShortCode),
+                           new TeamSugestionDTO(leagueTeam.name,leagueTeam.url,string.Empty)));
                     }
                     else
                     {
@@ -53,7 +49,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 }
                 else
                 {
-                    newTeams.Add(leagueTeam);
+                    newTeams.Add(new TeamSugestionDTO(leagueTeam.name, league.BaseUrl+leagueTeam.url, string.Empty));
                 }
             }
             return (existingTeams,newTeams);

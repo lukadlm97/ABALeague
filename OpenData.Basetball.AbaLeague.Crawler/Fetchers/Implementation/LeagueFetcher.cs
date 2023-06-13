@@ -27,7 +27,6 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation
         }
         public async Task<IDocument> FetchTeams(string leagueUrl, CancellationToken cancellationToken)
         {
-            List<Team> teams = new List<Team>();
             IConfiguration configuration = Configuration.Default.WithDefaultLoader();
             IBrowsingContext context = BrowsingContext.New(configuration);
             IDocument document = await context

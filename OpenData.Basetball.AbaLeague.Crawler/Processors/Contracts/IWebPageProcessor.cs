@@ -4,7 +4,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts
 {
     public interface IWebPageProcessor
     {
-        Task<IReadOnlyList<Team>> GetTeams(string leagueUrl,
+        Task<IReadOnlyList<(string name, string url)>> GetTeams(string leagueUrl,
             CancellationToken cancellationToken=default);
     }
 }

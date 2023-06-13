@@ -10,7 +10,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
 {
     public interface ITeamService
     {
-        Task<(IEnumerable<(Team, Team)> existingResulution, IEnumerable<Team> newly)> Get(int leagueId,CancellationToken cancellationToken);
+        Task<(IEnumerable<(TeamSugestionDTO, TeamSugestionDTO)> existingResulution, IEnumerable<TeamSugestionDTO> newly)> Get(int leagueId,CancellationToken cancellationToken);
         Task<IEnumerable<Team>> GetExisting(CancellationToken cancellationToken);
         Task<Team> Add(TeamDto team,CancellationToken cancellationToken);
         Task<IEnumerable<Team>> Add(IEnumerable<TeamDto> teams,CancellationToken cancellationToken);
