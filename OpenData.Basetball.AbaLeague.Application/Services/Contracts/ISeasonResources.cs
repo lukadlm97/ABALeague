@@ -5,14 +5,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
 {
     public interface ISeasonResourcesService
     {
-        Task<IEnumerable<SeasonResources>> Get(CancellationToken  cancellationToken=default);
+        Task<IEnumerable<SeasonResourceDto>> Get(CancellationToken  cancellationToken=default);
         Task<IEnumerable<SeasonResources>> Get(int teamId, 
             CancellationToken cancellationToken=default);
-        Task<IEnumerable<SeasonResources>> GetTeams(int leagueId,
+        Task<IEnumerable<SeasonResourceDto>> GetTeams(int leagueId,
             CancellationToken cancellationToken = default);
-        Task<SeasonResources> Add(SeasonResourceDto seasonResourceDto, 
+        Task<SeasonResources> Add(AddSeasonResourceDto seasonResourceDto, 
             CancellationToken cancellationToken = default);
-        Task<IEnumerable<SeasonResources>> Add(IEnumerable<SeasonResourceDto> seasonResourceDto,
+        Task<IEnumerable<SeasonResources>> Add(IEnumerable<AddSeasonResourceDto> seasonResourceDto,
             CancellationToken cancellationToken = default);
         Task<SeasonResources> UpdateUrl(int resourceId, 
             string url,CancellationToken cancellationToken=default);

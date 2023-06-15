@@ -21,6 +21,7 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         {
             return await _dbContext.SeasonResources
                 .Where(x => x.LeagueId == leagueId)
+                .Include(x=>x.Team)
                 .ToListAsync(cancellationToken);
         }
 

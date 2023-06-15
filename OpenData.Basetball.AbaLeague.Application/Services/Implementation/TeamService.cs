@@ -28,19 +28,19 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
             foreach (var leagueTeam in leagueTeams)
             {
-                if (teams!=null && teams.Any(x => leagueTeam.name.ToLower()
+                if (teams!=null && teams.Any(x => leagueTeam.Name.ToLower()
                         .Contains(x.Name.ToLower())))
                 {
                     var existingTeam = teams
-                            .FirstOrDefault(x => leagueTeam.name.ToLower()
+                            .FirstOrDefault(x => leagueTeam.Name.ToLower()
                             .Contains(x.Name.ToLower()))
 
                         ;
                     if (existingTeam != null)
                     {
 
-                        existingTeams.Add((new TeamSugestionDTO(existingTeam.Name,string.Empty,existingTeam.ShortCode),
-                           new TeamSugestionDTO(leagueTeam.name,leagueTeam.url,string.Empty)));
+                        existingTeams.Add((new TeamSugestionDTO(existingTeam.Id,existingTeam.Name,string.Empty,league.Id,existingTeam.ShortCode),
+                           new TeamSugestionDTO(0,leagueTeam.Name, leagueTeam.Url,league.Id, string.Empty)));
                     }
                     else
                     {
@@ -49,7 +49,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 }
                 else
                 {
-                    newTeams.Add(new TeamSugestionDTO(leagueTeam.name, league.BaseUrl+leagueTeam.url, string.Empty));
+                    newTeams.Add(new TeamSugestionDTO(0,leagueTeam.Name, league.BaseUrl+leagueTeam.Url,league.Id, string.Empty));
                 }
             }
             return (existingTeams,newTeams);

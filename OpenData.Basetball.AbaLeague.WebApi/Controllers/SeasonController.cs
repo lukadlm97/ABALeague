@@ -23,7 +23,7 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody]SeasonResourceDto seasonResourceDto,
+        public async Task<IActionResult> Add([FromBody]AddSeasonResourceDto seasonResourceDto,
             CancellationToken cancellationToken = default)
         {
             var resource = await _seasonResourcesService
@@ -38,6 +38,13 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
             var resource = await _seasonResourcesService
                 .UpdateUrl(resourceId,seasonResourceUrl, cancellationToken);
             return Ok(resource);
+        }
+
+        [HttpGet("{leagueId}")]
+        public async Task<IActionResult> Get(int leagueId,CancellationToken cancellationToken = default)
+        {
+            var resources = await _seasonResourcesService.GetTeams(leagueId,cancellationToken);
+            return Ok(resources);
         }
 
     }

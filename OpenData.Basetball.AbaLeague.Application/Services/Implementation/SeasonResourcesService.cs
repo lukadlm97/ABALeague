@@ -19,10 +19,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<SeasonResources>> Get(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<SeasonResourceDto>> Get(CancellationToken cancellationToken = default)
         {
-            return await _unitOfWork.SeasonResourcesRepository
-                .GetAll(cancellationToken);
+            return (await _unitOfWork.SeasonResourcesRepository
+                .GetAll(cancellationToken)).Select(x=>new SeasonResourceDto(0,x.LeagueId,x.League.OfficalName,x.TeamId,x.Team.Name,x.League.BaseUrl+""+x.TeamSourceUrl));
         }
 
         public async Task<IEnumerable<SeasonResources>> Get(int teamId, CancellationToken cancellationToken = default)
@@ -32,15 +32,20 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
         }
 
-        public async Task<IEnumerable<SeasonResources>> GetTeams(int leagueId,
+        public async Task<IEnumerable<SeasonResourceDto>> GetTeams(int leagueId,
             CancellationToken cancellationToken = default)
         {
-            return await _unitOfWork.SeasonResourcesRepository
+            var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
+
+            var seasonResources = await _unitOfWork.SeasonResourcesRepository
                 .SearchByLeague(leagueId, cancellationToken);
+
+            return seasonResources.Select(x => new SeasonResourceDto(leagueId, league.Id, league.OfficalName, x.TeamId,
+                x.Team.Name, league.BaseUrl + "" + x.TeamSourceUrl));
         }
 
 
-        public async Task<SeasonResources> Add(SeasonResourceDto seasonResourceDto,
+        public async Task<SeasonResources> Add(AddSeasonResourceDto seasonResourceDto,
             CancellationToken cancellationToken = default)
         {
             var league = await _unitOfWork.LeagueRepository
@@ -68,7 +73,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return season;
         }
 
-        public async Task<IEnumerable<SeasonResources>> Add(IEnumerable<SeasonResourceDto> seasonResourceDto, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<SeasonResources>> Add(IEnumerable<AddSeasonResourceDto> seasonResourceDto, CancellationToken cancellationToken = default)
         {
             List<SeasonResources> seasonResources = new List<SeasonResources>();
             foreach (var resourceDto in seasonResourceDto)

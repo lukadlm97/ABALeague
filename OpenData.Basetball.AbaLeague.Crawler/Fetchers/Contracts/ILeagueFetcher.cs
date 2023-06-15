@@ -6,7 +6,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts
     public interface ILeagueFetcher
     {
         Task<IDocument> FetchTeams(string leagueUrl,CancellationToken cancellationToken);
-        Task<IDocument> FetchPlayers(string leagueUrl, string team,
+        Task<IDocument> FetchPlayers(string teamUrl,
             CancellationToken cancellationToken);
         Task<IDocument> FetchSchedule(string leagueUrl, CancellationToken cancellationToken);
         Task<IDocument> FetchStatistic(string leagueUrl, CancellationToken cancellationToken);

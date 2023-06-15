@@ -63,6 +63,9 @@ builder.Services.Scan(scan => scan.FromAssemblyOf<ILeagueService>()
     .AddClasses(classes => classes.AssignableTo<ISeasonResourcesService>())
     .AsImplementedInterfaces()
     .WithScopedLifetime()
+    .AddClasses(classes => classes.AssignableTo<IRosterService>())
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
 );
 
 

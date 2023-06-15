@@ -35,9 +35,14 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation
             return document;
         }
 
-        public Task<IDocument> FetchPlayers(string leagueUrl, string team, CancellationToken cancellationToken)
+        public async Task<IDocument> FetchPlayers(string teamUrl, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            IConfiguration configuration = Configuration.Default.WithDefaultLoader();
+            IBrowsingContext context = BrowsingContext.New(configuration);
+            IDocument document = await context
+                .OpenAsync(teamUrl, cancellationToken);
+
+            return document;
         }
 
         public Task<IDocument> FetchSchedule(string leagueUrl, CancellationToken cancellationToken)
