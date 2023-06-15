@@ -13,6 +13,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Player> builder)
         {
+            /*
             builder.HasData(new List<Player>()
             {
                 new Player()
@@ -68,7 +69,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Configurations
                     CreatedDate = DateTime.UtcNow.AddDays(-2),
                     UpdatedDate = DateTime.UtcNow.AddMinutes(-120)
                 }
-            });
+            });*/
         }
     }
 }

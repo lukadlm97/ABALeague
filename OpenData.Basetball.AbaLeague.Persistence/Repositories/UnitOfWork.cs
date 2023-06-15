@@ -14,6 +14,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private ITeamRepository _teamRepository;
         private IGenericRepository<League> _leagueRepository;
         private ISeasonResourcesRepository _seasonResourcesRepository;
+        private ICountryRepository _countryRepository;
+        private IPositionRepository _positionRepository;
 
 
         public UnitOfWork(AbaLeagueDbContext context
@@ -36,6 +38,14 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 
         public ISeasonResourcesRepository SeasonResourcesRepository =>
             _seasonResourcesRepository ??= new SeasonResourcesRepository(_context);
+
+        public ICountryRepository CountryRepository =>
+            _countryRepository ??= new CountryRepository(_context);
+
+        public IPositionRepository PositionRepository =>
+            _positionRepository ??= new PositionRepository(_context);
+
+
         public void Dispose()
         {
             _context.Dispose();

@@ -4,12 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using OpenData.Basetball.AbaLeague.Application.Model;
 using OpenData.Basetball.AbaLeague.Crawler.Configurations;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
-using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
 using OpenData.Basetball.AbaLeague.Persistence;
 using OpenData.Basetball.AbaLeague.WebApi.Helpers;
-using OpenData.Basetball.AbaLeague.WebApi.Services.Contracts;
-using OpenData.Basetball.AbaLeague.WebApi.Services.Implementations;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 using Serilog;
 
@@ -33,6 +30,7 @@ builder.Services.AddOptions<CrawlerSettings>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+/*
 builder.Services.Scan(scan => scan
     .FromAssemblies(Assembly.GetAssembly(typeof(AssemblyReference)))
     .AddClasses(classes=>classes.AssignableTo<IPlayerService>())
@@ -40,6 +38,7 @@ builder.Services.Scan(scan => scan
         .WithScopedLifetime()
    
 );
+*/
 
 builder.Services.Scan(scan =>
     scan.FromAssemblyOf<ILeagueFetcher>()
@@ -64,6 +63,9 @@ builder.Services.Scan(scan => scan.FromAssemblyOf<ILeagueService>()
     .AsImplementedInterfaces()
     .WithScopedLifetime()
     .AddClasses(classes => classes.AssignableTo<IRosterService>())
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()   
+    .AddClasses(classes => classes.AssignableTo<IPlayerService>())
     .AsImplementedInterfaces()
     .WithScopedLifetime()
 );

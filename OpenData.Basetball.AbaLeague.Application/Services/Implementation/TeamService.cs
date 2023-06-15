@@ -2,6 +2,7 @@
 using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Team;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 
@@ -112,6 +113,11 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
            await  _unitOfWork.Save();
 
            return existingTeam;
+        }
+
+        public Task<Team> AddRoster(IEnumerable<RosterEntryDto> entries, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

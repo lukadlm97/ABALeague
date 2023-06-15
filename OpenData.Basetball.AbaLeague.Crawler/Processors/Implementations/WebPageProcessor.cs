@@ -46,7 +46,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 
         }
 
-        public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal height, DateTime DateOfBirth, string Nationality)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
         {
             var webDocument = await _leagueFetcher
                 .FetchTeams(teamUrl, cancellationToken);

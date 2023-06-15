@@ -13,6 +13,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
+            /*
             builder.HasData(new List<Country>()
             {
                 new Country()
@@ -36,7 +37,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Configurations
                     CodeIso2 = "HR",
                     Name = "Croatia"
                 },
-            });
+            });*/
         }
     }
 }

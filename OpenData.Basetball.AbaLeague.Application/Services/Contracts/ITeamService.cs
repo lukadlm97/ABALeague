@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Team;
 
 namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
@@ -15,5 +16,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
         Task<Team> Add(TeamDto team,CancellationToken cancellationToken);
         Task<IEnumerable<Team>> Add(IEnumerable<TeamDto> teams,CancellationToken cancellationToken);
         Task<Team> Update(int id,TeamDto team,CancellationToken cancellationToken);
+        Task<Team> AddRoster(IEnumerable<RosterEntryDto>  entries,CancellationToken cancellationToken);
     }
 }
