@@ -10,5 +10,10 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         public TeamRepository(AbaLeagueDbContext dbContext) : base(dbContext)
         {
         }
+
+        public IEnumerable<Team> Get(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        {
+            return  _dbContext.Teams.Where(x => ids.Contains(x.Id));
+        }
     }
 }

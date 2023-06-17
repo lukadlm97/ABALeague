@@ -1,9 +1,11 @@
-﻿using AngleSharp.Html.Dom;
+﻿using System.Globalization;
+using AngleSharp.Html.Dom;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Utilities;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
+using System.Xml.Linq;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 {
@@ -98,6 +100,95 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             }
 
             return players;
+        }
+
+        public async Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date,int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
+        {
+            var webDocument = await _leagueFetcher
+                .FetchTeams(calendarUrl, cancellationToken);
+
+            var calendarItems = new List<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date,int? MatchNo)>();
+
+
+
+            var calendarItem = webDocument.QuerySelectorAll(".panel");
+
+            foreach (var item in calendarItem)
+            {
+                var roundRaw = item.QuerySelectorAll(".panel-title")[0]
+                    .QuerySelectorAll("a")[0]
+                    .InnerHtml
+                    .Trim(); ;
+                var round = roundRaw.Substring(0, roundRaw.IndexOf('<')).Trim();
+                if (!round.ToLower(CultureInfo.InvariantCulture).Contains("round"))
+                {
+                    continue;
+                }
+                round = round.Substring(round.IndexOf(' '),round.Length-round.IndexOf(' ')).Trim();
+                var roundInt = round.ConvertToNullableInt();
+                if (!roundInt.HasValue)
+                {
+
+                    continue;
+                }
+                var homeTeam = string.Empty;
+                var awayTeam = string.Empty;
+                var homeTeamPoints = (int)0;
+                var awayTeamPoints = (int)0;
+                int? matchNo = (int?)0;
+                DateTime? dateTime = null;
+                Console.WriteLine(round);
+                var matchdayItems = item.QuerySelectorAll("table > tbody > tr");
+                foreach (var matchdayItem in matchdayItems)
+                {
+                    var columns = matchdayItem
+                        .QuerySelectorAll("td");
+                    int i = 0;
+                    foreach (var col
+                              in columns)
+                    {
+                        if (i == 0)
+                        {
+                            var matchNoUrl = col.QuerySelectorAll("a")[1].GetAttribute("href")
+                                .Trim();
+                            matchNo = matchNoUrl.ParesMatchNoFromUrl();
+
+                            var  name = col.QuerySelectorAll("a")[1].InnerHtml.Trim();
+                            
+                            var teamName = name.ParseTeamNames();
+                            if (!teamName.Any())
+                            {
+                                //todo default
+                            }
+
+                             homeTeam = teamName.FirstOrDefault();
+                             awayTeam = teamName.LastOrDefault();
+
+                            i++;continue;
+                        }
+                        if (i == 1)
+                        {
+                            var points = col.QuerySelectorAll("a")[0].InnerHtml.Trim();
+                            var teamsPoint = points.ParseTeamPoints();
+                             homeTeamPoints = teamsPoint.FirstOrDefault();
+                             awayTeamPoints = teamsPoint.LastOrDefault();
+
+                            i++; continue;
+                        }
+
+                        if (i == 2)
+                        {
+                            dateTime = col.InnerHtml.ParseDateTimeFromAbaFormat();
+                            break;
+                        }
+                     
+                    }
+
+                    calendarItems.Add((roundInt,homeTeam,awayTeam,homeTeamPoints,awayTeamPoints,dateTime, matchNo));
+                }
+            }
+
+            return calendarItems;
         }
     }
 }

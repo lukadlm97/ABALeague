@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OpenData.Basetball.AbaLeague.Persistence;
 
@@ -11,9 +12,11 @@ using OpenData.Basetball.AbaLeague.Persistence;
 namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 {
     [DbContext(typeof(AbaLeagueDbContext))]
-    partial class AbaLeagueDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230617125114_AddedResourcesForSchedule")]
+    partial class AddedResourcesForSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,10 +64,6 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BaseUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CalendarUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
@@ -322,9 +321,6 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("HomeTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MatchNo")
                         .HasColumnType("int");
 
                     b.Property<int>("Round")

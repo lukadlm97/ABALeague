@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenData.Basetball.AbaLeague.Domain.Entities;
+﻿using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Round;
 
 namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
 {
@@ -14,5 +10,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
         Task<League> Get(int id, CancellationToken cancellationToken = default);
         Task Add(LeagueDto league, CancellationToken cancellationToken = default);
         Task Delete(int id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<RoundMatchDto>> GetCalendarDraft(int leagueId,CancellationToken cancellationToken = default);
+        Task<IEnumerable<RoundMatchDto>> GetExistingCalendar(int leagueId,CancellationToken cancellationToken = default);
+        Task<IEnumerable<RoundMatchDto>> AddCalendar(int leagueId,IEnumerable<AddRoundMatchDto> entries,CancellationToken cancellationToken = default);
     }
 }

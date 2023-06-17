@@ -6,5 +6,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
 {
     public interface ITeamRepository:IGenericRepository<Team>
     {
+        IEnumerable<Team> Get(IEnumerable<int> ids,CancellationToken  cancellationToken=default);
     }
 }
