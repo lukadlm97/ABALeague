@@ -16,6 +16,7 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         ISeasonResourcesRepository SeasonResourcesRepository { get; }
         ICountryRepository CountryRepository { get; }
         IPositionRepository PositionRepository { get; }
+        ICalendarRepository CalendarRepository { get; }
         Task Save();
     }
 }

@@ -12,5 +12,7 @@ namespace OpenData.Basketball.AbaLeague.Domain.Entities
         public int Round { get; set; }
         public int MatchNo { get; set; }
         public DateTime DateTime { get; set; }
+        public bool OffSeason { get; set; } = false;
+
     }
 }

@@ -7,7 +7,7 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public virtual Team Team { get; set; }
         public int TeamId { get; set; }
         public virtual League League { get; set; }
-        public string MatchUrl { get; set; }
         public int LeagueId { get; set; }
+        public string TeamName { get; set; }
     }
 }

@@ -59,7 +59,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var seasonResources = await _unitOfWork.SeasonResourcesRepository.SearchByLeague(leagueId, cancellationToken);
-            var teams = _unitOfWork.TeamRepository.Get(seasonResources.Select(x => x.TeamId), cancellationToken);
 
             var matchDayItems= await _webPageProcessor.GetRegularSeasonCalendar(league.CalendarUrl, cancellationToken);
 
@@ -67,14 +66,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
             foreach (var item in matchDayItems)
             {
-                var homeTeam = teams.FirstOrDefault(x => x.Name == item.HomeTeamName);
-                var awayTeam = teams.FirstOrDefault(x => x.Name == item.AwayTeamName);
+                var homeTeam = seasonResources.FirstOrDefault(x => x.TeamName == item.HomeTeamName);
+                var awayTeam = seasonResources.FirstOrDefault(x => x.TeamName == item.AwayTeamName);
                 if (homeTeam == null || awayTeam == null)
                 {
                     continue;
                 }
 
-                matches.Add(new RoundMatchDto(homeTeam.Id, awayTeam.Id, item.HomeTeamName, item.AwayTeamName,
+                matches.Add(new RoundMatchDto(homeTeam.TeamId, awayTeam.TeamId, item.HomeTeamName, item.AwayTeamName,
                     item.HomeTeamPoints, item.AwayTeamPoints, item.Round??-1, item.MatchNo??-1, item.Date??DateTime.MinValue
                 ));
 
@@ -88,9 +87,66 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<RoundMatchDto>> AddCalendar(int leagueId, IEnumerable<AddRoundMatchDto> entries, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<RoundMatchDto>> AddCalendar(int leagueId, IEnumerable<AddRoundMatchDto> entries,bool isOffSeason=false, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            List<RoundMatchDto> output = new List<RoundMatchDto>();
+            var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
+            if ( league == null)
+            {
+                return Array.Empty<RoundMatchDto>();
+            }
+
+            foreach (var addRoundMatchDto in entries)
+            {
+                var homeTeam = await _unitOfWork.TeamRepository.Get(addRoundMatchDto.HomeTeamId, cancellationToken);
+                var awayTeam = await _unitOfWork.TeamRepository.Get(addRoundMatchDto.AwayTeamId, cancellationToken);
+                if (homeTeam == null || awayTeam == null) 
+                {
+                    continue;
+                    
+                }
+                if (league.RoundMatches == null)
+                {
+                    league.RoundMatches = new List<RoundMatch>();
+                }
+
+                if (!isOffSeason)
+                {
+                    if (await _unitOfWork.CalendarRepository.Exist(leagueId, 
+                            addRoundMatchDto.HomeTeamId,
+                            addRoundMatchDto.AwayTeamId,
+                            cancellationToken))
+                    {
+                        continue;
+                    }
+                }
+               
+
+                var newRoundItem = new RoundMatch()
+                {
+                    AwayTeam = awayTeam,
+                    AwayTeamId = awayTeam.Id,
+                    HomeTeam = homeTeam,
+                    HomeTeamId = homeTeam.Id,
+                    MatchNo = addRoundMatchDto.MatchNo,
+                    Round = addRoundMatchDto.Round,
+                    OffSeason = isOffSeason,
+                    DateTime = addRoundMatchDto.
+                        DateTime.ToUniversalTime(),
+                };
+
+                league.RoundMatches.Add(newRoundItem);
+
+                await _unitOfWork.LeagueRepository.Update(league, cancellationToken);
+                await _unitOfWork.Save();
+
+                RoundMatchDto outputItem = new RoundMatchDto(newRoundItem.HomeTeamId??0, newRoundItem.AwayTeamId??0,
+                    newRoundItem.HomeTeam.Name, newRoundItem.AwayTeam.Name, 0, 0, newRoundItem.Round,
+                    newRoundItem.MatchNo, newRoundItem.DateTime);
+                output.Add(outputItem);
+            }
+
+            return output;
         }
     }
 }

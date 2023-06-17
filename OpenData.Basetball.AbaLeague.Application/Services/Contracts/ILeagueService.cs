@@ -12,6 +12,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
         Task Delete(int id, CancellationToken cancellationToken = default);
         Task<IEnumerable<RoundMatchDto>> GetCalendarDraft(int leagueId,CancellationToken cancellationToken = default);
         Task<IEnumerable<RoundMatchDto>> GetExistingCalendar(int leagueId,CancellationToken cancellationToken = default);
-        Task<IEnumerable<RoundMatchDto>> AddCalendar(int leagueId,IEnumerable<AddRoundMatchDto> entries,CancellationToken cancellationToken = default);
+        Task<IEnumerable<RoundMatchDto>> AddCalendar(int leagueId,IEnumerable<AddRoundMatchDto> entries,bool offSeason=false,CancellationToken cancellationToken = default);
     }
 }

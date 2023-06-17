@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.Domain.Enums;
+using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basetball.AbaLeague.Persistence
 {
@@ -22,6 +23,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence
         public DbSet<Team> Teams { get; set; }
         public DbSet<SeasonResources> SeasonResources { get; set; }
         public DbSet<RosterItem> RosterItems { get; set; }
+        public DbSet<RoundMatch> RoundMatches { get; set; }
   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

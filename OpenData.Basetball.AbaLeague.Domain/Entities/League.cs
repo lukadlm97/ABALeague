@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenData.Basetball.AbaLeague.Domain.Common;
+using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basetball.AbaLeague.Domain.Entities
 {
@@ -18,6 +19,7 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public string CalendarUrl { get; set; }
         public string? BaseUrl { get; set; }
 
+        public ICollection<RoundMatch> RoundMatches { get; set; }
 
     }
 }

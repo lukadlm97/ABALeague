@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OpenData.Basetball.AbaLeague.Persistence;
 
@@ -11,9 +12,11 @@ using OpenData.Basetball.AbaLeague.Persistence;
 namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 {
     [DbContext(typeof(AbaLeagueDbContext))]
-    partial class AbaLeagueDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230617165526_UpdateSeasonResources")]
+    partial class UpdateSeasonResources
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -324,14 +327,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Property<int?>("HomeTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LeagueId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MatchNo")
                         .HasColumnType("int");
-
-                    b.Property<bool>("OffSeason")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Round")
                         .HasColumnType("int");
@@ -349,9 +346,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 
                     b.HasIndex("HomeTeamId");
 
-                    b.HasIndex("LeagueId");
-
-                    b.ToTable("RoundMatches");
+                    b.ToTable("RoundMatch");
                 });
 
             modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Player", b =>
@@ -434,18 +429,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("HomeTeamId");
 
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.League", null)
-                        .WithMany("RoundMatches")
-                        .HasForeignKey("LeagueId");
-
                     b.Navigation("AwayTeam");
 
                     b.Navigation("HomeTeam");
-                });
-
-            modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.League", b =>
-                {
-                    b.Navigation("RoundMatches");
                 });
 
             modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Team", b =>

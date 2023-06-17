@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Round;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 
 namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
@@ -21,5 +22,15 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
 
             return Ok(games);
         }
+
+        [HttpPost("/{leagueId}")]
+        public async Task<IActionResult> Add(int leagueId,[FromBody] Calendar calendar, CancellationToken cancellationToken)
+        {
+            var games = await _leagueService.AddCalendar(leagueId,calendar.Entries,false, cancellationToken);
+
+            return Ok(games);
+        }
+
+        public record Calendar(IEnumerable<AddRoundMatchDto> Entries);
     }
 }
