@@ -1,6 +1,7 @@
 ﻿using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Application.Contracts;
+using OpenData.Basketball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Persistence.Repositories;
 
 namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
@@ -18,6 +19,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private IPositionRepository _positionRepository;
         private ICalendarRepository _calendarRepository;
         private IResultRepository _resultRepository;
+        private IBoxScoreRepository _boxScoreRepository;
+        private IRosterRepository _rosterRepository;
 
 
         public UnitOfWork(AbaLeagueDbContext context
@@ -51,6 +54,11 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
             _calendarRepository ??= new CalendarRepository(_context);
         public IResultRepository ResultRepository =>
             _resultRepository ??= new ResultRepository(_context);
+        public IBoxScoreRepository BoxScoreRepository =>
+            _boxScoreRepository ??= new BoxScoreRepository(_context);
+
+        public IRosterRepository RosterRepository =>
+            _rosterRepository ??= new RosterRepository(_context);
 
         public void Dispose()
         {

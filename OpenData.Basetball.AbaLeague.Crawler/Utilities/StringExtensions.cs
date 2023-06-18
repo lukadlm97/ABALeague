@@ -23,6 +23,29 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             if (string.IsNullOrWhiteSpace(value)) return decimal.MinValue;
             return decimal.Parse(value, CultureInfo.InvariantCulture);
         }
+        public static TimeSpan? ConvertToNullableTimeSpan(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value) || !value.Contains(':')) return new TimeSpan(0,0,0,0);
+           var array = value.Split(':');
+           var minutes = 0;
+           var seconds = 0;
+           int.TryParse(array[0], out minutes);
+           int.TryParse(array[1], out seconds);
+
+           return new TimeSpan(0, 0, minutes, seconds);
+
+        }
+
+        public static decimal? ConvertToNullableDecimal(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            if(decimal.TryParse(value, CultureInfo.InvariantCulture,out decimal result))
+            {
+
+                return result;
+            }
+            return null;
+        }
 
         public static int? ConvertToNullableInt(this string value)
         {
@@ -147,6 +170,34 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             var justVenue = value.Substring(lastIndexOfI, lastIndexOfBr-lastIndexOfI).Trim();
 
             return ConvertToNullableInt(justVenue);
+        }
+
+
+        public static string ExtractNameFromUrl(this string valueUrl)
+        {
+            if (string.IsNullOrWhiteSpace(valueUrl)) return null;
+            valueUrl = valueUrl.Trim();
+
+            int indexOfSecondBackSlashFromBack = -1;
+
+            for (var i = valueUrl.Length - 2; i >= 0; i--)
+            {
+                if (valueUrl[i] == '/')
+                {
+                    indexOfSecondBackSlashFromBack = i;
+                    break;
+                }
+            }
+
+            var playerName = valueUrl.Substring(indexOfSecondBackSlashFromBack+1);
+            playerName = playerName.Replace('-', ' ');
+            return playerName.TrimEnd('/').ToTitleCase();
+
+        }
+
+        public static string ToTitleCase(this string title)
+        {
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower());
         }
     }
 }

@@ -18,6 +18,8 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         IPositionRepository PositionRepository { get; }
         ICalendarRepository CalendarRepository { get; }
         IResultRepository ResultRepository { get; }
+        IBoxScoreRepository BoxScoreRepository { get; }
+        IRosterRepository RosterRepository { get; }
         Task Save();
     }
 }

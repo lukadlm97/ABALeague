@@ -1,4 +1,5 @@
-﻿using OpenData.Basetball.AbaLeague.Domain.Entities;
+﻿using OpenData.Basetball.AbaLeague.Crawler.Models;
+using OpenData.Basetball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts
 {
@@ -13,5 +14,10 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts
 
         Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(
             IEnumerable<string> matchUrls, CancellationToken cancellationToken = default);
+
+        Task<(IReadOnlyList<PlayerScore> 
+            HomeTeam, 
+            IReadOnlyList<PlayerScore> 
+            AwayTeam)> GetBoxScore(string matchUrl, CancellationToken  cancellationToken=default);
     }
 }

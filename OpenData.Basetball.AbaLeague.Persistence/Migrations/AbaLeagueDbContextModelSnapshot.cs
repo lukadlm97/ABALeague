@@ -63,6 +63,10 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Property<string>("BaseUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BoxScoreUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CalendarUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -304,6 +308,102 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.ToTable("Teams");
                 });
 
+            modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.BoxScore", b =>
+                {
+                    b.Property<int>("RoundMatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RosterItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AgainstBlock")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Assists")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CommittedFoul")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DefensiveRebounds")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("InFavoureOfBlock")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan?>("Minutes")
+                        .HasColumnType("time");
+
+                    b.Property<int?>("OffensiveRebounds")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlusMinus")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PointFrom2ndChance")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PointFromFastBreak")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PointFromPain")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RankValue")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReceivedFoul")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShotAttempted1Pt")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShotAttempted2Pt")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShotAttempted3Pt")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShotMade1Pt")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShotMade2Pt")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShotMade3Pt")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("ShotPrc")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ShotPrc1Pt")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ShotPrc2Pt")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Steals")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TotalRebounds")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Turnover")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("shotPrc3Pt")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("RoundMatchId", "RosterItemId");
+
+                    b.HasIndex("RosterItemId");
+
+                    b.ToTable("BoxScores");
+                });
+
             modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.Result", b =>
                 {
                     b.Property<int>("Id")
@@ -471,6 +571,25 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .HasForeignKey("CountryId");
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.BoxScore", b =>
+                {
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.RosterItem", "RosterItem")
+                        .WithMany()
+                        .HasForeignKey("RosterItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OpenData.Basketball.AbaLeague.Domain.Entities.RoundMatch", "RoundMatch")
+                        .WithMany()
+                        .HasForeignKey("RoundMatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RosterItem");
+
+                    b.Navigation("RoundMatch");
                 });
 
             modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.Result", b =>
