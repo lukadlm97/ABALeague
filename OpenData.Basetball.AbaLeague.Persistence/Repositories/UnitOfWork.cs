@@ -17,6 +17,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private ICountryRepository _countryRepository;
         private IPositionRepository _positionRepository;
         private ICalendarRepository _calendarRepository;
+        private IResultRepository _resultRepository;
 
 
         public UnitOfWork(AbaLeagueDbContext context
@@ -48,7 +49,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 
         public ICalendarRepository CalendarRepository =>
             _calendarRepository ??= new CalendarRepository(_context);
-
+        public IResultRepository ResultRepository =>
+            _resultRepository ??= new ResultRepository(_context);
 
         public void Dispose()
         {

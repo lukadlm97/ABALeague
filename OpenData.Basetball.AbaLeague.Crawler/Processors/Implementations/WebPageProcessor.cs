@@ -11,17 +11,17 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 {
     public class WebPageProcessor:IWebPageProcessor
     {
-        private readonly ILeagueFetcher _leagueFetcher;
+        private readonly IDocumentFetcher _documentFether;
 
-        public WebPageProcessor(ILeagueFetcher leagueFetcher)
+        public WebPageProcessor(IDocumentFetcher documentFether)
         {
-            _leagueFetcher = leagueFetcher;
+            _documentFether = documentFether;
         }
         public async Task<IReadOnlyList<(string Name, string Url)>> GetTeams(string leagueUrl,
             CancellationToken cancellationToken = default)
         {
-            var webDocument = await _leagueFetcher
-                .FetchTeams(leagueUrl, cancellationToken);
+            var webDocument = await _documentFether
+                .FetchDocument(leagueUrl, cancellationToken);
 
             var teams = new List<(string,string)>();
             var teamElements = webDocument.QuerySelectorAll("table > tbody > tr");
@@ -50,8 +50,8 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 
         public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
         {
-            var webDocument = await _leagueFetcher
-                .FetchTeams(teamUrl, cancellationToken);
+            var webDocument = await _documentFether
+                .FetchDocument(teamUrl, cancellationToken);
 
             var players = new List<(int? No, string Name, string Position, decimal height, DateTime DateOfBirth, string Nationality)>();
 
@@ -104,8 +104,8 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 
         public async Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date,int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
         {
-            var webDocument = await _leagueFetcher
-                .FetchTeams(calendarUrl, cancellationToken);
+            var webDocument = await _documentFether
+                .FetchDocument(calendarUrl, cancellationToken);
 
             var calendarItems = new List<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date,int? MatchNo)>();
 
@@ -189,6 +189,30 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             }
 
             return calendarItems;
+        }
+
+        public async Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
+        {
+            var matchDetails = new List<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>();
+
+            foreach (var matchUrl in matchUrls)
+            {
+                var webDocument = await _documentFether
+                    .FetchDocument(matchUrl, cancellationToken);
+
+                var result = webDocument.QuerySelectorAll("table > tbody > tr > td.gameScore")[0];
+                var points = result.InnerHtml.ParseTeamPoints();
+                int homeTeamPoints = points.First();
+                int awayTeamPoints = points.Last();
+                
+                var venueAndAttendencyRaw = webDocument.QuerySelectorAll(".dateAndVenue_container")[0].InnerHtml;
+                var venue = venueAndAttendencyRaw.ExtractVenue();
+                var attendance = venueAndAttendencyRaw.ExtractAttendance();
+
+                matchDetails.Add((attendance,venue,homeTeamPoints,awayTeamPoints));
+            }
+
+            return matchDetails;
         }
     }
 }

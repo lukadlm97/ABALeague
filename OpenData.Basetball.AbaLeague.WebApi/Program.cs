@@ -41,8 +41,8 @@ builder.Services.Scan(scan => scan
 */
 
 builder.Services.Scan(scan =>
-    scan.FromAssemblyOf<ILeagueFetcher>()
-    .AddClasses(classes => classes.AssignableTo<ILeagueFetcher>())
+    scan.FromAssemblyOf<IDocumentFetcher>()
+    .AddClasses(classes => classes.AssignableTo<IDocumentFetcher>())
     .AsImplementedInterfaces()
     .WithScopedLifetime()
     .FromAssemblyOf<IWebPageProcessor>()
@@ -66,6 +66,9 @@ builder.Services.Scan(scan => scan.FromAssemblyOf<ILeagueService>()
     .AsImplementedInterfaces()
     .WithScopedLifetime()   
     .AddClasses(classes => classes.AssignableTo<IPlayerService>())
+    .AsImplementedInterfaces()
+    .WithScopedLifetime() 
+    .AddClasses(classes => classes.AssignableTo<IResultService>())
     .AsImplementedInterfaces()
     .WithScopedLifetime()
 );

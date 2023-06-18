@@ -17,6 +17,7 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
        // public string TeamParticipansUrl { get; set; }
         public string StandingUrl { get; set; }
         public string CalendarUrl { get; set; }
+        public string MatchUrl { get; set; }
         public string? BaseUrl { get; set; }
 
         public ICollection<RoundMatch> RoundMatches { get; set; }

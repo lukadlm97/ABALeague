@@ -118,5 +118,35 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             }
             return null;
         }
+
+        public static string ExtractVenue(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            value = value.Trim();
+            var lastIndexOfBr = value.LastIndexOf("<br>");
+            if (lastIndexOfBr == -1)
+            {
+                return null;
+            }
+
+            var justVenue = value.Substring(lastIndexOfBr + 3).Trim();
+
+            return justVenue.Substring(justVenue.IndexOf(":")+1).Trim();
+        }
+
+        public static int? ExtractAttendance(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            value = value.Trim();
+            var lastIndexOfBr = value.LastIndexOf("<br>");
+            if (lastIndexOfBr == -1)
+            {
+                return null;
+            }
+            var lastIndexOfI = value.IndexOf("</i>")+4;
+            var justVenue = value.Substring(lastIndexOfI, lastIndexOfBr-lastIndexOfI).Trim();
+
+            return ConvertToNullableInt(justVenue);
+        }
     }
 }
