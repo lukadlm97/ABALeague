@@ -38,6 +38,22 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
             return Ok(roster);
         }
 
+        [HttpGet("draft/{leagueId}")]
+        public async Task<IActionResult> Get(int leagueId, CancellationToken cancellationToken)
+        {
+            var roster = await _teamService.GetWholeRosterItemDraftRoster(leagueId,  cancellationToken);
+
+            return Ok(roster);
+        }
+
+        [HttpPost("roster/")]
+        public async Task<IActionResult> Add(IEnumerable<AddRosterItemDto> entries, CancellationToken cancellationToken)
+        {
+            var roster = await _teamService.Add(entries, cancellationToken);
+
+            return Ok(roster);
+        }
+
         [HttpPost("roster/{teamId}")]
         public async Task<IActionResult> Add( int teamId, IEnumerable<DraftRosterEntry> entries,CancellationToken cancellationToken)
         {
