@@ -10,6 +10,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
             CancellationToken cancellationToken=default);
         Task<IEnumerable<SeasonResourceDto>> GetTeams(int leagueId,
             CancellationToken cancellationToken = default);
+        Task<IEnumerable<SeasonResourceDto>> GetSeasonResourcesDraft(int leagueId,
+            CancellationToken cancellationToken = default);
         Task<SeasonResources> Add(AddSeasonResourceDto seasonResourceDto, 
             CancellationToken cancellationToken = default);
         Task<IEnumerable<SeasonResources>> Add(IEnumerable<AddSeasonResourceDto> seasonResourceDto,

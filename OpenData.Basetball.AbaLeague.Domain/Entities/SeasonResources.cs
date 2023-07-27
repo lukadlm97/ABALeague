@@ -10,5 +10,6 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public int LeagueId { get; set; }
         public string TeamName { get; set; }
         public string TeamUrl { get; set; }
+        public string? IncrowdUrl { get; set; }
     }
 }

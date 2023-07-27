@@ -14,6 +14,7 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public string CalendarUrl { get; set; }
         public string MatchUrl { get; set; }
         public string BoxScoreUrl { get; set; }
+        public string? RosterUrl { get; set; }
         public string? BaseUrl { get; set; }
 
         public ICollection<RoundMatch> RoundMatches { get; set; }

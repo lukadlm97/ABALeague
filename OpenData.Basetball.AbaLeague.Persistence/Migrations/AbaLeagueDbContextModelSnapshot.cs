@@ -86,6 +86,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RosterUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Season")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -252,6 +255,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
+
+                    b.Property<string>("IncrowdUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TeamName")
                         .IsRequired()

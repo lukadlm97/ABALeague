@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
@@ -52,9 +53,35 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return teams;
         }
 
-        public Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            List<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality)>
+                list =
+                    new List<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string
+                        Nationality)>();
+            var client = new HttpClient();
+
+            var response = await client.GetAsync(teamUrl, cancellationToken);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync(cancellationToken);
+                var myDeserializedClass = JsonSerializer.Deserialize<List<RosterItemDto>>(content);
+
+                foreach (var rosterItemDto in myDeserializedClass)
+                {
+                    if (rosterItemDto.Type == "J")
+                    {
+                        list.Add(new (null,
+                            ExtractName(rosterItemDto.Person.Name),
+                            rosterItemDto.PositionName,
+                            rosterItemDto.Person.Height??0,
+                            rosterItemDto.Person.BirthDate,
+                            rosterItemDto.Person.Country.Code));
+                    }
+                }
+            }
+
+            return list;
         }
 
         public Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date, int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
@@ -71,5 +98,21 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
         {
             throw new NotImplementedException();
         }
+
+        string ExtractName(string sourceName)
+        {
+            var tokenized = sourceName.Split(',').Select(x => x.Trim().ToLower()).ToArray();
+            if (tokenized.Count() != 2)
+            {
+                throw new Exception();
+            }
+            var firstName = char.ToUpper(tokenized[1][0]) + 
+                            tokenized[1].Substring(1);
+            var lastName = char.ToUpper(tokenized[0][0]) +
+                           tokenized[0].Substring(1);
+
+            return firstName + " " + lastName;
+        }
+
     }
 }

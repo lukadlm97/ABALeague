@@ -28,19 +28,22 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId,cancellationToken);
             var seasonResource = await _unitOfWork.SeasonResourcesRepository.SearchByTeam(teamId, cancellationToken);
-            var singleSeasonResoure = seasonResource.FirstOrDefault();
+            var singleSeasonResources = seasonResource.FirstOrDefault(x=> x.LeagueId == leagueId);
 
-            var roster = await _webPageProcessor.GetRoster(league.BaseUrl+""+ singleSeasonResoure.TeamSourceUrl, cancellationToken);
+            var roster = await _webPageProcessor.GetRoster(string.Format(league.RosterUrl,singleSeasonResources.IncrowdUrl), cancellationToken);
             List<RosterEntryDto> outputCollection = new List<RosterEntryDto>();
             foreach (var rosterItem in roster)
             {
                 var natioanality =
                     await _unitOfWork.CountryRepository.GetById(rosterItem.Nationality, cancellationToken);
+                if (await _unitOfWork.PlayerRepository.Exist(rosterItem.Name, cancellationToken))
+                {
+                    continue;
+                }
                 outputCollection.Add(new RosterEntryDto( rosterItem.Name, MapToEnum(rosterItem.Position), rosterItem.Height, rosterItem.DateOfBirth, natioanality,natioanality?.Id));
             }
 
             return outputCollection;
-
         }
 
         public async Task<IEnumerable<RosterEntryDto>> GetWholeDraftRoster(int leagueId, CancellationToken cancellationToken = default)
@@ -96,9 +99,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var seasonResource = await _unitOfWork.SeasonResourcesRepository.SearchByTeam(teamId, cancellationToken);
-            var singleSeasonResoure = seasonResource.FirstOrDefault();
-
-            var roster = await _webPageProcessor.GetRoster(league.BaseUrl + "" + singleSeasonResoure.TeamSourceUrl, cancellationToken);
+            var singleSeasonResources = seasonResource
+                .FirstOrDefault(x=> x.LeagueId == leagueId);
+            if (singleSeasonResources == null)
+            {
+                return new List<DraftRosterEntry>();
+            }
+            var roster = await _webPageProcessor.GetRoster(string.Format(league.RosterUrl, singleSeasonResources.IncrowdUrl), cancellationToken);
             List<DraftRosterEntry> outputCollection = new List<DraftRosterEntry>();
             var players = await _unitOfWork.PlayerRepository.GetAll(cancellationToken);
             foreach (var rosterItem in roster)
