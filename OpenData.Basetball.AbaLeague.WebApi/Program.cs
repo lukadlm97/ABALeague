@@ -5,9 +5,11 @@ using OpenData.Basetball.AbaLeague.Application.Model;
 using OpenData.Basetball.AbaLeague.Crawler.Configurations;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
+using OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations;
 using OpenData.Basetball.AbaLeague.Persistence;
 using OpenData.Basetball.AbaLeague.WebApi.Helpers;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
+using OpenData.Basketball.AbaLeague.Application.Utilities;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,12 +47,7 @@ builder.Services.Scan(scan =>
     .AddClasses(classes => classes.AssignableTo<IDocumentFetcher>())
     .AsImplementedInterfaces()
     .WithScopedLifetime()
-    .FromAssemblyOf<IWebPageProcessor>()
-    .AddClasses(classes => classes.AssignableTo<IWebPageProcessor>())
-    .AsImplementedInterfaces()
-    .WithScopedLifetime()
 );
-
 
 builder.Services.Scan(scan => scan.FromAssemblyOf<ILeagueService>()
     .AddClasses(classes => classes.AssignableTo<ILeagueService>())
@@ -79,6 +76,8 @@ builder.Services.Scan(scan => scan.FromAssemblyOf<ILeagueService>()
 
 // Add services to the container.
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
+builder.Services.ConfigureApplicationServices(builder.Configuration);
+
 //builder.Services.AddScoped<IPlayerService, PlayerService>();
 
 builder.Logging.ClearProviders();

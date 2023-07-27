@@ -261,6 +261,10 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TeamUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("TeamId", "LeagueId");
 
                     b.HasIndex("LeagueId");

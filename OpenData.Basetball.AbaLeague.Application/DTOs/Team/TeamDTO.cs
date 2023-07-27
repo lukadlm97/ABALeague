@@ -1,4 +1,4 @@
 ﻿namespace OpenData.Basketball.AbaLeague.Application.DTOs.Team
 {
-    public record TeamDto(string? Name,string? ShortName);
+    public record TeamDto(string? Name,string? ShortName, string? Iso3Code);
 }

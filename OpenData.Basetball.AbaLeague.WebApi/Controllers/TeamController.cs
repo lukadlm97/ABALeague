@@ -14,17 +14,33 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         {
             _teamService = teamService;
         }
-        [HttpGet("draft/{leagueId}")]
-        public async Task<IActionResult> Get(int leagueId,CancellationToken cancellationToken)
+        [HttpGet("draft/aba/{leagueId}")]
+        public async Task<IActionResult> GetAba(int leagueId,CancellationToken cancellationToken)
         {
             var teams = await _teamService
-                .Get(leagueId, cancellationToken);
+                .GetAba(leagueId, cancellationToken);
 
             return Ok(new {Existing=teams.existingResulution.Select(x=>x.Item1.Name+"("+x.Item1.Url+")"+"="+x.Item2.Name + "(" + x.Item2.Url + ")"),New=teams.newly.Select(x=>new 
             {
                 Name=x.Name,
                 Url=x.Url
             })});
+        }
+        [HttpGet("draft/euro/{leagueId}")]
+        public async Task<IActionResult> GetEuro(int leagueId, CancellationToken cancellationToken)
+        {
+            var teams = await _teamService
+                .GetEuro(leagueId, cancellationToken);
+
+            return Ok(new
+            {
+                Existing = teams.existingResulution.Select(x => x.Item1.Name + "(" + x.Item1.Url + ")" + "=" + x.Item2.Name + "(" + x.Item2.Url + ")"),
+                New = teams.newly.Select(x => new
+                {
+                    Name = x.Name,
+                    Url = x.Url
+                })
+            });
         }
 
         [HttpGet("existing")]

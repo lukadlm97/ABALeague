@@ -9,5 +9,6 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public virtual League League { get; set; }
         public int LeagueId { get; set; }
         public string TeamName { get; set; }
+        public string TeamUrl { get; set; }
     }
 }

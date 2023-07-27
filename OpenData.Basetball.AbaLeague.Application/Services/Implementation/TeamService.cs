@@ -18,7 +18,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             _unitOfWork = unitOfWork;
             _webPageProcessor = webPageProcessor;
         }
-        public async Task<(IEnumerable<(TeamSugestionDTO, TeamSugestionDTO)> existingResulution,IEnumerable<TeamSugestionDTO> newly)> Get(int leagueId, CancellationToken cancellationToken)
+        public async Task<(IEnumerable<(TeamSugestionDTO, TeamSugestionDTO)> existingResulution,IEnumerable<TeamSugestionDTO> newly)> GetAba(int leagueId, CancellationToken cancellationToken)
         {
             var teams = await GetExisting(cancellationToken);
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
@@ -55,6 +55,50 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             }
             return (existingTeams,newTeams);
         }
+        
+        public async Task<(IEnumerable<(TeamSugestionDTO, TeamSugestionDTO)> existingResulution, IEnumerable<TeamSugestionDTO> newly)> GetEuro(int leagueId, CancellationToken cancellationToken)
+        {
+            var teams = await GetExisting(cancellationToken);
+            var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
+            var url = league.BaseUrl + league.StandingUrl;
+            var leagueTeams = await _webPageProcessor.GetTeams(url, cancellationToken);
+
+            List<(TeamSugestionDTO, TeamSugestionDTO)> existingTeams = new List<(TeamSugestionDTO, TeamSugestionDTO)>();
+            List<TeamSugestionDTO> newTeams = new List<TeamSugestionDTO>();
+
+            foreach (var leagueTeam in leagueTeams)
+            {
+                if (teams != null && teams.Any(x => leagueTeam.Name.ToLower()
+                        .Contains(x.Name.ToLower())))
+                {
+                    var existingTeam = teams
+                            .FirstOrDefault(x => leagueTeam.Name.ToLower()
+                                .Contains(x.Name.ToLower()))
+
+                        ;
+                    if (existingTeam != null)
+                    {
+
+                        existingTeams.Add((new TeamSugestionDTO(existingTeam.Id, existingTeam.Name, string.Empty, league.Id, existingTeam.ShortCode),
+                            new TeamSugestionDTO(0, leagueTeam.Name, leagueTeam.Url, league.Id, string.Empty)));
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                }
+                else
+                {
+                    newTeams.Add(new TeamSugestionDTO(0, leagueTeam.Name, leagueTeam.Url, league.Id, string.Empty));
+                }
+            }
+            return (existingTeams, newTeams);
+        }
+
+        public Task<(IEnumerable<(TeamSugestionDTO, TeamSugestionDTO)> existingResulution, IEnumerable<TeamSugestionDTO> newly)> GetNational(int leagueId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<IEnumerable<Team>> GetExisting(CancellationToken cancellationToken)
         {
@@ -81,11 +125,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             List<Team> teams = new List<Team>();
             foreach (var teamDto in teamsDto)
             {
+                var country = await _unitOfWork.CountryRepository.GetById(teamDto.Iso3Code, cancellationToken);
                 var team = new Team()
                 {
                     Name = teamDto.Name,
                     ShortCode = teamDto.ShortName??string.Empty,
-                    RosterItems = new List<RosterItem>()
+                    RosterItems = new List<RosterItem>(),
+                    Country = country
                 };
                 teams.Add(team);
             }

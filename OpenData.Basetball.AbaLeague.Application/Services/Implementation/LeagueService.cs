@@ -35,7 +35,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 OfficalName = league.OfficialName,
                 Season = league.Season,
                 ShortName = league.ShortName,
-                StandingUrl = league.StandingUrl
+                StandingUrl = league.StandingUrl,
+                BaseUrl = league.BaseUrl,
+                BoxScoreUrl = league.BoxScoreUrl,
+                CalendarUrl = league.CalendarUrl,
+                MatchUrl = league.MatchUrl,
+                RoundMatches = new List<RoundMatch>()
             };
             await _unitOfWork.LeagueRepository.Add(entity,cancellationToken);
             await _unitOfWork.Save();
