@@ -53,12 +53,11 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return teams;
         }
 
-        public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality, DateTime Start, DateTime? End)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
         {
-            List<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality)>
+            List<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality, DateTime Start, DateTime? End)>
                 list =
-                    new List<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string
-                        Nationality)>();
+                    new List<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality, DateTime Start, DateTime? End)> ();
             var client = new HttpClient();
 
             var response = await client.GetAsync(teamUrl, cancellationToken);
@@ -71,12 +70,14 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 {
                     if (rosterItemDto.Type == "J")
                     {
-                        list.Add(new (null,
+                        list.Add( (null,
                             ExtractName(rosterItemDto.Person.Name),
                             rosterItemDto.PositionName,
                             rosterItemDto.Person.Height??0,
                             rosterItemDto.Person.BirthDate,
-                            rosterItemDto.Person.Country.Code));
+                            rosterItemDto.Person.Country.Code,
+                            rosterItemDto.StartDate,
+                            rosterItemDto.EndDate));
                     }
                 }
             }

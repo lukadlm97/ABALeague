@@ -50,12 +50,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 
         }
 
-        public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality, DateTime Start, DateTime? End)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
         {
             var webDocument = await _documentFether
                 .FetchDocument(teamUrl, cancellationToken);
 
-            var players = new List<(int? No, string Name, string Position, decimal height, DateTime DateOfBirth, string Nationality)>();
+            var players = new List<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality, DateTime Start, DateTime? End)>();
 
 
 
@@ -98,7 +98,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                     .InnerHtml
                     .Trim();
 
-                players.Add( (no, name, position, height, dateOfBirth, natinality));
+                players.Add( (no, name, position, height, dateOfBirth, natinality, DateTime.Now.ToUniversalTime(), null));
             }
 
             return players;

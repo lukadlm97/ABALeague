@@ -23,4 +23,8 @@
     <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Persistence\OpenData.Basketball.AbaLeague.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

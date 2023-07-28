@@ -15,7 +15,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Models
         [property: JsonPropertyName("startDate")]
         DateTime StartDate,
         [property: JsonPropertyName("endDate")]
-        DateTime EndDate,
+        DateTime? EndDate,
         [property: JsonPropertyName("dorsal")] string Dorsal,
         [property: JsonPropertyName("dorsalRaw")]
         string DorsalRaw,

@@ -1,10 +1,7 @@
-﻿
-using System.Formats.Asn1;
-using OpenData.Basetball.AbaLeague.Application.Contracts;
+﻿using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.Domain.Enums;
-using OpenData.Basketball.AbaLeague.Application.DTOs.Player;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 
@@ -64,32 +61,24 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
         {
             var teams = await _unitOfWork.SeasonResourcesRepository.SearchByLeague(leagueId, cancellationToken);
             var players = await _unitOfWork.PlayerRepository.GetAll(cancellationToken);
-            List<(int,RosterEntryDto)> list = new List<(int, RosterEntryDto)>();
+            List<(int, DraftRosterEntry)> list = new List<(int, DraftRosterEntry)>();
             List<RosterItemDto> outputCollection = new List<RosterItemDto>();
 
             foreach (var team in teams)
             {
-                var rosterForTeam = await GetDraftRoster(team.TeamId, team.LeagueId, cancellationToken);
+                var rosterForTeam = await Get( team.LeagueId, team.TeamId, cancellationToken);
 
-                list.AddRange(rosterForTeam.Select(x=>(team.TeamId,x)));
+                list.AddRange(rosterForTeam.Select(x=> (team.TeamId, x)));
             }
 
-            foreach (var (teamId,rosterItem) in list)
+            foreach (var (teamId, rosterItem) in list)
             {
-                var player = players.FirstOrDefault(x => x.Name == rosterItem.Name);
+                var player = players.FirstOrDefault(x => x.Name == rosterItem.PlayerName);
                 if (player == null)
                 {
-                    var items = await _playerService.Add(new AddPlayerDto(rosterItem.Name, rosterItem.Position, (int)rosterItem.Height*100,
-                        rosterItem.DateOfBirth, rosterItem.NationalityId),cancellationToken);
-                    if (!items.Any())
-                    {
-                        throw new Exception();
-                    }
-
-                    players = await _unitOfWork.PlayerRepository.GetAll(cancellationToken);
-                    player = players.FirstOrDefault(x => x.Name == rosterItem.Name);
+                    throw new Exception();
                 }
-                outputCollection.Add(new RosterItemDto(player.Id,leagueId,teamId));
+                outputCollection.Add(new RosterItemDto(player.Id, leagueId, teamId, rosterItem.Start, rosterItem.End));
             }
 
             return outputCollection;
@@ -110,10 +99,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             var players = await _unitOfWork.PlayerRepository.GetAll(cancellationToken);
             foreach (var rosterItem in roster)
             {
-                var player = players.FirstOrDefault(x=>x.Name==rosterItem.Name);
+                var player = players.FirstOrDefault(x=> x.Name == rosterItem.Name);
                 if (player != null)
                 {
-                    var newEntry = new DraftRosterEntry(player.Id, player.Name, leagueId, league.OfficalName);
+                    var newEntry = new DraftRosterEntry(player.Id, player.Name, leagueId, league.OfficalName, rosterItem.Start, rosterItem.End);
                     outputCollection.Add(newEntry);
                 }
             }
@@ -134,8 +123,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             {
                 if (team.RosterItems.Any(x =>
                         x.LeagueId == draftRosterEntry.LeagueId &&
-                        x.PlayerId == draftRosterEntry.PlayerId &&
-                        x.EndOfActivePeriod ==null))
+                        x.PlayerId == draftRosterEntry.PlayerId))
                 {
                     continue;
                 }
@@ -149,7 +137,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     PlayerId = player.Id,
                     League = league,
                     Player = player,
-                    DateOfInsertion = DateTime.Now.ToUniversalTime()
+                    DateOfInsertion =draftRosterEntry.Start,
+                    EndOfActivePeriod = draftRosterEntry.End
                 };
 
 
@@ -161,7 +150,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
              await _unitOfWork.Save();
 
              return team.RosterItems.Select(x =>
-                 new DraftRosterEntry(x.PlayerId, x.Player.Name, x.LeagueId, x.League.OfficalName));
+                 new DraftRosterEntry(x.PlayerId, x.Player.Name, x.LeagueId, x.League.OfficalName, x.DateOfInsertion, x.EndOfActivePeriod));
         }
 
         public async Task<IEnumerable<int>> Add(IEnumerable<AddRosterItemDto> entries, CancellationToken cancellationToken = default)
@@ -197,7 +186,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     PlayerId = player.Id,
                     League = league,
                     Player = player,
-                    DateOfInsertion = DateTime.Now.ToUniversalTime()
+                    DateOfInsertion = draftRosterEntry.Start,
+                    EndOfActivePeriod = draftRosterEntry.End
                 };
 
 
