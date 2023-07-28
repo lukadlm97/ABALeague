@@ -65,7 +65,19 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var seasonResources = await _unitOfWork.SeasonResourcesRepository.SearchByLeague(leagueId, cancellationToken);
 
-            var matchDayItems= await _webPageProcessor.GetRegularSeasonCalendar(league.CalendarUrl, cancellationToken);
+            var matchDayItems =
+                new List<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints,
+                    DateTime? Date, int? MatchNo)>();
+
+
+            var count = seasonResources.Count * 2;
+
+            for (int i = 0; i < count; i++)
+            {
+                var rawUrl = league.BaseUrl+league.CalendarUrl;
+                var url = string.Format(rawUrl, i+1);
+                matchDayItems.AddRange(await _webPageProcessor.GetRegularSeasonCalendar(url, cancellationToken));
+            }
 
             List<RoundMatchDto> matches = new List<RoundMatchDto>();
 

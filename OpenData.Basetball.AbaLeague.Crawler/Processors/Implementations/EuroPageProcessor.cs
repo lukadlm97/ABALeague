@@ -85,9 +85,21 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return list;
         }
 
-        public Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date, int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date, int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var webDocument = await _documentFetcher
+                .FetchDocument(calendarUrl, cancellationToken);
+
+            var teams = new List<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date, int? MatchNo)>();
+            var teamElements = webDocument.QuerySelectorAll(".game-card-view_gameCardInner__1P2tg");
+
+
+            foreach (var teamElement in teamElements)
+            {
+                Console.WriteLine(teamElement.InnerHtml);
+            }
+
+            return teams;
         }
 
         public Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
