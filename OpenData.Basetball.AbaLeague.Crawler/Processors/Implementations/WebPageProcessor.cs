@@ -153,7 +153,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                         {
                             var matchNoUrl = col.QuerySelectorAll("a")[1].GetAttribute("href")
                                 .Trim();
-                            matchNo = matchNoUrl.ParesMatchNoFromUrl();
+                            matchNo = matchNoUrl.ParesMatchNoFromAbaUrl();
 
                             var  name = col.QuerySelectorAll("a")[1].InnerHtml.Trim();
                             

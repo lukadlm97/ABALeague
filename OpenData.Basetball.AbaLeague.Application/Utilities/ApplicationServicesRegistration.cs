@@ -9,7 +9,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
     {
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IWebPageProcessor, EuroPageProcessor>();
+            services.AddScoped<IEuroleagueProcessor, EuroPageProcessor>();
+            services.AddScoped<IWebPageProcessor, WebPageProcessor>();
 
             return services;
         }

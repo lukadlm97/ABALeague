@@ -5,6 +5,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts
 {
     public interface IDocumentFetcher
     {
-        Task<IDocument> FetchDocument(string url,CancellationToken cancellationToken);
+        Task<IDocument> FetchDocument(string url ,CancellationToken cancellationToken);
+        Task<IDocument> FetchDocumentBySelenium(string url, CancellationToken cancellationToken);
     }
 }

@@ -12,11 +12,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebPageProcessor _webPageProcessor;
+        private readonly IEuroleagueProcessor _euroleagueProcessor;
 
-        public LeagueService(IUnitOfWork unitOfWork,IWebPageProcessor webPageProcessor)
+        public LeagueService(IUnitOfWork unitOfWork,IWebPageProcessor webPageProcessor, IEuroleagueProcessor euroleagueProcessor)
         {
             _unitOfWork = unitOfWork;
             _webPageProcessor = webPageProcessor;
+            _euroleagueProcessor = euroleagueProcessor;
         }
         public async Task<IEnumerable<League>> Get(CancellationToken cancellationToken = default)
         {
@@ -76,7 +78,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             {
                 var rawUrl = league.BaseUrl+league.CalendarUrl;
                 var url = string.Format(rawUrl, i+1);
-                matchDayItems.AddRange(await _webPageProcessor.GetRegularSeasonCalendar(url, cancellationToken));
+                var items = await _webPageProcessor.GetRegularSeasonCalendar(url, cancellationToken);
+                matchDayItems.AddRange(items.ToList());
             }
 
             List<RoundMatchDto> matches = new List<RoundMatchDto>();
@@ -92,6 +95,45 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
                 matches.Add(new RoundMatchDto(homeTeam.TeamId, awayTeam.TeamId, item.HomeTeamName, item.AwayTeamName,
                     item.HomeTeamPoints, item.AwayTeamPoints, item.Round??-1, item.MatchNo??-1, item.Date??DateTime.MinValue
+                ));
+
+            }
+
+            return matches;
+        }
+
+        public async Task<IEnumerable<RoundMatchDto>> GetEuroleagueCalendarDraft(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
+            var seasonResources = await _unitOfWork.SeasonResourcesRepository.SearchByLeague(leagueId, cancellationToken);
+
+            var matchDayItems =
+                new List<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints,
+                    DateTime? Date, int? MatchNo)>();
+
+
+            var count = seasonResources.Count * 2;
+
+            for (int i = 0; i < count; i++)
+            {
+                var rawUrl = league.BaseUrl + league.CalendarUrl;
+                var url = string.Format(rawUrl, i + 1);
+                matchDayItems.AddRange(await _euroleagueProcessor.GetRegularSeasonCalendar(i+1, url, cancellationToken));
+            }
+
+            List<RoundMatchDto> matches = new List<RoundMatchDto>();
+
+            foreach (var item in matchDayItems)
+            {
+                var homeTeam = seasonResources.FirstOrDefault(x => x.TeamName == item.HomeTeamName);
+                var awayTeam = seasonResources.FirstOrDefault(x => x.TeamName == item.AwayTeamName);
+                if (homeTeam == null || awayTeam == null)
+                {
+                    continue;
+                }
+
+                matches.Add(new RoundMatchDto(homeTeam.TeamId, awayTeam.TeamId, item.HomeTeamName, item.AwayTeamName,
+                    item.HomeTeamPoints, item.AwayTeamPoints, item.Round ?? -1, item.MatchNo ?? -1, item.Date ?? DateTime.MinValue
                 ));
 
             }

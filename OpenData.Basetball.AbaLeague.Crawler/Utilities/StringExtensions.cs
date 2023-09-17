@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -95,7 +96,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             return items;
         }
 
-        public static int? ParesMatchNoFromUrl(this string value)
+        public static int? ParesMatchNoFromAbaUrl(this string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return null;
 
@@ -121,6 +122,29 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             return output.ToString().TrimStart('/').ConvertToNullableInt();
         }
 
+        public static int? ParesMatchNoFromEuroleagueUrl(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+
+            bool ignoreFirst = true;
+            int counter = value.LastIndexOf('/');
+            for (;  counter > 0; counter--)
+            {
+                if (value[counter] == '/')
+                {
+                    if (ignoreFirst)
+                    {
+                        ignoreFirst = false;
+                        continue;
+                    }
+                    break;
+                }
+            }
+
+            var matchNo = value.Substring(counter - 1, value.Length - counter - 1);
+            return matchNo.TrimEnd('/').ConvertToNullableInt();
+        }
+
         public static DateTime? ParseDateTimeFromAbaFormat(this string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return null;
@@ -139,6 +163,19 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             {
                 return dateOut;
             }
+            return null;
+        }
+
+        public static DateTime? ParseDateTimeFromEuroleagueFormat(this string value)
+        {
+            string format = "yyyy-MM-ddTHH:mm:ss.fffZ";
+
+            // Parse the string
+            if (DateTime.TryParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTime dateTime))
+            {
+                return dateTime;
+            }
+
             return null;
         }
 
@@ -199,5 +236,18 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
         {
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower());
         }
+
+        public static int? PointsFromSpan(this string pointsRaw)
+        {
+            var startBoundary = '>';
+            var endBoundary = '<';
+            var startIndex = pointsRaw.IndexOf(startBoundary);
+            var endIndex = pointsRaw.LastIndexOf(endBoundary);
+
+            var points = pointsRaw.Substring(startIndex+1, endIndex - startIndex - 1);
+            return ConvertToNullableInt(points);
+
+        }
+        
     }
 }

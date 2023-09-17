@@ -23,6 +23,14 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
             return Ok(games);
         }
 
+        [HttpGet("draft/euroleague/{leagueId}")]
+        public async Task<IActionResult> GetEuroleague(int leagueId, CancellationToken cancellationToken)
+        {
+            var games = await _leagueService.GetEuroleagueCalendarDraft(leagueId, cancellationToken);
+
+            return Ok(games);
+        }
+
         [HttpPost("/{leagueId}")]
         public async Task<IActionResult> Add(int leagueId,[FromBody] Calendar calendar, CancellationToken cancellationToken)
         {
@@ -30,6 +38,8 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
 
             return Ok(games);
         }
+
+
 
         public record Calendar(IEnumerable<AddRoundMatchDto> Entries);
     }

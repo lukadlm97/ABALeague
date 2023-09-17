@@ -8,10 +8,11 @@ using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
 using OpenData.Basetball.AbaLeague.Crawler.Models;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
+using OpenData.Basetball.AbaLeague.Crawler.Utilities;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 {
-    public class EuroPageProcessor : IWebPageProcessor
+    public class EuroPageProcessor : IEuroleagueProcessor
     {
         private readonly IDocumentFetcher _documentFetcher;
 
@@ -85,24 +86,57 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return list;
         }
 
-        public async Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date, int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date, int? MatchNo)>> GetRegularSeasonCalendar(int round, string calendarUrl, CancellationToken cancellationToken = default)
         {
             var webDocument = await _documentFetcher
-                .FetchDocument(calendarUrl, cancellationToken);
+                .FetchDocumentBySelenium(calendarUrl, cancellationToken);
 
             var teams = new List<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date, int? MatchNo)>();
-            var teamElements = webDocument.QuerySelectorAll(".game-card-view_gameCardInner__1P2tg");
+            var teamElements = webDocument.QuerySelectorAll(".game-center-group_li__Hr15J");
 
 
             foreach (var teamElement in teamElements)
             {
-                Console.WriteLine(teamElement.InnerHtml);
+               var time = teamElement.QuerySelectorAll(".game-card-view_time__Po6MA")[0]
+                    .GetAttribute("datetime")
+                    .Trim();
+               var homeTeam = teamElement.QuerySelectorAll(".game-card-view_name__H_Dy2")[0]
+                    .InnerHtml
+                    .Trim();
+               var awayTeam = teamElement.QuerySelectorAll(".game-card-view_name__H_Dy2")[2]
+                   .InnerHtml
+                   .Trim();
+
+               var homeTeamPoints = teamElement.QuerySelectorAll(".game-score_scoreWrapper__jCR8C.game-score__home__K8NwK");
+
+
+               int? homePoints = null;
+                if (homeTeamPoints.Any() && !string.IsNullOrWhiteSpace(homeTeamPoints.First().InnerHtml))
+                {
+                    homePoints = homeTeamPoints.First().InnerHtml.Trim().PointsFromSpan();
+                }
+
+                var awayTeamPoints =
+                    teamElement.QuerySelectorAll(".game-score_scoreWrapper__jCR8C.game-score__away__mGtZB");
+               int? awayPoints = null;
+               if (awayTeamPoints.Any() && !string.IsNullOrWhiteSpace(awayTeamPoints.First().InnerHtml))
+               {
+                   awayPoints = awayTeamPoints.First().InnerHtml.Trim().PointsFromSpan();
+               }
+
+               var url = teamElement.QuerySelectorAll(".game-card-view_linkWrap__EABj1")[0]
+                   .GetAttribute("href")
+                   .Trim();
+               var rightTime = time.ParseDateTimeFromEuroleagueFormat();
+               var matchNo = url.ParesMatchNoFromEuroleagueUrl();
+                //TODO time and match no
+               teams.Add(new(round, homeTeam, awayTeam, homePoints??0, awayPoints??0, rightTime, matchNo));
             }
 
             return teams;
         }
 
-        public Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
+        public Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(int round, IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
