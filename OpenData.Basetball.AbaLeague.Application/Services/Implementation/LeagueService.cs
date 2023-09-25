@@ -108,7 +108,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             var seasonResources = await _unitOfWork.SeasonResourcesRepository.SearchByLeague(leagueId, cancellationToken);
 
             var matchDayItems =
-                new List<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints,
+                new List<(int? Round, string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints,
                     DateTime? Date, int? MatchNo)>();
 
 
@@ -120,6 +120,42 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 var url = string.Format(rawUrl, i + 1);
                 matchDayItems.AddRange(await _euroleagueProcessor.GetRegularSeasonCalendar(i+1, url, cancellationToken));
             }
+
+            List<RoundMatchDto> matches = new List<RoundMatchDto>();
+
+            foreach (var item in matchDayItems)
+            {
+                var homeTeam = seasonResources.FirstOrDefault(x => x.TeamName == item.HomeTeamName);
+                var awayTeam = seasonResources.FirstOrDefault(x => x.TeamName == item.AwayTeamName);
+                if (homeTeam == null || awayTeam == null)
+                {
+                    continue;
+                }
+
+                matches.Add(new RoundMatchDto(homeTeam.TeamId, awayTeam.TeamId, item.HomeTeamName, item.AwayTeamName,
+                    item.HomeTeamPoints, item.AwayTeamPoints, item.Round ?? -1, item.MatchNo ?? -1, item.Date ?? DateTime.MinValue
+                ));
+
+            }
+
+            return matches;
+        }
+
+    
+
+        public async Task<IEnumerable<RoundMatchDto>> GetEuroleagueCalendarSpecificRoundDraft(int leagueId, int round, CancellationToken cancellationToken = default)
+        {
+            var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
+            var seasonResources = await _unitOfWork.SeasonResourcesRepository.SearchByLeague(leagueId, cancellationToken);
+
+            var matchDayItems =
+                new List<(int? Round, string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints,
+                    DateTime? Date, int? MatchNo)>();
+
+            var rawUrl = league.BaseUrl + league.CalendarUrl;
+            var url = string.Format(rawUrl, round);
+            matchDayItems.AddRange(await _euroleagueProcessor.GetRegularSeasonCalendar(round, url, cancellationToken));
+            
 
             List<RoundMatchDto> matches = new List<RoundMatchDto>();
 

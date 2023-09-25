@@ -1,10 +1,14 @@
-﻿using System;
+﻿using AngleSharp.Dom;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
 {
@@ -124,25 +128,19 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
 
         public static int? ParesMatchNoFromEuroleagueUrl(this string value)
         {
-            if (string.IsNullOrWhiteSpace(value)) return null;
+            // Split the URL path by '/'
+            string[] segments = value.Split('/');
 
-            bool ignoreFirst = true;
-            int counter = value.LastIndexOf('/');
-            for (;  counter > 0; counter--)
+            // Iterate through the segments to find a number
+            foreach (var segment in segments)
             {
-                if (value[counter] == '/')
+                if (int.TryParse(segment, out int number))
                 {
-                    if (ignoreFirst)
-                    {
-                        ignoreFirst = false;
-                        continue;
-                    }
-                    break;
+                    return number;
                 }
             }
 
-            var matchNo = value.Substring(counter - 1, value.Length - counter - 1);
-            return matchNo.TrimEnd('/').ConvertToNullableInt();
+            return null; // Return null if no number is found
         }
 
         public static DateTime? ParseDateTimeFromAbaFormat(this string value)

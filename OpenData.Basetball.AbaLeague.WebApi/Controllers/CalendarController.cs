@@ -31,6 +31,14 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
             return Ok(games);
         }
 
+        [HttpGet("draft/euroleague/{leagueId}/{roundNo}")]
+        public async Task<IActionResult> GetEuroleagueFirstRound(int leagueId, int roundNo, CancellationToken cancellationToken)
+        {
+            var games = await _leagueService.GetEuroleagueCalendarSpecificRoundDraft(leagueId, roundNo, cancellationToken);
+
+            return Ok(games);
+        }
+
         [HttpPost("/{leagueId}")]
         public async Task<IActionResult> Add(int leagueId,[FromBody] Calendar calendar, CancellationToken cancellationToken)
         {
