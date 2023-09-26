@@ -11,10 +11,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebPageProcessor _webPageProcessor;
+        private readonly IEuroleagueProcessor _euroleagueProcessor;
 
-        public ResultService(IWebPageProcessor webPageProcessor,IUnitOfWork unitOfWork)
+        public ResultService(IWebPageProcessor webPageProcessor,IUnitOfWork unitOfWork, IEuroleagueProcessor euroleagueProcessor)
         {
             _webPageProcessor = webPageProcessor;
+            _euroleagueProcessor = euroleagueProcessor;
             _unitOfWork = unitOfWork;
         }
         public async Task<IEnumerable<ResultDto>> GetResultsByRoundId(int leagueId, int roundId, CancellationToken cancellationToken = default)
@@ -61,6 +63,59 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
                 resultSet.Add(new ResultDto(roundMatch.Id, roundMatch.HomeTeam.Name, roundMatch.AwayTeam.Name, item.Attendency, item.Venue, item.HomeTeamPoint, item.AwayTeamPoint));
             }
+
+            return resultSet;
+        }
+
+        public async Task<IEnumerable<ResultDto>> GetEuroleagueResults(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
+            if (league == null)
+            {
+                return Array.Empty<ResultDto>();
+            }
+
+            var matches = await _unitOfWork.CalendarRepository.SearchByLeague(leagueId, cancellationToken);
+            List<ResultDto> resultSet = new List<ResultDto>();
+            if (matches == null)
+            {
+                return resultSet;
+            }
+            foreach (var roundMatch in matches)
+            {
+                var url =
+                    string.Format(league.BaseUrl+league.MatchUrl, roundMatch.MatchNo);
+
+                var items = await _euroleagueProcessor.GetMatchResult(new List<string>() { url }, cancellationToken);
+                var item = items.FirstOrDefault();
+
+                resultSet.Add(new ResultDto(roundMatch.Id, roundMatch.HomeTeam.Name, roundMatch.AwayTeam.Name, item.Attendency, item.Venue, item.HomeTeamPoint, item.AwayTeamPoint));
+            }
+
+            return resultSet;
+        }
+        public async Task<IEnumerable<ResultDto>> GetEuroleagueResults(int leagueId, int matchNo, CancellationToken cancellationToken = default)
+        {
+            var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
+            if (league == null)
+            {
+                return Array.Empty<ResultDto>();
+            }
+
+            var matches = await _unitOfWork.CalendarRepository.SearchByLeague(leagueId, cancellationToken);
+            List<ResultDto> resultSet = new List<ResultDto>();
+            if (matches == null)
+            {
+               return  resultSet;
+            }
+            var url =
+                string.Format(league.BaseUrl + league.MatchUrl, matchNo);
+
+            var items = await _webPageProcessor.GetMatchResult(new List<string>() { url }, cancellationToken);
+            var item = items.FirstOrDefault();
+
+            resultSet.Add(new ResultDto(matchNo, string.Empty, string.Empty, item.Attendency, item.Venue, item.HomeTeamPoint, item.AwayTeamPoint));
+            
 
             return resultSet;
         }

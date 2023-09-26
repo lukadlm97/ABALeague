@@ -30,6 +30,19 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
             var results = await _resultService.GetResults(leagueId,cancellationToken);
             return Ok(results);
         }
+        [HttpGet("euroleague/{leagueId}/{matchNo}")]
+        public async Task<IActionResult> GetEuroleagueResults(int leagueId, int matchNo, CancellationToken cancellationToken)
+        {
+            var results = await _resultService.GetEuroleagueResults(leagueId, matchNo, cancellationToken);
+            return Ok(results);
+        }
+
+        [HttpGet("euroleague/{leagueId}")]
+        public async Task<IActionResult> GetEuroleagueResults(int leagueId, CancellationToken cancellationToken)
+        {
+            var results = await _resultService.GetEuroleagueResults(leagueId, cancellationToken);
+            return Ok(results);
+        }
 
         [HttpPost("{leagueId}")]
         public async Task<IActionResult> Add(int leagueId,[FromBody] ResultsRequest request, CancellationToken cancellationToken)

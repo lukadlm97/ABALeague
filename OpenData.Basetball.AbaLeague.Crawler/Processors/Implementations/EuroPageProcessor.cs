@@ -129,15 +129,21 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                    .Trim();
                var rightTime = time.ParseDateTimeFromEuroleagueFormat();
                var matchNo= url.ParesMatchNoFromEuroleagueUrl();
-                //TODO time and match no
+
                teams.Add(new(round, homeTeam, awayTeam, homePoints, awayPoints, rightTime, matchNo));
             }
 
             return teams;
         }
 
-        public Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(int round, IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
         {
+            foreach (var matchUrl in matchUrls)
+            {
+                var webDocument = await _documentFetcher
+                    .FetchDocumentBySelenium(matchUrl, cancellationToken);
+            }
+
             throw new NotImplementedException();
         }
 
