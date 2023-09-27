@@ -15,11 +15,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
     {
         private readonly IWebPageProcessor _webPageProcessor;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEuroleagueProcessor _euroleagueProcessor;
 
-        public BoxScoreService(IWebPageProcessor  webPageProcessor,IUnitOfWork unitOfWork)
+        public BoxScoreService(IWebPageProcessor  webPageProcessor,IUnitOfWork unitOfWork, IEuroleagueProcessor euroleagueProcessor)
         {
             _webPageProcessor = webPageProcessor;
             _unitOfWork = unitOfWork;
+            _euroleagueProcessor = euroleagueProcessor;
         }
         public async Task<(IEnumerable<BoxScoreDto> homePlayers, IEnumerable<BoxScoreDto> awayPlayers, IEnumerable<string> missingPlayers)> GetScore(int leagueId, int matchNo, CancellationToken cancellationToken = default)
         {
@@ -122,6 +124,25 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
             return (outputCollection, missingPlayerScoreDto);
 
+        }
+
+        public Task<(IEnumerable<BoxScoreDto> playersScore, IEnumerable<string> missingPlayers)> GetEuroleagueRoundBoxScore(int leagueId, int roundNo, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<(IEnumerable<BoxScoreDto> playersScore, IEnumerable<string> missingPlayers)> GetEuroleagueMatchBoxScore(int leagueId, int matchNo, CancellationToken cancellationToken = default)
+        {
+            var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
+            var match = await _unitOfWork.CalendarRepository.SearchByMatchNo(leagueId, matchNo, cancellationToken);
+            var rosterHomeTeam = await _unitOfWork.TeamRepository.GetRoster(match.HomeTeamId ?? 0, cancellationToken);
+            var rosterAwayTeam = await _unitOfWork.TeamRepository.GetRoster(match.AwayTeamId ?? 0, cancellationToken);
+
+            var statUrl = string.Format(league.BaseUrl+league.BoxScoreUrl, match.MatchNo);
+
+            var items = await _euroleagueProcessor.GetBoxScore(statUrl, cancellationToken);
+
+            throw new NotImplementedException();
         }
 
         public Task<IEnumerable<(IEnumerable<BoxScoreDto> homePlayers, IEnumerable<BoxScoreDto> awayPlayers)>> AddScore(int leagueId, int matchId, IEnumerable<AddBoxScoreDto> homePlayers, IEnumerable<AddBoxScoreDto> awayPlayers,

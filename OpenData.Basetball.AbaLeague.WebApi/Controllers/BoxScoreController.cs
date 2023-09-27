@@ -53,7 +53,20 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
                 }
             );
         }
+        [HttpGet("euroleague/{leagueId}/draft/byMatch/{matchId}")]
+        public async Task<IActionResult> GetEuroleagueMatch(int leagueId, int matchId, CancellationToken cancellationToken)
+        {
+            var games = await _boxScoreService.GetEuroleagueMatchBoxScore(leagueId, matchId, cancellationToken);
 
+            return Ok(games);
+        }
+        [HttpGet("euroleague/{leagueId}/draft/byRound/{roundId}")]
+        public async Task<IActionResult> GetEuroleagueRound(int leagueId, int roundId, CancellationToken cancellationToken)
+        {
+            var games = await _boxScoreService.GetEuroleagueRoundBoxScore(leagueId, roundId, cancellationToken);
+
+            return Ok(games);
+        }
         public record BoxScoreRequest(IEnumerable<AddBoxScoreDto> Entries);
     }
 }

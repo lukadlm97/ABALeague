@@ -12,6 +12,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
 
         Task<IEnumerable<ResultDto>> GetEuroleagueResults(int leagueId, int matchNo,
             CancellationToken cancellationToken = default);
+        Task<IEnumerable<ResultDto>> GetEuroleagueResultsByRoundId(int leagueId, int roundId, CancellationToken cancellationToken = default);
         Task<IEnumerable<ResultDto>> Add(int leagueId, IEnumerable<AddResultDto> entries, CancellationToken cancellationToken=default);
     }
 }

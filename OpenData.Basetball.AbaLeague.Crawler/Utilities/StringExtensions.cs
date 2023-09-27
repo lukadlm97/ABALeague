@@ -207,6 +207,18 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             return ConvertToNullableInt(justVenue);
         }
 
+        public static int? ExtractEuroleagueAttendance(this string value)
+        {
+            if (!value.Contains(':'))
+            {
+                return null;
+            }
+
+            var justAttendance = value.Split(':')[1].Trim();
+
+            return ConvertToNullableInt(justAttendance);
+        }
+
 
         public static string ExtractNameFromUrl(this string valueUrl)
         {
@@ -230,6 +242,21 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
 
         }
 
+        public static string CapitalizeFirstLetter(this string source)
+        {
+            if (string.IsNullOrWhiteSpace(source)) return null;
+            source = source.Trim();
+
+            List<string> result = new List<string>();
+            foreach (var segments in source.Split(' '))
+            {
+                result.Add(segments.ToTitleCase());
+            }
+
+            return string.Join(' ', result);
+
+        }
+
         public static string ToTitleCase(this string title)
         {
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower());
@@ -246,6 +273,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             return ConvertToNullableInt(points);
 
         }
+
         
     }
 }

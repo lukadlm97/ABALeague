@@ -136,19 +136,56 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return teams;
         }
 
-        public async Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int MatchId, int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(
+            IEnumerable<(int MatchId, string MatchUrl)> matchUrls, CancellationToken cancellationToken = default)
         {
+            List<(int MatchId, int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)> list =
+                new List<(int MatchId, int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>();
             foreach (var matchUrl in matchUrls)
             {
+                string? venue = null;
+                int? attendency = null;
+                int? homeTeamPoint = null;
+                int? awayTeamPoint = null;
                 var webDocument = await _documentFetcher
-                    .FetchDocumentBySelenium(matchUrl, cancellationToken);
+                    .FetchDocumentBySelenium(matchUrl.MatchUrl, cancellationToken);
+
+                var eventDetails = webDocument.QuerySelectorAll("ul.event-info_list__pEwdU > li");
+                var scores =
+                    webDocument.QuerySelectorAll("div.game-hero-score_scoreWrapper__dMBPQ");
+                try
+                {
+                    if (eventDetails.Any() && eventDetails[2] != null && eventDetails[4] != null)
+                    {
+                        venue = eventDetails[2].InnerHtml.ToString().CapitalizeFirstLetter();
+                        attendency = eventDetails[4].InnerHtml.ToString().ExtractEuroleagueAttendance();
+                        homeTeamPoint = scores[0].InnerHtml.ToString().PointsFromSpan();
+                        awayTeamPoint = scores[1].InnerHtml.ToString().PointsFromSpan();
+                        list.Add(new(matchUrl.MatchId, attendency, venue, homeTeamPoint ?? -1, awayTeamPoint ?? -1));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(matchUrl.MatchId+":"+matchUrl.MatchUrl);
+                }
+               
             }
 
-            throw new NotImplementedException();
+            return list;
         }
 
-        public Task<(IReadOnlyList<PlayerScore> HomeTeam, IReadOnlyList<PlayerScore> AwayTeam)> GetBoxScore(string matchUrl, CancellationToken cancellationToken = default)
+        public async Task<(IReadOnlyList<PlayerScore> HomeTeam, IReadOnlyList<PlayerScore> AwayTeam)> GetBoxScore(string matchUrl, CancellationToken cancellationToken = default)
         {
+            var webDocument = await _documentFetcher
+                .FetchDocumentBySelenium(matchUrl, cancellationToken);
+            var boxscores = webDocument.QuerySelectorAll("div.game-box-scores-table-grouped-tab_tableGroupedWrapper__YLif_");
+
+
+            foreach (var boxscore in boxscores)
+            {
+                Console.WriteLine(boxscore.InnerHtml);
+            }
+
             throw new NotImplementedException();
         }
 
