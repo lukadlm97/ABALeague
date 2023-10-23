@@ -1,7 +1,7 @@
 ﻿using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Application.Abstractions.Messaging;
-using OpenData.Basketball.AbaLeague.Application.Contracts.Leagues;
+using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues
@@ -22,21 +22,18 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                 return Maybe<LeaguesResponse>.None;
             }
 
-            var response = leagues.Select(x => new LeagueResponse()
-            {
-                BaseUrl = x.BaseUrl,
-                BoxScoreUrl = x.BoxScoreUrl,
-                CalendarUrl = x.CalendarUrl,
-                Id = x.Id,
-                MatchUrl = x.MatchUrl,
-                OfficalName = x.OfficalName,
-                RosterUrl = x.RosterUrl,
-                Season = x.Season,
-                ShortName = x.ShortName,
-                StandingUrl = x.StandingUrl,
-            });
+            var response = leagues.Select(x => new LeagueResponse(x.Id, 
+                x.OfficalName,
+                x.ShortName,
+                x.Season,
+                x.StandingUrl,
+                x.CalendarUrl,
+                x.MatchUrl, 
+                x.BoxScoreUrl, 
+                x.RosterUrl, 
+                x.BaseUrl));
 
-            return new LeaguesResponse(){Leagues = response};
+            return new LeaguesResponse(response);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenData.Basketball.AbaLeague.Application.Contracts.Leagues;
+using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 
 namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
@@ -28,7 +28,7 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
             }
 
             IsSuccess = true;
-            Leagues = response.Value.Leagues.ToList();
+            Leagues = response.Value.LeagueResponses.ToList();
         }
     }
 }

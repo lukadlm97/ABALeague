@@ -1,0 +1,51 @@
+﻿@page
+@model OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues.CreateModel
+@{
+    var ModelName = "Create League";
+    ViewData["Title"] = ModelName;
+}
+
+<form asp-page="Create">
+    <div class="form-horizontal">
+        <h4>League</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="League.OfficalName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="League.OfficalName" class="form-control" />
+                <span asp-validation-for="League.OfficalName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="League.ShortName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="League.ShortName" class="form-control" />
+                <span asp-validation-for="League.ShortName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="League.BaseUrl" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="League.BaseUrl" class="form-control" />
+                <span asp-validation-for="League.BaseUrl" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="League.BoxScoreUrl" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="League.BoxScoreUrl" class="form-control" />
+                <span asp-validation-for="League.BoxScoreUrl" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>

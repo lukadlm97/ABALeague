@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeagu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.TelegramBot", "OpenData.Basketball.AbaLeague.TelegramBot\OpenData.Basketball.AbaLeague.TelegramBot.csproj", "{4311C73C-9D48-4409-A05D-8BA0CB74F90F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basketball.AbaLeague.WebApp", "OpenData.Basketball.AbaLeague.WebApp\OpenData.Basketball.AbaLeague.WebApp.csproj", "{B82665C1-79DC-43F8-B88C-8034895E9560}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.WebApp", "OpenData.Basketball.AbaLeague.WebApp\OpenData.Basketball.AbaLeague.WebApp.csproj", "{B82665C1-79DC-43F8-B88C-8034895E9560}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

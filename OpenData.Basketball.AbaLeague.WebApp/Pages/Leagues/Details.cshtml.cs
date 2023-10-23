@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OpenData.Basketball.AbaLeague.Application.Contracts.Leagues;
+using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
 
 namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
@@ -33,6 +33,7 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
                 IsLoaded = true;
                 IsError = true;
                 ErrorMessage = "Cant retrieve selected league";
+                return;
             }
 
             IsLoaded = true;

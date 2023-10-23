@@ -16,7 +16,7 @@
         <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Leagues[0].OfficalName)
+                @Html.DisplayNameFor(model => model.Leagues[0].OfficialName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Leagues[0].ShortName)
@@ -33,7 +33,7 @@
         @foreach (var item in Model.Leagues) {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OfficalName)
+                    @Html.DisplayFor(modelItem => item.OfficialName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ShortName)
@@ -55,3 +55,12 @@ else
         @Model.ErrorMessage
     </p>
 }
+<p>
+    <a asp-page="Create" class="btn btn-success">Create New</a>
+    @*<a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-danger">Create New</a>
+    <a asp-action="Create" class="btn btn-default">Create New</a>
+    <a asp-action="Create" class="btn btn-info">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+    <a asp-action="Create" class="btn btn-warning">Create New</a>*@
+</p>
