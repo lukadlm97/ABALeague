@@ -1,6 +1,7 @@
 ﻿namespace OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore
 {
-    public record AddBoxScoreDto(int RosterItemId,int MatchRoundId, TimeSpan? Minutes = null, int? Points = null, decimal? ShotPrc = null,
+    public record AddBoxScoreDto(int RosterItemId, int MatchRoundId, int Round,
+        TimeSpan? Minutes = null, int? Points = null, decimal? ShotPrc = null,
         int? ShotMade2Pt = null,
         int? ShotAttempted2Pt = null, decimal? ShotPrc2Pt = null, int? ShotMade3Pt = null, int? ShotAttempted3Pt = null,
         decimal? shotPrc3Pt = null, int? ShotMade1Pt = null, int? ShotAttempted1Pt = null, decimal? ShotPrc1Pt = null,

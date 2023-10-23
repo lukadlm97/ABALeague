@@ -1,0 +1,57 @@
+﻿@page
+@model Pages.Leagues.IndexModel
+
+@{
+    var ModelName = "Leagues";
+    ViewData["Title"] = ModelName;
+}
+
+
+<h2>@ModelName</h2>
+
+@if (@Model.IsSuccess)
+{
+    
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Leagues[0].OfficalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leagues[0].ShortName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leagues[0].Season)
+            </th>
+            <td>
+
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Leagues) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OfficalName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Season)
+                </td>
+                <td>
+                    <a asp-page="Details" asp-route-leagueId="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>
+        @Model.ErrorMessage
+    </p>
+}

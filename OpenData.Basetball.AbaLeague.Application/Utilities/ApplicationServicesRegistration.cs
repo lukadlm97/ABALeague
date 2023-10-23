@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations;
+using System.Reflection;
+using MediatR;
 
 namespace OpenData.Basketball.AbaLeague.Application.Utilities
 {
@@ -11,6 +13,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
         {
             services.AddScoped<IEuroleagueProcessor, EuroPageProcessor>();
             services.AddScoped<IWebPageProcessor, WebPageProcessor>();
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureAdminApplicationServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
             return services;
         }

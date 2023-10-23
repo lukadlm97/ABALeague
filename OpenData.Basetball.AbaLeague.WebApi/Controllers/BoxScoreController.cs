@@ -42,10 +42,10 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
             );
         }
 
-        [HttpPost("/byRound/{leagueId}/{roundNo}")]
-        public async Task<IActionResult> Add(int leagueId, int roundNo, [FromBody] BoxScoreRequest request, CancellationToken cancellationToken)
+        [HttpPost("/byRound/{leagueId}")]
+        public async Task<IActionResult> Add(int leagueId, [FromBody] BoxScoreRequest request, CancellationToken cancellationToken)
         {
-            var games = await _boxScoreService.AddScore(leagueId, roundNo,request.Entries, cancellationToken);
+            var games = await _boxScoreService.AddScore(leagueId, request.Entries, cancellationToken);
 
             return Ok(new
                 {
@@ -57,15 +57,40 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         public async Task<IActionResult> GetEuroleagueMatch(int leagueId, int matchId, CancellationToken cancellationToken)
         {
             var games = await _boxScoreService.GetEuroleagueMatchBoxScore(leagueId, matchId, cancellationToken);
-
-            return Ok(games);
+            return Ok(new
+            {
+                existing = games.playersScore,
+                missing = games.missingPlayers
+            });
         }
         [HttpGet("euroleague/{leagueId}/draft/byRound/{roundId}")]
         public async Task<IActionResult> GetEuroleagueRound(int leagueId, int roundId, CancellationToken cancellationToken)
         {
             var games = await _boxScoreService.GetEuroleagueRoundBoxScore(leagueId, roundId, cancellationToken);
 
-            return Ok(games);
+            return Ok(new
+            {
+                existing = games.playersScore,
+                missing = games.missingPlayers
+            });
+        }
+        [HttpGet("euroleague/{leagueId}/draft/byRound/{roundId}/step/{step}")]
+        public async Task<IActionResult> GetEuroleagueRound(int leagueId, int roundId, int step, CancellationToken cancellationToken)
+        {
+            List<BoxScoreDto> boxscores = new List<BoxScoreDto>();
+            List<string> missing = new List<string>();
+            for (int i = roundId; i <= roundId+step; i++)
+            {
+                var (result, missingPlayers) = 
+                    await _boxScoreService.GetEuroleagueRoundBoxScore(leagueId, i, cancellationToken);
+                boxscores.AddRange(result);
+                missing.AddRange(missingPlayers);
+            }
+            return Ok(new
+            {
+                existing = boxscores.ToList(),
+                missing = missing.ToList()
+            });
         }
         public record BoxScoreRequest(IEnumerable<AddBoxScoreDto> Entries);
     }

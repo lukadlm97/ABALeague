@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.Crawler", "OpenData.Basetball.AbaLeague.Crawler\OpenData.Basetball.AbaLeague.Crawler.csproj", "{793E82F6-6F03-4C6F-9587-F85370FCE609}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basketball.AbaLeague.TelegramBot", "OpenData.Basketball.AbaLeague.TelegramBot\OpenData.Basketball.AbaLeague.TelegramBot.csproj", "{4311C73C-9D48-4409-A05D-8BA0CB74F90F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.TelegramBot", "OpenData.Basketball.AbaLeague.TelegramBot\OpenData.Basketball.AbaLeague.TelegramBot.csproj", "{4311C73C-9D48-4409-A05D-8BA0CB74F90F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basketball.AbaLeague.WebApp", "OpenData.Basketball.AbaLeague.WebApp\OpenData.Basketball.AbaLeague.WebApp.csproj", "{B82665C1-79DC-43F8-B88C-8034895E9560}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{4311C73C-9D48-4409-A05D-8BA0CB74F90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4311C73C-9D48-4409-A05D-8BA0CB74F90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4311C73C-9D48-4409-A05D-8BA0CB74F90F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82665C1-79DC-43F8-B88C-8034895E9560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82665C1-79DC-43F8-B88C-8034895E9560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82665C1-79DC-43F8-B88C-8034895E9560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82665C1-79DC-43F8-B88C-8034895E9560}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

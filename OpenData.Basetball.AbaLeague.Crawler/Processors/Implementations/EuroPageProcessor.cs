@@ -179,14 +179,261 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             var webDocument = await _documentFetcher
                 .FetchDocumentBySelenium(matchUrl, cancellationToken);
             var boxscores = webDocument.QuerySelectorAll("div.game-box-scores-table-grouped-tab_tableGroupedWrapper__YLif_");
-
-
+            List<PlayerScore> homeTeam = new List<PlayerScore>();
+            List<PlayerScore> awayTeam = new List<PlayerScore>();
+            var firstTeam = true;
             foreach (var boxscore in boxscores)
             {
-                Console.WriteLine(boxscore.InnerHtml);
-            }
+                List<string> resultNames = new List<string>();
+                List<int?> resultPoints = new List<int?>();
+                List<TimeSpan?> resultMinutes = new List<TimeSpan?>();
+                List<decimal?> resultTwoPointsPrc = new List<decimal?>();
+                List<int?> resultTwoPointsAttempts = new List<int?>(); 
+                List<int?> resultTwoPointsMade = new List<int?>();
+                List<decimal?> resultThreePointsPrc = new List<decimal?>();
+                List<int?> resultThreePointsAttempts = new List<int?>();
+                List<int?> resultThreePointsMade = new List<int?>();
+                List<decimal?> resultFreeThrowPointsPrc = new List<decimal?>();
+                List<int?> resultFreeThrowPointsAttempts = new List<int?>();
+                List<int?> resultFreeThrowPointsMade = new List<int?>();
+                List<int?> resultTotalRebounds = new List<int?>();
+                List<int?> resultDefenseRebounds = new List<int?>();
+                List<int?> resultOffenseRebounds = new List<int?>(); 
+                List<int?> resultAssists = new List<int?>();
+                List<int?> resultSteals= new List<int?>();
+                List<int?> resultTurnover = new List<int?>();
+                List<int?> resultInFlouverOfBlocks = new List<int?>();
+                List<int?> resultReceivedBlocks = new List<int?>();
+                List<int?> resultCommitedFoul = new List<int?>();
+                List<int?> resultDrawFoul = new List<int?>();
+                List<int?> resultPlusMinus = new List<int?>();
+                List<int?> resultRank = new List<int?>();
 
-            throw new NotImplementedException();
+                var players = boxscore.QuerySelectorAll("div.game-box-scores-table-grouped-tab_leftColumnTitle__ShQQ5");
+                foreach (var element in players)
+                {
+
+                    var firstName = element.QuerySelector("span.game-box-scores-table-grouped-tab_firstName__QLygx")
+                        ?.InnerHtml?.Trim()?.ToLower();
+                    var lastName = element.QuerySelector("b.game-box-scores-table-grouped-tab_lastName__wytLp")
+                        ?.InnerHtml?.Trim()?.ToLower();
+                    if ( string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+                    {
+                        continue;
+                    }
+                    resultNames.Add((firstName +" "+ lastName).ToTitleCase());
+                }
+                var  stats = boxscore.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableGroupedColumnStatGroupContainer__Oci84");
+                var minAndPoints = stats[0];
+                var pts2 = stats[1];
+                var pts3 = stats[2];
+                var pts1 = stats[3];
+                var rebounds = stats[4];
+                var assistsStealsAndTurnovers = stats[5];
+                var blocks = stats[6];
+                var fouls = stats[7];
+                var pirAndPlusMinus = stats[8];
+                
+                foreach (var minOrPoints in minAndPoints.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = minOrPoints.InnerHtml.Trim();
+                    if (text.Contains(":"))
+                    {
+                        resultMinutes.Add(text.ConvertToNullableTimeSpan());
+                        continue;
+                    }
+                    resultPoints.Add(text.ConvertToNullableInt());
+                }
+
+                foreach (var freeThrowPointsItem in pts1.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = freeThrowPointsItem.InnerHtml.Trim();
+                    text = text.Trim('%');
+
+                    if (text.Contains("/"))
+                    {
+                        resultFreeThrowPointsMade.Add(text.Split('/')[0].ConvertToNullableInt());
+                        resultFreeThrowPointsAttempts.Add(text.Split('/')[1].ConvertToNullableInt());
+                        continue;
+                    }
+                    resultFreeThrowPointsPrc.Add(text.ConvertToNullableDecimal());
+                }
+                foreach (var twoPointsItem in pts2.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = twoPointsItem.InnerHtml.Trim();
+                    text = text.Trim('%');
+                    
+                    if (text.Contains("/"))
+                    {
+                        resultTwoPointsMade.Add(text.Split('/')[0].ConvertToNullableInt());
+                        resultTwoPointsAttempts.Add(text.Split('/')[1].ConvertToNullableInt());
+                        continue;
+                    }
+                    resultTwoPointsPrc.Add(text.ConvertToNullableDecimal());
+                }
+
+                foreach (var threePointsItem in pts3.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = threePointsItem.InnerHtml.Trim();
+                    text = text.Trim('%');
+
+                    if (text.Contains("/"))
+                    {
+                        resultThreePointsMade.Add(text.Split('/')[0].ConvertToNullableInt());
+                        resultThreePointsAttempts.Add(text.Split('/')[1].ConvertToNullableInt());
+                        continue;
+                    }
+                    resultThreePointsPrc.Add(text.ConvertToNullableDecimal());
+                }
+
+                int counter = 0;
+                foreach (var reboundsItem in rebounds.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = reboundsItem.InnerHtml.Trim();
+
+                    switch (counter)
+                    {
+                        case 0:
+                            resultOffenseRebounds.Add(text.ConvertToNullableInt());
+                            counter++;
+                            break;
+                        case 1:
+                            resultDefenseRebounds.Add(text.ConvertToNullableInt());
+                            counter++;
+                            break;
+                        case 2:
+                            resultTotalRebounds.Add(text.ConvertToNullableInt());
+                            counter = 0;
+                            break;
+                        default:
+                            Console.WriteLine("Unknow!!!!");
+                            break;
+                    }
+                }
+
+                counter = 0;
+                foreach (var assistsStealsAndTurnoversItem in assistsStealsAndTurnovers.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = assistsStealsAndTurnoversItem.InnerHtml.Trim();
+
+                    switch (counter)
+                    {
+                        case 0:
+                            resultAssists.Add(text.ConvertToNullableInt());
+                            counter++;
+                            break;
+                        case 1:
+                            resultSteals.Add(text.ConvertToNullableInt());
+                            counter++;
+                            break;
+                        case 2:
+                            resultTurnover.Add(text.ConvertToNullableInt());
+                            counter = 0;
+                            break;
+                        default:
+                            Console.WriteLine("Unknow!!!!");
+                            break;
+                    }
+                }
+
+                counter = 0;
+                foreach (var blockItem in blocks.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = blockItem.InnerHtml.Trim();
+
+                    switch (counter)
+                    {
+                        case 0:
+                            resultInFlouverOfBlocks.Add(text.ConvertToNullableInt());
+                            counter++;
+                            break;
+                        case 1:
+                            resultReceivedBlocks.Add(text.ConvertToNullableInt());
+                            counter = 0;
+                            break;
+                        default:
+                            Console.WriteLine("Unknow!!!!");
+                            break;
+                    }
+                }
+
+                counter = 0;
+                foreach (var foulItem in fouls.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = foulItem.InnerHtml.Trim();
+
+                    switch (counter)
+                    {
+                        case 0:
+                            resultCommitedFoul.Add(text.ConvertToNullableInt());
+                            counter++;
+                            break;
+                        case 1:
+                            resultDrawFoul.Add(text.ConvertToNullableInt());
+                            counter = 0;
+                            break;
+                        default:
+                            Console.WriteLine("Unknow!!!!");
+                            break;
+                    }
+                }
+
+                counter = 0;
+                foreach (var pirAndPlusMinusItem in pirAndPlusMinus.QuerySelectorAll("div.game-box-scores-table-grouped-column_tableStatCell__4zJlJ"))
+                {
+                    var text = pirAndPlusMinusItem.InnerHtml.Trim();
+
+                    switch (counter)
+                    {
+                        case 0:
+                            resultRank.Add(text.ConvertToNullableInt());
+                            counter++;
+                            break;
+                        case 1:
+                            resultPlusMinus.Add(text.ConvertToNullableInt());
+                            counter = 0;
+                            break;
+                        default:
+                            Console.WriteLine("Unknow!!!!");
+                            break;
+                    }
+                }
+
+                if (firstTeam)
+                {
+                    for (int i = 0; i < resultNames.Count; i++)
+                    {
+                        homeTeam.Add(new PlayerScore(resultNames[i], resultMinutes[i], resultPoints[i], null,
+                            resultTwoPointsMade[i], resultTwoPointsAttempts[i], resultTwoPointsPrc[i],
+                            resultThreePointsMade[i], resultThreePointsAttempts[i], resultThreePointsPrc[i],
+                            resultFreeThrowPointsMade[i], resultFreeThrowPointsAttempts[i], resultFreeThrowPointsPrc[i],
+                            resultDefenseRebounds[i], resultOffenseRebounds[i], resultTotalRebounds[i],
+                            resultAssists[i], resultSteals[i], resultTurnover[i],
+                            resultInFlouverOfBlocks[i], resultReceivedBlocks[i],
+                            resultCommitedFoul[i], resultDrawFoul[i], 
+                            null, null, null,
+                            resultPlusMinus[i], resultRank[i]));
+                    }
+                    firstTeam = false;
+                }
+                else
+                {
+                    for (int i = 0; i < resultNames.Count; i++)
+                    {
+                        awayTeam.Add(new PlayerScore(resultNames[i], resultMinutes[i], resultPoints[i], null,
+                            resultTwoPointsMade[i], resultTwoPointsAttempts[i], resultTwoPointsPrc[i],
+                            resultThreePointsMade[i], resultThreePointsAttempts[i], resultThreePointsPrc[i],
+                            resultFreeThrowPointsMade[i], resultFreeThrowPointsAttempts[i], resultFreeThrowPointsPrc[i],
+                            resultDefenseRebounds[i], resultOffenseRebounds[i], resultTotalRebounds[i],
+                            resultAssists[i], resultSteals[i], resultTurnover[i],
+                            resultInFlouverOfBlocks[i], resultReceivedBlocks[i],
+                            resultCommitedFoul[i], resultDrawFoul[i],
+                            null, null, null,
+                            resultPlusMinus[i], resultRank[i]));
+                    }
+                }
+            }
+            return (homeTeam, awayTeam);
         }
 
         string ExtractName(string sourceName)
