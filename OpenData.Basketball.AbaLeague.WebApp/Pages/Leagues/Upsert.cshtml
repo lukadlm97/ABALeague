@@ -1,0 +1,91 @@
+﻿@page "{leagueId:int?}"
+@model OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues.CreateModel
+@{
+    var ModelName = "Create/Update League";
+    ViewData["Title"] = ModelName;
+}
+
+@if (Model.IsLoaded)
+{
+  
+    <form asp-page="Create">
+        <div class="form-horizontal">
+            <h4>League</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="League.OfficalName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.OfficalName" class="form-control" />
+                    <span asp-validation-for="League.OfficalName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="League.ShortName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.ShortName" class="form-control" />
+                    <span asp-validation-for="League.ShortName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="League.Season" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.Season" class="form-control" />
+                    <span asp-validation-for="League.Season" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="League.BaseUrl" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.BaseUrl" class="form-control" />
+                    <span asp-validation-for="League.BaseUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="League.BoxScoreUrl" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.BoxScoreUrl" class="form-control" />
+                    <span asp-validation-for="League.BoxScoreUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="League.RosterUrl" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.RosterUrl" class="form-control" />
+                    <span asp-validation-for="League.RosterUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="League.StandingUrl" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.StandingUrl" class="form-control" />
+                    <span asp-validation-for="League.StandingUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="League.CalendarUrl" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.CalendarUrl" class="form-control" />
+                    <span asp-validation-for="League.CalendarUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="League.MatchUrl" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="League.MatchUrl" class="form-control" />
+                    <span asp-validation-for="League.MatchUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </form>
+    
+}
+
+<p>
+    <a asp-page="Index" class="btn btn-primary">Back to List</a>
+</p>

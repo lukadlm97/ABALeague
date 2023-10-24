@@ -42,7 +42,8 @@
                     @Html.DisplayFor(modelItem => item.Season)
                 </td>
                 <td>
-                    <a asp-page="Details" asp-route-leagueId="@item.Id">Details</a>
+                        <a asp-page="Details" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
+                        <a asp-page="Upsert" asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
                 </td>
             </tr>
         }
@@ -56,7 +57,7 @@ else
     </p>
 }
 <p>
-    <a asp-page="Create" class="btn btn-success">Create New</a>
+    <a asp-page="Upsert" class="btn btn-success">Create New</a>
     @*<a asp-action="Create" class="btn btn-primary">Create New</a>
     <a asp-action="Create" class="btn btn-danger">Create New</a>
     <a asp-action="Create" class="btn btn-default">Create New</a>

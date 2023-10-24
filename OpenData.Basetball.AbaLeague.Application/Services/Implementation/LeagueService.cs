@@ -79,7 +79,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 var rawUrl = league.BaseUrl+league.CalendarUrl;
                 var url = string.Format(rawUrl, i+1);
                 var items = await _webPageProcessor.GetRegularSeasonCalendar(url, cancellationToken);
-                matchDayItems.AddRange(items.ToList());
+                var newItems = items.Select(x => (((int?)i, x.HomeTeamName, x.AwayTeamName, x.HomeTeamPoints,
+                    x.AwayTeamPoints, x.Date, x.MatchNo)));
+                matchDayItems.AddRange((IEnumerable<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date, int? MatchNo)>)newItems.ToList());
             }
 
             List<RoundMatchDto> matches = new List<RoundMatchDto>();

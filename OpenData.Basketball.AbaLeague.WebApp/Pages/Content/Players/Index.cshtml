@@ -1,0 +1,60 @@
+﻿@page
+@model Pages.Content.Players.IndexModel
+
+@{
+    var ModelName = "Content creation - players";
+    ViewData["Title"] = ModelName;
+}
+
+
+<h2>@ModelName</h2>
+
+@if (Model.IsSuccess)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Leagues[0].OfficialName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leagues[0].Season)
+            </th>
+            <td>
+
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Leagues) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OfficialName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Season)
+                </td>
+                <td>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Search" class="btn btn-secondary" />
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="container bg-danger">
+        @Model.ErrorMessage
+    </p>
+}
+
+<p>
+    <a asp-page="../Index" class="btn btn-success">Back to main content page</a>
+</p>

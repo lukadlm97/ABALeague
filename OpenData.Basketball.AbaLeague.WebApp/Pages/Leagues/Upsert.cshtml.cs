@@ -1,7 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.CreateLeague;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.UpdateLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
+using OpenData.Basketball.AbaLeague.Domain.Common;
 using OpenData.Basketball.AbaLeague.WebApp.Models;
 
 namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
@@ -15,16 +18,15 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
             _sender = sender;
         }
         [BindProperty] public League League { get; set; } = default!;
-        public int? LeagueId { get; set; }
-        public bool IsLoaded { get; set; } = false;
+        public bool IsLoaded { get; set; } = true;
         public bool IsError { get; set; } = false;
         public string ErrorMessage { get; set; }
 
         public async Task OnGetAsync(int? leagueId, CancellationToken cancellationToken=default)
         {
+            TempData["LeagueId"] = leagueId;
             if (leagueId == null)
             {
-                LeagueId = 0;
                 return;
             }
             IsLoaded = false;
@@ -54,24 +56,49 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
             };
         }
 
-        public async Task OnPostAsync(CancellationToken cancellationToken = default)
+        public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken = default)
         {
             IsLoaded = false;
             IsError = false;
             if (!ModelState.IsValid)
             {
-                IsError = true;
-                ErrorMessage = "Invalid model state";
-                return;
+                IsLoaded = true;
+                return Page();
             }
 
+            var leagueId = (int?) TempData["LeagueId"];
+            Result? result = null;
             try
             {
-                IsLoaded = true;
+                if (leagueId == null)
+                {
+                    result = await _sender.Send(new CreateLeagueCommand(League.OfficalName, League.ShortName,
+                        League.Season, League.StandingUrl, League.CalendarUrl, League.MatchUrl, League.BoxScoreUrl,
+                        League.BaseUrl, League.RosterUrl), cancellationToken);
+                   
+                }
+                else
+                {
+                    result = await _sender.Send(new UpdateLeagueCommand(leagueId ?? 0, League.OfficalName,
+                        League.ShortName,
+                        League.Season, League.StandingUrl, League.CalendarUrl, League.MatchUrl, League.BoxScoreUrl,
+                        League.BaseUrl, League.RosterUrl), cancellationToken);
+                  
+                }
+                if (result.IsSuccess)
+                {
+                    return RedirectToPage("/Leagues/Index");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = result.Error.Message;
+                    return RedirectToPage("/Leagues/Error");
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                TempData["ErrorMessage"] = e.Message;
+                return RedirectToPage("/Leagues/Error");
             }
         }
     }

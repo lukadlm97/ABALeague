@@ -1,0 +1,52 @@
+﻿@page
+@model Pages.Content.Teams.IndexModel
+@{
+    var ModelName = "Content creation - Teams";
+    ViewData["Title"] = ModelName;
+}
+
+
+<h2>@ModelName</h2>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Leagues[0].OfficialName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Leagues[0].Season)
+        </th>
+        <td>
+
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Leagues) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OfficialName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Season)
+            </td>
+            <td>
+                <a asp-page="Draft" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Draft</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<p class="container bg-danger">
+    @Model.ErrorMessage
+</p>
+
+
+<p>
+    <a asp-page="../Index" class="btn btn-success">Back to main content page</a>
+</p>
+
+                

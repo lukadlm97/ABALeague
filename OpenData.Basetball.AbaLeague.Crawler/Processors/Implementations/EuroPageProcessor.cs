@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
-using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
 using OpenData.Basetball.AbaLeague.Crawler.Models;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Utilities;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 {
-    public class EuroPageProcessor : IEuroleagueProcessor
+    public class EuroPageProcessor : IWebPageProcessor
     {
         private readonly IDocumentFetcher _documentFetcher;
 
@@ -81,6 +75,93 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                             rosterItemDto.EndDate));
                     }
                 }
+            }
+
+            return list;
+        }
+
+        public async Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
+        {
+            var webDocument = await _documentFetcher
+                .FetchDocumentBySelenium(calendarUrl, cancellationToken);
+
+            var teams = new List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo)>();
+            var teamElements = webDocument.QuerySelectorAll(".game-center-group_li__Hr15J");
+
+
+            foreach (var teamElement in teamElements)
+            {
+                var time = teamElement.QuerySelectorAll(".game-card-view_time__Po6MA")[0]
+                    .GetAttribute("datetime")
+                    .Trim();
+                var homeTeam = teamElement.QuerySelectorAll(".game-card-view_name__H_Dy2")[0]
+                    .InnerHtml
+                    .Trim();
+                var awayTeam = teamElement.QuerySelectorAll(".game-card-view_name__H_Dy2")[2]
+                    .InnerHtml
+                    .Trim();
+
+                var homeTeamPoints = teamElement.QuerySelectorAll(".game-score_scoreWrapper__jCR8C.game-score__home__K8NwK");
+
+
+                int? homePoints = null;
+                if (homeTeamPoints.Any() && !string.IsNullOrWhiteSpace(homeTeamPoints.First().InnerHtml))
+                {
+                    homePoints = homeTeamPoints.First().InnerHtml.Trim().PointsFromSpan();
+                }
+
+                var awayTeamPoints =
+                    teamElement.QuerySelectorAll(".game-score_scoreWrapper__jCR8C.game-score__away__mGtZB");
+                int? awayPoints = null;
+                if (awayTeamPoints.Any() && !string.IsNullOrWhiteSpace(awayTeamPoints.First().InnerHtml))
+                {
+                    awayPoints = awayTeamPoints.First().InnerHtml.Trim().PointsFromSpan();
+                }
+
+                var url = teamElement.QuerySelectorAll(".game-card-view_linkWrap__EABj1")[0]
+                    .GetAttribute("href")
+                    .Trim();
+                var rightTime = time.ParseDateTimeFromEuroleagueFormat();
+                var matchNo = url.ParesMatchNoFromEuroleagueUrl();
+
+                teams.Add(new( homeTeam, awayTeam, homePoints, awayPoints, rightTime, matchNo));
+            }
+
+            return teams;
+        }
+
+        public async Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
+        {
+            List<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)> list =
+                new List<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>();
+            foreach (var matchUrl in matchUrls)
+            {
+                string? venue = null;
+                int? attendency = null;
+                int? homeTeamPoint = null;
+                int? awayTeamPoint = null;
+                var webDocument = await _documentFetcher
+                    .FetchDocumentBySelenium(matchUrl, cancellationToken);
+
+                var eventDetails = webDocument.QuerySelectorAll("ul.event-info_list__pEwdU > li");
+                var scores =
+                    webDocument.QuerySelectorAll("div.game-hero-score_scoreWrapper__dMBPQ");
+                try
+                {
+                    if (eventDetails.Any() && eventDetails[2] != null && eventDetails[4] != null)
+                    {
+                        venue = eventDetails[2].InnerHtml.ToString().CapitalizeFirstLetter();
+                        attendency = eventDetails[4].InnerHtml.ToString().ExtractEuroleagueAttendance();
+                        homeTeamPoint = scores[0].InnerHtml.ToString().PointsFromSpan();
+                        awayTeamPoint = scores[1].InnerHtml.ToString().PointsFromSpan();
+                        list.Add(new( attendency, venue, homeTeamPoint ?? -1, awayTeamPoint ?? -1));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(matchUrl + ":" + ex.Message);
+                }
+
             }
 
             return list;

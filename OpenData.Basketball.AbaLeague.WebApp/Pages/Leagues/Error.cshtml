@@ -1,0 +1,17 @@
+﻿@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "League Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+<p class="text-danger">
+    <strong>Details:</strong>
+    @Model.ErrorMessage
+</p>
+
+
+<p>
+    <a asp-page="Index" class="btn btn-primary">Back to List</a>
+</p>

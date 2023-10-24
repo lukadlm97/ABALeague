@@ -7,6 +7,7 @@ using OpenData.Basetball.AbaLeague.Crawler.Utilities;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using System.Xml.Linq;
 using System.Numerics;
+using System.Text;
 using OpenData.Basetball.AbaLeague.Crawler.Models;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
@@ -41,13 +42,22 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                     .QuerySelectorAll("a")[0]
                     .GetAttribute("href")
                     .Trim();
-              
 
+                name = RemoveAccents(name);
                 teams.Add((name, url));
             }
 
             return teams;
 
+        }
+        string RemoveAccents(string input)
+        {
+            string normalized = input.Normalize(NormalizationForm.FormKD);
+            Encoding removal = Encoding.GetEncoding(Encoding.ASCII.CodePage,
+                new EncoderReplacementFallback(""),
+                new DecoderReplacementFallback(""));
+            byte[] bytes = removal.GetBytes(normalized);
+            return Encoding.ASCII.GetString(bytes);
         }
 
         public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality, DateTime Start, DateTime? End)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)
@@ -104,12 +114,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return players;
         }
 
-        public async Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date,int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date,int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
         {
             var webDocument = await _documentFether
                 .FetchDocument(calendarUrl, cancellationToken);
 
-            var calendarItems = new List<(int? Round, string HomeTeamName, string AwayTeamName, int HomeTeamPoints, int AwayTeamPoints, DateTime? Date,int? MatchNo)>();
+            var calendarItems = new List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date,int? MatchNo)>();
 
 
 
@@ -186,7 +196,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                      
                     }
 
-                    calendarItems.Add((roundInt,homeTeam,awayTeam,homeTeamPoints,awayTeamPoints,dateTime, matchNo));
+                    calendarItems.Add((homeTeam,awayTeam,homeTeamPoints,awayTeamPoints,dateTime, matchNo));
                 }
             }
 
