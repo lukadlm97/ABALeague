@@ -1,0 +1,59 @@
+﻿@model OpenData.Basetball.AbaLeague.MVCWebApp.Models.LeagueViewModel
+
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Leagues[0].OfficialName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Leagues[0].ShortName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Leagues[0].Season)
+        </th>
+        <td>
+
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model.Leagues.Any())
+    {
+        @foreach (var item in Model.Leagues)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OfficialName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Season)
+                </td>
+                <td>
+                    <a asp-controller="League" asp-action="Details" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
+                        <a asp-controller="League" asp-action="Upsert" asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                        <a asp-controller="League" asp-action="SeasonResources" asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
+                </td>
+            </tr>
+        }
+    }
+        <p>@Model.ErrorMessage</p>
+    </tbody>
+</table>
+<p>
+    <a asp-controller="League" asp-action="Upsert" class="btn btn-success">Create New</a>
+    @*<a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-danger">Create New</a>
+    <a asp-action="Create" class="btn btn-default">Create New</a>
+    <a asp-action="Create" class="btn btn-info">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+    <a asp-action="Create" class="btn btn-warning">Create New</a>*@
+</p>
+

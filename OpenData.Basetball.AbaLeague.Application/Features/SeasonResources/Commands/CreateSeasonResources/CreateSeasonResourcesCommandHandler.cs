@@ -4,11 +4,11 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Commands.CreateSeasonResources
 {
-    internal class CreateSeasonResourcesHandler : ICommandHandler<CreateSeasonResourcesCommand, Result>
+    internal class CreateSeasonResourcesCommandHandler : ICommandHandler<CreateSeasonResourcesCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateSeasonResourcesHandler(IUnitOfWork unitOfWork)
+        public CreateSeasonResourcesCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

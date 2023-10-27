@@ -9,7 +9,8 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
         string CalendarUrl,
         string MatchUrl,
         string BoxScoreUrl,
-        string BaseUrl
+        string BaseUrl,
+        string RosterUrl
         );
     public record LeagueResponse(int Id,
         string OfficialName,
@@ -24,4 +25,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
     );
 
     public record LeaguesResponse(IEnumerable<LeagueResponse> LeagueResponses);
+
+    public record LeaguesRoster(IEnumerable<int> LeagueIds);
 }

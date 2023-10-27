@@ -33,17 +33,24 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                 return Maybe<IEnumerable<TeamDTO>>.None;
             }
 
-            var url = league.BaseUrl + league.StandingUrl;
 
             IWebPageProcessor webPageProcessor = null;
-            if (ProcessorType.Aba == ProcessorType.Aba)
+            if (request.ProcessorType == ProcessorType.Aba)
             {
                 webPageProcessor = new WebPageProcessor(_documentFetcher);
             }
+            else
+            {
+                webPageProcessor = new EuroPageProcessor(_documentFetcher);
+            }
+
+            var url = league.BaseUrl + league.StandingUrl;
             var teams = await webPageProcessor.GetTeams(url, cancellationToken);
+
             var existingSeasonResorces =
                 await _unitOfWork.SeasonResourcesRepository.SearchByLeague(request.LeagueId, cancellationToken);
             var existingTeams = await _unitOfWork.TeamRepository.GetAll(cancellationToken);
+
             var list = new List<TeamDTO>();
             foreach (var (name,teamUrl) in teams)
             {

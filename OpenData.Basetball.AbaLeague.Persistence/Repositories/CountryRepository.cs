@@ -23,5 +23,10 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             return await _dbContext.Countries.SingleOrDefaultAsync(x => x.Id==id, cancellationToken);
 
         }
+
+        public async Task<IEnumerable<Country>?> Get(CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Countries.ToListAsync(cancellationToken);
+        }
     }
 }

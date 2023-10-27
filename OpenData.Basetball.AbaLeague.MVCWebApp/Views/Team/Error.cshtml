@@ -1,0 +1,16 @@
+﻿@model InfoDescriptionViewModel
+@{
+    ViewData["Title"] = "Team Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+<p class="text-danger">
+    <strong>Details:</strong>
+    @Model.Description
+</p>
+
+
+<p>
+    <a asp-area="" asp-controller="League" asp-action="Index" class="btn btn-primary">Back to List</a>
+</p>

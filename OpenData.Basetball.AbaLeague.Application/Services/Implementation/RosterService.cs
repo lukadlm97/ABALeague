@@ -78,7 +78,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 {
                     throw new Exception();
                 }
-                outputCollection.Add(new RosterItemDto(player.Id, leagueId, teamId, rosterItem.Start, rosterItem.End));
+                outputCollection.Add(new RosterItemDto(player.Id, leagueId, rosterItem.Start, rosterItem.End));
             }
 
             return outputCollection;

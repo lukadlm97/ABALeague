@@ -1,0 +1,140 @@
+﻿@model SeasonResourcesViewModel
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Existing resources</h3>
+@if (Model.ExistingTeams.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamName)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamUrl)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.ExistingTeams[0].Url)
+            </th>
+            <td>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.ExistingTeams)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeamUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>
+        There is no existing teams/resources at this section.
+    </p>
+}
+
+<h3>Not existing resources</h3>
+@if (Model.NotExistingResourcesTeams.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                    @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].TeamName)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].TeamUrl)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].Url)
+            </th>
+            <td>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.NotExistingResourcesTeams)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeamUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>
+        There is no existing teams/resources at this section.
+    </p>
+}
+
+<h3>Missing teams</h3>
+@if (Model.MissingTeams.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                    @Html.DisplayNameFor(model => model.MissingTeams[0].TeamName)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.MissingTeams[0].TeamUrl)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.MissingTeams[0].Url)
+            </th>
+            <td>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.MissingTeams)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeamUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+                <td>
+                        <a asp-controller="Team" asp-action="Upsert" asp-route-name="@item.TeamName" asp-route-teamId="null" class="btn btn-outline-primary">Details</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>
+        There is no existing teams/resources at this section.
+    </p>
+}
+
+<a asp-controller="Team" asp-action="Upsert" asp-route-name="null" asp-route-teamId="null" class="btn btn-outline-primary">Create team</a>

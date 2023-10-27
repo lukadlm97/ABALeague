@@ -1,0 +1,60 @@
+﻿@model TeamIndexViewModel
+<h2>@ViewBag.Title</h2>
+
+
+<form asp-controller="Team" asp-action="Search" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@Model.Filter" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Teams[0].Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model =>  model.Teams[0].ShortName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model =>  model.Teams[0].Country)
+        </th>
+        <td>
+
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model.Teams.Any())
+    {
+        @foreach (var item in Model.Teams)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    <a asp-controller="Team" asp-action="Details" asp-route-teamId="@item.Id" class="btn btn-outline-primary">Details</a>
+                    <a asp-controller="Team" asp-action="Upsert" asp-route-name="null" asp-route-teamId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+
+<p>
+    <a asp-controller="Team" asp-action="Upsert" class="btn btn-success">Create New Team</a>
+</p>
+

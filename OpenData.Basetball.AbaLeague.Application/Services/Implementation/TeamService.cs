@@ -125,7 +125,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             List<Team> teams = new List<Team>();
             foreach (var teamDto in teamsDto)
             {
-                var country = await _unitOfWork.CountryRepository.GetById(teamDto.Iso3Code, cancellationToken);
+                var country = await _unitOfWork.CountryRepository.GetById("", cancellationToken);
                 var team = new Team()
                 {
                     Name = teamDto.Name,

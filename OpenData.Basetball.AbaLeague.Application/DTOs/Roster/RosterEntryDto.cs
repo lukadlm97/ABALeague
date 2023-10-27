@@ -9,6 +9,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Roster
         [property: JsonCamelCaseEnumConverter] PositionEnum Position,
         decimal Height, 
         DateTime DateOfBirth, 
-        Country? Nationality,
+        Basetball.AbaLeague.Domain.Entities.Country? Nationality,
         int? NationalityId);
 }

@@ -234,7 +234,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TeamId")
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -546,13 +546,17 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.Team", null)
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.Team", "Team")
                         .WithMany("RosterItems")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("League");
 
                     b.Navigation("Player");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.SeasonResources", b =>

@@ -7,6 +7,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
     {
         Task<Country?> GetById(string nationalitySo3,CancellationToken cancellationToken=default);
         Task<Country?> GetById(int id,CancellationToken cancellationToken=default);
+        Task<IEnumerable<Country>?> Get(CancellationToken cancellationToken=default);
 
     }
 }

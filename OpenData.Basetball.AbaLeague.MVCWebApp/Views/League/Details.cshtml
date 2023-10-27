@@ -1,0 +1,78 @@
+﻿@model DetailsLeagueViewModel
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.IsLoaded)
+{
+    @if (!Model.IsError)
+    {
+        <div class="container">
+            <h3>
+                @Html.DisplayFor(modelItem => modelItem.League.OfficialName)
+            </h3>
+            <p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.OfficialName)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.OfficialName)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.ShortName)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.ShortName)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.Season)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.Season)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.BaseUrl)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.BaseUrl)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.BoxScoreUrl)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.BoxScoreUrl)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.CalendarUrl)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.CalendarUrl)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.RosterUrl)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.RosterUrl)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.MatchUrl)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.MatchUrl)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(modelItem => modelItem.League.StandingUrl)</td>
+                            <td>@Html.DisplayFor(modelItem => modelItem.League.StandingUrl)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </p>
+        </div>
+    }
+    else
+    {
+        <p>
+            @Model.ErrorMessage
+        </p>
+    }
+}
+else
+{
+    <p>Loading...</p>
+}
+
+<p>
+    <a asp-area="" asp-controller="League" asp-action="Index" class="btn btn-primary">Back to List</a>
+</p>
+

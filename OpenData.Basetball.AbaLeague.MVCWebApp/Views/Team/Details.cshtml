@@ -1,0 +1,86 @@
+﻿@model TeamDetailsViewModel
+
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <h3>
+        @Html.DisplayFor(modelItem => modelItem.Name)
+    </h3>
+    <p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Property</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>@Html.DisplayNameFor(modelItem => modelItem.Name)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.Name)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(modelItem => modelItem.ShortName)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.ShortName)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(modelItem => modelItem.Country)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.Country)</td>
+            </tr>
+            </tbody>
+        </table>
+    </p>
+    <h3>Last available roster</h3>
+    <p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(modelItem => modelItem.RosterItems[0].Name)</th>
+                <th>@Html.DisplayNameFor(modelItem => modelItem.RosterItems[0].Height)</th>
+                <th>@Html.DisplayNameFor(modelItem => modelItem.RosterItems[0].DateOfBirth)</th>
+                <th>@Html.DisplayNameFor(modelItem => modelItem.RosterItems[0].Country)</th>
+                <th />
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.RosterItems.Any())
+            {
+                @foreach (var item in Model.RosterItems)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Height)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateOfBirth)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country)
+                        </td>
+                        <td>
+                            <a asp-controller="Team" asp-action="Details" asp-route-teamId="@item.Id" class="btn btn-outline-primary">Details</a>
+                            <a asp-controller="Team" asp-action="Upsert" asp-route-name="null" asp-route-teamId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <p>
+                    Not available roster details
+                </p>
+            }
+          
+            </tbody>
+        </table>
+    </p>
+</div>
+
+<p>
+    <a asp-controller="Team" asp-action="Index" class="btn btn-outline-primary">Back</a>
+    <a asp-controller="Team" asp-action="Upsert" asp-route-teamId="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+</p>

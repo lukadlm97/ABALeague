@@ -10,5 +10,10 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Player
         [property: JsonCamelCaseEnumConverter] PositionEnum Position,
         decimal Height,
         DateTime DateOfBirth,
-        Country Nationality);
+        Basetball.AbaLeague.Domain.Entities.Country Nationality);
+
+    public record PlayerDTO(int Id, string Name, PositionEnum Position, decimal Height,
+        DateTime DateOfBirth, int CountryId);
+
+    public record PlayerResponse(IEnumerable<PlayerDTO> Players);
 }
