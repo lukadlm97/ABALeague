@@ -78,6 +78,48 @@
             </tbody>
         </table>
     </p>
+    <h3>History of available rosters</h3>
+    <p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.RosterHistory[0].LeagueName)</th>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.RosterHistory[0].Season)</th>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.RosterHistory[0].Url)</th>
+                    <th />
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.RosterItems.Any())
+                {
+                    @foreach (var item in Model.RosterHistory)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LeagueName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Season)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Url)
+                            </td>
+                            <td>
+                                <a asp-controller="Roster" asp-action="History" asp-route-leagueId="@item.LeagueId" asp-route-teamId="@Model.Id" class="btn btn-outline-primary">Investigate</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <p>
+                        Not available rosters history 
+                    </p>
+                }
+
+            </tbody>
+        </table>
+    </p>
 </div>
 
 <p>

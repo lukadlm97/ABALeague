@@ -1,0 +1,69 @@
+﻿@model IndexPlayerViewModel 
+
+<h3>
+    List of all playeres that is saved at system
+</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Players[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Players[0].DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Players[0].Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Players[0].Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Players[0].Position)
+            </th>
+            <td>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Players.Any())
+        {
+            @foreach (var item in Model.Players)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Height)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position)
+                    </td>
+                    <td>
+                        <a asp-controller="Player" asp-action="Details" asp-route-playerId="@item.Id" class="btn btn-outline-primary">Details</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <p>Problems with loading players</p>
+        }
+            
+    </tbody>
+</table>
+
+
+
+
+
+
+

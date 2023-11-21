@@ -1,0 +1,79 @@
+﻿@model DetailsPlayerViewModel
+
+<h2>@ViewBag.Title</h2>
+
+
+<div class="container">
+    <h3>
+        @Html.DisplayFor(modelItem => modelItem.PlayerDetails.Name)
+    </h3>
+    <p>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayNameFor(modelItem => modelItem.PlayerDetails.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => modelItem.PlayerDetails.Name)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(modelItem => modelItem.PlayerDetails.DateOfBirth)</td>
+                    <td>@Html.DisplayFor(modelItem => modelItem.PlayerDetails.DateOfBirth)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(modelItem => modelItem.PlayerDetails.Height)</td>
+                    <td>@Html.DisplayFor(modelItem => modelItem.PlayerDetails.Height)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(modelItem => modelItem.PlayerDetails.Position)</td>
+                    <td>@Html.DisplayFor(modelItem => modelItem.PlayerDetails.Position)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(modelItem => modelItem.PlayerDetails.Country)</td>
+                    <td>@Html.DisplayFor(modelItem => modelItem.PlayerDetails.Country)</td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+    <h3>Last available roster</h3>
+    <p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.Rosters[0].LeagueName)</th>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.Rosters[0].TeamName)</th>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.Rosters[0].Url)</th>
+                    <th />
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Rosters.Any())
+                {
+                    @foreach (var item in Model.Rosters)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LeagueName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TeamName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Url)
+                            </td>
+                            <td>
+                                <a asp-controller="League" asp-action="Details" asp-route-teamId="@item.LeagueId" class="btn btn-outline-primary">Details</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <p>
+                        Not available roster details
+                    </p>
+                }
+
+            </tbody>
+        </table>
+    </p>
+</div>

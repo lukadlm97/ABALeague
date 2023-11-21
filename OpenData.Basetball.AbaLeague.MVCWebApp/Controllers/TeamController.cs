@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
-using OpenData.Basetball.AbaLeague.Persistence.Migrations;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Country;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Player;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
+using OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Queries.GetSeasonResourcesByTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.CreateTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.UpdateTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById;
@@ -223,6 +224,12 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
 
+            var rosterResources = await _sender.Send(new GetSeasonResourcesByTeamQuery(team.Value.Id ?? 0), cancellationToken);
+            if (leagues.HasNoValue)
+            {
+                return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
+            }
+
             TeamDetailsViewModel? detailsViewModel = null;
 
             if (!leagues.Value.LeagueIds.Any())
@@ -237,8 +244,18 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 };
                 return View(detailsViewModel);
             }
-            var rosterItems =
-                await _sender.Send(new GetRosterByTeamIdQuery(team.Value.Id ?? 0, leagues.Value.LeagueIds.Max()), cancellationToken);
+
+            Maybe<RosterResponse>? rosterItems = null;
+            var listOfValues = leagues.Value.LeagueIds.ToList();
+            for (int  i = listOfValues.Count() - 1; i > -1; i--)
+            {
+                rosterItems  = await _sender.Send(new GetRosterByTeamIdQuery(team.Value.Id ?? 0, listOfValues[i]), cancellationToken);
+                if (rosterItems.HasValue && rosterItems.Value.Items.Any())
+                {
+                    break;
+                }
+            }
+
 
             if (rosterItems.HasNoValue)
             {
@@ -268,6 +285,26 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     });
                 }
             }
+            List<SeasonResourceViewModel> history = new List<SeasonResourceViewModel>();
+
+            foreach (var rosterItem in rosterResources.Value)
+            {
+                
+                if (rosterItem != null)
+                {
+                    history.Add(new SeasonResourceViewModel()
+                    {
+                        LeagueId = rosterItem.LeagueId,
+                        LeagueName = rosterItem.LeagueName,
+                        Season = rosterItem.Season,
+                        ShortName = rosterItem.ShortName,
+                        TeamName = rosterItem.TeamName,
+                        Url = rosterItem.Url
+                    });
+                }
+            }
+
+
 
             detailsViewModel = new TeamDetailsViewModel()
             {
@@ -275,7 +312,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 ShortName = team.Value.ShortName,
                 Country = ReturnCountryName(countries.Value.Countries, team.Value.CountryId ?? 0),
                 Name = team.Value.Name,
-                RosterItems = list
+                RosterItems = list,
+                RosterHistory = history
             };
             
             return View(detailsViewModel);

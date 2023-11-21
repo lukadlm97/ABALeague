@@ -7,5 +7,6 @@
         public DateTime DateOfBirth { get; set; }
         public decimal Height { get; set; }
         public string Country { get; set; }
+        public string Position { get; set; }
     }
 }

@@ -1,0 +1,66 @@
+﻿@model RosterHistoryViewModel
+
+<h2>
+    Roster history
+</h2>
+
+<h3>
+    @Model.TeamName - @Model.LeagueName
+</h3>
+
+<div class="container">
+    <p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.RosterItems[0].Name)</th>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.RosterItems[0].Height)</th>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.RosterItems[0].DateOfBirth)</th>
+                    <th>@Html.DisplayNameFor(modelItem => modelItem.RosterItems[0].Country)</th>
+                    <th />
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.RosterItems.Any())
+                {
+                    @foreach (var item in Model.RosterItems)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Height)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfBirth)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Country)
+                            </td>
+                            <td>
+                                <a asp-controller="Player" asp-action="Details" asp-route-playerId="@item.Id" class="btn btn-outline-primary">Details</a>
+                                <a asp-controller="Team" asp-action="Upsert" asp-route-name="null" asp-route-teamId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <p>
+                        Not available roster details
+                    </p>
+                }
+
+
+            </tbody>
+        </table>
+    </p>
+</div>
+
+<p>
+    <a asp-controller="Team" asp-action="Details" asp-route-teamId="@Model.TeamId" class="btn btn-outline-primary">Back to Team details</a>
+    <a asp-controller="League" asp-action="Details" asp-route-teamId="@Model.TeamId" class="btn btn-outline-primary">Back to League details</a>
+</p>
+
+
