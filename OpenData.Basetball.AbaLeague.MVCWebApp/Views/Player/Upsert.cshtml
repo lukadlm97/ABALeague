@@ -1,0 +1,53 @@
+﻿@model UpsertPlayerViewModel
+
+
+
+<div class="form-horizontal">
+    <h4>Player</h4>
+    <hr />
+    <form asp-controller="Team" asp-action="Save" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div> 
+        <div class="form-group">
+            <label asp-for="DateOfBirth" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Height" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Height" class="form-control" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Countries)
+            <div class="col-md-10">
+                <select asp-for="SelectedCountryId" class="form-control" asp-items="Model.Countries"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Positions)
+            <div class="col-md-10">
+                <select asp-for="SelectedPositionId" class="form-control" asp-items="Model.Positions"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+
+        </div>
+    </form>
+    <p>
+        <a asp-controller="Player" asp-action="Index" class="btn btn-outline-primary">Back</a>
+    </p>
+</div>

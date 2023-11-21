@@ -49,6 +49,7 @@
                     </td>
                     <td>
                         <a asp-controller="Player" asp-action="Details" asp-route-playerId="@item.Id" class="btn btn-outline-primary">Details</a>
+                        <a asp-controller="Player" asp-action="Upsert" asp-route-playerId="@item.Id" class="btn btn-outline-secondary">Edit</a>
                     </td>
                 </tr>
             }
@@ -61,7 +62,9 @@
     </tbody>
 </table>
 
-
+<p>
+    <a asp-controller="Player" asp-action="Upsert" class="btn btn-success">Create New Player</a>
+</p>
 
 
 

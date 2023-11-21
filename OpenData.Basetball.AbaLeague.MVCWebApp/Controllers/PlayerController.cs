@@ -1,12 +1,18 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
+using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterHistoryByPlayer;
+using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.CreateTeam;
+using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.UpdateTeam;
+using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById;
+using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 {
@@ -104,6 +110,97 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             });
         }
 
+        public async Task<IActionResult> Upsert(int? playerId, CancellationToken cancellationToken = default)
+        {
+            var countries = await _sender.Send(new GetCountriesQuery(), cancellationToken);
+            var positions = await _sender.Send(new GetPositionQuery(), cancellationToken);
+            if (countries.HasNoValue || positions.HasNoValue)
+            {
+                return View("Error");
+            }
+            var viewModel = new UpsertPlayerViewModel()
+            {
+                Countries = new SelectList(countries.Value.Countries, "CountryId", "Name"),
+                Positions = new SelectList(positions.Value, "Id", "Name"),
+            };
+
+            if (playerId.HasValue)
+            {
+                var existingPlayer = await _sender.Send(new GetPlayerQuery(playerId.Value), cancellationToken);
+                if (existingPlayer.HasNoValue)
+                {
+                    return View("Error", new InfoDescriptionViewModel()
+                    {
+                        Description = "Unable to find existing team"
+                    });
+                }
+
+                viewModel.Name = existingPlayer.Value.Name;
+                viewModel.DateOfBirth = existingPlayer.Value.DateOfBirth;
+                viewModel.Height = existingPlayer.Value.Height;
+                viewModel.Id = existingPlayer.Value.Id;
+                viewModel.SelectedCountryId = existingPlayer.Value.CountryId.ToString();
+                viewModel.SelectedPositionId = ((int)existingPlayer.Value.Position).ToString();
+            }
+
+            return View(viewModel);
+        }
+        public async Task<IActionResult> Save(UpsertPlayerViewModel upsertPlayerViewModel, CancellationToken cancellationToken = default)
+        {
+            if (!int.TryParse(upsertPlayerViewModel.SelectedCountryId, out int countryId))
+            {
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = "Unable to parse country id"
+                });
+            }
+
+            if (!int.TryParse(upsertPlayerViewModel.SelectedPositionId, out int positionId))
+            {
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = "Unable to parse position id"
+                });
+            }
+            Result? result = null;
+            if (upsertPlayerViewModel.Id == null)
+            {
+                result =
+                   await _sender.Send(
+                       new CreateTeamCommand(upsertPlayerViewModel.Name, upsertPlayerViewModel.ShortCode,
+                           countryId), cancellationToken);
+
+                if (result.IsFailure)
+                {
+                    return View("Error", new InfoDescriptionViewModel()
+                    {
+                        Description = result.Error.Message
+                    });
+                }
+
+                return View("Success", new InfoDescriptionViewModel()
+                {
+                    Description = "Successfully saved new team!"
+                });
+            }
+
+
+            result = await _sender.Send(
+                new UpdateTeamCommand(upsertPlayerViewModel.Id ?? 0, upsertPlayerViewModel.Name, upsertPlayerViewModel.ShortCode,
+                    countryId), cancellationToken);
+            if (result.IsFailure)
+            {
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = result.Error.Message
+                });
+            }
+
+            return View("Success", new InfoDescriptionViewModel()
+            {
+                Description = "Successfully saved team's update!"
+            });
+        }
 
     }
 }

@@ -30,9 +30,17 @@
                     <td>@Html.DisplayNameFor(modelItem => modelItem.PlayerDetails.Country)</td>
                     <td>@Html.DisplayFor(modelItem => modelItem.PlayerDetails.Country)</td>
                 </tr>
+                <tr>
+                    <td>
+                        Change bio
+                    </td>
+                    <td>
+                        <a asp-controller="Player" asp-action="Upsert" asp-route-playerId="@Model.PlayerId" class="btn btn-outline-secondary">Edit</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
-    </p>
+       </p>
     <h3>Last available roster</h3>
     <p>
 
