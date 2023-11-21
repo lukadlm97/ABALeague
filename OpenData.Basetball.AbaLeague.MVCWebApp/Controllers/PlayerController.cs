@@ -162,7 +162,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     Description = "Unable to parse position id"
                 });
             }
+            throw new NotImplementedException();
             Result? result = null;
+            /*
             if (upsertPlayerViewModel.Id == null)
             {
                 result =
@@ -199,7 +201,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             return View("Success", new InfoDescriptionViewModel()
             {
                 Description = "Successfully saved team's update!"
-            });
+            });*/
         }
 
     }
