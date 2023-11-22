@@ -5,6 +5,8 @@ using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.CreatePlayer;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.UpdatePlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
@@ -122,6 +124,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 Countries = new SelectList(countries.Value.Countries, "CountryId", "Name"),
                 Positions = new SelectList(positions.Value, "Id", "Name"),
+                DateOfBirth = DateTime.Now.Date.AddYears(-20)
             };
 
             if (playerId.HasValue)
@@ -162,15 +165,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     Description = "Unable to parse position id"
                 });
             }
-            throw new NotImplementedException();
             Result? result = null;
-            /*
-            if (upsertPlayerViewModel.Id == null)
+            if(upsertPlayerViewModel.Id == null)
             {
-                result =
-                   await _sender.Send(
-                       new CreateTeamCommand(upsertPlayerViewModel.Name, upsertPlayerViewModel.ShortCode,
-                           countryId), cancellationToken);
+                result = await _sender.Send(new CreatePlayerCommand(upsertPlayerViewModel.Name, positionId, upsertPlayerViewModel.Height, upsertPlayerViewModel.DateOfBirth, countryId), cancellationToken);
 
                 if (result.IsFailure)
                 {
@@ -182,14 +180,12 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
                 return View("Success", new InfoDescriptionViewModel()
                 {
-                    Description = "Successfully saved new team!"
+                    Description = "Successfully saved new player!"
                 });
             }
 
-
             result = await _sender.Send(
-                new UpdateTeamCommand(upsertPlayerViewModel.Id ?? 0, upsertPlayerViewModel.Name, upsertPlayerViewModel.ShortCode,
-                    countryId), cancellationToken);
+               new UpdatePlayerCommand(upsertPlayerViewModel.Id ?? 0, upsertPlayerViewModel.Name, positionId, upsertPlayerViewModel.Height, upsertPlayerViewModel.DateOfBirth, countryId), cancellationToken);
             if (result.IsFailure)
             {
                 return View("Error", new InfoDescriptionViewModel()
@@ -200,8 +196,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             return View("Success", new InfoDescriptionViewModel()
             {
-                Description = "Successfully saved team's update!"
-            });*/
+                Description = "Successfully saved player's update!"
+            });
         }
 
     }

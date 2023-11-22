@@ -1,0 +1,73 @@
+﻿@model CreatePlayersViewModel
+
+
+
+
+<h3>
+    Create players from block list
+</h3>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayersDraft[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayersDraft[0].DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayersDraft[0].Countries)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayersDraft[0].Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayersDraft[0].Positions)
+            </th>
+            <td>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.PlayersDraft.Any())
+        {
+            @foreach (var item in Model.PlayersDraft)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SelectedCountryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Height)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SelectedPositionId)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <p>Problems with loading players</p>
+        }
+
+    </tbody>
+</table>
+
+
+<p>
+    <a asp-controller="Player" asp-action="CreateBlock" class="btn btn-success">Create Players</a>
+    <a asp-controller="Player" asp-action="Index" class="btn btn-close">Cancel</a>
+</p>
+
