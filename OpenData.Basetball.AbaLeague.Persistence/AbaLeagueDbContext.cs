@@ -26,6 +26,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence
         public DbSet<RoundMatch> RoundMatches { get; set; }
         public DbSet<Result> Results { get; set; }
         public DbSet<BoxScore> BoxScores { get; set; }
+        public DbSet<ProcessorType> ProcessorTypes { get; set; }
   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

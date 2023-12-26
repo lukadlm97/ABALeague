@@ -35,7 +35,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 var url =
                     string.Format(league.MatchUrl, roundMatch.MatchNo);
 
-                var items = await _webPageProcessor.GetMatchResult(new List<string>(){url}, cancellationToken);
+                var items = await _webPageProcessor.GetMatchScores(new List<(int,string)>(){(roundMatch.MatchNo,url)}, cancellationToken);
                 var item = items.FirstOrDefault();
 
                 resultSet.Add(new ResultDto(roundMatch.Id,roundMatch.HomeTeam.Name,roundMatch.AwayTeam.Name,item.Attendency,item.Venue,item.HomeTeamPoint,item.AwayTeamPoint));
@@ -59,7 +59,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 var url =
                     string.Format(league.MatchUrl, roundMatch.MatchNo);
 
-                var items = await _webPageProcessor.GetMatchResult(new List<string>() { url }, cancellationToken);
+                var items = await _webPageProcessor.GetMatchScores(new List<(int,string)>() { (roundMatch.MatchNo, url) }, cancellationToken);
                 var item = items.FirstOrDefault();
 
                 resultSet.Add(new ResultDto(roundMatch.Id, roundMatch.HomeTeam.Name, roundMatch.AwayTeam.Name, item.Attendency, item.Venue, item.HomeTeamPoint, item.AwayTeamPoint));

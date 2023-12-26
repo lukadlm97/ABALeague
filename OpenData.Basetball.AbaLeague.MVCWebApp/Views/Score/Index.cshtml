@@ -1,0 +1,192 @@
+﻿@model OpenData.Basetball.AbaLeague.MVCWebApp.Models.ScoreViewModel
+
+<h2>@ViewBag.Title</h2>
+
+<h4>Score page</h4>
+
+<h4>Draft scores waiting for approval</h4>
+<form asp-controller="Score" asp-action="AddScores" method="post" asp-route-scoreLeagueId="@Model.LeagueId">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OnWaitingScores[0].MatchNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OnWaitingScores[0].HomeTeamName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OnWaitingScores[0].AwayTeamName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OnWaitingScores[0].HomeTeamPoints)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OnWaitingScores[0].AwayTeamPoints)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OnWaitingScores[0].Venue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OnWaitingScores[0].Attendency)
+                </th>
+                <td>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-success">Create Score From Draft</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.OnWaitingScores != null && Model.OnWaitingScores.Any())
+            {
+                @foreach (var item in Model.OnWaitingScores)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MatchNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HomeTeamName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AwayTeamName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HomeTeamPoints)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AwayTeamPoints)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Venue)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Attendency)
+                        </td>
+                        <td>
+                            <a asp-controller="Boxscore" asp-action="index" asp-route-matchId="@item.Id" class="btn btn-outline-primary">Boxscore</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</form>
+
+
+<h4>Existing scores for league</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OnWaitingScores[0].MatchNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScores[0].HomeTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScores[0].AwayTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScores[0].HomeTeamPoints)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScores[0].AwayTeamPoints)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScores[0].Venue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScores[0].Attendency)
+            </th>
+            <td>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ExistingScores != null && Model.ExistingScores.Any())
+        {
+            @foreach (var item in Model.ExistingScores)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatchNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeTeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AwayTeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeTeamPoints)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AwayTeamPoints)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Venue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Attendency)
+                    </td>
+                    <td>
+                        <a asp-controller="Boxscore" asp-action="index" asp-route-matchId="@item.Id" class="btn btn-outline-primary">Boxscore</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+<h4>To be played in next weeks</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OnWaitingScores[0].MatchNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToBePlayed[0].HomeTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToBePlayed[0].AwayTeamName)
+            </th>
+            <td>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ToBePlayed != null && Model.ToBePlayed.Any())
+        {
+            @foreach (var item in Model.ToBePlayed)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatchNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeTeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AwayTeamName)
+                    </td>
+                    <td>
+                        <a asp-controller="Boxscore" asp-action="index" asp-route-matchId="@item.Id" class="btn btn-outline-primary">Boxscore</a>
+                      </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+<p>
+    <a asp-controller="Content" asp-action="Index" class="btn btn-primary">Back to list</a>
+</p>
+
+

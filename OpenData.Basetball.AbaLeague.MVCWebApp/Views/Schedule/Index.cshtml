@@ -1,0 +1,213 @@
+﻿@model OpenData.Basetball.AbaLeague.MVCWebApp.Models.ScheduleViewModel
+
+<h2>@ViewBag.Title</h2>
+
+<h4>Draft schedule</h4>
+<form asp-controller="Schedule" asp-action="AddSchedule" method="post" asp-route-scheduleLeagueId="@Model.LeagueId">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewScheduleItems[0].Round)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewScheduleItems[0].MatchNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewScheduleItems[0].HomeTeamName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewScheduleItems[0].AwayTeamName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewScheduleItems[0].DateTime)
+                </th>
+                <td>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-success">Create</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.NewScheduleItems.Any())
+            {
+                @foreach (var item in Model.NewScheduleItems)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Round)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MatchNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HomeTeamName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AwayTeamName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateTime)
+                        </td>
+                        <td>
+                            <a asp-controller="Content" asp-action="Schedule" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
+                            <a asp-controller="Content" asp-action="Result" asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                            <a asp-controller="Content" asp-action="Boxscore" asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</form>
+
+
+<h4>On plan schedule</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PlanedItems[0].Round)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlanedItems[0].MatchNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlanedItems[0].HomeTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlanedItems[0].AwayTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlanedItems[0].DateTime)
+            </th>
+            <td>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.PlanedItems != null && Model.PlanedItems.Any())
+        {
+            @foreach (var item in Model.PlanedItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Round)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatchNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeTeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AwayTeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        <a asp-controller="Content" asp-action="Schedule" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
+                        <a asp-controller="Content" asp-action="Result" asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                        <a asp-controller="Content" asp-action="Boxscore" asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+<h4>Existing schedule</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScheduleItems[0].Round)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScheduleItems[0].MatchNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScheduleItems[0].HomeTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScheduleItems[0].AwayTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScheduleItems[0].DateTime)
+            </th>
+            <td>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ExistingScheduleItems.Any())
+        {
+            @foreach (var item in Model.ExistingScheduleItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Round)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatchNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeTeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AwayTeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        <a asp-controller="Content" asp-action="Schedule" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
+                        <a asp-controller="Content" asp-action="Result" asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                        <a asp-controller="Content" asp-action="Boxscore" asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h4>Missing teams</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Team name
+            </th>
+            <td>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MissingTeams.Any())
+        {
+            @foreach (var item in Model.MissingTeams)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item)
+                    </td>
+                    <td>
+                        <a asp-controller="Content" asp-action="Schedule" asp-route-leagueId="@item" class="btn btn-outline-primary">Details</a>
+                        <a asp-controller="Content" asp-action="Result" asp-route-leagueId="@item" class="btn btn-outline-secondary">Edit</a>
+                        <a asp-controller="Content" asp-action="Boxscore" asp-route-leagueId="@item" class="btn btn-outline-dark">Resources</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<p>
+    <a asp-controller="Content" asp-action="Index" class="btn btn-primary">Back to list</a>
+</p>
+

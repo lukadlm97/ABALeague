@@ -12,7 +12,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation
 {
-    public class DocumentFetcher:IDocumentFetcher
+    public class DocumentFetcher : IDocumentFetcher
     {
         private readonly CrawlerSettings _crawlerSettings;
         private readonly ILogger<DocumentFetcher> _logger;
@@ -22,12 +22,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation
             _crawlerSettings = options.Value;
             _logger = logger;
         }
-        public async Task<IDocument> FetchDocument(string leagueUrl, CancellationToken cancellationToken)
+        public async Task<IDocument> FetchDocument(string url, CancellationToken cancellationToken)
         {
             IConfiguration configuration = Configuration.Default.WithDefaultLoader();
             IBrowsingContext context = BrowsingContext.New(configuration);
             IDocument document = await context
-                .OpenAsync(leagueUrl, cancellationToken);
+                .OpenAsync(url, cancellationToken);
 
             return document;
         }
@@ -36,7 +36,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation
         {
             ChromeDriver driver = new ChromeDriver();
             driver.Navigate().GoToUrl(url);
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
             try
             {
 

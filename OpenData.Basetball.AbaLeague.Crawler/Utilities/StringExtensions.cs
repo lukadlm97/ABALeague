@@ -274,6 +274,35 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
 
         }
 
-        
+        public static string ReplaceSpecialCharactersWithC(this string input)
+        {
+            // Define the characters to be replaced
+            char[] charactersToReplace = { 'Ć', 'Č', 'ć', 'č' };
+
+            // Use LINQ to replace characters
+            input = new string(input.Select(c => charactersToReplace.Contains(c) ? 'c' : c).ToArray());
+
+            return input;
+        }
+        public static string ReplaceSpecialCharactersWithZ(this string input)
+        {
+            // Define the characters to be replaced
+            char[] charactersToReplace = { 'Ž', 'ž' };
+
+            // Use LINQ to replace characters
+            input = new string(input.Select(c => charactersToReplace.Contains(c) ? 'z' : c).ToArray());
+
+            return input;
+        }
+        public static string ReplaceSpecialCharactersWithS(this string input)
+        {
+            // Define the characters to be replaced
+            char[] charactersToReplace = { 'Š', 'š' };
+
+            // Use LINQ to replace characters
+            input = new string(input.Select(c => charactersToReplace.Contains(c) ? 's' : c).ToArray());
+
+            return input;
+        }
     }
 }

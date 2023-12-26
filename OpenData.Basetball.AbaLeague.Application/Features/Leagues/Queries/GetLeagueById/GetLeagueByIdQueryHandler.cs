@@ -36,7 +36,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                 league.MatchUrl,
                 league.BoxScoreUrl,
                 league.RosterUrl,
-                league.BaseUrl);
+                league.BaseUrl,
+                league.ProcessorTypeId);
 
             return response;
         }

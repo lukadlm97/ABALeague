@@ -9,16 +9,22 @@ using System.Xml.Linq;
 using System.Numerics;
 using System.Text;
 using OpenData.Basetball.AbaLeague.Crawler.Models;
+using AngleSharp.Dom;
+using System.Text.RegularExpressions;
+using System.Reflection.Metadata;
+using Microsoft.Extensions.Logging;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 {
-    public class WebPageProcessor:IWebPageProcessor
+    public class WebPageProcessor : IWebPageProcessor
     {
         private readonly IDocumentFetcher _documentFether;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public WebPageProcessor(IDocumentFetcher documentFether)
+        public WebPageProcessor(IDocumentFetcher documentFether, ILoggerFactory loggerFactory)
         {
             _documentFether = documentFether;
+            _loggerFactory = loggerFactory;
         }
         public async Task<IReadOnlyList<(string Name, string Url)>> GetTeams(string leagueUrl,
             CancellationToken cancellationToken = default)
@@ -114,14 +120,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return players;
         }
 
-        public async Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date,int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date,int? MatchNo, int? Round)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
         {
             var webDocument = await _documentFether
                 .FetchDocument(calendarUrl, cancellationToken);
 
-            var calendarItems = new List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date,int? MatchNo)>();
-
-
+            var calendarItems = new List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date,int? MatchNo, int? Round)>();
 
             var calendarItem = webDocument.QuerySelectorAll(".panel");
 
@@ -145,9 +149,9 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 }
                 var homeTeam = string.Empty;
                 var awayTeam = string.Empty;
-                var homeTeamPoints = (int)0;
-                var awayTeamPoints = (int)0;
-                int? matchNo = (int?)0;
+                var homeTeamPoints = (int?) null;
+                var awayTeamPoints = (int?) null;
+                int? matchNo = (int?) null;
                 DateTime? dateTime = null;
                 Console.WriteLine(round);
                 var matchdayItems = item.QuerySelectorAll("table > tbody > tr");
@@ -180,10 +184,13 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                         }
                         if (i == 1)
                         {
-                            var points = col.QuerySelectorAll("a")[0].InnerHtml.Trim();
-                            var teamsPoint = points.ParseTeamPoints();
-                             homeTeamPoints = teamsPoint.FirstOrDefault();
-                             awayTeamPoints = teamsPoint.LastOrDefault();
+                            if (col.QuerySelectorAll("a").Any())
+                            {
+                                var points = col.QuerySelectorAll("a")[0].InnerHtml.Trim();
+                                var teamsPoint = points.ParseTeamPoints();
+                                homeTeamPoints = teamsPoint.FirstOrDefault();
+                                awayTeamPoints = teamsPoint.LastOrDefault();
+                            }
 
                             i++; continue;
                         }
@@ -196,36 +203,92 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                      
                     }
 
-                    calendarItems.Add((homeTeam,awayTeam,homeTeamPoints,awayTeamPoints,dateTime, matchNo));
+                    calendarItems.Add
+                        (
+                            (
+                            homeTeam.ReplaceSpecialCharactersWithZ()
+                            .ReplaceSpecialCharactersWithC()
+                            .ReplaceSpecialCharactersWithS()
+                                .CapitalizeFirstLetter(), 
+                            awayTeam.ReplaceSpecialCharactersWithZ()
+                            .ReplaceSpecialCharactersWithC()
+                            .ReplaceSpecialCharactersWithS()
+                                .CapitalizeFirstLetter(), homeTeamPoints, awayTeamPoints, dateTime, matchNo, roundInt
+                            )
+                        );
                 }
             }
 
             return calendarItems;
         }
 
-        public async Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? MatchNo, int? Attendency, string? Venue, int? HomeTeamPoint, int? AwayTeamPoint)>>
+            GetMatchScores(IEnumerable<(int matchNo, string url)> matchResources, CancellationToken cancellationToken = default)
         {
-            var matchDetails = new List<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>();
+            var matchDetails = new List<(int? MatchNo, int? Attendency, string? Venue, int? HomeTeamPoint, int? AwayTeamPoint)>();
 
-            foreach (var matchUrl in matchUrls)
+            List<Task<(int no,IDocument? document)>> documents = new List<Task<(int no, IDocument? document)>>();
+            foreach (var (no, url) in matchResources)
             {
-                var webDocument = await _documentFether
-                    .FetchDocument(matchUrl, cancellationToken);
+                documents.Add(GetScore(no, url));
+            }
 
-                var result = webDocument.QuerySelectorAll("table > tbody > tr > td.gameScore")[0];
-                var points = result.InnerHtml.ParseTeamPoints();
-                int homeTeamPoints = points.First();
-                int awayTeamPoints = points.Last();
+            var matchNoDocumentPair = await Task.WhenAll(documents);
+
+            if (matchNoDocumentPair.Any(x => x.document == null))
+            {
+                return Array.Empty<(int? MatchNo, int? Attendency, string? Venue, int? HomeTeamPoint, int? AwayTeamPoint)>();
+            }
+
+            foreach (var (no, document) in matchNoDocumentPair)
+            {
+                if (document == null)
+                {
+                    matchDetails.Add((no, null, null, null, null));
+                    continue;
+                }
+                try
+                {
+                    var result = document.QuerySelectorAll("table > tbody > tr > td.gameScore")[0];
+                    var points = result.InnerHtml.ParseTeamPoints();
+                    if (points == null || !points.Any())
+                    {
+                        matchDetails.Add((no, null, null, null, null));
+                        continue;
+                    }
+                    int homeTeamPoints = points.First();
+                    int awayTeamPoints = points.Last();
+
+                    var venueAndAttendencyRaw = document.QuerySelectorAll(".dateAndVenue_container")[0].InnerHtml;
+                    var venue = venueAndAttendencyRaw.ExtractVenue();
+                    var attendance = venueAndAttendencyRaw.ExtractAttendance();
+
+                    matchDetails.Add((no, attendance, venue, homeTeamPoints, awayTeamPoints));
+                }
+                catch(Exception ex)
+                {
+                    var logger = _loggerFactory.CreateLogger("Values");
+                    logger.LogError("{0} occurred for match no {1}", ex.Message, no);
+                }
                 
-                var venueAndAttendencyRaw = webDocument.QuerySelectorAll(".dateAndVenue_container")[0].InnerHtml;
-                var venue = venueAndAttendencyRaw.ExtractVenue();
-                var attendance = venueAndAttendencyRaw.ExtractAttendance();
-
-                matchDetails.Add((attendance,venue,homeTeamPoints,awayTeamPoints));
             }
 
             return matchDetails;
         }
+
+        async Task<(int no, IDocument? document)> GetScore(int no, string url, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var document = await _documentFether.FetchDocument(url, cancellationToken);
+                return (no, document);
+            }
+            catch(Exception ex)
+            {
+                return (no, null);
+            }
+        }
+
 
         public async Task<(IReadOnlyList<PlayerScore>
             HomeTeam,
@@ -245,7 +308,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 foreach (var playerRow in homeTeamPlayers)
                 {
                     var columns = playerRow.QuerySelectorAll("td");
-                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href").ExtractNameFromUrl();
+                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href").ExtractNameFromUrl().ReplaceSpecialCharactersWithZ().ReplaceSpecialCharactersWithC().ReplaceSpecialCharactersWithS();
                     var minutes = columns[2].InnerHtml;
                     var min = minutes.ConvertToNullableTimeSpan();
                     if (minutes == "00:00")
@@ -289,7 +352,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 foreach (var playerRow in awayTeamPlayers)
                 {
                     var columns = playerRow.QuerySelectorAll("td");
-                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href").ExtractNameFromUrl();
+                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href").ExtractNameFromUrl().ReplaceSpecialCharactersWithZ().ReplaceSpecialCharactersWithC().ReplaceSpecialCharactersWithS();
                     var minutes = columns[2].InnerHtml;
                     var min = minutes.ConvertToNullableTimeSpan();
                     if (minutes == "00:00")
@@ -330,6 +393,11 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             
 
             return (homeBoxScore,awayBoxScore);
+        }
+
+        public Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)>> GetRegularSeasonCalendar(int round, string calendarUrl, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }

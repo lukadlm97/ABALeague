@@ -7,6 +7,7 @@ using OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Team;
 using OpenData.Basketball.AbaLeague.Domain.Enums;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId
 {
@@ -14,11 +15,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDocumentFetcher _documentFetcher;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public GetTeamsByLeagueIdQueryHandler(IUnitOfWork unitOfWork, IDocumentFetcher documentFetcher)
+        public GetTeamsByLeagueIdQueryHandler(IUnitOfWork unitOfWork, IDocumentFetcher documentFetcher, ILoggerFactory loggerFactory)
         {
             _unitOfWork = unitOfWork;
             _documentFetcher = documentFetcher;
+            _loggerFactory = loggerFactory;
         }
         public async Task<Maybe<IEnumerable<TeamDTO>>> Handle(GetTeamsByLeagueIdQuery request, CancellationToken cancellationToken)
         {
@@ -37,7 +40,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
             IWebPageProcessor webPageProcessor = null;
             if (request.ProcessorType == ProcessorType.Aba)
             {
-                webPageProcessor = new WebPageProcessor(_documentFetcher);
+                webPageProcessor = new WebPageProcessor(_documentFetcher, _loggerFactory);
             }
             else
             {

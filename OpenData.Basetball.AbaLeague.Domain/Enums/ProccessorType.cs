@@ -2,10 +2,10 @@
 
 namespace OpenData.Basketball.AbaLeague.Domain.Enums
 {
-    public enum ProcessorType
+    public enum ProcessorType : short
     {
-        Unknow = 0,
-        Euro=1,
-        Aba=2
+        Unknow = 1,
+        Euro = 2,
+        Aba = 3
     }
 }

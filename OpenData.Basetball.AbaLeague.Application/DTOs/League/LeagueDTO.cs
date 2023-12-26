@@ -10,7 +10,8 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
         string MatchUrl,
         string BoxScoreUrl,
         string BaseUrl,
-        string RosterUrl
+        string RosterUrl,
+        short ProcessorTypeId
         );
     public record LeagueResponse(int Id,
         string OfficialName,
@@ -21,7 +22,8 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
         string MatchUrl,
         string BoxScoreUrl,
         string RosterUrl,
-        string BaseUrl
+        string BaseUrl,
+        short? ProcessorTypeId
     );
 
     public record LeaguesResponse(IEnumerable<LeagueResponse> LeagueResponses);

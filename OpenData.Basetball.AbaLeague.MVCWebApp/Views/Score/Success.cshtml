@@ -1,0 +1,16 @@
+﻿@model InfoDescriptionViewModel
+@{
+    ViewData["Title"] = "Success";
+}
+
+<h1 class="text-success">Success.</h1>
+<h2 class="text-success">Your request has executed well.</h2>
+<p class="text-success">
+    <strong>Details:</strong>
+    @Model.Description
+</p>
+
+
+<p>
+    <a asp-area="" asp-controller="Content" asp-action="Index" class="btn btn-primary">Back Content Page</a>
+</p>

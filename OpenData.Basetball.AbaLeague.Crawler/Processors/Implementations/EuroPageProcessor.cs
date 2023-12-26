@@ -80,12 +80,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return list;
         }
 
-        public async Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)>> GetRegularSeasonCalendar(int round, string calendarUrl, CancellationToken cancellationToken)
         {
             var webDocument = await _documentFetcher
                 .FetchDocumentBySelenium(calendarUrl, cancellationToken);
 
-            var teams = new List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo)>();
+            var teams = new List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)>();
             var teamElements = webDocument.QuerySelectorAll(".game-center-group_li__Hr15J");
 
 
@@ -124,24 +124,25 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 var rightTime = time.ParseDateTimeFromEuroleagueFormat();
                 var matchNo = url.ParesMatchNoFromEuroleagueUrl();
 
-                teams.Add(new( homeTeam, awayTeam, homePoints, awayPoints, rightTime, matchNo));
+                teams.Add(new(homeTeam, awayTeam, homePoints, awayPoints, rightTime, matchNo, null));
             }
 
             return teams;
         }
 
-        public async Task<IReadOnlyList<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(IEnumerable<string> matchUrls, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(int? MatchNo, int? Attendency, string? Venue, int? HomeTeamPoint, int? AwayTeamPoint)>>
+            GetMatchScores(IEnumerable<(int matchNo, string url)> matchResources, CancellationToken cancellationToken = default)
         {
-            List<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)> list =
-                new List<(int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>();
-            foreach (var matchUrl in matchUrls)
+            List<(int? MatchNo, int? Attendency, string? Venue, int? HomeTeamPoint, int? AwayTeamPoint)> list =
+                new List<(int? MatchNo, int? Attendency, string? Venue, int? HomeTeamPoint, int? AwayTeamPoint)>();
+            foreach (var (no, url) in matchResources)
             {
                 string? venue = null;
                 int? attendency = null;
                 int? homeTeamPoint = null;
                 int? awayTeamPoint = null;
                 var webDocument = await _documentFetcher
-                    .FetchDocumentBySelenium(matchUrl, cancellationToken);
+                    .FetchDocumentBySelenium(url, cancellationToken);
 
                 var eventDetails = webDocument.QuerySelectorAll("ul.event-info_list__pEwdU > li");
                 var scores =
@@ -154,25 +155,25 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                         attendency = eventDetails[4].InnerHtml.ToString().ExtractEuroleagueAttendance();
                         homeTeamPoint = scores[0].InnerHtml.ToString().PointsFromSpan();
                         awayTeamPoint = scores[1].InnerHtml.ToString().PointsFromSpan();
-                        list.Add(new( attendency, venue, homeTeamPoint ?? -1, awayTeamPoint ?? -1));
+                        list.Add(new(no, attendency, venue, homeTeamPoint ?? -1, awayTeamPoint ?? -1));
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(matchUrl + ":" + ex.Message);
+                    Console.WriteLine(url + ":" + ex.Message);
                 }
 
             }
 
             return list;
         }
-
-        public async Task<IReadOnlyList<(int? Round, string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo)>> GetRegularSeasonCalendar(int round, string calendarUrl, CancellationToken cancellationToken = default)
+        /*
+        public async Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)>> GetRegularSeasonCalendar(int round, string calendarUrl, CancellationToken cancellationToken = default)
         {
             var webDocument = await _documentFetcher
                 .FetchDocumentBySelenium(calendarUrl, cancellationToken);
 
-            var teams = new List<(int? Round, string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo)>();
+            var teams = new List<( string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)>();
             var teamElements = webDocument.QuerySelectorAll(".game-center-group_li__Hr15J");
 
 
@@ -211,12 +212,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                var rightTime = time.ParseDateTimeFromEuroleagueFormat();
                var matchNo= url.ParesMatchNoFromEuroleagueUrl();
 
-               teams.Add(new(round, homeTeam, awayTeam, homePoints, awayPoints, rightTime, matchNo));
+               teams.Add(new( homeTeam, awayTeam, homePoints, awayPoints, rightTime, matchNo, round));
             }
 
             return teams;
         }
-
+        */
         public async Task<IReadOnlyList<(int MatchId, int? Attendency, string Venue, int HomeTeamPoint, int AwayTeamPoint)>> GetMatchResult(
             IEnumerable<(int MatchId, string MatchUrl)> matchUrls, CancellationToken cancellationToken = default)
         {
@@ -532,5 +533,9 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             return firstName + " " + lastName;
         }
 
+        public Task<IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)>> GetRegularSeasonCalendar(string calendarUrl, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

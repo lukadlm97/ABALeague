@@ -1,11 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId;
+using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
+using OpenData.Basketball.AbaLeague.Application.Features.ProcessorTypes.Queries;
 using OpenData.Basketball.AbaLeague.Domain.Enums;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
@@ -41,9 +44,15 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
         public async Task<IActionResult> Upsert(int? leagueId, CancellationToken cancellationToken = default)
         {
+            var processorType = await _sender.Send(new GetProcessorTypeQuery(), cancellationToken);
+            if (processorType.HasNoValue)
+            {
+                return View("Error");
+            }
             var leagueViewModel = new CreateLeagueViewModel()
             {
-                League = new LeagueDto(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty,string.Empty, string.Empty)
+                League = new LeagueDto(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty,string.Empty, string.Empty, 1),
+                ProcessorTypes = new SelectList(processorType.Value, "Id", "Name"),
             };
             var modelName = "Insert";
             if (leagueId == null)
@@ -59,7 +68,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             leagueViewModel.League = new LeagueDto(results.Value.OfficialName, results.Value.ShortName,
                 results.Value.Season, results.Value.StandingUrl, results.Value.CalendarUrl, results.Value.MatchUrl,
-                results.Value.BoxScoreUrl, results.Value.BaseUrl, results.Value.RosterUrl);
+                results.Value.BoxScoreUrl, results.Value.BaseUrl, results.Value.RosterUrl, results.Value.ProcessorTypeId??1);
+            leagueViewModel.SelectedProcessorTypeId =  (results.Value.ProcessorTypeId ?? 1).ToString();
+           
 
             ViewBag.Title = "Update";
             return View(leagueViewModel);

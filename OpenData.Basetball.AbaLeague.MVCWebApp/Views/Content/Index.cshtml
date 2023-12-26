@@ -1,0 +1,39 @@
+﻿@model OpenData.Basetball.AbaLeague.MVCWebApp.Models.ContentViewModel
+
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Leagues[0].Name)
+            </th>
+            <td>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Leagues.Any())
+        {
+            @foreach (var item in Model.Leagues)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-controller="Schedule" asp-action="Index" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Schedule</a>
+                        <a asp-controller="Score" asp-action="Index" asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Score</a>
+                        <a asp-controller="Content" asp-action="Boxscore" asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<p>
+    <a asp-controller="League" asp-action="Upsert" class="btn btn-success">Create New League</a>
+</p>
+

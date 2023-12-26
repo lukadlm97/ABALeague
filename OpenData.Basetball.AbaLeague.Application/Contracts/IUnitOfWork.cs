@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Application.Contracts;
+using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basetball.AbaLeague.Application.Contracts
 {
@@ -13,6 +14,7 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         IPlayerRepository PlayerRepository { get; }
         ITeamRepository TeamRepository { get; }
         IGenericRepository<League> LeagueRepository { get; }
+        IGenericRepository<ProcessorType> ProcessorTypeRepository { get; }
         ISeasonResourcesRepository SeasonResourcesRepository { get; }
         ICountryRepository CountryRepository { get; }
         IPositionRepository PositionRepository { get; }

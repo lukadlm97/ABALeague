@@ -53,9 +53,9 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         {
             var league = await _dbContext.Leagues
                 .Include(x => x.RoundMatches)
-                .ThenInclude(x => x.AwayTeam)
+                    .ThenInclude(x => x.AwayTeam)
                 .Include(x => x.RoundMatches)
-                .ThenInclude(x => x.HomeTeam)
+                    .ThenInclude(x => x.HomeTeam)
                 .FirstOrDefaultAsync(x => x.Id == leagueId, cancellationToken);
             if (league == null)
             {
