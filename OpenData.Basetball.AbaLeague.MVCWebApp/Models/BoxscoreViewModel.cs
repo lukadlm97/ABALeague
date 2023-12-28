@@ -7,6 +7,7 @@
         public IList<BoxscoreItemViewModel> DraftBoxscoreItems { get; set; }
         public IList<BoxscoreItemViewModel> ExistingBoxscoreItems { get; set; }
         public IList<DraftRosterItemViewModel> DraftRosterItems { get; set; }
+        public IList<string> MissingPlayerItems { get; set; }
 
     }
 }

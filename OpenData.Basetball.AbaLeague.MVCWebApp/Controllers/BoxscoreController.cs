@@ -121,7 +121,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     PointFromFastBreak = x.PointFromFastBreak,
                     PlusMinus = x.PlusMinus,
                     RankValue = x.RankValue
-                }).ToList(),
+                }
+                ).ToList(),
+                MissingPlayerItems = result.Value.MissingPlayers.ToList(),
             };
 
             return View(boxscoreViewModel);

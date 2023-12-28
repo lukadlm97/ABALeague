@@ -226,6 +226,38 @@
 </table>
 
 
+<h5>Missing player items</h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Player name
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MissingPlayerItems != null && Model.MissingPlayerItems.Any())
+        {
+            @foreach (var item in Model.MissingPlayerItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item)
+                    </td>
+                    <td>
+                        <a asp-controller="Player" asp-action="UpsertWithName"
+                           asp-route-playerName="@item"
+                           class="btn btn-outline-dark">Create Player</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
