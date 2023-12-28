@@ -55,7 +55,7 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         }
 
         [HttpPost("roster/{teamId}")]
-        public async Task<IActionResult> Add( int teamId, IEnumerable<DraftRosterEntry> entries,CancellationToken cancellationToken)
+        public async Task<IActionResult> Add( int teamId, IEnumerable<DraftRosterItemDto> entries,CancellationToken cancellationToken)
         {
             var roster = await _teamService.Add(teamId, entries, cancellationToken);
 

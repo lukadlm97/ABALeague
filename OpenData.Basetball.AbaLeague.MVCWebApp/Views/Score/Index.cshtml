@@ -1,6 +1,6 @@
 ﻿@model OpenData.Basetball.AbaLeague.MVCWebApp.Models.ScoreViewModel
 
-<h2>@ViewBag.Title</h2>
+
 
 <h4>Score page</h4>
 
@@ -67,7 +67,7 @@
                             @Html.DisplayFor(modelItem => item.Attendency)
                         </td>
                         <td>
-                            <a asp-controller="Boxscore" asp-action="index" asp-route-matchId="@item.Id" class="btn btn-outline-primary">Boxscore</a>
+                            <a asp-controller="Boxscore" asp-action="Index" asp-route-matchResultId="@item.Id" asp-route-leagueId="@Model.LeagueId" class="btn btn-outline-dark">Resources</a>
                         </td>
                     </tr>
                 }
@@ -134,7 +134,7 @@
                         @Html.DisplayFor(modelItem => item.Attendency)
                     </td>
                     <td>
-                        <a asp-controller="Boxscore" asp-action="index" asp-route-matchId="@item.Id" class="btn btn-outline-primary">Boxscore</a>
+                        <a asp-controller="Boxscore" asp-action="Index" asp-route-matchResultId="@item.Id" asp-route-leagueId="@Model.LeagueId" class="btn btn-outline-dark">Boxscore</a>
                     </td>
                 </tr>
             }

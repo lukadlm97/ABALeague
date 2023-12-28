@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
@@ -148,6 +149,28 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             return View(viewModel);
         }
+
+        public async Task<IActionResult> UpsertWithName(string playerName, int leagueId, CancellationToken cancellationToken = default)
+        {
+            var countries = await _sender.Send(new GetCountriesQuery(), cancellationToken);
+            var positions = await _sender.Send(new GetPositionQuery(), cancellationToken);
+            if (countries.HasNoValue || positions.HasNoValue)
+            {
+                return View("Error");
+            }
+            var viewModel = new UpsertPlayerViewModel()
+            {
+                Countries = new SelectList(countries.Value.Countries, "CountryId", "Name"),
+                Positions = new SelectList(positions.Value, "Id", "Name"),
+                DateOfBirth = DateTime.Now.Date.AddYears(-20)
+            };
+
+            viewModel.Name = playerName;
+            viewModel.ComplexRouting = true;
+            viewModel.LeagueId = leagueId;
+
+            return View("Upsert",viewModel);
+        }
         public async Task<IActionResult> Save(UpsertPlayerViewModel upsertPlayerViewModel, CancellationToken cancellationToken = default)
         {
             if (!int.TryParse(upsertPlayerViewModel.SelectedCountryId, out int countryId))
@@ -176,6 +199,12 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     {
                         Description = result.Error.Message
                     });
+                }
+
+                if (upsertPlayerViewModel.ComplexRouting)
+                {
+                    string redirectUrl = $"/Roster/Draft/{upsertPlayerViewModel.LeagueId}";
+                    return Redirect(redirectUrl);
                 }
 
                 return View("Success", new InfoDescriptionViewModel()

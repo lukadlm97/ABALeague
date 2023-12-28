@@ -114,6 +114,11 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                     .InnerHtml
                     .Trim();
 
+                name = name.ReplaceSpecialCharactersWithZ()
+                                            .ReplaceSpecialCharactersWithC()
+                                            .ReplaceSpecialCharactersWithS()
+                                            .ReplaceSpecialCharactersWithDJ()
+                                            .ToTitleCase();
                 players.Add( (no, name, position, height, dateOfBirth, natinality, DateTime.Now.ToUniversalTime(), null));
             }
 
@@ -209,10 +214,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                             homeTeam.ReplaceSpecialCharactersWithZ()
                             .ReplaceSpecialCharactersWithC()
                             .ReplaceSpecialCharactersWithS()
+                            .ReplaceSpecialCharactersWithDJ()
                                 .CapitalizeFirstLetter(), 
                             awayTeam.ReplaceSpecialCharactersWithZ()
                             .ReplaceSpecialCharactersWithC()
                             .ReplaceSpecialCharactersWithS()
+                            .ReplaceSpecialCharactersWithDJ()
                                 .CapitalizeFirstLetter(), homeTeamPoints, awayTeamPoints, dateTime, matchNo, roundInt
                             )
                         );
@@ -308,7 +315,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 foreach (var playerRow in homeTeamPlayers)
                 {
                     var columns = playerRow.QuerySelectorAll("td");
-                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href").ExtractNameFromUrl().ReplaceSpecialCharactersWithZ().ReplaceSpecialCharactersWithC().ReplaceSpecialCharactersWithS();
+                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href")
+                                            .ExtractNameFromUrl()
+                                            .ReplaceSpecialCharactersWithZ()
+                                            .ReplaceSpecialCharactersWithC()
+                                            .ReplaceSpecialCharactersWithS()
+                                            .ReplaceSpecialCharactersWithDJ();
                     var minutes = columns[2].InnerHtml;
                     var min = minutes.ConvertToNullableTimeSpan();
                     if (minutes == "00:00")
@@ -352,7 +364,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 foreach (var playerRow in awayTeamPlayers)
                 {
                     var columns = playerRow.QuerySelectorAll("td");
-                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href").ExtractNameFromUrl().ReplaceSpecialCharactersWithZ().ReplaceSpecialCharactersWithC().ReplaceSpecialCharactersWithS();
+                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href")
+                                            .ExtractNameFromUrl()
+                                            .ReplaceSpecialCharactersWithZ()
+                                            .ReplaceSpecialCharactersWithC()
+                                            .ReplaceSpecialCharactersWithS()
+                                            .ReplaceSpecialCharactersWithDJ();
                     var minutes = columns[2].InnerHtml;
                     var min = minutes.ConvertToNullableTimeSpan();
                     if (minutes == "00:00")

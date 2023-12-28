@@ -61,7 +61,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
         {
             var teams = await _unitOfWork.SeasonResourcesRepository.SearchByLeague(leagueId, cancellationToken);
             var players = await _unitOfWork.PlayerRepository.GetAll(cancellationToken);
-            List<(int, DraftRosterEntry)> list = new List<(int, DraftRosterEntry)>();
+            List<(int, DraftRosterItemDto)> list = new List<(int, DraftRosterItemDto)>();
             List<RosterItemDto> outputCollection = new List<RosterItemDto>();
 
             foreach (var team in teams)
@@ -84,7 +84,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return outputCollection;
         }
 
-        public async Task<IEnumerable<DraftRosterEntry>> Get(int leagueId, int teamId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<DraftRosterItemDto>> Get(int leagueId, int teamId, CancellationToken cancellationToken = default)
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var seasonResource = await _unitOfWork.SeasonResourcesRepository.SearchByTeam(teamId, cancellationToken);
@@ -92,17 +92,17 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 .FirstOrDefault(x=> x.LeagueId == leagueId);
             if (singleSeasonResources == null)
             {
-                return new List<DraftRosterEntry>();
+                return new List<DraftRosterItemDto>();
             }
             var roster = await _webPageProcessor.GetRoster(string.Format(league.RosterUrl, singleSeasonResources.IncrowdUrl), cancellationToken);
-            List<DraftRosterEntry> outputCollection = new List<DraftRosterEntry>();
+            List<DraftRosterItemDto> outputCollection = new List<DraftRosterItemDto>();
             var players = await _unitOfWork.PlayerRepository.GetAll(cancellationToken);
             foreach (var rosterItem in roster)
             {
                 var player = players.FirstOrDefault(x=> x.Name == rosterItem.Name);
                 if (player != null)
                 {
-                    var newEntry = new DraftRosterEntry(player.Id, player.Name, leagueId, league.OfficalName, rosterItem.Start, rosterItem.End);
+                    var newEntry = new DraftRosterItemDto(player.Id, player.Name, leagueId, league.OfficalName, 0,"",  rosterItem.Start, rosterItem.End);
                     outputCollection.Add(newEntry);
                 }
             }
@@ -111,7 +111,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
         }
 
-        public async Task<IEnumerable<DraftRosterEntry>> Add(int teamId, IEnumerable<DraftRosterEntry> entries, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<DraftRosterItemDto>> Add(int teamId, IEnumerable<DraftRosterItemDto> entries, CancellationToken cancellationToken = default)
         {
             var team = await _unitOfWork.TeamRepository.Get(teamId, cancellationToken);
             if (team.RosterItems == null)
@@ -150,7 +150,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
              await _unitOfWork.Save();
 
              return team.RosterItems.Select(x =>
-                 new DraftRosterEntry(x.PlayerId, x.Player.Name, x.LeagueId, x.League.OfficalName, x.DateOfInsertion, x.EndOfActivePeriod));
+                 new DraftRosterItemDto(x.PlayerId, x.Player.Name, x.LeagueId, x.League.OfficalName, x.TeamId, x.Team.Name, x.DateOfInsertion, x.EndOfActivePeriod));
         }
 
         public async Task<IEnumerable<int>> Add(IEnumerable<AddRosterItemDto> entries, CancellationToken cancellationToken = default)

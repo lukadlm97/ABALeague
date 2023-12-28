@@ -24,7 +24,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             _unitOfWork = unitOfWork;
             _euroleagueProcessor = euroleagueProcessor;
         }
-        public async Task<(IEnumerable<BoxScoreDto> homePlayers, IEnumerable<BoxScoreDto> awayPlayers, IEnumerable<string> missingPlayers)> GetScore(int leagueId, int matchNo, CancellationToken cancellationToken = default)
+        public async Task<(IEnumerable<BoxScoreItemDto> homePlayers, IEnumerable<BoxScoreItemDto> awayPlayers, IEnumerable<string> missingPlayers)> GetScore(int leagueId, int matchNo, CancellationToken cancellationToken = default)
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId,cancellationToken);
             var match = await _unitOfWork.CalendarRepository.SearchByMatchNo(leagueId, matchNo, cancellationToken);
@@ -33,8 +33,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
             var statUrl = string.Format(league.BoxScoreUrl, match.MatchNo);
             var (homeTeamStats, awayTeamStats) = await _webPageProcessor.GetBoxScore(statUrl, cancellationToken);
-            List<BoxScoreDto> homePlayersStat = new List<BoxScoreDto>();
-            List<BoxScoreDto> awayPlayersStat = new List<BoxScoreDto>();
+            List<BoxScoreItemDto> homePlayersStat = new List<BoxScoreItemDto>();
+            List<BoxScoreItemDto> awayPlayersStat = new List<BoxScoreItemDto>();
             List<string> missingPlayerAtRoster = new List<string>();
 
             foreach (var homeTeamStat in homeTeamStats)
@@ -47,7 +47,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                         missingPlayerAtRoster.Add(rosterHomeTeam.Name + " -> " + homeTeamStat.Name);
                         continue;
                     }
-                    var newBoxScore = new BoxScoreDto(rosterItem.Id, match.Id, rosterItem.Player.Name, match.Round,
+                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterHomeTeam.Name, match.Round,
                         match.MatchNo, homeTeamStat.Minutes,
                         homeTeamStat.Points, homeTeamStat.ShotPrc, homeTeamStat.ShotMade2Pt,
                         homeTeamStat.ShotAttempted2Pt, homeTeamStat.ShotPrc2Pt, homeTeamStat.ShotMade3Pt,
@@ -77,7 +77,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                         missingPlayerAtRoster.Add(rosterAwayTeam.Name + " -> " + awayTeamStat.Name);
                         continue;
                     }
-                    var newBoxScore = new BoxScoreDto(rosterItem.Id, match.Id, rosterItem.Player.Name, match.Round,
+                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterAwayTeam.Name, match.Round,
                         match.MatchNo, awayTeamStat.Minutes,
                         awayTeamStat.Points, awayTeamStat.ShotPrc, awayTeamStat.ShotMade2Pt,
                         awayTeamStat.ShotAttempted2Pt, awayTeamStat.ShotPrc2Pt, awayTeamStat.ShotMade3Pt,
@@ -102,12 +102,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return (homePlayersStat, awayPlayersStat,missingPlayerAtRoster);
         }
 
-        public async Task<(IEnumerable<BoxScoreDto> playersScore, IEnumerable<string> missingPlayers)> GetRoundBoxScore(int leagueId, int roundNo, CancellationToken cancellationToken = default)
+        public async Task<(IEnumerable<BoxScoreItemDto> playersScore, IEnumerable<string> missingPlayers)> GetRoundBoxScore(int leagueId, int roundNo, CancellationToken cancellationToken = default)
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var matches = await _unitOfWork.CalendarRepository.SearchByRoundNo(leagueId, roundNo, cancellationToken);
 
-            List<BoxScoreDto> outputCollection = new List<BoxScoreDto>();
+            List<BoxScoreItemDto> outputCollection = new List<BoxScoreItemDto>();
             List<string> missingPlayerScoreDto = new List<string>();
 
             foreach (var matchNo in matches.Select(x=>x.MatchNo))
@@ -127,12 +127,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
         }
 
-        public async Task<(IEnumerable<BoxScoreDto> playersScore, IEnumerable<string> missingPlayers)> GetEuroleagueRoundBoxScore(int leagueId, int roundNo, CancellationToken cancellationToken = default)
+        public async Task<(IEnumerable<BoxScoreItemDto> playersScore, IEnumerable<string> missingPlayers)> GetEuroleagueRoundBoxScore(int leagueId, int roundNo, CancellationToken cancellationToken = default)
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var matches = await _unitOfWork.CalendarRepository.SearchByRoundNo(leagueId, roundNo, cancellationToken);
 
-            List<BoxScoreDto> outputCollection = new List<BoxScoreDto>();
+            List<BoxScoreItemDto> outputCollection = new List<BoxScoreItemDto>();
             List<string> missingPlayerScoreDto = new List<string>();
 
             foreach (var matchNo in matches.Select(x => x.MatchNo))
@@ -149,7 +149,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return (outputCollection, missingPlayerScoreDto);
         }
 
-        public async Task<(IEnumerable<BoxScoreDto> playersScore, IEnumerable<string> missingPlayers)> GetEuroleagueMatchBoxScore(int leagueId, int matchNo, CancellationToken cancellationToken = default)
+        public async Task<(IEnumerable<BoxScoreItemDto> playersScore, IEnumerable<string> missingPlayers)> GetEuroleagueMatchBoxScore(int leagueId, int matchNo, CancellationToken cancellationToken = default)
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var match = await _unitOfWork.CalendarRepository.SearchByMatchNo(leagueId, matchNo, cancellationToken);
@@ -160,8 +160,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
             var (homeTeamStats, awayTeamStats) = await _euroleagueProcessor.GetBoxScore(statUrl, cancellationToken);
            
-            List<BoxScoreDto> homePlayersStat = new List<BoxScoreDto>();
-            List<BoxScoreDto> awayPlayersStat = new List<BoxScoreDto>();
+            List<BoxScoreItemDto> homePlayersStat = new List<BoxScoreItemDto>();
+            List<BoxScoreItemDto> awayPlayersStat = new List<BoxScoreItemDto>();
             List<string> missingPlayerAtRoster = new List<string>();
 
             foreach (var homeTeamStat in homeTeamStats)
@@ -176,7 +176,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                         missingPlayerAtRoster.Add(rosterHomeTeam.Name + " -> " + homeTeamStat.Name);
                         continue;
                     }
-                    var newBoxScore = new BoxScoreDto(rosterItem.Id, match.Id, rosterItem.Player.Name, match.Round,
+                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterHomeTeam.Name, match.Round,
                         match.MatchNo, homeTeamStat.Minutes,
                         homeTeamStat.Points, homeTeamStat.ShotPrc, homeTeamStat.ShotMade2Pt,
                         homeTeamStat.ShotAttempted2Pt, homeTeamStat.ShotPrc2Pt, homeTeamStat.ShotMade3Pt,
@@ -208,7 +208,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                         missingPlayerAtRoster.Add(rosterAwayTeam.Name + " -> " + awayTeamStat.Name);
                         continue;
                     }
-                    var newBoxScore = new BoxScoreDto(rosterItem.Id, match.Id, rosterItem.Player.Name, match.Round,
+                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterAwayTeam.Name, match.Round,
                         match.MatchNo, awayTeamStat.Minutes,
                         awayTeamStat.Points, awayTeamStat.ShotPrc, awayTeamStat.ShotMade2Pt,
                         awayTeamStat.ShotAttempted2Pt, awayTeamStat.ShotPrc2Pt, awayTeamStat.ShotMade3Pt,
@@ -233,24 +233,24 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return (homePlayersStat, missingPlayerAtRoster);
         }
 
-        public Task<IEnumerable<(IEnumerable<BoxScoreDto> homePlayers, IEnumerable<BoxScoreDto> awayPlayers)>> AddScore(int leagueId, int matchId, IEnumerable<AddBoxScoreDto> homePlayers, IEnumerable<AddBoxScoreDto> awayPlayers,
+        public Task<IEnumerable<(IEnumerable<BoxScoreItemDto> homePlayers, IEnumerable<BoxScoreItemDto> awayPlayers)>> AddScore(int leagueId, int matchId, IEnumerable<AddBoxScoreDto> homePlayers, IEnumerable<AddBoxScoreDto> awayPlayers,
             CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
 
-        public async Task<IEnumerable<BoxScoreDto>> AddScore(int leagueId, int roundNo, IEnumerable<AddBoxScoreDto> playerScores, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<BoxScoreItemDto>> AddScore(int leagueId, int roundNo, IEnumerable<AddBoxScoreDto> playerScores, CancellationToken cancellationToken = default)
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var matches = await _unitOfWork.CalendarRepository.SearchByRoundNo(leagueId, roundNo, cancellationToken);
 
             if (league == null || matches == null)
             {
-                return Array.Empty<BoxScoreDto>();
+                return Array.Empty<BoxScoreItemDto>();
             }
 
-            List<BoxScoreDto> output = new List<BoxScoreDto>();
+            List<BoxScoreItemDto> output = new List<BoxScoreItemDto>();
             foreach (var addBoxScoreDto in playerScores)
             {
                 if (!await _unitOfWork.BoxScoreRepository.Exist(addBoxScoreDto.MatchRoundId, addBoxScoreDto.RosterItemId,
@@ -298,7 +298,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     await _unitOfWork.BoxScoreRepository.Add(newItem, cancellationToken);
                     await _unitOfWork.Save();
 
-                    var outputItem = new BoxScoreDto(0, newItem.RoundMatchId, rosterItem.PlayerId.ToString(), roundMatch.Round, roundMatch.MatchNo);
+                    var outputItem = new BoxScoreItemDto(0, newItem.RoundMatchId, rosterItem.PlayerId.ToString(), rosterItem.TeamId.ToString(), roundMatch.Round, roundMatch.MatchNo);
 
                     output.Add(outputItem);
                 }
@@ -307,7 +307,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return output;
         }
 
-        public async Task<IEnumerable<BoxScoreDto>> AddScore(int leagueId, IEnumerable<AddBoxScoreDto> playerScores, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<BoxScoreItemDto>> AddScore(int leagueId, IEnumerable<AddBoxScoreDto> playerScores, CancellationToken cancellationToken = default)
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var rounds = playerScores.Select(x => x.Round).Distinct();
@@ -316,15 +316,15 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                 var matches = await _unitOfWork.CalendarRepository.SearchByRoundNo(leagueId, round, cancellationToken);
                 if (matches == null || !matches.Any())
                 {
-                    return Array.Empty<BoxScoreDto>();
+                    return Array.Empty<BoxScoreItemDto>();
                 }
             }
             if (league == null)
             {
-                return Array.Empty<BoxScoreDto>();
+                return Array.Empty<BoxScoreItemDto>();
             }
 
-            List<BoxScoreDto> output = new List<BoxScoreDto>();
+            List<BoxScoreItemDto> output = new List<BoxScoreItemDto>();
             foreach (var addBoxScoreDto in playerScores)
             {
                 if (!await _unitOfWork.BoxScoreRepository.Exist(addBoxScoreDto.MatchRoundId, addBoxScoreDto.RosterItemId,
@@ -372,7 +372,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     await _unitOfWork.BoxScoreRepository.Add(newItem, cancellationToken);
                     await _unitOfWork.Save();
 
-                    var outputItem = new BoxScoreDto(0, newItem.RoundMatchId, rosterItem.PlayerId.ToString(), roundMatch.Round, roundMatch.MatchNo);
+                    var outputItem = new BoxScoreItemDto(0, newItem.RoundMatchId, rosterItem.PlayerId.ToString(), rosterItem.TeamId.ToString(), roundMatch.Round, roundMatch.MatchNo);
 
                     output.Add(outputItem);
                 }

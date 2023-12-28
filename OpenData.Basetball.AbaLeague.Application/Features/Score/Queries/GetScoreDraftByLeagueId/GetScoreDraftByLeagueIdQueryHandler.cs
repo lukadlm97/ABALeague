@@ -181,6 +181,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
             return new ScoreDto(draftItems, existingItems, plannedItems);
         }
 
-
+     
     }
 }

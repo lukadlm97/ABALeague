@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.Persistence;
 using OpenData.Basetball.AbaLeague.Persistence.Repositories;
@@ -14,6 +15,32 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
     {
         public RosterRepository(AbaLeagueDbContext dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<bool> Exist(int leagueId, int playerId, int teamId, CancellationToken cancellationToken = default)
+        {
+            var team = _dbContext.Teams.Include(x=>x.RosterItems).FirstOrDefault(x => x.Id == teamId);
+            if (team == null)
+            {
+                return false;
+            }
+
+            var roster = team.RosterItems;
+
+            return roster.Any(x=> x.PlayerId == playerId && x.LeagueId == leagueId);
+        }
+
+        public async Task<RosterItem?> Get(int leagueId, int playerId, int teamId, CancellationToken cancellationToken = default)
+        {
+            var team = _dbContext.Teams.Include(x => x.RosterItems).FirstOrDefault(x => x.Id == teamId);
+            if (team == null)
+            {
+                return null;
+            }
+
+            var roster = team.RosterItems;
+
+            return roster.FirstOrDefault(x => x.PlayerId == playerId && x.LeagueId == leagueId);
         }
     }
 }

@@ -77,7 +77,7 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         [HttpGet("euroleague/{leagueId}/draft/byRound/{roundId}/step/{step}")]
         public async Task<IActionResult> GetEuroleagueRound(int leagueId, int roundId, int step, CancellationToken cancellationToken)
         {
-            List<BoxScoreDto> boxscores = new List<BoxScoreDto>();
+            List<BoxScoreItemDto> boxscores = new List<BoxScoreItemDto>();
             List<string> missing = new List<string>();
             for (int i = roundId; i <= roundId+step; i++)
             {

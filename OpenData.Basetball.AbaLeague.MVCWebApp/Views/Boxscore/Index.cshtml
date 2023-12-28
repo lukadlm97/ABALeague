@@ -1,0 +1,257 @@
+﻿@model OpenData.Basetball.AbaLeague.MVCWebApp.Models.BoxscoreViewModel
+
+<h4>Boxscore draft</h4>
+
+
+<h4>Draft scores waiting for approval</h4>
+<form asp-controller="Boxscore" asp-action="Add" method="post" 
+        asp-route-leagueId="@Model.LeagueId" asp-route-matchRoundId="@Model.MatchRoundId">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].PlayerName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].TeamName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].Round)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].MatchNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].Points)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].TotalRebounds)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].Assists)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].Turnover)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].Steals)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].RankValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DraftBoxscoreItems[0].PlusMinus)
+                </th>
+                <td>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-success">Create Score From Draft</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.DraftBoxscoreItems != null && Model.DraftBoxscoreItems.Any())
+            {
+                @foreach (var item in Model.DraftBoxscoreItems)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PlayerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TeamName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Round)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MatchNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Points)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalRebounds)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Assists)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Turnover)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Steals)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PlusMinus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RankValue)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</form>
+
+<h5>Existing boxscore</h5>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].PlayerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].TeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].Round)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].MatchNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].Points)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].TotalRebounds)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].Assists)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].Turnover)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].Steals)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].RankValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingBoxscoreItems[0].PlusMinus)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ExistingBoxscoreItems != null && Model.ExistingBoxscoreItems.Any())
+        {
+            @foreach (var item in Model.ExistingBoxscoreItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlayerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Round)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatchNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Points)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalRebounds)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assists)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Turnover)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Steals)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlusMinus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RankValue)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h5>Missing roster items</h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DraftRosterItems[0].PlayerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DraftRosterItems[0].TeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DraftRosterItems[0].LeagueName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.DraftRosterItems != null && Model.DraftRosterItems.Any())
+        {
+            @foreach (var item in Model.DraftRosterItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlayerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LeagueName)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-dark create-history-roster-item"
+                                data-teamId="@item.TeamId" data-playerId="@item.PlayerId">
+                            Create Historical Roster Item
+                        </button>
+
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.create-history-roster-item').click(function () {
+            var teamId = $(this).data('teamid'); // Use 'teamid' instead of 'teamId'
+            var playerId = $(this).data('playerid'); // Use 'playerid' instead of 'playerId'
+
+            console.log('Team ID:', teamId, 'Player ID:', playerId);
+            var url = '/Roster/SaveHistoryDraftRosterItem' +
+                '?teamId=' + encodeURIComponent(teamId) +
+                '&playerId=' + encodeURIComponent(playerId) +
+                '&leagueId=' + encodeURIComponent('@Model.LeagueId');
+            $.ajax({
+                url: url, // Replace with the actual URL of your action
+                type: 'POST',
+                success: function (data) {
+                    // Handle success if needed
+                    console.log('Success');
+                    var newUrl = '/Boxscore/Index/' + @Model.LeagueId + '/' + @Model.MatchRoundId;
+                    window.location.href = newUrl;
+                },
+                error: function (error) {
+                    // Handle error if needed
+                    console.log('Error');
+                }
+            });
+        });
+    });
+</script>

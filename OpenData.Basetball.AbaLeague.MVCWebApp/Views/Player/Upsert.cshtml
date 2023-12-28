@@ -7,6 +7,8 @@
     <hr />
     <form asp-controller="Player" asp-action="Save" method="post">
         <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ComplexRouting" />
+        <input type="hidden" asp-for="LeagueId" />
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">

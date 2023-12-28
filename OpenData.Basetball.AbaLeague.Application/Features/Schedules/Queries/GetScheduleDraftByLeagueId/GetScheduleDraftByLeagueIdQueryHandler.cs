@@ -63,7 +63,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
                 default:
                     throw new NotImplementedException();
                     break;
-
             }
 
             var existingScheduleItems = await _unitOfWork.CalendarRepository.SearchByLeague(request.LeagueId, cancellationToken);

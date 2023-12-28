@@ -14,5 +14,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 
         public string SelectedPositionId { get; set; }
         public SelectList Positions { get; set; }
+        public bool ComplexRouting { get; set; } = false;
+        public int LeagueId { get; set; }
+
     }
 }

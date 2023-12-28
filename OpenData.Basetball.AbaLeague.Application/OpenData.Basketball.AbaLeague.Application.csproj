@@ -18,4 +18,8 @@
     <ProjectReference Include="..\OpenData.Basetball.AbaLeague.Domain\OpenData.Basketball.AbaLeague.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Boxscore\Commands\" />
+  </ItemGroup>
+
 </Project>

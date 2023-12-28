@@ -304,5 +304,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
 
             return input;
         }
+        public static string ReplaceSpecialCharactersWithDJ(this string input)
+        {
+            // Use LINQ to replace characters
+            input = input.Replace("đ", "dj", StringComparison.OrdinalIgnoreCase);
+
+            return input;
+        }
     }
 }
