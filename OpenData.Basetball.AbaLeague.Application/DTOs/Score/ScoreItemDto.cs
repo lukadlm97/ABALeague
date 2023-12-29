@@ -15,5 +15,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Score
                                 int? Attendency,
                                 string? Venue,
                                 int? HomeTeamPoints,
-                                int? AwayTeamPoints);
+                                int? AwayTeamPoints,
+                                int Round);
 }

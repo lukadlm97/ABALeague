@@ -51,14 +51,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 return Maybe<BoxScoreDto>.None;
             }
 
-            var scheduleItem = roundMatches.FirstOrDefault(x=>x.Id == result.RoundMatchId);
-            if (scheduleItem == null)
+            var roundMatch = roundMatches.FirstOrDefault(x=>x.Id == result.RoundMatchId);
+            if (roundMatch == null)
             {
                 return Maybe<BoxScoreDto>.None;
             }
 
-            var homeTeam  = await _unitOfWork.TeamRepository.Get(scheduleItem.HomeTeamId ?? 0, cancellationToken);
-            var awayTeam  = await _unitOfWork.TeamRepository.Get(scheduleItem.AwayTeamId ?? 0, cancellationToken);
+            var homeTeam  = await _unitOfWork.TeamRepository.Get(roundMatch.HomeTeamId ?? 0, cancellationToken);
+            var awayTeam  = await _unitOfWork.TeamRepository.Get(roundMatch.AwayTeamId ?? 0, cancellationToken);
             if(homeTeam == null || awayTeam == null)
             {
                 return Maybe<BoxScoreDto>.None;
@@ -91,7 +91,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                     break;
                 case Domain.Enums.ProcessorType.Aba:
                     rawUrl = league.BaseUrl + league.BoxScoreUrl;
-                    url = string.Format(rawUrl, scheduleItem.MatchNo);
+                    url = string.Format(rawUrl, roundMatch.MatchNo);
                     boxScoreItems = await processor.GetBoxScore(url, cancellationToken);
                     break;
                 default:
@@ -114,26 +114,34 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 var player = players.FirstOrDefault(x=> x.Name.ToLower() == item.Name.ToLower());  
                 if(player == null)
                 {
-                    missingPlayers.Add(item.Name);
-                    continue;
+                    var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetPlayerByAnotherName(item.Name, cancellationToken);
+                    if (existingPlayerWitAnotherName != null)
+                    {
+                        player = players.FirstOrDefault(x => x.Id == existingPlayerWitAnotherName.PlayerId);
+                    }
+                    else
+                    {
+                        missingPlayers.Add(item.Name);
+                        continue;
+                    }
                 }
 
-                if(rosterItems.Any(x=>x.TeamId == scheduleItem.HomeTeamId && x.PlayerId == player.Id && x.LeagueId == league.Id))
+                if(rosterItems.Any(x=>x.TeamId == roundMatch.HomeTeamId && x.PlayerId == player.Id && x.LeagueId == league.Id))
                 {
-                    var selectedRosterItem = rosterItems.First(x => x.TeamId == scheduleItem.HomeTeamId && x.PlayerId == player.Id && x.LeagueId == league.Id);
+                    var selectedRosterItem = rosterItems.First(x => x.TeamId == roundMatch.HomeTeamId && x.PlayerId == player.Id && x.LeagueId == league.Id);
 
-                    if(await _unitOfWork.BoxScoreRepository.Exist(result.RoundMatchId, 
+                    if(!await _unitOfWork.BoxScoreRepository.Exist(result.RoundMatchId, 
                                                                     selectedRosterItem.PlayerId, 
                                                                     cancellationToken))
                     {
-                        boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, scheduleItem.Id, player.Name, homeTeam.Name, scheduleItem.Round, scheduleItem.MatchNo,  item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
+                        boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, homeTeam.Name, roundMatch.Round, roundMatch.MatchNo,  item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
                         continue;
                     }
-                    existingBoxScoreItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, scheduleItem.Id, player.Name, homeTeam.Name, scheduleItem.Round, scheduleItem.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
+                    existingBoxScoreItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, homeTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
                 }
                 else
                 {
-                    draftRosterItems.Add(new DraftRosterItemDto(player.Id, player.Name, league.Id, league.OfficalName, scheduleItem.HomeTeamId??0, scheduleItem.HomeTeam.Name, DateTime.UtcNow, null));
+                    draftRosterItems.Add(new DraftRosterItemDto(player.Id, player.Name, league.Id, league.OfficalName, roundMatch.HomeTeamId??0, roundMatch.HomeTeam.Name, DateTime.UtcNow, null));
                 }
             }
 
@@ -142,34 +150,57 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 var player = players.FirstOrDefault(x => x.Name.ToLower() == item.Name.ToLower());
                 if (player == null)
                 {
-                    missingPlayers.Add(item.Name);
-                    continue;
+                    var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetPlayerByAnotherName(item.Name, cancellationToken);
+                    if (existingPlayerWitAnotherName != null)
+                    {
+                        player = players.FirstOrDefault(x => x.Id == existingPlayerWitAnotherName.PlayerId);
+                    }
+                    else
+                    {
+                        missingPlayers.Add(item.Name);
+                        continue;
+                    }
                 }
 
-                if (rosterItems.Any(x => x.TeamId == scheduleItem.AwayTeamId &&
+                if (rosterItems.Any(x => x.TeamId == roundMatch.AwayTeamId &&
                                             x.PlayerId == player.Id &&
                                             x.LeagueId == league.Id))
                 {
-                    var selectedRosterItem = rosterItems.First(x => x.TeamId == scheduleItem.AwayTeamId &&
+                    var selectedRosterItem = rosterItems.First(x => x.TeamId == roundMatch.AwayTeamId &&
                                                                         x.PlayerId == player.Id && 
                                                                         x.LeagueId == league.Id);
 
-                    if (await _unitOfWork.BoxScoreRepository.Exist(result.RoundMatchId,
+                    if (!await _unitOfWork.BoxScoreRepository.Exist(result.RoundMatchId,
                                                                      selectedRosterItem.PlayerId,
                                                                      cancellationToken))
                     {
-                        boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, scheduleItem.Id, player.Name, awayTeam.Name, scheduleItem.Round, scheduleItem.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
+                        boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, awayTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
                         continue;
                     }
-                    existingBoxScoreItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, scheduleItem.Id, player.Name, awayTeam.Name, scheduleItem.Round, scheduleItem.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
+                    existingBoxScoreItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, awayTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
                 }
                 else
                 {
-                    draftRosterItems.Add(new DraftRosterItemDto(player.Id, player.Name, league.Id, league.OfficalName, scheduleItem.AwayTeamId ?? 0, scheduleItem.AwayTeam.Name, DateTime.UtcNow, null));
+                    draftRosterItems.Add(new DraftRosterItemDto(player.Id, player.Name, league.Id, league.OfficalName, roundMatch.AwayTeamId ?? 0, roundMatch.AwayTeam.Name, DateTime.UtcNow, null));
                 }
             }
 
-            return new BoxScoreDto(boxscoreDraftItems, existingBoxScoreItems, draftRosterItems, missingPlayers);
+            return new BoxScoreDto(
+                new DTOs.Score.ScoreItemDto(result.Id,
+                                            result.RoundMatch.MatchNo, 
+                                            homeTeam.Id, 
+                                            awayTeam.Id,
+                                            homeTeam.Name, 
+                                            awayTeam.Name, 
+                                            result.Attendency, 
+                                            result.Venue, 
+                                            result.HomeTeamPoints, 
+                                            result.AwayTeamPoint,
+                                            result.RoundMatch.Round), 
+                boxscoreDraftItems, 
+                existingBoxScoreItems, 
+                draftRosterItems, 
+                missingPlayers);
         }
     }
 }

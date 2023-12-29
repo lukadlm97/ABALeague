@@ -94,12 +94,17 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                 }
                 var player= players.FirstOrDefault(x=>x.Name.ToLower() == rosterItem.Name.ToLower());
                 var team= teams.FirstOrDefault(x=>x.Id == rosterItem.TeamId);
-                if(player == null || team == null)
+                if (team == null)
+                {
+                    return Maybe<DraftRosterDto>.None;
+                }
+                if(player == null)
                 {
                     var natioanality =
                     await _unitOfWork.CountryRepository.GetById(rosterItem.Nationality, cancellationToken);
                     if(natioanality == null)
                     {
+                        missingPlayers.Add(new PlayerItemDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, null));
                         continue;
                     }
                     missingPlayers.Add(new PlayerItemDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, natioanality.Id));
@@ -107,7 +112,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                 }
 
                 if(existingRosterItems.Any(x=>x.TeamId == rosterItem.TeamId &&
-                                                 x.PlayerId == player.Id && x.LeagueId == request.LeagueId))
+                                                 x.PlayerId == player.Id && 
+                                                 x.LeagueId == request.LeagueId))
                 {
                     var existingRosterItem = existingRosterItems.FirstOrDefault(x=>x.TeamId == rosterItem.TeamId &&
                                                  x.PlayerId == player.Id && x.LeagueId == request.LeagueId);

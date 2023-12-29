@@ -6,9 +6,11 @@ using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.AddAnotherName;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.CreatePlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.UpdatePlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayer;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerAnotherNames;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterHistoryByPlayer;
@@ -170,6 +172,47 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             viewModel.LeagueId = leagueId;
 
             return View("Upsert",viewModel);
+        }
+
+        public async Task<IActionResult> AddAnotherName(int playerId,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await _sender.Send(new GetPlayerAnotherNamesQuery(playerId), cancellationToken);
+
+            if (result.HasValue)
+            {
+                var addAnotherNameViewModel = new AddAnotherNameViewModel
+                {
+                    PlayerId = playerId,
+                    ExistingAnotherNames = result.Value.ExistingNames.Select(x => x.Name).ToList(),
+                    Name = result.Value.OriginalName
+                };
+                return View(addAnotherNameViewModel);
+            }
+            return View("Error", new InfoDescriptionViewModel()
+            {
+                Description = "unable to find player"
+            });
+
+        }
+
+        public async Task<IActionResult> SaveAnotherName(AddAnotherNameViewModel addAnotherNameViewModel, 
+            CancellationToken cancellationToken = default)
+        {
+            var result = await _sender.Send(new AddAnotherNameCommand(addAnotherNameViewModel.PlayerId, addAnotherNameViewModel.DraftAnotherName), cancellationToken);
+
+            if(result.IsSuccess)
+            {
+                return View("Success", new InfoDescriptionViewModel
+                {
+                    Description  = "Successfully saved antoher name"
+                });
+            }
+            return View("Error", new InfoDescriptionViewModel()
+            {
+                Description = result.Error.Message
+            });
+
         }
         public async Task<IActionResult> Save(UpsertPlayerViewModel upsertPlayerViewModel, CancellationToken cancellationToken = default)
         {

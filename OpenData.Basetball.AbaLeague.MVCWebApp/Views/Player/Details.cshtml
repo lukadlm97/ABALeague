@@ -38,6 +38,14 @@
                         <a asp-controller="Player" asp-action="Upsert" asp-route-playerId="@Model.PlayerId" class="btn btn-outline-secondary">Edit</a>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Add another names
+                    </td>
+                    <td>
+                        <a asp-controller="Player" asp-action="AddAnotherName" asp-route-playerId="@Model.PlayerId" class="btn btn-outline-primary">Add another name</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
        </p>

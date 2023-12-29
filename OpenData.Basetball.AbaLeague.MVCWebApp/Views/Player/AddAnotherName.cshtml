@@ -1,0 +1,58 @@
+﻿@model AddAnotherNameViewModel
+
+
+<div class="form-horizontal">
+    <h4>Player</h4>
+    <h5>Name: @Model.Name</h5>
+    @if (Model.ExistingAnotherNames!= null && Model.ExistingAnotherNames.Any())
+    {
+        <h5>Existing another names</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                    @foreach (var item in Model.ExistingAnotherNames)
+                    {
+                        <tr>
+                            <td>
+                                @item
+                            </td>
+                            
+                        </tr>
+                    }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Not availabe antoher names</p>
+    }
+    
+    <hr />
+    <form asp-controller="Player" asp-action="SaveAnotherName" method="post">
+        <input type="hidden" asp-for="PlayerId" />
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DraftAnotherName" class="form-control" />
+                <span asp-validation-for="DraftAnotherName" class="text-danger"></span>
+            </div>
+        </div>
+       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+
+        </div>
+    </form>
+    <p>
+        <a asp-controller="Player" asp-action="Index" class="btn btn-outline-primary">Back</a>
+    </p>
+</div>

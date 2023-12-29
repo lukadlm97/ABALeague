@@ -134,7 +134,7 @@
                         @Html.DisplayFor(modelItem => item.Attendency)
                     </td>
                     <td>
-                        <a asp-controller="Boxscore" asp-action="Index" asp-route-matchResultId="@item.Id" asp-route-leagueId="@Model.LeagueId" class="btn btn-outline-dark">Boxscore</a>
+                        <a asp-controller="Boxscore" asp-action="DraftByMatch" asp-route-matchResultId="@item.Id" asp-route-leagueId="@Model.LeagueId" class="btn btn-outline-dark">Boxscore</a>
                     </td>
                 </tr>
             }

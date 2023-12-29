@@ -320,7 +320,8 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                                             .ReplaceSpecialCharactersWithZ()
                                             .ReplaceSpecialCharactersWithC()
                                             .ReplaceSpecialCharactersWithS()
-                                            .ReplaceSpecialCharactersWithDJ();
+                                            .ReplaceSpecialCharactersWithDJ()
+                                            .FixDzPlayerNames();
                     var minutes = columns[2].InnerHtml;
                     var min = minutes.ConvertToNullableTimeSpan();
                     if (minutes == "00:00")
@@ -369,7 +370,8 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                                             .ReplaceSpecialCharactersWithZ()
                                             .ReplaceSpecialCharactersWithC()
                                             .ReplaceSpecialCharactersWithS()
-                                            .ReplaceSpecialCharactersWithDJ();
+                                            .ReplaceSpecialCharactersWithDJ()
+                                            .FixDzPlayerNames();
                     var minutes = columns[2].InnerHtml;
                     var min = minutes.ConvertToNullableTimeSpan();
                     if (minutes == "00:00")

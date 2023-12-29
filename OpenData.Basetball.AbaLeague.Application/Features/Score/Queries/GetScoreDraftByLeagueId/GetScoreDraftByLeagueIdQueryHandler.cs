@@ -122,7 +122,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                         item.Attendency ?? 0,
                                                         item.Venue,
                                                         item.HomeTeamPoint,
-                                                        item.AwayTeamPoint));
+                                                        item.AwayTeamPoint,
+                                                        match.Round));
                     continue;
                 }
                 
@@ -137,7 +138,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                         item.Attendency ?? 0,
                                                         item.Venue,
                                                         item.HomeTeamPoint,
-                                                        item.AwayTeamPoint));
+                                                        item.AwayTeamPoint,
+                                                        match.Round));
                     continue;
                 }
 
@@ -150,7 +152,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                     item.Attendency ?? 0,
                                                     item.Venue,
                                                     item.HomeTeamPoint,
-                                                    item.AwayTeamPoint));
+                                                    item.AwayTeamPoint, 
+                                                    match.Round));
             }
 
             // populate existing result that we don't fetch from API
@@ -171,7 +174,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                       existingItem.Attendency,
                                                       existingItem.Venue,
                                                       existingItem.HomeTeamPoints,
-                                                      existingItem.AwayTeamPoint));
+                                                      existingItem.AwayTeamPoint,
+                                                      scheduleItem.Round));
                         continue;
                     }
                     throw new NotImplementedException();

@@ -311,5 +311,35 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
 
             return input;
         }
+
+        public static string FixDzPlayerNames(this string input)
+        {
+            if(input == "Nikola Dzurisic")
+            {
+                return "Nikola Djurisic";
+            }
+            if (input == "Dzoko Salic")
+            {
+                return "Djoko Salic";
+            }
+            if (input == "Danilo Andzusic")
+            {
+                return "Danilo Andjusic";
+            }
+            if (input == "Srdzan Boskovic")
+            {
+                return "Srdjan Boskovic";
+            }
+            if (input == "Dzordzije Jovanovic")
+            {
+                return "Djordjije Jovanovic";
+            } 
+            if (input == "Nicola Dzogo")
+            {
+                return "Nicola Djogo";
+            }
+
+            return input;
+        }
     }
 }

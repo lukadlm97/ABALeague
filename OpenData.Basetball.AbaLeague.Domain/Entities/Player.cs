@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenData.Basetball.AbaLeague.Domain.Common;
 using OpenData.Basetball.AbaLeague.Domain.Enums;
+using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basetball.AbaLeague.Domain.Entities
 {
@@ -23,5 +24,6 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public int CountryId { get; set; }
         [NotMapped]
         public PositionEnum PositionEnum => (PositionEnum)PositionId;
+        public ICollection<AnotherNameItem> AnotherNameItems { get; set; }
     }
 }
