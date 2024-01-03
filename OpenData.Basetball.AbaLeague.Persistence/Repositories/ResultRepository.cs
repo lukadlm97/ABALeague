@@ -41,5 +41,37 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 
             return finalResultSet;
         }
+
+        public async Task<IEnumerable<Result>> SearchByLeagueAndRoundNo(int leagueId, int roundNo, CancellationToken cancellationToken = default)
+        {
+            var league = await _dbContext.Leagues
+                .Include(x => x.RoundMatches)
+                .FirstOrDefaultAsync(x => x.Id == leagueId, cancellationToken);
+            if (league == null)
+            {
+                return Array.Empty<Result>();
+            }
+
+            var results = _dbContext.Results;
+
+            List<Result> finalResultSet = new List<Result>();
+            foreach (var roundMatch in league.RoundMatches)
+            {
+                if (results.Any(x => x.RoundMatchId == roundMatch.Id && x.RoundMatch.Round == roundNo))
+                {
+                    var result = results
+                        .FirstOrDefault(x => x.RoundMatchId == roundMatch.Id && 
+                    x.RoundMatch.Round == roundNo);
+
+                    if(result == null)
+                    {
+                        continue;
+                    }
+                    finalResultSet.Add(result);
+                }
+            }
+
+            return finalResultSet;
+        }
     }
 }

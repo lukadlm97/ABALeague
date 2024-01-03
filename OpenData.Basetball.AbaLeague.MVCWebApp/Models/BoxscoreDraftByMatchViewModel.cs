@@ -3,7 +3,7 @@
     public class BoxscoreDraftByMatchViewModel
     {
         public int LeagueId { get; set; }
-        public int MatchRoundId { get; set; }
+        public int MatchResultId { get; set; }
         public MatchResultViewModel MatchResult { get; set; }
         public int HomeTeamPoints { get; set; }
         public bool HomeTeamMatch { get; set; }

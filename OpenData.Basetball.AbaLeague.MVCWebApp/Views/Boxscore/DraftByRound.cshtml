@@ -4,10 +4,21 @@
 
 @if(Model.Matches != null  && Model.Matches.Any())
 {
+     <div class="container mt-4">
+        <form asp-controller="Boxscore" asp-action="AddByRound" method="post"
+              asp-route-leagueId="@Model.LeagueId" asp-route-roundNo="@Model.RoundNo">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-success">Create Boxscore for round</button>
+                </div>
+            </div>
+        </form>
+     </div>
     foreach(var match in Model.Matches)
     {
 
         <div class="container mt-4">
+            <div class="card mb-4">
             <div class="card">
                 <div class="card-header">
                     <h4 class="mb-0">Match Result</h4>
@@ -33,6 +44,7 @@
                         <dd class="col-sm-9">@match.MatchResult.Round</dd>
                     </dl>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -123,7 +135,12 @@
                     Not availabe drafts
                 </p>
             }
+        </div>
 
+            <div class="card">
+                <div class="card-header">
+                    <h5>Draft scores waiting for approval</h5>
+                </div>
             @if (match.AwayDraftBoxscoreItems != null && match.AwayDraftBoxscoreItems.Any())
             {
                 <h5>@match.MatchResult.AwayTeamName</h5>
@@ -207,10 +224,11 @@
                     Not availabe drafts
                 </p>
             }
+        </div>
 
             <div class="card-body">
                 <form asp-controller="Boxscore" asp-action="Add" method="post"
-                      asp-route-leagueId="@match.LeagueId" asp-route-matchRoundId="@match.MatchRoundId">
+                      asp-route-leagueId="@match.LeagueId" asp-route-matchRoundId="@match.MatchResultId">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <button type="submit" class="btn btn-success">Create Boxscore</button>
@@ -218,9 +236,11 @@
                     </div>
                 </form>
             </div>
-        </div>
+       
 
         <h5>Existing boxscore</h5>
+        <div>
+
         @if (match.HomeExistingBoxscoreItems != null && match.HomeExistingBoxscoreItems.Any())
         {
             <h6>@match.MatchResult.HomeTeamName</h6>
@@ -300,7 +320,9 @@
             <p>
                 Not availabe existing scores
             </p>
-        }
+            }
+        </div>
+        <div>
 
         @if (match.AwayExistingBoxscoreItems != null && match.AwayExistingBoxscoreItems.Any())
         {
@@ -383,7 +405,10 @@
             </p>
         }
 
+        </div>
 
+
+        <div>
 
         <h5>Missing roster items</h5>
         @if (match.DraftRosterItems != null && match.DraftRosterItems.Any())
@@ -432,9 +457,11 @@
             <p>
                 Not availabe new rosters
             </p>
-        }
+            }
+        </div>
 
 
+        <div>
 
         <h5>Missing player items</h5>
         @if (match.MissingPlayerItems != null && match.MissingPlayerItems.Any())
@@ -472,7 +499,8 @@
             <p>
                 Not avaiabe players that waiting for adding
             </p>
-        }
+            }
+        </div>
 
     }
 }

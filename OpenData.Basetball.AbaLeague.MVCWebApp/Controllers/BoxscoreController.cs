@@ -4,6 +4,8 @@ using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Score;
+using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Commands.AddBoxscoreByMatchResultId;
+using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Commands.AddBoxscoreByRoundNo;
 using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBoxscoreDraftByMatchResultId;
 using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBoxscoreDraftByRound;
 using OpenData.Basketball.AbaLeague.Application.Features.Rounds.Queries.GetRoundsByLeagueId;
@@ -76,7 +78,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     PlayerId = x.PlayerId
                 }).ToList(),
                 LeagueId = leagueId,
-                MatchRoundId = matchResultId,
+                MatchResultId = matchResultId,
                 HomeDraftBoxscoreItems = result.Value.DraftItems
                 .Where(x => x.TeamName == result.Value.MatchScore.HomeTeamName)
                 .Select(x => new BoxscoreItemViewModel()
@@ -253,12 +255,148 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             return View(boxscoreViewModel);
         }
+
+        [HttpPost]
         [Route("{leagueId:int}/{matchResultId:int}")]
-        public async Task<IActionResult> Add(int leagueId,
+        public async Task<IActionResult> AddByMatch(int leagueId,
                                                 int matchResultId,
                                                 CancellationToken cancellationToken = default)
-        { 
-            throw new NotImplementedException();
+        {
+            var result = await _sender
+                .Send(new GetBoxscoreDraftByMatchResultIdQuery(leagueId, matchResultId), cancellationToken);
+
+            if (result.HasNoValue)
+            {
+                return View("Error");
+            }
+
+            List<AddBoxScoreDto> list = new List<AddBoxScoreDto>();
+            foreach (var item in result.Value.DraftItems)
+            {
+                list.Add(
+                    new AddBoxScoreDto(
+                        item.RosterItemId,
+                        item.MatchRoundId, 
+                        item.Round,
+                        item.Minutes,
+                        item.Points,
+                        item.ShotPrc,
+                        item.ShotMade2Pt,
+                        item.ShotAttempted2Pt,
+                        item.ShotPrc2Pt,
+                        item.ShotMade3Pt,
+                        item.ShotAttempted3Pt,
+                        item.ShotPrc3Pt,
+                        item.ShotMade1Pt,
+                        item.ShotAttempted1Pt,
+                        item.ShotPrc1Pt,
+                        item.DefensiveRebounds,
+                        item.OffensiveRebounds,
+                        item.TotalRebounds,
+                        item.Assists,
+                        item.Steals, 
+                        item.Turnover, 
+                        item.InFavoureOfBlock,
+                        item.AgainstBlock,
+                        item.CommittedFoul, 
+                        item.ReceivedFoul, 
+                        item.PointFromPain,
+                        item.PointFrom2ndChance,
+                        item.PointFromFastBreak,
+                        item.PlusMinus, 
+                        item.RankValue)) ;
+            }
+
+            var addBoxscoreResult = await _sender
+                .Send(new AddBoxscoreByMatchResultIdCommand(leagueId, list), cancellationToken);
+           
+            if (addBoxscoreResult.IsFailure)
+            {
+                return View("Error");
+            }
+
+            var roundsByLeagueResult = await _sender.Send(new GetRoundsByLeagueIdQuery(leagueId), cancellationToken);
+            if (result.HasNoValue)
+            {
+                return View("Error");
+            }
+            var indexViewModel = new BoxscoreIndexViewModel
+            {
+                LeagueId = leagueId,
+                AvailableRounds = roundsByLeagueResult.Value.RoundNumbers.ToList()
+            };
+            return View("Index", indexViewModel);
+        }
+
+        [HttpPost]
+        [Route("{leagueId:int}/{roundNo:int}")]
+        public async Task<IActionResult> AddByRound(int leagueId,
+                                               int roundNo,
+                                               CancellationToken cancellationToken = default)
+        {
+            var result = await _sender.Send(new GetBoxscoreDraftByRoundQuery(leagueId, roundNo), cancellationToken);
+
+            if (result.HasNoValue)
+            {
+                return View("Error");
+            }
+
+            List<AddBoxScoreDto> list = new List<AddBoxScoreDto>();
+            foreach (var item in result.Value.BoxScoreItems.SelectMany(x=>x.DraftItems))
+            {
+                list.Add(
+                    new AddBoxScoreDto(
+                        item.RosterItemId,
+                        item.MatchRoundId,
+                        item.Round,
+                        item.Minutes,
+                        item.Points,
+                        item.ShotPrc,
+                        item.ShotMade2Pt,
+                        item.ShotAttempted2Pt,
+                        item.ShotPrc2Pt,
+                        item.ShotMade3Pt,
+                        item.ShotAttempted3Pt,
+                        item.ShotPrc3Pt,
+                        item.ShotMade1Pt,
+                        item.ShotAttempted1Pt,
+                        item.ShotPrc1Pt,
+                        item.DefensiveRebounds,
+                        item.OffensiveRebounds,
+                        item.TotalRebounds,
+                        item.Assists,
+                        item.Steals,
+                        item.Turnover,
+                        item.InFavoureOfBlock,
+                        item.AgainstBlock,
+                        item.CommittedFoul,
+                        item.ReceivedFoul,
+                        item.PointFromPain,
+                        item.PointFrom2ndChance,
+                        item.PointFromFastBreak,
+                        item.PlusMinus,
+                        item.RankValue));
+            }
+            var roundNos = result.Value.BoxScoreItems.SelectMany(x => x.DraftItems).Select(x => x.Round).Distinct();
+            var addBoxscoreResult = await _sender
+                .Send(new AddBoxscoreByRoundNoCommand(leagueId, list, roundNos.First()), cancellationToken);
+
+            if (addBoxscoreResult.IsFailure)
+            {
+                return View("Error");
+            }
+
+            var roundsByLeagueResult = await _sender.Send(new GetRoundsByLeagueIdQuery(leagueId), cancellationToken);
+            if (result.HasNoValue)
+            {
+                return View("Error");
+            }
+            var indexViewModel = new BoxscoreIndexViewModel
+            {
+                LeagueId = leagueId,
+                AvailableRounds = roundsByLeagueResult.Value.RoundNumbers.ToList()
+            };
+            return View("Index", indexViewModel);
         }
 
         [Route("{leagueId:int}/{roundNo:int}")]
@@ -272,6 +410,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 return View("Error");
             }
+
+          
             List<BoxscoreDraftByMatchViewModel> list = new List<BoxscoreDraftByMatchViewModel>();
 
             foreach(var item in result.Value.BoxScoreItems)
@@ -299,7 +439,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         PlayerId = x.PlayerId
                     }).ToList(),
                     LeagueId = leagueId,
-                    MatchRoundId = item.MatchScore.MatchId,
+                    MatchResultId = item.MatchScore.MatchId,
                     HomeDraftBoxscoreItems = item.DraftItems
                     .Where(x => x.TeamName == item.MatchScore.HomeTeamName)
                     .Select(x => new BoxscoreItemViewModel()

@@ -39,12 +39,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             var players = await _unitOfWork.PlayerRepository.GetAll(cancellationToken);
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
             var teams = await _unitOfWork.TeamRepository.GetAll(cancellationToken);
-            var existingRosterItems = await _unitOfWork.RosterRepository.GetAll(cancellationToken);
+            
             if(league == null || teamSeasonResources==null || players == null)
             {
                 return Maybe<DraftRosterDto>.None;
             }
-
+            var existingRosterItems = await _unitOfWork.RosterRepository.GetByLeagueId(request.LeagueId, cancellationToken);
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
             {
                 Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher),
@@ -84,6 +84,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
 
             List<DraftRosterItemDto> draftRosterItems = new List<DraftRosterItemDto>();
             List<DraftRosterItemDto> existingDraftRosterItems = new List<DraftRosterItemDto>();
+            List<DraftRosterItemDto> draftRosterItemsWithEndedContract = new List<DraftRosterItemDto>();
             List<PlayerItemDto> missingPlayers = new List<PlayerItemDto>();
 
             foreach(var rosterItem in rosterItems)
@@ -131,8 +132,18 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                                             DateTime.UtcNow, 
                                             null));
             }
+            var playesWithNotEndedContract = existingRosterItems.Where(x => x.EndOfActivePeriod == null);
+            
+            foreach(var item in playesWithNotEndedContract)
+            {
+                if (!rosterItems.Select(x => x.Name.ToLower()).Contains(item.Player.Name.ToLower()))
+                {
+                    draftRosterItemsWithEndedContract.Add(new DraftRosterItemDto(item.PlayerId, item.Player.Name, item.LeagueId, item.League.OfficalName, item.TeamId, item.Team.Name, item.DateOfInsertion, null));
+                }
+            }
 
-            return new DraftRosterDto(draftRosterItems, existingDraftRosterItems, missingPlayers);
+
+            return new DraftRosterDto(draftRosterItems, existingDraftRosterItems, missingPlayers, draftRosterItemsWithEndedContract);
         }
         PositionEnum MapToEnum(string value)
         {

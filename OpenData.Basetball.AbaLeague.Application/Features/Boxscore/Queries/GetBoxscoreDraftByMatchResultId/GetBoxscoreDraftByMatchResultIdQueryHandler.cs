@@ -131,7 +131,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                     var selectedRosterItem = rosterItems.First(x => x.TeamId == roundMatch.HomeTeamId && x.PlayerId == player.Id && x.LeagueId == league.Id);
 
                     if(!await _unitOfWork.BoxScoreRepository.Exist(result.RoundMatchId, 
-                                                                    selectedRosterItem.PlayerId, 
+                                                                    selectedRosterItem.Id, 
                                                                     cancellationToken))
                     {
                         boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, homeTeam.Name, roundMatch.Round, roundMatch.MatchNo,  item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
@@ -171,7 +171,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                                                                         x.LeagueId == league.Id);
 
                     if (!await _unitOfWork.BoxScoreRepository.Exist(result.RoundMatchId,
-                                                                     selectedRosterItem.PlayerId,
+                                                                     selectedRosterItem.Id,
                                                                      cancellationToken))
                     {
                         boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, awayTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));

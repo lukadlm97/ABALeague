@@ -116,7 +116,7 @@
     else
     {
         <p>
-            Not availabe drafts
+            Not availabe drafts for home team
         </p>
     }
 
@@ -200,23 +200,27 @@
     else
     {
         <p>
-            Not availabe drafts
+            Not availabe drafts for away team
         </p>
     }
-   
-    <div class="card-body">
-        <form asp-controller="Boxscore" asp-action="Add" method="post"
-              asp-route-leagueId="@Model.LeagueId" asp-route-matchRoundId="@Model.MatchRoundId">
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-success">Create Boxscore</button>
+    @if ((Model.HomeDraftBoxscoreItems != null && Model.AwayDraftBoxscoreItems != null) && (Model.HomeDraftBoxscoreItems.Any() || Model.AwayDraftBoxscoreItems.Any()))
+    {
+        <div class="card-body">
+            <form asp-controller="Boxscore" asp-action="AddByMatch" method="post"
+                  asp-route-leagueId="@Model.LeagueId" asp-route-matchResultId="@Model.MatchResultId">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success">Create Boxscore</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+    }
+   
 </div>
 
 <h5>Existing boxscore</h5>
+<h6>Home team</h6>
 @if (Model.HomeExistingBoxscoreItems != null && Model.HomeExistingBoxscoreItems.Any())
 {
     <h6>@Model.MatchResult.HomeTeamName</h6>
@@ -297,7 +301,7 @@ else
         Not availabe existing scores
     </p>
 }
-
+<h6>Away team</h6>
 @if (Model.AwayExistingBoxscoreItems != null && Model.AwayExistingBoxscoreItems.Any())
 {
     <h6>@Model.MatchResult.AwayTeamName</h6>
@@ -490,7 +494,7 @@ else
                 success: function (data) {
                     // Handle success if needed
                     console.log('Success');
-                    var newUrl = '/Boxscore/Index/' + @Model.LeagueId + '/' + @Model.MatchRoundId;
+                    var newUrl = '/Boxscore/Index/' + @Model.LeagueId + '/' + @Model.MatchResultId;
                     window.location.href = newUrl;
                 },
                 error: function (error) {

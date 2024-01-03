@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Boxscore\Commands\" />
     <Folder Include="Features\Rounds\Commands\" />
   </ItemGroup>
 

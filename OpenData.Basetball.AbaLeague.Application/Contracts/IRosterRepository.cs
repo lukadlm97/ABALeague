@@ -12,5 +12,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
     {
         Task<bool> Exist(int leagueId, int playerId, int teamId, CancellationToken  cancellationToken = default);
         Task<RosterItem?> Get(int leagueId, int playerId, int teamId, CancellationToken  cancellationToken = default);
+        Task<IEnumerable<RosterItem>> GetByLeagueId(int leagueId, CancellationToken cancellationToken = default);
     }
 }

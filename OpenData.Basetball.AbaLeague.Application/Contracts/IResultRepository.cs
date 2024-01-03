@@ -8,5 +8,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
     {
         Task<bool> Exist(int matchRoundId, CancellationToken cancellationToken = default);
         Task<IEnumerable<Result>> SearchByLeague(int leagueId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Result>> SearchByLeagueAndRoundNo(int leagueId, int roundNo, 
+            CancellationToken cancellationToken = default);
     }
 }

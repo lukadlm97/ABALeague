@@ -11,7 +11,7 @@ using OpenData.Basketball.AbaLeague.Application.Contracts;
 
 namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 {
-    public class RosterRepository:GenericRepository<RosterItem>,IRosterRepository
+    public class RosterRepository : GenericRepository<RosterItem>, IRosterRepository
     {
         public RosterRepository(AbaLeagueDbContext dbContext) : base(dbContext)
         {
@@ -41,6 +41,22 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             var roster = team.RosterItems;
 
             return roster.FirstOrDefault(x => x.PlayerId == playerId && x.LeagueId == leagueId);
+        }
+
+        public async Task<IEnumerable<RosterItem>> GetByLeagueId(int leagueId, 
+            CancellationToken cancellationToken = default)
+        {
+            var league = _dbContext.Leagues.FirstOrDefaultAsync(x=>x.Id == leagueId, cancellationToken);
+            if (league == null)
+            {
+                return Array.Empty<RosterItem>();
+            }
+
+            return _dbContext.RosterItems
+                .Include(x=>x.Team)
+                .Include(x=>x.Player)
+                .Include(x=>x.League)
+                .Where(x => x.LeagueId == leagueId);
         }
     }
 }
