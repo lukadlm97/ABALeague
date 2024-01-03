@@ -43,6 +43,14 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             return roster.FirstOrDefault(x => x.PlayerId == playerId && x.LeagueId == leagueId);
         }
 
+        public async Task<RosterItem?> Get(int leagueId, int playerId, CancellationToken cancellationToken = default)
+        {
+            return _dbContext.RosterItems
+                                .Include(x => x.Player)
+                                .Include(x => x.League)
+                                .FirstOrDefault(x => x.PlayerId == playerId && x.LeagueId == leagueId);
+        }
+
         public async Task<IEnumerable<RosterItem>> GetByLeagueId(int leagueId, 
             CancellationToken cancellationToken = default)
         {

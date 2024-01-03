@@ -11,7 +11,7 @@ using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 {
-    public class BoxScoreRepository:GenericRepository<BoxScore>,IBoxScoreRepository
+    public class BoxScoreRepository : GenericRepository<BoxScore>, IBoxScoreRepository
     {
         public BoxScoreRepository(AbaLeagueDbContext dbContext) : base(dbContext)
         {
@@ -21,6 +21,17 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         {
             return await _dbContext.BoxScores.AnyAsync(
                 x => x.RoundMatchId == roundMatchId && x.RosterItemId == rosterItemId, cancellationToken);
+        }
+
+        public async Task<IEnumerable<BoxScore>>
+            GetByRosterItemId(int rosterItemId, CancellationToken cancellationToken = default)
+        {
+            return _dbContext.BoxScores
+                                .Include(x=>x.RoundMatch)
+                                    .ThenInclude(x=>x.AwayTeam)
+                                .Include(x=>x.RoundMatch)
+                                    .ThenInclude(x => x.HomeTeam)
+                                .Where(x => x.RosterItemId == rosterItemId);
         }
     }
 }

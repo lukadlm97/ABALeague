@@ -62,8 +62,9 @@
                             @Html.DisplayFor(modelItem => item.Country)
                         </td>
                         <td>
-                            <a asp-controller="Team" asp-action="Details" asp-route-teamId="@item.Id" class="btn btn-outline-primary">Details</a>
-                            <a asp-controller="Team" asp-action="Upsert" asp-route-name="null" asp-route-teamId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                            <a asp-controller="Player" asp-action="Details" asp-route-teamId="@item.Id" class="btn btn-outline-primary">Details</a>
+                            <a asp-controller="Player" asp-action="Upsert" asp-route-playerIdId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                            <a asp-controller="Player" asp-action="Performance" asp-route-playerId="@item.Id" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Performance</a>
                         </td>
                     </tr>
                 }

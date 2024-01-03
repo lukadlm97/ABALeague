@@ -145,47 +145,45 @@
 
 
 <h5>Existing roster items with possible ended contract</h5>
-<form asp-controller="Score" asp-action="AddScores" method="post" asp-route-leagueId="@Model.LeagueId">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].LeagueName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].TeamName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].PlayerName)
-                </th>
-                <td>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].LeagueName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].TeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].PlayerName)
+            </th>
+            <td>
                   
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.ExistingRosterItemsWithEndedContract != null && Model.ExistingRosterItemsWithEndedContract.Any())
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ExistingRosterItemsWithEndedContract != null && Model.ExistingRosterItemsWithEndedContract.Any())
+        {
+            @foreach (var item in Model.ExistingRosterItemsWithEndedContract)
             {
-                @foreach (var item in Model.ExistingRosterItemsWithEndedContract)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LeagueName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TeamName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PlayerName)
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                }
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LeagueName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlayerName)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
             }
-        </tbody>
-    </table>
-</form>
+        }
+    </tbody>
+</table>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>

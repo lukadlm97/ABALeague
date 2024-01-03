@@ -1,0 +1,114 @@
+﻿@model BoxscoreByPlayerViewModel
+
+<div class="container mt-4">
+    <h2>Player Boxscore: @Model.PlayerName</h2>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>@Model.PlayerName - @Model.TeamName (@Model.LeagueName)</h4>
+        </div>
+        <div class="card-body">
+            <h5>Game Performances</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Round</th>
+                        <td>Oponent Name</td>
+                        <th>Home Game</th>
+                        <th>Result</th>
+                        <th>Venue</th>
+                        <th>Attendency</th>
+                        <th>Minutes</th>
+                        <th>Points</th>
+                        <th>TotalRebounds</th>
+                        <th>Assists</th>
+                        <th>Steals</th>
+                        <th>Turnover</th>
+                        <th>PlusMinus</th>
+                        <th>RankValue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var performance in Model.GamePerformance)
+                    {
+                        <tr>
+                            <td>@performance.Date.ToShortDateString()</td>
+                            <td>@performance.Round</td>
+                            <td>@performance.OponentName</td>
+                            <td>@(performance.IsHomeGame ? "H" : "A")</td>
+                            <td>@(performance.IsWinTheGame ? "W" : "L")</td>
+                            <td>@performance.Venue</td>
+                            <td>@performance.Attendency</td>
+                            <td>@(performance.Minutes.HasValue ? performance.Minutes.Value.ToString(@"mm\:ss") : "-")</td>
+                            <td>@performance.Points</td>
+                            <td>@performance.TotalRebounds</td>
+                            <td>@performance.Assists</td>
+                            <td>@performance.Steals</td>
+                            <td>@performance.Turnover</td>
+                            <td>@performance.PlusMinus</td>
+                            <td>@performance.RankValue</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- Average Boxscore Stats -->
+        <h5>Average Boxscore Stats</h5>
+        <dl class="row">
+            <dt class="col-sm-3">Average Minutes</dt>
+            <dd class="col-sm-9">@Model.AverageBoxscoreStatsView.AvgMinutes</dd>
+
+            <dt class="col-sm-3">Average Points</dt>
+            <dd class="col-sm-9">@Model.AverageBoxscoreStatsView.AvgPoints</dd>
+
+            <dt class="col-sm-3">Average Total Rebounds</dt>
+            <dd class="col-sm-9">@Model.AverageBoxscoreStatsView.AvgTotalRebounds</dd>
+
+            <dt class="col-sm-3">Average Assists</dt>
+            <dd class="col-sm-9">@Model.AverageBoxscoreStatsView.AvgAssists</dd>
+
+            <dt class="col-sm-3">Average Steals</dt>
+            <dd class="col-sm-9">@Model.AverageBoxscoreStatsView.AvgSteals</dd>
+
+            <dt class="col-sm-3">Average Turnover</dt>
+            <dd class="col-sm-9">@Model.AverageBoxscoreStatsView.AvgTurnover</dd>
+
+            <dt class="col-sm-3">Average Plus-Minus</dt>
+            <dd class="col-sm-9">@Model.AverageBoxscoreStatsView.AvgPlusMinus</dd>
+
+            <dt class="col-sm-3">Average Rank Value</dt>
+            <dd class="col-sm-9">@Model.AverageBoxscoreStatsView.AvgRankValue</dd>
+            <!-- Add other average stats as needed -->
+        </dl>
+
+        <!-- Advanced Boxscore Stats -->
+        <h5>Advanced Boxscore Stats</h5>
+        <dl class="row">
+            <dt class="col-sm-3">Games Played</dt>
+            <dd class="col-sm-9">@Model.AdvancedBoxscoreStatsView.GamePlayed</dd>
+
+            <dt class="col-sm-3">Home Games Played</dt>
+            <dd class="col-sm-9">@Model.AdvancedBoxscoreStatsView.HomeGamesPlayed</dd>
+
+            <dt class="col-sm-3">Games Win</dt>
+            <dd class="col-sm-9">@Model.AdvancedBoxscoreStatsView.GamesWin</dd>
+
+            <dt class="col-sm-3">Home Games Win</dt>
+            <dd class="col-sm-9">@Model.AdvancedBoxscoreStatsView.HomeGamesWin</dd>
+
+            <dt class="col-sm-3">Total Spectators</dt>
+            <dd class="col-sm-9">@Model.AdvancedBoxscoreStatsView.TotalSpectators</dd>
+
+            <dt class="col-sm-3">Average Spectators</dt>
+            <dd class="col-sm-9">@Model.AdvancedBoxscoreStatsView.AverageSpectators</dd>
+
+            <dt class="col-sm-3">Home Game Scored Points</dt>
+            <dd class="col-sm-9">@Model.AdvancedBoxscoreStatsView.HomeGameScoredPoints</dd>
+
+            <dt class="col-sm-3">Away Game Scored Points</dt>
+            <dd class="col-sm-9">@Model.AdvancedBoxscoreStatsView.AwayGameScoredPoints</dd>
+            <!-- Add other advanced stats as needed -->
+        </dl>
+    </div>
+</div>

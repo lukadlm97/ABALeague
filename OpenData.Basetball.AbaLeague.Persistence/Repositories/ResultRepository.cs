@@ -17,6 +17,12 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             return await _dbContext.Results.AnyAsync(x => x.RoundMatchId == matchRoundId, cancellationToken);
         }
 
+        public async Task<Result?> GetByMatchRound(int matchRoundId, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Results
+                                    .FirstOrDefaultAsync(x => x.RoundMatchId == matchRoundId, cancellationToken);
+        }
+
         public async Task<IEnumerable<Result>> SearchByLeague(int leagueId, CancellationToken cancellationToken = default)
         {
             var league = await _dbContext.Leagues

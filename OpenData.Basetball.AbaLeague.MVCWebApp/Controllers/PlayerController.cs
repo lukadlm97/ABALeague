@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
+using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBoxscoreByPlayerIdAndLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.AddAnotherName;
@@ -272,5 +273,93 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             });
         }
 
+        public async Task<IActionResult> Performance(int playerId, int leagueId, CancellationToken cancellationToken = default)
+        { 
+            var result = await _sender
+                .Send(new GetBoxscoreByPlayerIdAndLeagueIdQuery(playerId, leagueId), cancellationToken);
+
+            if (result.HasNoValue)
+            {
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = "not found anything"
+                });
+            }
+
+            var gamePerformanceItems = result.Value.Games.Select(x => new GamePerformanceViewModel
+            {
+                AgainstBlock = x.AgainstBlock,
+                Assists = x.Assists,
+                Attendency = x.Attendency,
+                CommittedFoul = x.CommittedFoul,
+                Date = x.Date,
+                DefensiveRebounds = x.DefensiveRebounds,
+                IsHomeGame = x.HomeGame,
+                IsWinTheGame = x.WinTheGame,
+                InFavoureOfBlock = x.InFavoureOfBlock,
+                MatchNo = x.MatchNo,
+                Minutes = x.Minutes,
+                OffensiveRebounds = x.OffensiveRebounds,
+                OponentId = x.OponentId,
+                OponentName = x.OponentName,
+                PlusMinus = x.PlusMinus,
+                PointFrom2ndChance = x.PointFrom2ndChance,
+                PointFromFastBreak = x.PointFromFastBreak,
+                PointFromPain = x.PointFromPain,
+                Points = x.Points,
+                RankValue = x.RankValue,
+                ReceivedFoul = x.ReceivedFoul,
+                Round = x.Round,
+                ShotAttempted1Pt = x.ShotAttempted1Pt,
+                ShotAttempted2Pt = x.ShotAttempted2Pt,
+                ShotAttempted3Pt = x.ShotAttempted3Pt,
+                ShotMade1Pt = x.ShotMade1Pt,
+                ShotMade2Pt = x.ShotMade2Pt,
+                ShotMade3Pt = x.ShotMade3Pt,
+                ShotPrc = x.ShotPrc,
+                ShotPrc1Pt = x.ShotPrc1Pt,
+                ShotPrc2Pt = x.ShotPrc2Pt,
+                ShotPrc3Pt = x.ShotPrc3Pt,
+                Steals = x.Steals,
+                TotalRebounds = x.TotalRebounds,
+                Turnover = x.Turnover,
+                Venue = x.Venue,
+            });
+
+            return View(new BoxscoreByPlayerViewModel
+            {
+                GamePerformance = gamePerformanceItems.ToList(),
+                LeagueId = leagueId,
+                LeagueName = result.Value.LeagueName,
+                PlayerId = result.Value.PlayerId,
+                PlayerName = result.Value.PlayerName,
+                TeamId = result.Value.TeamId,
+                TeamName = result.Value.TeamName,
+                AverageBoxscoreStatsView = new AverageBoxscoreStatsViewModel
+                {
+                    AvgAssists = result.Value.AverageBoxscoreCalcuations.AvgAssists,
+                    AvgMinutes = result.Value.AverageBoxscoreCalcuations.AvgMinutes,
+                    AvgPlusMinus = result.Value.AverageBoxscoreCalcuations.AvgPlusMinus,
+                    AvgPoints = result.Value.AverageBoxscoreCalcuations.AvgPoints,
+                    AvgRankValue = result.Value.AverageBoxscoreCalcuations.AvgRankValue,
+                    AvgSteals = result.Value.AverageBoxscoreCalcuations.AvgSteals,
+                    AvgTotalRebounds = result.Value.AverageBoxscoreCalcuations.AvgTotalRebounds,
+                    AvgTurnover = result.Value.AverageBoxscoreCalcuations.AvgTurnover,
+                    
+                },
+                AdvancedBoxscoreStatsView = new AdvancedBoxscoreStatsViewModel
+                {
+                    AverageSpectators = result.Value.AdvancedMatchCalcuations.AverageSpectators,
+                    AwayGameScoredPoints = result.Value.AdvancedMatchCalcuations.AwayGameScoredPoints,
+                    GamePlayed = result.Value.AdvancedMatchCalcuations.GamePlayed,
+                    GamesWin = result.Value.AdvancedMatchCalcuations.GamesWin,
+                    HomeGameScoredPoints = result.Value.AdvancedMatchCalcuations.HomeGameScoredPoints,
+                    HomeGamesPlayed = result.Value.AdvancedMatchCalcuations.HomeGamesPlayed,
+                    HomeGamesWin = result.Value.AdvancedMatchCalcuations.HomeGamesWin,
+                    TotalSpectators = result.Value.AdvancedMatchCalcuations.TotalSpectators
+
+                }
+            });
+        }
     }
 }
