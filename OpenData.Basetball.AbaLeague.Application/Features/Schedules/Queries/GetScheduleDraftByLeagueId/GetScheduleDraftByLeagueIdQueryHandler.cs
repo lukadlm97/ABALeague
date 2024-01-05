@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByLeagueId
 {
-    public class GetScheduleDraftByLeagueIdQueryHandler : IQueryHandler<GetScheduleDraftByLeagueIdQuery, Maybe<ScheduleDto>>
+    public class GetScheduleDraftByLeagueIdQueryHandler : IQueryHandler<GetScheduleDraftByLeagueIdQuery, Maybe<ScheduleDraftDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDocumentFetcher _documentFetcher;
@@ -27,7 +27,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
             _documentFetcher = documentFetcher;
             _loggerFactory = loggerFactory;
         }
-        public async Task<Maybe<ScheduleDto>>
+        public async Task<Maybe<ScheduleDraftDto>>
             Handle(GetScheduleDraftByLeagueIdQuery request, CancellationToken cancellationToken)
         {
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
@@ -35,7 +35,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
             var seasonResources = await _unitOfWork.SeasonResourcesRepository.GetAll(cancellationToken);
             if (league is null || !teams.Any())
             {
-                return Maybe<ScheduleDto>.None;
+                return Maybe<ScheduleDraftDto>.None;
             }
 
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
@@ -46,16 +46,21 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
             };
             if (processor is null)
             {
-                return Maybe<ScheduleDto>.None;
+                return Maybe<ScheduleDraftDto>.None;
             }
             IReadOnlyList<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)> scheduleItems = null;
-
+            var subsetResources = seasonResources.Where(x => x.LeagueId == request.LeagueId);
             switch (league.ProcessorTypeEnum)
             {
                 case Domain.Enums.ProcessorType.Euro:
                     var rawUrl = league.BaseUrl + league.CalendarUrl;
-                    var url = string.Format(rawUrl, 1);
-                    scheduleItems = await processor.GetRegularSeasonCalendar(1, url, cancellationToken);
+                    List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)> list = new List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)>();
+                    for (int i=0;i< (subsetResources.Count()-1) * 2; i++)
+                    {
+                        var url = string.Format(rawUrl, i+1);
+                        list.AddRange(await processor.GetRegularSeasonCalendar(i + 1, url, cancellationToken));
+                    }
+                    scheduleItems = list;
                     break;
                 case Domain.Enums.ProcessorType.Aba:
                     scheduleItems = await processor.GetRegularSeasonCalendar(league.BaseUrl + league.CalendarUrl, cancellationToken);
@@ -68,7 +73,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
             var existingScheduleItems = await _unitOfWork.CalendarRepository.SearchByLeague(request.LeagueId, cancellationToken);
             if (scheduleItems is null)
             {
-                return Maybe<ScheduleDto>.None;
+                return Maybe<ScheduleDraftDto>.None;
             }
 
             List<ScheduleItemDto> draftItems = new List<ScheduleItemDto>();
@@ -150,7 +155,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
             }
 
 
-            return new ScheduleDto(draftItems, plannedItems, existingItems, missingItems);
+            return new ScheduleDraftDto(draftItems, plannedItems, existingItems, missingItems);
         }
     }
 }

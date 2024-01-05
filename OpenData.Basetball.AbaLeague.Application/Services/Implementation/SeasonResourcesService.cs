@@ -54,7 +54,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var teams = await _unitOfWork.TeamRepository.GetAll(cancellationToken);
 
-            var teamsDraft = await _webPageProcessor.GetTeams(league.BaseUrl + league.StandingUrl, cancellationToken);
+            var teamsDraft = await _webPageProcessor.GetTeams(league.BaseUrl + league.StandingUrl,null, null,null, cancellationToken);
             List<SeasonResourceDto> list = new List<SeasonResourceDto>();
             foreach (var (name,url) in teamsDraft)
             {

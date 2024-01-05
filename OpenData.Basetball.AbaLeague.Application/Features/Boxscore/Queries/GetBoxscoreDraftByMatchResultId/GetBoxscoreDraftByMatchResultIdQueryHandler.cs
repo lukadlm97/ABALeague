@@ -84,9 +84,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
             switch (league.ProcessorTypeEnum)
             {
                 case Domain.Enums.ProcessorType.Euro:
-                    throw new NotImplementedException();
-                    rawUrl = league.BaseUrl + league.CalendarUrl;
-                     url = string.Format(rawUrl, 1);
+                    rawUrl = league.BaseUrl + league.BoxScoreUrl;
+                    url = string.Format(rawUrl, roundMatch.MatchNo);
                     boxScoreItems = await processor.GetBoxScore(url, cancellationToken);
                     break;
                 case Domain.Enums.ProcessorType.Aba:
@@ -114,7 +113,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 var player = players.FirstOrDefault(x=> x.Name.ToLower() == item.Name.ToLower());  
                 if(player == null)
                 {
-                    var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetPlayerByAnotherName(item.Name, cancellationToken);
+                    var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetAnotherNamePlayerByAnotherName(item.Name, cancellationToken);
                     if (existingPlayerWitAnotherName != null)
                     {
                         player = players.FirstOrDefault(x => x.Id == existingPlayerWitAnotherName.PlayerId);
@@ -150,7 +149,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 var player = players.FirstOrDefault(x => x.Name.ToLower() == item.Name.ToLower());
                 if (player == null)
                 {
-                    var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetPlayerByAnotherName(item.Name, cancellationToken);
+                    var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetAnotherNamePlayerByAnotherName(item.Name, cancellationToken);
                     if (existingPlayerWitAnotherName != null)
                     {
                         player = players.FirstOrDefault(x => x.Id == existingPlayerWitAnotherName.PlayerId);

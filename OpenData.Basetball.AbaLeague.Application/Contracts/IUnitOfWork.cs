@@ -22,6 +22,7 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         IResultRepository ResultRepository { get; }
         IBoxScoreRepository BoxScoreRepository { get; }
         IRosterRepository RosterRepository { get; }
+        ISelectorResourcesRepository SelectorResourcesRepository { get; }
         Task Save();
     }
 }

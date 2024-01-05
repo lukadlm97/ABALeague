@@ -34,7 +34,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
             {
                 return Result.Failure(new Error("AlreadyExist","league with specified official name or short name already exist"));
             }
+            var existingProcessor = (await _unitOfWork.ProcessorTypeRepository.GetAll( cancellationToken))
+                                                        .FirstOrDefault(x=>x.Id == (short)request.ProcessorType);
+            if(existingProcessor == null)
+            {
 
+                return Result.Failure(new Error("UnableToFoundProcessor", ""));
+            }
             try
             {
                 var result = await _unitOfWork.LeagueRepository.Add(new League()
@@ -49,6 +55,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
                     Season = request.Season,
                     StandingUrl = request.StandingUrl,
                     RoundMatches = new List<RoundMatch>(),
+                    ProcessorTypeId = existingProcessor.Id
                 }, cancellationToken);
 
                 await _unitOfWork.Save();

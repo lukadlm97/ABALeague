@@ -74,7 +74,7 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
                 {
                     result = await _sender.Send(new CreateLeagueCommand(League.OfficalName, League.ShortName,
                         League.Season, League.StandingUrl, League.CalendarUrl, League.MatchUrl, League.BoxScoreUrl,
-                        League.BaseUrl, League.RosterUrl), cancellationToken);
+                        League.BaseUrl, League.RosterUrl, 1), cancellationToken);
                    
                 }
                 else

@@ -9,15 +9,17 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBoxscoreByPlayerIdAndLeagueId
 {
-    public class GetBoxscoreByPlayerIdAndLeagueIdQuery : IQuery<Maybe<BoxscoreByPlayerDto>>
+    public class GetBoxscoreByPlayerIdTeamIdAndLeagueIdQuery : IQuery<Maybe<BoxscoreByPlayerDto>>
     {
-        public GetBoxscoreByPlayerIdAndLeagueIdQuery(int playerId, int leagueId)
+        public GetBoxscoreByPlayerIdTeamIdAndLeagueIdQuery(int playerId, int leagueId, int teamId)
         {
             PlayerId = playerId;
             LeagueId = leagueId;
+            TeamId = teamId;
         }
 
         public int PlayerId { get; private set; }
         public int LeagueId { get; private set; }
+        public int TeamId { get; private set; }
     }
 }

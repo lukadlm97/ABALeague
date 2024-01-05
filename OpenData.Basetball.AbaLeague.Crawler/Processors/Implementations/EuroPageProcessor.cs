@@ -14,13 +14,23 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
         {
             _documentFetcher = documentFetcher;
         }
-        public async Task<IReadOnlyList<(string Name, string Url)>> GetTeams(string leagueUrl, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<(string Name, string Url)>> GetTeams(string leagueUrl,
+                                                                            string? standingsTableSelector = null,
+                                                                            string? standingsTableRowNameSelector = null,
+                                                                            string? standingsTableRowUrlSelector = null,
+                                                                            CancellationToken cancellationToken = default)
         {
+            var teams = new List<(string, string)>();
+            if (string.IsNullOrWhiteSpace(leagueUrl) || string.IsNullOrWhiteSpace(standingsTableSelector) ||
+                string.IsNullOrWhiteSpace(standingsTableRowNameSelector) ||
+                string.IsNullOrWhiteSpace(standingsTableRowUrlSelector))
+            {
+                return teams;
+            }
             var webDocument = await _documentFetcher
                 .FetchDocument(leagueUrl, cancellationToken);
 
-            var teams = new List<(string, string)>();
-            var teamElements = webDocument.QuerySelectorAll(".complex-stat-table_row__1P6us");
+            var teamElements = webDocument.QuerySelectorAll(standingsTableSelector);
 
             bool initalCycle = true;
             foreach (var teamElement in teamElements)
@@ -31,13 +41,13 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                     continue;
                 }
                 var name = teamElement
-                    .QuerySelectorAll(".complex-stat-table_mainClubName__3IMZJ")[0]
+                    .QuerySelectorAll(standingsTableRowNameSelector)[0]
                     .InnerHtml
                     .Trim();
                 name = name.Substring(0,name.IndexOf('<'));
 
                 var url = teamElement
-                    .QuerySelectorAll(".complex-stat-table_clubWrap__2i3fk")[0]
+                    .QuerySelectorAll(standingsTableRowUrlSelector)[0]
                     .GetAttribute("href")
                     .Trim();
 
@@ -124,7 +134,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 var rightTime = time.ParseDateTimeFromEuroleagueFormat();
                 var matchNo = url.ParesMatchNoFromEuroleagueUrl();
 
-                teams.Add(new(homeTeam, awayTeam, homePoints, awayPoints, rightTime, matchNo, null));
+                teams.Add(new(homeTeam, awayTeam, homePoints, awayPoints, rightTime, matchNo, round));
             }
 
             return teams;
@@ -149,10 +159,20 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                     webDocument.QuerySelectorAll("div.game-hero-score_scoreWrapper__dMBPQ");
                 try
                 {
-                    if (eventDetails.Any() && eventDetails[2] != null && eventDetails[4] != null)
+                    if (eventDetails.Any() && eventDetails[2] != null)
                     {
                         venue = eventDetails[2].InnerHtml.ToString().CapitalizeFirstLetter();
-                        attendency = eventDetails[4].InnerHtml.ToString().ExtractEuroleagueAttendance();
+                        try
+                        {
+                            if(eventDetails[4] != null)
+                            {
+                                attendency = eventDetails[4].InnerHtml.ToString().ExtractEuroleagueAttendance();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            attendency = null;
+                        }
                         homeTeamPoint = scores[0].InnerHtml.ToString().PointsFromSpan();
                         awayTeamPoint = scores[1].InnerHtml.ToString().PointsFromSpan();
                         list.Add(new(no, attendency, venue, homeTeamPoint ?? -1, awayTeamPoint ?? -1));

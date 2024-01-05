@@ -49,39 +49,44 @@ else
 <h3>Not existing resources</h3>
 @if (Model.NotExistingResourcesTeams.Any())
 {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>
-                    @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].TeamName)
-            </th>
-            <th>
-                    @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].TeamUrl)
-            </th>
-            <th>
-                    @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].Url)
-            </th>
-            <td>
-            </td>
-        </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.NotExistingResourcesTeams)
-        {
+        <table class="table">
+            <thead>
             <tr>
+                <th>
+                        @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].TeamName)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].TeamUrl)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].Url)
+                </th>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TeamName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TeamUrl)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Url)
                 </td>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+             @foreach (var item in Model.NotExistingResourcesTeams)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeamUrl)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Url)
+                    </td>
+                    <td>
+                            <a asp-controller="SeasonResource" asp-action="RegisterTeamForCompetition"
+                            asp-route-leagueId="@Model.LeagueId"
+                               asp-route-teamId="@item.TeamId" class="btn btn-outline-success">Register</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
 }
 else
 {
@@ -123,7 +128,9 @@ else
                     @Html.DisplayFor(modelItem => item.Url)
                 </td>
                 <td>
-                        <a asp-controller="Team" asp-action="Upsert" asp-route-name="@item.TeamName" asp-route-teamId="null" class="btn btn-outline-primary">Details</a>
+                        <a asp-controller="SeasonResource" asp-action="Determinate"
+                           asp-route-refName="@item.TeamName" asp-route-leagueId="@Model.LeagueId" 
+                           class="btn btn-outline-danger">Determiante</a>
                 </td>
             </tr>
         }

@@ -10,23 +10,24 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBoxscoreByPlayerIdAndLeagueId
 {
-    public class GetBoxscoreByPlayerIdAndLeagueIdQueryHandler :
-        IQueryHandler<GetBoxscoreByPlayerIdAndLeagueIdQuery, Maybe<BoxscoreByPlayerDto>>
+    public class GetBoxscoreByPlayerIdTeamIdAndLeagueIdQueryHandler :
+        IQueryHandler<GetBoxscoreByPlayerIdTeamIdAndLeagueIdQuery, Maybe<BoxscoreByPlayerDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetBoxscoreByPlayerIdAndLeagueIdQueryHandler(IUnitOfWork unitOfWork)
+        public GetBoxscoreByPlayerIdTeamIdAndLeagueIdQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
         public async Task<Maybe<BoxscoreByPlayerDto>> 
-            Handle(GetBoxscoreByPlayerIdAndLeagueIdQuery request, CancellationToken cancellationToken)
+            Handle(GetBoxscoreByPlayerIdTeamIdAndLeagueIdQuery request, CancellationToken cancellationToken)
         {
             var player = await _unitOfWork.PlayerRepository.Get(request.PlayerId, cancellationToken);
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
+            var team = await _unitOfWork.TeamRepository.Get(request.TeamId, cancellationToken);
             var results  = await _unitOfWork.ResultRepository.GetAll(cancellationToken);
             var rosterItem = await _unitOfWork.RosterRepository
-                .Get(request.LeagueId, request.PlayerId, cancellationToken);
+                .Get(request.LeagueId, request.PlayerId, request.TeamId, cancellationToken);
 
             if(rosterItem == null || player== null || league ==null) 
             {
@@ -78,6 +79,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 totalSpectators += matchResult.Attendency;
                 homeGamesPointScored += isHomeGame ? score.Points??0:0;
                 awayGamesPointScored += !isHomeGame ? score.Points ?? 0 :0;
+                var result = $"{matchResult.HomeTeamPoints}:{matchResult.AwayTeamPoint}";
                 list.Add(new GameStats(isHomeGame ?  score.RoundMatch.AwayTeam.Id: score.RoundMatch.HomeTeam.Id ,
                     isHomeGame ? score.RoundMatch.AwayTeam.Name: score.RoundMatch.HomeTeam.Name , 
                     score.RoundMatch.DateTime, 
@@ -113,7 +115,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                     score.PointFrom2ndChance,
                     score.PointFromFastBreak, 
                     score.PlusMinus,
-                    score.RankValue));
+                    score.RankValue,
+                    result));
             }
 
             var advancedCalculation = new AdvancedMatchCalcuationDto(totalGamesPlayed, homeGamesPlayed, totalGamesWon, homeGamesWon, totalSpectators, totalSpectators / totalGamesPlayed, homeGamesPointScored, awayGamesPointScored);

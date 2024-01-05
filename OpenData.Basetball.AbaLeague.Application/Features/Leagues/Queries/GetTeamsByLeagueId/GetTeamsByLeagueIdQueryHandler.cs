@@ -8,6 +8,8 @@ using OpenData.Basketball.AbaLeague.Application.DTOs.Team;
 using OpenData.Basketball.AbaLeague.Domain.Enums;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Score;
+using OpenData.Basketball.AbaLeague.Application.Utilities;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId
 {
@@ -35,21 +37,35 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
             {
                 return Maybe<IEnumerable<TeamDTO>>.None;
             }
-
-
-            IWebPageProcessor webPageProcessor = null;
-            if (request.ProcessorType == ProcessorType.Aba)
+            var seasonResources = await _unitOfWork.SeasonResourcesRepository.GetAll(cancellationToken);
+            IWebPageProcessor? webPageProcessor = league.ProcessorTypeEnum switch
             {
-                webPageProcessor = new WebPageProcessor(_documentFetcher, _loggerFactory);
-            }
-            else
+                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher),
+                Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Unknow or null or _ => null
+            };
+            if (webPageProcessor == null)
             {
-                webPageProcessor = new EuroPageProcessor(_documentFetcher);
+                return Maybe<IEnumerable<TeamDTO>>.None;
             }
 
             var url = league.BaseUrl + league.StandingUrl;
-            var teams = await webPageProcessor.GetTeams(url, cancellationToken);
 
+            IReadOnlyList<(string, string)> teams = league.ProcessorTypeEnum switch
+            {
+                Domain.Enums.ProcessorType.Euro => 
+                await webPageProcessor.GetTeams(url, 
+                                                await GetStandingSelector(request.LeagueId),
+                                                await GetStandingRowNameSelector(request.LeagueId), 
+                                                await GetStandingRowUrlSelector(request.LeagueId), cancellationToken),
+                Domain.Enums.ProcessorType.Aba =>
+                await webPageProcessor.GetTeams(url, null, null, null, cancellationToken),
+                Domain.Enums.ProcessorType.Unknow or null or _ => null
+            }; ;
+            if (teams == null || !teams.Any())
+            {
+                return Maybe<IEnumerable<TeamDTO>>.None;
+            }
             var existingSeasonResorces =
                 await _unitOfWork.SeasonResourcesRepository.SearchByLeague(request.LeagueId, cancellationToken);
             var existingTeams = await _unitOfWork.TeamRepository.GetAll(cancellationToken);
@@ -59,24 +75,75 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
             {
                 if (!existingTeams.Any(x => name.ToLower().Contains(x.Name.ToLower())))
                 {
+                    if(seasonResources.Where(x => x.LeagueId == request.LeagueId)
+                        .Any(x=>x.TeamName.ToLower() == name.ToLower()))
+                    {
+                        var selectedSeasonResources= seasonResources
+                            .FirstOrDefault(x=>x.LeagueId == request.LeagueId && 
+                                                x.TeamName.ToLower() == name.ToLower());
+                        list.Add(new TeamDTO(selectedSeasonResources.TeamId,
+                                            name,
+                                            null,
+                                            teamUrl.Trim(league.BaseUrl),
+                                            teamUrl.Trim(league.BaseUrl).ExtractTeamCode(),
+                                            MaterializationStatus.Exist));
+                        continue;
+                    }
                     list.Add(new TeamDTO(null, name, teamUrl, null, null, MaterializationStatus.TeamNoExist));
                     continue;
                 }
                 var existingTeam = existingTeams.First(x => name.ToLower().Contains(x.Name.ToLower()));
                 if (existingSeasonResorces.Any(x => x.TeamName.ToLower().Contains(name.ToLower())))
                 {
-                    list.Add(new TeamDTO(existingTeam.Id, name, teamUrl.Trim(league.BaseUrl), null, null, MaterializationStatus.Exist));
+                    list.Add(new TeamDTO(existingTeam.Id,
+                                            name, 
+                                            null, 
+                                            teamUrl.Trim(league.BaseUrl), 
+                                            teamUrl.Trim(league.BaseUrl).ExtractTeamCode(), 
+                                            MaterializationStatus.Exist));
                 }
                 else
                 {
+                    // add advanced handling
                     list.Add(new TeamDTO(existingTeam.Id, name, teamUrl.Trim(league.BaseUrl), null, null, MaterializationStatus.NotExist));
                 }
             }
             return list;
         }
         
+        async Task<string> GetStandingSelector(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var selector = await _unitOfWork.SelectorResourcesRepository
+                .GetByLeagueIdAndSelectorType(leagueId, (short)Domain.Enums.HtmlQuerySelectorEnum.StandingsTable);
+            if(selector == null)
+            {
+                return string.Empty;
+            }
+            return selector.Value;
+        }
+        async Task<string> GetStandingRowNameSelector(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var selector = await _unitOfWork.SelectorResourcesRepository
+                .GetByLeagueIdAndSelectorType(leagueId, (short)Domain.Enums.HtmlQuerySelectorEnum.StandingsRowName);
+            if (selector == null)
+            {
+                return string.Empty;
+            }
+            return selector.Value;
+        }
 
-       
+
+        async Task<string> GetStandingRowUrlSelector(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var selector = await _unitOfWork.SelectorResourcesRepository
+                .GetByLeagueIdAndSelectorType(leagueId, (short)Domain.Enums.HtmlQuerySelectorEnum.StandingsRowUrl);
+            if (selector == null)
+            {
+                return string.Empty;
+            }
+            return selector.Value;
+        }
+        
     }
     public static class TrimStringExtensions
     {

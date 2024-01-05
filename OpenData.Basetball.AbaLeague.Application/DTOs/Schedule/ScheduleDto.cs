@@ -6,8 +6,5 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.DTOs.Schedule
 {
-    public record ScheduleDto(IEnumerable<ScheduleItemDto> DraftScheduleItems,
-                                IEnumerable<ScheduleItemDto> PlanedScheduleItems,
-                                IEnumerable<ScheduleItemDto> ExistingScheduleItems,
-                                IEnumerable<string> MissingTeams);
+    public record ScheduleDto(IEnumerable<ScheduleItemDto> ExistingScheduleItems);
 }

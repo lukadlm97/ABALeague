@@ -33,7 +33,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
 
                 list.Add(new SeasonResourceByTeamDto(selectedLeague.Id, 
                     selectedLeague.OfficalName, selectedLeague.Season, selectedLeague.ShortName,
-                    selectedTeam.Name, selectedSeasonResources.TeamUrl
+                    selectedTeam.Name, selectedTeam.Id, selectedSeasonResources.TeamUrl
                 ));
             }
             

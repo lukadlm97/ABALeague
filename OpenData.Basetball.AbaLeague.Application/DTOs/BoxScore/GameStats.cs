@@ -41,5 +41,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore
                                     int? PointFrom2ndChance = null,
                                     int? PointFromFastBreak = null,
                                     int? PlusMinus = null,
-                                    int? RankValue = null);
+                                    int? RankValue = null,
+                                    string? Result = null);
 }

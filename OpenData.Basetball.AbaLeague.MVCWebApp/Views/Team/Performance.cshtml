@@ -1,0 +1,237 @@
+﻿@model PerformanceViewModel
+
+<div class="container mt-4">
+    <h2>Team Boxscore: @Model.TeamName</h2>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>@Model.LeagueName - @Model.TeamName</h4>
+        </div>
+        <div class="card-body">
+            <h5>Game Performances</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Round</th>
+                        <th>Oponent Name</th>
+                        <th>Home Game</th>
+                        <th>Result</th>
+                        <th>Venue</th>
+                        <th>Attendency</th>
+                        <th>Result</th>
+                        <th>Points</th>
+                        <th>PlusMinus</th>
+                        <th>RankValue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var performance in Model.StatsByRounds)
+                    {
+                        <tr>
+                            <td>@performance.Date.ToShortDateString()</td>
+                            <td>@performance.Round</td>
+                            <td>@performance.OponentName</td>
+                            <td>@(performance.IsHomeGame ? "H" : "A")</td>
+                            <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
+                                @(performance.IsWinTheGame ? "W" : "L")
+                            </td>
+                            <td>@performance.Venue</td>
+                            <td>@performance.Attendency</td>
+                            <td>@performance.Result</td>
+                            <td>@performance.Points</td>
+                            <td>@performance.PlusMinus</td>
+                            <td>@performance.RankValue</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-body">
+            <!-- Game Performances Table -->
+            <!-- ... (existing code) ... -->
+            <!-- Average and Advanced Boxscore Stats -->
+            <div class="row mt-4">
+                <!-- Average Boxscore Stats -->
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h5>Average Boxscore Stats</h5>
+                        <dl class="row">
+                            <dt class="col-sm-6">Average Minutes</dt>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgMinutes</dd>
+
+                            <dt class="col-sm-6">Average Points</dt>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgPoints</dd>
+
+                            <dt class="col-sm-6">Average Total Rebounds</dt>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgTotalRebounds</dd>
+
+                            <dt class="col-sm-6">Average Assists</dt>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgAssists</dd>
+
+                            <dt class="col-sm-6">Average Steals</dt>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgSteals</dd>
+
+                            <dt class="col-sm-6">Average Turnover</dt>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgTurnover</dd>
+
+                            <dt class="col-sm-6">Average Plus-Minus</dt>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgPlusMinus</dd>
+
+                            <dt class="col-sm-6">Average Rank Value</dt>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgRankValue</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Advanced Boxscore Stats -->
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h5>Advanced Boxscore Stats</h5>
+                        <dl class="row">
+                            <dt class="col-sm-6">Games Played</dt>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.GamePlayed</dd>
+
+                            <dt class="col-sm-6">Home Games Played</dt>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.HomeGamesPlayed</dd>
+
+                            <dt class="col-sm-6">Games Win</dt>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.GamesWin</dd>
+
+                            <dt class="col-sm-6">Home Games Win</dt>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.HomeGamesWin</dd>
+
+                            <dt class="col-sm-6">Total Spectators</dt>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.TotalSpectators</dd>
+
+                            <dt class="col-sm-6">Average Spectators</dt>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.AverageSpectators</dd>
+
+                            <dt class="col-sm-6">Home Game Scored Points</dt>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.HomeGameScoredPoints</dd>
+
+                            <dt class="col-sm-6">Away Game Scored Points</dt>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.AwayGameScoredPoints</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <h5>Main stats performance by game</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Oponent Name</th>
+                        <th>Home Game</th>
+                        <th>Result</th>
+                        <th>Points</th>
+                        <th>Assists</th>
+                        <th>Rebounds [D/O]</th>
+                        <th>Steals</th>
+                        <th>Turnover</th>
+                        <th>Blocks (made/on)</th>
+                        <th>Fouls (made/on)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var performance in Model.StatsByRounds)
+                    {
+                        <tr>
+                            <td>@performance.Date.ToShortDateString()</td>
+                            <td>@performance.OponentName</td>
+                            <td>@(performance.IsHomeGame ? "H" : "A")</td>
+                            <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
+                                @(performance.IsWinTheGame ? "W" : "L")
+                            </td>
+                            <td>@performance.Points</td>
+                            <td>@performance.Assists</td>
+                            <td>@performance.TotalRebounds [@performance.DefensiveRebounds/@performance.OffensiveRebounds]</td>
+                            <td>@performance.Steals</td>
+                            <td>@performance.Turnover</td>
+                            <td>@performance.InFavoureOfBlock/@performance.AgainstBlock </td>
+                            <td>@performance.CommittedFoul/@performance.ReceivedFoul </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-body">
+            <h5>Shot performance by game</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Oponent Name</th>
+                        <th>Home Game</th>
+                        <th>Result</th>
+                        <th>Points</th>
+                        <th>1Pt</th>
+                        <th>2Pt</th>
+                        <th>3Pt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var performance in Model.StatsByRounds)
+                    {
+                        <tr>
+                            <td>@performance.Date.ToShortDateString()</td>
+                            <td>@performance.OponentName</td>
+                            <td>@(performance.IsHomeGame ? "H" : "A")</td>
+                            <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
+                                @(performance.IsWinTheGame ? "W" : "L")
+                            </td>
+                            <td>@performance.Points</td>
+                            <td>@performance.ShotPrc1Pt [@performance.ShotMade1Pt/@performance.ShotAttempted1Pt]</td>
+                            <td>@performance.ShotPrc2Pt [@performance.ShotMade2Pt / @performance.ShotAttempted2Pt]</td>
+                            <td>@performance.ShotPrc3Pt [@performance.ShotMade3Pt / @performance.ShotAttempted3Pt]</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-body">
+            <h5>Scoring trends</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Oponent Name</th>
+                        <th>Home Game</th>
+                        <th>Result</th>
+                        <th>Points</th>
+                        <th>Point From Pain</th>
+                        <th>Point From FastBreak</th>
+                        <th>Point From 2nd Chance</th>
+                        <th>Rank Value</th>
+                        <th>+/-</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var performance in Model.StatsByRounds)
+                    {
+                        <tr>
+                            <td>@performance.Date.ToShortDateString()</td>
+                            <td>@performance.OponentName</td>
+                            <td>@(performance.IsHomeGame ? "H" : "A")</td>
+                            <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
+                                @(performance.IsWinTheGame ? "W" : "L")
+                            </td>
+                            <td>@performance.Points</td>
+                            <td>@performance.PointFromPain</td>
+                            <td>@performance.PointFromFastBreak</td>
+                            <td>@performance.PointFrom2ndChance</td>
+                            <td>@performance.RankValue</td>
+                            <td>@performance.PlusMinus </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

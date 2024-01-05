@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.CreateLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetStandingsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.ProcessorTypes.Queries;
@@ -13,6 +15,7 @@ using OpenData.Basketball.AbaLeague.Domain.Enums;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 {
+    [Route("[controller]/[action]")]
     public class LeagueController : Controller
     {
         private readonly ILogger<LeagueController> _logger;
@@ -98,20 +101,23 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         }
         public async Task<IActionResult> Save(CreateLeagueViewModel model, CancellationToken cancellationToken = default)
         {
-            if (ModelState.IsValid)
-            {
-                // The model object now contains the data from the form
-                // You can access the properties of the model to save or process the data
-                // For example:
-                // var officialName = model.League.OfficalName;
-                // var shortName = model.League.ShortName;
-                // ... (access other properties)
+                if (!short.TryParse(model.SelectedProcessorTypeId, out short processor))
+                {
+                    return View("Error", new InfoDescriptionViewModel()
+                    {
+                        Description = "Unable to parse processory type id"
+                    });
+                }
+                var result = await _sender.Send(new CreateLeagueCommand(model.League.OfficialName, model.League.ShortName, model.League.Season, model.League.StandingUrl, model.League.CalendarUrl, model.League.MatchUrl, model.League.BoxScoreUrl, model.League.BaseUrl, model.League.RosterUrl, processor));
 
-                // Here, you can save the data to a database or perform any other required actions
+                if (result.IsSuccess)
+                {
 
-                // Redirect to a success page or another action
-                return RedirectToAction("Success");
-            }
+                    string redirectUrl = $"/League/Index";
+                    return Redirect(redirectUrl);
+                }
+                return RedirectToAction("Error");
+            
 
             // If the model state is not valid, you can return the view with validation errors
             return View("Upsert", model);
@@ -140,9 +146,114 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 ExistingTeams = existingResources.ToList(),
                 MissingTeams = notExistingTeams.ToList(),
-                NotExistingResourcesTeams = notExistingResources.ToList()
+                NotExistingResourcesTeams = notExistingResources.ToList(),
+                LeagueId = leagueId
             };
             ViewBag.Title = league.Value.ShortName + " -" + modelName;
+            return View(leagueDetailsViewModel);
+        }
+
+        public async Task<IActionResult> Standings(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var results = await _sender.Send(new GetStandingsByLeagueIdQuery(leagueId), cancellationToken);
+
+            var modelName = " Standings";
+
+            if (results.HasNoValue)
+            {
+                ViewBag.Title = modelName;
+                return View("Error");
+            }
+
+            var leagueDetailsViewModel = new LeagueStandingsViewModel()
+            {
+                LeagueId = results.Value.LeagueId,
+                LeagueName = results.Value.LeagueName,
+                PlayedRounds = results.Value.PlayedRounds,
+                TotalRounds = results.Value.TotalRounds,
+                StandingItems = results.Value.StandingItems.Select(x => new LeagueStandingItemViewModel
+                {
+                    CountryCode = x.CountryCode,
+                    CountryId = x.CountryId,
+                    LostAwayGames = x.LostAwayGames,
+                    LostGames = x.LostGames,
+                    LostHomeGames = x.LostHomeGames,
+                    PlayedAwayGames = x.PlayedAwayGames,
+                    PlayedGames = x.PlayedGames,
+                    PlayedHomeGames = x.PlayedHomeGames,
+                    PointDifference = x.PointDifference,
+                    ReceivedAwayPoints = x.ReceivedAwayPoints,
+                    ReceivedHomePoints = x.ReceivedHomePoints,
+                    ReceivedPoints = x.ReceivedPoints,
+                    ScoredAwayPoints = x.ScoredAwayPoints,
+                    ScoredHomePoints = x.ScoredHomePoints,
+                    ScoredPoints = x.ScoredPoints,
+                    TeamId = x.TeamId,
+                    TeamName = x.TeamName,
+                    WonAwayGames = x.WonAwayGames,  
+                    WonGames = x.WonGames,
+                    WonHomeGames = x.WonHomeGames,
+                    RecentForm = x.RecentForm.ToList(),
+                }).ToList(),
+                HomeStandingItems = results.Value.StandingItems.OrderByDescending(x => x.WonHomeGames)
+                                                                    .ThenBy(x => x.LostHomeGames)
+                                                                    .ThenByDescending(x =>
+                                                                        (x.ScoredHomePoints - x.ReceivedHomePoints)).Select(x => new LeagueStandingItemViewModel
+                {
+                    CountryCode = x.CountryCode,
+                    CountryId = x.CountryId,
+                    LostAwayGames = x.LostAwayGames,
+                    LostGames = x.LostGames,
+                    LostHomeGames = x.LostHomeGames,
+                    PlayedAwayGames = x.PlayedAwayGames,
+                    PlayedGames = x.PlayedGames,
+                    PlayedHomeGames = x.PlayedHomeGames,
+                    PointDifference = x.PointDifference,
+                    ReceivedAwayPoints = x.ReceivedAwayPoints,
+                    ReceivedHomePoints = x.ReceivedHomePoints,
+                    ReceivedPoints = x.ReceivedPoints,
+                    ScoredAwayPoints = x.ScoredAwayPoints,
+                    ScoredHomePoints = x.ScoredHomePoints,
+                    ScoredPoints = x.ScoredPoints,
+                    TeamId = x.TeamId,
+                    TeamName = x.TeamName,
+                    WonAwayGames = x.WonAwayGames,
+                    WonGames = x.WonGames,
+                    WonHomeGames = x.WonHomeGames,
+                    HomeRecentForm = x.HomeRecentForm.ToList()
+
+                }).ToList(),
+                 AwayStandingItems = results.Value.StandingItems.OrderByDescending(x=>x.WonAwayGames)
+                                                                    .ThenBy(x => x.LostAwayGames)
+                                                                    .ThenByDescending(x => 
+                                                                        (x.ScoredAwayPoints-x.ReceivedAwayPoints))
+                 .Select(x => new LeagueStandingItemViewModel
+                 {
+                     CountryCode = x.CountryCode,
+                     CountryId = x.CountryId,
+                     LostAwayGames = x.LostAwayGames,
+                     LostGames = x.LostGames,
+                     LostHomeGames = x.LostHomeGames,
+                     PlayedAwayGames = x.PlayedAwayGames,
+                     PlayedGames = x.PlayedGames,
+                     PlayedHomeGames = x.PlayedHomeGames,
+                     PointDifference = x.PointDifference,
+                     ReceivedAwayPoints = x.ReceivedAwayPoints,
+                     ReceivedHomePoints = x.ReceivedHomePoints,
+                     ReceivedPoints = x.ReceivedPoints,
+                     ScoredAwayPoints = x.ScoredAwayPoints,
+                     ScoredHomePoints = x.ScoredHomePoints,
+                     ScoredPoints = x.ScoredPoints,
+                     TeamId = x.TeamId,
+                     TeamName = x.TeamName,
+                     WonAwayGames = x.WonAwayGames,
+                     WonGames = x.WonGames,
+                     WonHomeGames = x.WonHomeGames,
+                     AwayRecentForm = x.AwayRecentForm.ToList()
+                 }).ToList(),
+                 
+            };
+            ViewBag.Title = leagueDetailsViewModel.LeagueName + " -" + modelName;
             return View(leagueDetailsViewModel);
         }
     }

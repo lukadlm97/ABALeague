@@ -21,5 +21,23 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
 
             return averageTimeSpan;
         }
+        public static string ExtractTeamCode(this string? url)
+        {
+            // Check if the URL contains "/teams/" and extract the team code
+            int teamsIndex = url.IndexOf("/teams/", StringComparison.OrdinalIgnoreCase);
+
+            if (teamsIndex != -1)
+            {
+                int startIndex = teamsIndex + "/teams/".Length;
+                int endIndex = url.IndexOf("/", startIndex, StringComparison.OrdinalIgnoreCase);
+
+                if (endIndex != -1)
+                {
+                    return url.Substring(startIndex, endIndex - startIndex);
+                }
+            }
+
+            return null; // Return null if the team code cannot be extracted
+        }
     }
 }

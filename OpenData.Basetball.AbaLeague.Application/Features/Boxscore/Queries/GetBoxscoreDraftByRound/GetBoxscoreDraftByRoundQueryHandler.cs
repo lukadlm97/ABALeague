@@ -97,9 +97,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 switch (league.ProcessorTypeEnum)
                 {
                     case Domain.Enums.ProcessorType.Euro:
-                        throw new NotImplementedException();
-                        rawUrl = league.BaseUrl + league.CalendarUrl;
-                        url = string.Format(rawUrl, 1);
+                        rawUrl = league.BaseUrl + league.BoxScoreUrl;
+                        url = string.Format(rawUrl, roundMatch.MatchNo);
                         boxScoreItems = await processor.GetBoxScore(url, cancellationToken);
                         break;
                     case Domain.Enums.ProcessorType.Aba:
@@ -127,7 +126,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                     var player = players.FirstOrDefault(x => x.Name.ToLower() == homeTeamItem.Name.ToLower());
                     if (player == null)
                     {
-                        var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetPlayerByAnotherName(homeTeamItem.Name, cancellationToken);
+                        var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetAnotherNamePlayerByAnotherName(homeTeamItem.Name, cancellationToken);
                         if (existingPlayerWitAnotherName != null)
                         {
                             player = players.FirstOrDefault(x => x.Id == existingPlayerWitAnotherName.PlayerId);
@@ -163,7 +162,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                     var player = players.FirstOrDefault(x => x.Name.ToLower() == awayTeamItem.Name.ToLower());
                     if (player == null)
                     {
-                        var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetPlayerByAnotherName(awayTeamItem.Name, cancellationToken);
+                        var existingPlayerWitAnotherName = await _unitOfWork.PlayerRepository.GetAnotherNamePlayerByAnotherName(awayTeamItem.Name, cancellationToken);
                         if (existingPlayerWitAnotherName != null)
                         {
                             player = players.FirstOrDefault(x => x.Id == existingPlayerWitAnotherName.PlayerId);

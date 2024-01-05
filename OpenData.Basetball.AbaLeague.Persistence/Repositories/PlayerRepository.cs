@@ -6,7 +6,7 @@ using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 {
-    public class PlayerRepository: GenericRepository<Player>, IPlayerRepository
+    public class PlayerRepository : GenericRepository<Player>, IPlayerRepository
     {
         public PlayerRepository(AbaLeagueDbContext dbContext) : base(dbContext)
         {
@@ -59,12 +59,17 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
             return await _dbContext.Players.SingleOrDefaultAsync(x => x.Name == name, cancellationToken);
         }
 
-        public async Task<AnotherNameItem?> GetPlayerByAnotherName(string name, CancellationToken cancellationToken = default)
+        public async Task<Player?> GetPlayerByAnotherName(string name, CancellationToken cancellationToken = default)
         {
             var players = _dbContext.Players.Include(x => x.AnotherNameItems);
             var anotherNames = players.SelectMany(x => x.AnotherNameItems);
 
-            return await anotherNames.FirstOrDefaultAsync(x=> x.Name.ToLower() == name.ToLower(), cancellationToken);
+            var item = await anotherNames.FirstOrDefaultAsync(x=> x.Name.ToLower() == name.ToLower(), cancellationToken);
+            if(item == null)
+            {
+                return null;
+            }
+            return await players.FirstOrDefaultAsync(x=>x.Id == item.PlayerId, cancellationToken);
         }
 
         public async Task<IEnumerable<AnotherNameItem>> GetAnotherNames(int playerId, CancellationToken cancellationToken = default)
@@ -78,6 +83,14 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
             }
             
             return player.AnotherNameItems;
+        }
+
+        public async Task<AnotherNameItem?> GetAnotherNamePlayerByAnotherName(string name, CancellationToken cancellationToken = default)
+        {
+            var players = _dbContext.Players.Include(x => x.AnotherNameItems);
+            var anotherNames = players.SelectMany(x => x.AnotherNameItems);
+
+            return await anotherNames.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower(), cancellationToken);
         }
     }
 }

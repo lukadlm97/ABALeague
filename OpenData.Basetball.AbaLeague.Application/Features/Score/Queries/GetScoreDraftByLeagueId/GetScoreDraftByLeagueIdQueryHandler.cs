@@ -62,7 +62,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
             var matchesOnSchedule = await _unitOfWork.CalendarRepository.SearchByLeague(request.LeagueId, cancellationToken);
             matchesOnSchedule = matchesOnSchedule.OrderBy(x => x.MatchNo);
             var matchNumbers = new List<int>();
-            foreach(var roundMatch in matchesOnSchedule)
+            foreach(var roundMatch in matchesOnSchedule.Where(x=>x.DateTime <= DateTime.UtcNow))
             {
                 if (!roundIdsForExistingResult.Any(x => x == roundMatch.Id))
                 {
@@ -80,7 +80,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
             {
                 string? url = league.ProcessorTypeEnum switch
                 {
-                    Domain.Enums.ProcessorType.Euro => null,
+                    Domain.Enums.ProcessorType.Euro => league.BaseUrl +
+                                                        string.Format(league.MatchUrl, x),
                     Domain.Enums.ProcessorType.Aba => league.BaseUrl +
                                                         string.Format(league.MatchUrl, x),
                     Domain.Enums.ProcessorType.Unknow or null or _ => null

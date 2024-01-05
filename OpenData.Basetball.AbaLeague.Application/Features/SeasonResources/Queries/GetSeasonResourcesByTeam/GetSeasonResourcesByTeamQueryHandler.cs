@@ -28,7 +28,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Que
                 if(league != null)
                 {
                     availableResources.Add(new SeasonResourceByTeamDto(league.Id, league.OfficalName, league.Season,
-                        league.ShortName, resource.TeamName, league.BaseUrl));
+                        league.ShortName, resource.TeamName, resource.TeamId, league.BaseUrl));
                 }
             }
 

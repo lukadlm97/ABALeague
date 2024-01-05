@@ -441,6 +441,46 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.ToTable("BoxScores");
                 });
 
+            modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.HtmlQuerySelector", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HtmlQuerySelector");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = (short)1,
+                            Name = "Unknow"
+                        },
+                        new
+                        {
+                            Id = (short)2,
+                            Name = "StandingsTable"
+                        },
+                        new
+                        {
+                            Id = (short)3,
+                            Name = "StandingsRowName"
+                        },
+                        new
+                        {
+                            Id = (short)4,
+                            Name = "StandingsRowUrl"
+                        });
+                });
+
             modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.ProcessorType", b =>
                 {
                     b.Property<short>("Id")
@@ -474,6 +514,30 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                             Id = (short)3,
                             Name = "Aba"
                         });
+                });
+
+            modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.ResourceSelector", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<short>("HtmlQuerySelectorId")
+                        .HasColumnType("smallint");
+
+                    b.Property<int?>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeagueId");
+
+                    b.ToTable("ResourceSelector");
                 });
 
             modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.Result", b =>
@@ -688,6 +752,15 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Navigation("RoundMatch");
                 });
 
+            modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.ResourceSelector", b =>
+                {
+                    b.HasOne("OpenData.Basetball.AbaLeague.Domain.Entities.League", "League")
+                        .WithMany("ResourceSelectors")
+                        .HasForeignKey("LeagueId");
+
+                    b.Navigation("League");
+                });
+
             modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.Result", b =>
                 {
                     b.HasOne("OpenData.Basketball.AbaLeague.Domain.Entities.RoundMatch", "RoundMatch")
@@ -720,6 +793,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 
             modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.League", b =>
                 {
+                    b.Navigation("ResourceSelectors");
+
                     b.Navigation("RoundMatches");
                 });
 

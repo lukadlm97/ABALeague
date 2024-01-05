@@ -5,6 +5,7 @@ using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Country;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Player;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
+using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBoxscoreByTeamIdAndLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
@@ -58,7 +59,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 viewModel.Id = existingTeam.Value.Id;
                 viewModel.SelectedCountryId = existingTeam.Value.CountryId.ToString();
             }
-            
+
             return View(viewModel);
         }
         public async Task<IActionResult> Save(UpsertTeamViewModel upsertTeamViewModel, CancellationToken cancellationToken = default)
@@ -73,10 +74,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             Result? result = null;
             if (upsertTeamViewModel.Id == null)
             {
-                 result =
-                    await _sender.Send(
-                        new CreateTeamCommand(upsertTeamViewModel.Name, upsertTeamViewModel.ShortCode,
-                            countryId), cancellationToken);
+                result =
+                   await _sender.Send(
+                       new CreateTeamCommand(upsertTeamViewModel.Name, upsertTeamViewModel.ShortCode,
+                           countryId), cancellationToken);
 
                 if (result.IsFailure)
                 {
@@ -94,7 +95,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
 
             result = await _sender.Send(
-                new UpdateTeamCommand(upsertTeamViewModel.Id??0, upsertTeamViewModel.Name, upsertTeamViewModel.ShortCode,
+                new UpdateTeamCommand(upsertTeamViewModel.Id ?? 0, upsertTeamViewModel.Name, upsertTeamViewModel.ShortCode,
                     countryId), cancellationToken);
             if (result.IsFailure)
             {
@@ -134,15 +135,15 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             var indexViewModel = new TeamIndexViewModel()
             {
-                Teams = teams.Value.Teams.Select(x=> new MVCWebApp.Models.TeamDto()
+                Teams = teams.Value.Teams.Select(x => new MVCWebApp.Models.TeamDto()
                 {
                     Name = x.Name,
                     ShortName = x.ShortName,
-                    Id = x.Id??0,
-                    Country = ReturnCountryName(countries.Value.Countries, x.CountryId??0)
+                    Id = x.Id ?? 0,
+                    Country = ReturnCountryName(countries.Value.Countries, x.CountryId ?? 0)
                 }).ToList(),
                 Filter = filter,
-                Number = pageNumber, 
+                Number = pageNumber,
                 Size = pageSize
             };
             return View(indexViewModel);
@@ -178,12 +179,12 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     ShortName = x.ShortName,
                     Id = x.Id ?? 0,
                     Country = ReturnCountryName(countries.Value.Countries, x.CountryId ?? 0)
-                }).Where(x=>x.Name.ToLower().Contains(model.Filter.ToLower())).ToList(),
+                }).Where(x => x.Name.ToLower().Contains(model.Filter.ToLower())).ToList(),
                 Filter = model.Filter,
                 Number = 1,
                 Size = 50
             };
-            return View("Index",indexViewModel);
+            return View("Index", indexViewModel);
         }
 
         string ReturnCountryName(IEnumerable<CountryDto> countries, int id)
@@ -196,7 +197,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         }
         string ReturnPlayerCountryName(IEnumerable<PlayerDTO> players, IEnumerable<CountryDto> countries, int id)
         {
-            return countries.FirstOrDefault(x=>players?.FirstOrDefault(x => x.Id == id)?.CountryId==x.CountryId)?.Name;
+            return countries.FirstOrDefault(x => players?.FirstOrDefault(x => x.Id == id)?.CountryId == x.CountryId)?.Name;
         }
 
         public async Task<IActionResult> Details(int? teamId, CancellationToken cancellationToken = default)
@@ -210,7 +211,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load countries" });
             }
-            var team   = await _sender.Send(new GetTeamByIdQuery(teamId ?? 0), cancellationToken);
+            var team = await _sender.Send(new GetTeamByIdQuery(teamId ?? 0), cancellationToken);
 
             if (team.HasNoValue)
             {
@@ -234,7 +235,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             if (!leagues.Value.LeagueIds.Any())
             {
-                 detailsViewModel = new TeamDetailsViewModel()
+                detailsViewModel = new TeamDetailsViewModel()
                 {
                     Id = team.Value.Id ?? 0,
                     ShortName = team.Value.ShortName,
@@ -247,11 +248,13 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             Maybe<RosterResponse>? rosterItems = null;
             var listOfValues = leagues.Value.LeagueIds.ToList();
-            for (int  i = listOfValues.Count() - 1; i > -1; i--)
+            int? leagueId = null;
+            for (int i = listOfValues.Count() - 1; i > -1; i--)
             {
-                rosterItems  = await _sender.Send(new GetRosterByTeamIdQuery(team.Value.Id ?? 0, listOfValues[i]), cancellationToken);
+                rosterItems = await _sender.Send(new GetRosterByTeamIdQuery(team.Value.Id ?? 0, listOfValues[i]), cancellationToken);
                 if (rosterItems.HasValue && rosterItems.Value.Items.Any())
                 {
+                    leagueId = i;
                     break;
                 }
             }
@@ -289,7 +292,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             foreach (var rosterItem in rosterResources.Value)
             {
-                
+
                 if (rosterItem != null)
                 {
                     history.Add(new SeasonResourceViewModel()
@@ -313,10 +316,95 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 Country = ReturnCountryName(countries.Value.Countries, team.Value.CountryId ?? 0),
                 Name = team.Value.Name,
                 RosterItems = list,
-                RosterHistory = history
+                RosterHistory = history,
+                LeagueIdForLatestAvailableRoster = leagueId
             };
-            
+
             return View(detailsViewModel);
+        }
+
+        public async Task<IActionResult> Performance(int leagueId,
+                                                        int teamId,
+                                                        CancellationToken cancellationToken = default)
+        {
+            var result = await _sender
+                .Send(new GetBoxscoreByTeamIdAndLeagueIdQuery(leagueId, teamId), cancellationToken);
+
+            if (result.HasNoValue)
+            {
+                return View("Error", new InfoDescriptionViewModel() { Description = "not found any peformance" });
+            }
+
+            var gamePerformanceItems = result.Value.Games.Select(x => new BoxscoreByTeamViewModel
+            {
+                AgainstBlock = x.AgainstBlock,
+                Assists = x.Assists,
+                Attendency = x.Attendency,
+                CommittedFoul = x.CommittedFoul,
+                Date = x.Date,
+                DefensiveRebounds = x.DefensiveRebounds,
+                IsHomeGame = x.HomeGame,
+                IsWinTheGame = x.WinTheGame,
+                InFavoureOfBlock = x.InFavoureOfBlock,
+                MatchNo = x.MatchNo,
+                OffensiveRebounds = x.OffensiveRebounds,
+                OponentId = x.OponentId,
+                OponentName = x.OponentName,
+                PlusMinus = x.PlusMinus,
+                PointFrom2ndChance = x.PointFrom2ndChance,
+                PointFromFastBreak = x.PointFromFastBreak,
+                PointFromPain = x.PointFromPain,
+                Points = x.Points,
+                RankValue = x.RankValue,
+                ReceivedFoul = x.ReceivedFoul,
+                Round = x.Round,
+                ShotAttempted1Pt = x.ShotAttempted1Pt,
+                ShotAttempted2Pt = x.ShotAttempted2Pt,
+                ShotAttempted3Pt = x.ShotAttempted3Pt,
+                ShotMade1Pt = x.ShotMade1Pt,
+                ShotMade2Pt = x.ShotMade2Pt,
+                ShotMade3Pt = x.ShotMade3Pt,
+                Steals = x.Steals,
+                TotalRebounds = x.TotalRebounds,
+                Turnover = x.Turnover,
+                Venue = x.Venue,
+                Result = x.Result,
+                ShotPrc1Pt = x.ShotPrc1Pt,
+                ShotPrc2Pt = x.ShotPrc2Pt,
+                ShotPrc3Pt = x.ShotPrc3Pt
+            });
+
+            return View(new PerformanceViewModel
+            {
+                LeagueId = result.Value.LeagueId,
+                LeagueName = result.Value.LeagueName,
+                TeamId = result.Value.TeamId,
+                TeamName = result.Value.TeamName,
+                StatsByRounds = gamePerformanceItems.ToList(),
+                AverageBoxscoreStats = new AverageBoxscoreStatsViewModel
+                {
+                    AvgAssists = result.Value.AverageBoxscoreCalcuations.AvgAssists,
+                    AvgMinutes = result.Value.AverageBoxscoreCalcuations.AvgMinutes,
+                    AvgPlusMinus = result.Value.AverageBoxscoreCalcuations.AvgPlusMinus,
+                    AvgPoints = result.Value.AverageBoxscoreCalcuations.AvgPoints,
+                    AvgRankValue = result.Value.AverageBoxscoreCalcuations.AvgRankValue,
+                    AvgSteals = result.Value.AverageBoxscoreCalcuations.AvgSteals,
+                    AvgTotalRebounds = result.Value.AverageBoxscoreCalcuations.AvgTotalRebounds,
+                    AvgTurnover = result.Value.AverageBoxscoreCalcuations.AvgTurnover,
+
+                },
+                AdvancedBoxscoreStats = new AdvancedBoxscoreStatsViewModel
+                {
+                    AverageSpectators = result.Value.AdvancedMatchCalcuations.AverageSpectators,
+                    AwayGameScoredPoints = result.Value.AdvancedMatchCalcuations.AwayGameScoredPoints,
+                    GamePlayed = result.Value.AdvancedMatchCalcuations.GamePlayed,
+                    GamesWin = result.Value.AdvancedMatchCalcuations.GamesWin,
+                    HomeGameScoredPoints = result.Value.AdvancedMatchCalcuations.HomeGameScoredPoints,
+                    HomeGamesPlayed = result.Value.AdvancedMatchCalcuations.HomeGamesPlayed,
+                    HomeGamesWin = result.Value.AdvancedMatchCalcuations.HomeGamesWin,
+                    TotalSpectators = result.Value.AdvancedMatchCalcuations.TotalSpectators
+                }
+            });
         }
     }
 }

@@ -8,11 +8,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
     public class GetTeamsByLeagueIdQuery : IQuery<Maybe<IEnumerable<TeamDTO>>>
     {
         public int LeagueId { get; }
-        public ProcessorType ProcessorType { get; }
-        public GetTeamsByLeagueIdQuery(int leagueId, ProcessorType processorType = ProcessorType.Aba)
+        public GetTeamsByLeagueIdQuery(int leagueId)
         {
             LeagueId = leagueId;
-            ProcessorType = processorType;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
         {
             var teams = await GetExisting(cancellationToken);
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
-            var leagueTeams = await _webPageProcessor.GetTeams(league.StandingUrl, cancellationToken);
+            var leagueTeams = await _webPageProcessor.GetTeams(league.StandingUrl, null, null, null, cancellationToken);
 
             List<(TeamSugestionDTO, TeamSugestionDTO)> existingTeams = new List<(TeamSugestionDTO, TeamSugestionDTO)>();
             List<TeamSugestionDTO> newTeams = new List<TeamSugestionDTO>();
@@ -61,7 +61,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             var teams = await GetExisting(cancellationToken);
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var url = league.BaseUrl + league.StandingUrl;
-            var leagueTeams = await _webPageProcessor.GetTeams(url, cancellationToken);
+            var leagueTeams = await _webPageProcessor.GetTeams(url, null, null,null, cancellationToken);
 
             List<(TeamSugestionDTO, TeamSugestionDTO)> existingTeams = new List<(TeamSugestionDTO, TeamSugestionDTO)>();
             List<TeamSugestionDTO> newTeams = new List<TeamSugestionDTO>();

@@ -1,0 +1,26 @@
+﻿@model SeasonResourcesDeterminateViewModel
+
+
+
+<div class="form-horizontal">
+    <h4>Team</h4>
+    <hr />
+    <form asp-controller="SeasonResource" asp-action="RegisterTeamForCompetitionViaForm" method="post">
+        <input type="hidden" asp-for="@Model.LeagueId" /> 
+        <input type="hidden" asp-for="@Model.TeamName" />
+        <div class="form-group">
+           <h6>@Model.TeamName</h6>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Teams)
+            <div class="col-md-10">
+                <select asp-for="SelectedTeamId" class="form-control" asp-items="Model.Teams"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Register</button>
+            </div>
+        </div>
+    </form>
+</div>

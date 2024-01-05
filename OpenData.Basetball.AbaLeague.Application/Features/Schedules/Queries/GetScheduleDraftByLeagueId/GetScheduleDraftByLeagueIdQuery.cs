@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByLeagueId
 {
-    public class GetScheduleDraftByLeagueIdQuery : IQuery<Maybe<ScheduleDto>>
+    public class GetScheduleDraftByLeagueIdQuery : IQuery<Maybe<ScheduleDraftDto>>
     {
         public int LeagueId { get; }
         public GetScheduleDraftByLeagueIdQuery(int leagueId) => LeagueId = leagueId;

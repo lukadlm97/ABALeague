@@ -10,6 +10,7 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         Task<bool> AddAnotherName(int playerId, string name, CancellationToken cancellationToken = default);
         Task<bool> ExistAnotherName(int playerId, string name, CancellationToken cancellationToken = default);
         Task<IEnumerable<AnotherNameItem>> GetAnotherNames(int playerId, CancellationToken cancellationToken= default);
-        Task<AnotherNameItem?> GetPlayerByAnotherName(string name, CancellationToken cancellationToken= default);
+        Task<AnotherNameItem?> GetAnotherNamePlayerByAnotherName(string name, CancellationToken cancellationToken= default);
+        Task<Player?> GetPlayerByAnotherName(string name, CancellationToken cancellationToken = default);
     }
 }

@@ -21,6 +21,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private IResultRepository _resultRepository;
         private IBoxScoreRepository _boxScoreRepository;
         private IRosterRepository _rosterRepository;
+        private ISelectorResourcesRepository _selectorResourcesRepository;
         private IGenericRepository<ProcessorType> _processorTypeRepository;
 
 
@@ -63,6 +64,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 
         public IGenericRepository<ProcessorType> ProcessorTypeRepository =>
           _processorTypeRepository ??= new GenericRepository<ProcessorType>(_context);
+
+        public ISelectorResourcesRepository SelectorResourcesRepository =>
+          _selectorResourcesRepository ??= new SelectorResourcesRepository(_context);
 
         public void Dispose()
         {

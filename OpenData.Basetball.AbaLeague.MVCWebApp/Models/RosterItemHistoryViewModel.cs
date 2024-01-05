@@ -4,6 +4,7 @@
     {
         public int LeagueId { get; set; }
         public string LeagueName { get; set; }
+        public int TeamId { get; set; }
         public string TeamName { get; set; }
         public string Url { get; set; }
     }

@@ -60,11 +60,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             switch (league.ProcessorTypeEnum)
             {
                 case Domain.Enums.ProcessorType.Euro:
-                    throw new NotImplementedException();
                     foreach(var team in teamSeasonResources)
                     {
-                        var rawUrl = league.BaseUrl + team.TeamSourceUrl;
-                        var url = string.Format(rawUrl, 1);
+                        var url = string.Format(league.RosterUrl, team.IncrowdUrl);
                         var items = await processor.GetRoster(url, cancellationToken);
                         rosterItems.AddRange(items.Select(x=> (x.No,x.Name,x.Position,x.Height,x.DateOfBirth,x.Nationality,x.Start,x.End,team.TeamId, team.LeagueId)));
                     }
@@ -108,7 +106,31 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                         missingPlayers.Add(new PlayerItemDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, null));
                         continue;
                     }
-                    missingPlayers.Add(new PlayerItemDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, natioanality.Id));
+                    player = await _unitOfWork.PlayerRepository.GetPlayerByAnotherName(rosterItem.Name, cancellationToken);
+                    if (player == null)
+                    {
+                        missingPlayers.Add(new PlayerItemDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, natioanality.Id));
+                        continue;
+                    }
+                    if(existingRosterItems.Any(x => x.TeamId == rosterItem.TeamId &&
+                                                 x.PlayerId == player.Id &&
+                                                 x.LeagueId == request.LeagueId))
+                    {
+                        var existingRosterItem = existingRosterItems.FirstOrDefault(x => x.TeamId == rosterItem.TeamId &&
+                                                 x.PlayerId == player.Id && x.LeagueId == request.LeagueId);
+                        existingDraftRosterItems.Add(new DraftRosterItemDto(existingRosterItem.PlayerId, existingRosterItem.Player.Name, existingRosterItem.LeagueId, existingRosterItem.League.OfficalName, team.Id, team.Name, existingRosterItem.DateOfInsertion, existingRosterItem.EndOfActivePeriod));
+                        continue;
+                    }
+                    draftRosterItems.Add(
+                        new DraftRosterItemDto(player.Id,
+                                                player.Name,
+                                                league.Id,
+                                                league.OfficalName,
+                                                team.Id,
+                                                team.Name,
+                                                DateTime.UtcNow,
+                                                null));
+
                     continue;
                 }
 

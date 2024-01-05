@@ -27,6 +27,9 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             _loggerFactory = loggerFactory;
         }
         public async Task<IReadOnlyList<(string Name, string Url)>> GetTeams(string leagueUrl,
+            string? standingsTableSelector = null,
+            string? standingsTableRowNameSelector = null,
+            string? standingsTableRowUrlSelector = null,
             CancellationToken cancellationToken = default)
         {
             var webDocument = await _documentFether

@@ -1,0 +1,298 @@
+﻿@model LeagueStandingsViewModel
+
+<div class="container mt-4">
+    <h2>@Model.LeagueName - Standings</h2>
+    <p>Total Rounds: @Model.TotalRounds | Played Rounds: @Model.PlayedRounds</p>
+
+    <h5>Full Standings</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Team</th>
+                <th>Played</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Scored Points</th>
+                <th>Received Points</th>
+                <th>Point Difference</th>
+                <th>Recent Form</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.StandingItems != null && Model.StandingItems.Any())
+            {   
+                var position = 1;
+                foreach (var standing in @Model.StandingItems)
+                {
+                    <tr>
+                        <td>@position</td>
+                        <td>@standing.TeamName</td>
+                        <td>@standing.PlayedGames</td>
+                        <td>@standing.WonGames</td>
+                        <td>@standing.LostGames</td>
+                        <td>@standing.ScoredPoints</td>
+                        <td>@standing.ReceivedPoints</td>
+                        <td>@standing.PointDifference</td>
+                        <td>
+                            @if (standing.RecentForm != null && standing.RecentForm.Any())
+                            {
+                                if (standing.RecentForm.Count > 4)
+                                {
+                                    foreach (var result in standing.RecentForm.TakeLast(5))
+                                    {
+                                            @if (result)
+                                            {
+                                                <span class="result-@(result ? "win" : "loss")">
+                                                    <span class="result-space">&nbsp;</span>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="result-@(result ? "win" : "loss")">
+                                                     <span class="result-space">&nbsp;</span>
+                                                </span>
+                                            }
+                                        <span>&nbsp;</span>
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (var result in standing.RecentForm.TakeLast(standing.RecentForm.Count))
+                                    {
+                                        @if (result)
+                                        {
+                                            <span class="result-@(result ? "win" : "loss")">
+                                                <span class="result-space">&nbsp;</span>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="result-@(result ? "win" : "loss")">
+                                                <span class="result-space">&nbsp;</span>
+                                            </span>
+                                        }
+                                        <span>&nbsp;</span>
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                <span>No recent results</span>
+                            }
+                        </td>
+                    </tr>
+                    position++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7">No standings available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h5>Home Standings</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Team</th>
+                <th>Played</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Scored Points</th>
+                <th>Received Points</th>
+                <th>Point Difference</th>
+                <th>Recent Form</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.HomeStandingItems != null && Model.HomeStandingItems.Any())
+            {
+                var position = 1;
+                foreach (var standing in @Model.HomeStandingItems)
+                {
+                    <tr>
+                        <td>@position</td>
+                        <td>@standing.TeamName</td>
+                        <td>@standing.PlayedHomeGames</td>
+                        <td>@standing.WonHomeGames</td>
+                        <td>@standing.LostHomeGames</td>
+                        <td>@standing.ScoredHomePoints</td>
+                        <td>@standing.ReceivedHomePoints</td>
+                        <td>@(standing.ScoredHomePoints - standing.ReceivedHomePoints)</td>
+                        <td>
+                        @if (standing.HomeRecentForm != null && standing.HomeRecentForm.Any())
+                        {
+                            if (standing.HomeRecentForm.Count > 4)
+                            {
+                                foreach (var result in standing.HomeRecentForm.TakeLast(5))
+                                {
+                                    @if (result)
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    <span>&nbsp;</span>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var result in standing.HomeRecentForm.TakeLast(standing.HomeRecentForm.Count))
+                                {
+                                    @if (result)
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    <span>&nbsp;</span>
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            <span>No recent results</span>
+                        }
+                        </td>
+                    </tr>
+                    position++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7">No standings available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h5>Away Standings</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Team</th>
+                <th>Played</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Scored Points</th>
+                <th>Received Points</th>
+                <th>Point Difference</th>
+                <th>Recent Form</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.AwayStandingItems != null && Model.AwayStandingItems.Any())
+            {
+                var position = 1;
+                foreach (var standing in @Model.AwayStandingItems)
+                {
+                    <tr>
+                        <td>@position</td>
+                        <td>@standing.TeamName</td>
+                        <td>@standing.PlayedAwayGames</td>
+                        <td>@standing.WonAwayGames</td>
+                        <td>@standing.LostAwayGames</td>
+                        <td>@standing.ScoredAwayPoints</td>
+                        <td>@standing.ReceivedAwayPoints</td>
+                        <td>@(standing.ScoredAwayPoints - standing.ReceivedAwayPoints)</td>
+                        <td>
+                        @if (standing.AwayRecentForm != null && standing.AwayRecentForm.Any())
+                        {
+                            if (standing.AwayRecentForm.Count > 4)
+                            {
+                                foreach (var result in standing.AwayRecentForm.TakeLast(5))
+                                {
+                                    @if (result)
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    <span>&nbsp;</span>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var result in standing.AwayRecentForm.TakeLast(standing.AwayRecentForm.Count))
+                                {
+                                    @if (result)
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    <span>&nbsp;</span>
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            <span>No recent results</span>
+                            }
+                        </td>
+                    </tr>
+                    position++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7">No standings available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<style>
+    .result-win {
+        color: white;
+        background-color:green;
+        font-size: 14px;
+    }
+
+    .result-loss {
+        color: white;
+        background-color: red;
+        font-size:14px;
+    }
+
+    .result-space {
+        margin-right: 1px; /* Adjust the margin as needed */
+    }
+</style>

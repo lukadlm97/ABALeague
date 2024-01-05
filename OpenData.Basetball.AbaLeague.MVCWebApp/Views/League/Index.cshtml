@@ -37,9 +37,14 @@
                     @Html.DisplayFor(modelItem => item.Season)
                 </td>
                 <td>
-                    <a asp-controller="League" asp-action="Details" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
-                        <a asp-controller="League" asp-action="Upsert" asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
-                        <a asp-controller="League" asp-action="SeasonResources" asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
+                    <a asp-controller="League" asp-action="Details" 
+                    asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
+                    <a asp-controller="League" asp-action="Upsert" 
+                    asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                    <a asp-controller="League" asp-action="SeasonResources" 
+                    asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
+                    <a asp-controller="League" asp-action="Standings"
+                           asp-route-leagueId="@item.Id" class="btn btn-outline-info">Standings</a>
                 </td>
             </tr>
         }

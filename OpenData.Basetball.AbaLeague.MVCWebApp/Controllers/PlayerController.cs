@@ -97,6 +97,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     LeagueName = item.LeagueName,
                     TeamName = item.TeamName,
                     Url = item.Url,
+                    TeamId = item.TeamId
                 });
             }
 
@@ -273,10 +274,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             });
         }
 
-        public async Task<IActionResult> Performance(int playerId, int leagueId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Performance(int playerId, int leagueId, int teamId, CancellationToken cancellationToken = default)
         { 
             var result = await _sender
-                .Send(new GetBoxscoreByPlayerIdAndLeagueIdQuery(playerId, leagueId), cancellationToken);
+                .Send(new GetBoxscoreByPlayerIdTeamIdAndLeagueIdQuery(playerId, leagueId, teamId), cancellationToken);
 
             if (result.HasNoValue)
             {
@@ -324,6 +325,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 TotalRebounds = x.TotalRebounds,
                 Turnover = x.Turnover,
                 Venue = x.Venue,
+                Result = x.Result
             });
 
             return View(new BoxscoreByPlayerViewModel
