@@ -23,7 +23,7 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public short? ProcessorTypeId { get; set; }
         [NotMapped]
         public Basketball.AbaLeague.Domain.Enums.ProcessorType? ProcessorTypeEnum => (Basketball.AbaLeague.Domain.Enums.ProcessorType?) ProcessorTypeId;
-
+        public int? RoundsToPlay { get; set; }
         public ICollection<RoundMatch> RoundMatches { get; set; }
         public ICollection<ResourceSelector> ResourceSelectors { get; set; }
 

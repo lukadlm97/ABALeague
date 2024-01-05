@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Models;
 using OpenData.Basetball.AbaLeague.Crawler.Processors.Contracts;
@@ -9,10 +10,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
     public class EuroPageProcessor : IWebPageProcessor
     {
         private readonly IDocumentFetcher _documentFetcher;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public EuroPageProcessor(IDocumentFetcher documentFetcher)
+        public EuroPageProcessor(IDocumentFetcher documentFetcher, ILoggerFactory loggerFactory)
         {
             _documentFetcher = documentFetcher;
+            _loggerFactory = loggerFactory;
         }
         public async Task<IReadOnlyList<(string Name, string Url)>> GetTeams(string leagueUrl,
                                                                             string? standingsTableSelector = null,
@@ -40,19 +43,29 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                     initalCycle = false;
                     continue;
                 }
-                var name = teamElement
-                    .QuerySelectorAll(standingsTableRowNameSelector)[0]
-                    .InnerHtml
-                    .Trim();
-                name = name.Substring(0,name.IndexOf('<'));
+                try
+                {
+                    var name = teamElement
+                .QuerySelectorAll(standingsTableRowNameSelector)[0]
+                .InnerHtml
+                .Trim();
+                    name = name.Substring(0, name.IndexOf('<'));
 
-                var url = teamElement
-                    .QuerySelectorAll(standingsTableRowUrlSelector)[0]
-                    .GetAttribute("href")
-                    .Trim();
+                    var url = teamElement
+                        .QuerySelectorAll(standingsTableRowUrlSelector)[0]
+                        .GetAttribute("href")
+                        .Trim();
 
 
-                teams.Add((name, url));
+                    teams.Add((name, url));
+                }
+                catch(Exception ex)
+                {
+                    var logger = _loggerFactory.CreateLogger("Values");
+                    logger.LogError("{0} occurred for itreation no {1}", ex.Message, 1);
+                    continue;
+                }
+            
             }
 
             return teams;

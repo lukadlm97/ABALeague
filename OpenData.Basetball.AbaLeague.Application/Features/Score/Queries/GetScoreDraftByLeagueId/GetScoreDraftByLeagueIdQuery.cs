@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoreDraftByLeagueId
 {
-    public class GetScoreDraftByLeagueIdQuery : IQuery<Maybe<ScoreDto>>
+    public class GetScoreDraftByLeagueIdQuery : IQuery<Maybe<ScoreDraftDto>>
     {
         public  int LeagueId { get; init; }
         public GetScoreDraftByLeagueIdQuery(int leagueId)

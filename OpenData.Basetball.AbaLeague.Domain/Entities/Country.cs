@@ -11,5 +11,6 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public string CodeIso { get; set; }
         public string CodeIso2 { get; set; }
         public string Nationality { get; set; }
+        public string? AbaLeagueCode { get; set; } = null;
     }
 }

@@ -66,7 +66,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
 
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
             {
-                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher),
+                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             };

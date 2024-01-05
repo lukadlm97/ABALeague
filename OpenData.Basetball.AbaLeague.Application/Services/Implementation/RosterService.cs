@@ -32,7 +32,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             foreach (var rosterItem in roster)
             {
                 var natioanality =
-                    await _unitOfWork.CountryRepository.GetById(rosterItem.Nationality, cancellationToken);
+                    await _unitOfWork.CountryRepository.GetByAbaCode(rosterItem.Nationality, cancellationToken);
                 if (await _unitOfWork.PlayerRepository.Exist(rosterItem.Name, cancellationToken))
                 {
                     continue;

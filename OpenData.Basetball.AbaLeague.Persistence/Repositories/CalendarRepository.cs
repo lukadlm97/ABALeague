@@ -12,7 +12,7 @@ using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 {
-    public class CalendarRepository:GenericRepository<RoundMatch>,ICalendarRepository
+    public class CalendarRepository: GenericRepository<RoundMatch>, ICalendarRepository
     {
         private readonly AbaLeagueDbContext _dbContext;
 
@@ -75,6 +75,23 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         {
             var league = await _dbContext.Leagues.Include(x => x.RoundMatches).FirstOrDefaultAsync(x => x.Id == leagueId, cancellationToken);
             return league.RoundMatches.Where(x => x.Round == roundNo);
+        }
+
+        public async Task<IEnumerable<RoundMatch>> SearchByLeagueIdAndTeamId(int leagueId, int teamId, CancellationToken cancellationToken = default)
+        {
+            var league = await _dbContext.Leagues
+                .Include(x => x.RoundMatches)
+                    .ThenInclude(x => x.AwayTeam)
+                .Include(x => x.RoundMatches)
+                    .ThenInclude(x => x.HomeTeam)
+                .FirstOrDefaultAsync(x => x.Id == leagueId, cancellationToken);
+            if (league == null)
+            {
+                return Array.Empty<RoundMatch>();
+            }
+
+            var filtered = league.RoundMatches.Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId);
+            return filtered;
         }
     }
 }

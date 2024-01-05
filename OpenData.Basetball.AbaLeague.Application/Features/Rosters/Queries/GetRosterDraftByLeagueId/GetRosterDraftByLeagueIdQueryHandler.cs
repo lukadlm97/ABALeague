@@ -47,7 +47,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             var existingRosterItems = await _unitOfWork.RosterRepository.GetByLeagueId(request.LeagueId, cancellationToken);
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
             {
-                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher),
+                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             };
@@ -99,8 +99,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                 }
                 if(player == null)
                 {
-                    var natioanality =
-                    await _unitOfWork.CountryRepository.GetById(rosterItem.Nationality, cancellationToken);
+                    var natioanality = league.ProcessorTypeEnum switch
+                    {
+                        Domain.Enums.ProcessorType.Euro => await _unitOfWork.CountryRepository.GetByIso3(rosterItem.Nationality, cancellationToken),
+                        Domain.Enums.ProcessorType.Aba => await _unitOfWork.CountryRepository
+                        .GetByAbaCode(rosterItem.Nationality, cancellationToken),
+                        Domain.Enums.ProcessorType.Unknow or null or _ => null
+                    };
+
                     if(natioanality == null)
                     {
                         missingPlayers.Add(new PlayerItemDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, null));

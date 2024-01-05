@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoreDraftByLeagueId
 {
-    public class GetScoreDraftByLeagueIdQueryHandler : IQueryHandler<GetScoreDraftByLeagueIdQuery, Maybe<ScoreDto>>
+    public class GetScoreDraftByLeagueIdQueryHandler : IQueryHandler<GetScoreDraftByLeagueIdQuery, Maybe<ScoreDraftDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDocumentFetcher _documentFetcher;
@@ -34,24 +34,24 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
             _documentFetcher = documentFetcher;
             _loggerFactory = loggerFactory;
         }
-        public async Task<Maybe<ScoreDto>> Handle(GetScoreDraftByLeagueIdQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<ScoreDraftDto>> Handle(GetScoreDraftByLeagueIdQuery request, CancellationToken cancellationToken)
         {
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
             if (league == null)
             {
-                return Maybe<ScoreDto>.None;
+                return Maybe<ScoreDraftDto>.None;
             }
 
             // determinate which processor is the most appropraite
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
             {
-                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher),
+                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             };
             if (processor == null)
             {
-                return Maybe<ScoreDto>.None;
+                return Maybe<ScoreDraftDto>.None;
             }
 
             // found match round ids (schedule item) for which result exist
@@ -72,7 +72,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                
             if(matchNumbers == null)
             {
-                return Maybe<ScoreDto>.None;
+                return Maybe<ScoreDraftDto>.None;
             }
 
             // build appropraite urls using match number
@@ -97,7 +97,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
             var fetchedMatchScoreItems = await processor.GetMatchScores(matchNoUrlPair, cancellationToken);
             if (fetchedMatchScoreItems == null)
             {
-                return Maybe<ScoreDto>.None;
+                return Maybe<ScoreDraftDto>.None;
             }
 
             // classify result by next categories
@@ -183,7 +183,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                 }
             }
 
-            return new ScoreDto(draftItems, existingItems, plannedItems);
+            return new ScoreDraftDto(draftItems, existingItems, plannedItems);
         }
 
      

@@ -27,7 +27,12 @@
                 {
                     <tr>
                         <td>@position</td>
-                        <td>@standing.TeamName</td>
+                        <td>
+                            <a asp-controller="Team" 
+                               asp-action="Performance"
+                               asp-route-leagueId="@Model.LeagueId" 
+                               asp-route-teamId="@standing.TeamId">@standing.TeamName</a>
+                        </td>
                         <td>@standing.PlayedGames</td>
                         <td>@standing.WonGames</td>
                         <td>@standing.LostGames</td>
@@ -118,7 +123,12 @@
                 {
                     <tr>
                         <td>@position</td>
-                        <td>@standing.TeamName</td>
+                        <td>
+                            <a asp-controller="Team"
+                               asp-action="Performance"
+                               asp-route-leagueId="@Model.LeagueId"
+                               asp-route-teamId="@standing.TeamId">@standing.TeamName</a>
+                        </td>
                         <td>@standing.PlayedHomeGames</td>
                         <td>@standing.WonHomeGames</td>
                         <td>@standing.LostHomeGames</td>
@@ -209,7 +219,12 @@
                 {
                     <tr>
                         <td>@position</td>
-                        <td>@standing.TeamName</td>
+                        <td>
+                            <a asp-controller="Team"
+                               asp-action="Performance"
+                               asp-route-leagueId="@Model.LeagueId"
+                               asp-route-teamId="@standing.TeamId">@standing.TeamName</a>
+                        </td>
                         <td>@standing.PlayedAwayGames</td>
                         <td>@standing.WonAwayGames</td>
                         <td>@standing.LostAwayGames</td>

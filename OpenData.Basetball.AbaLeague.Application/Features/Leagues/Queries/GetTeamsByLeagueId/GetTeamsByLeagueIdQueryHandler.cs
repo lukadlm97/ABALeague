@@ -40,7 +40,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
             var seasonResources = await _unitOfWork.SeasonResourcesRepository.GetAll(cancellationToken);
             IWebPageProcessor? webPageProcessor = league.ProcessorTypeEnum switch
             {
-                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher),
+                Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             };
@@ -105,7 +105,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                 else
                 {
                     // add advanced handling
-                    list.Add(new TeamDTO(existingTeam.Id, name, teamUrl.Trim(league.BaseUrl), null, null, MaterializationStatus.NotExist));
+                    list.Add(new TeamDTO(existingTeam.Id, name, teamUrl.Trim(league.BaseUrl), null, teamUrl.Trim(league.BaseUrl).ExtractTeamCode(), MaterializationStatus.NotExist));
                 }
             }
             return list;

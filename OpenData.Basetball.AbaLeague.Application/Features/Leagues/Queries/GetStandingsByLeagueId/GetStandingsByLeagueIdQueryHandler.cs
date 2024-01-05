@@ -190,8 +190,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
 
             return new StandingsDto(league.Id, 
                                     league.OfficalName,
-                                    matchRounds.Select(x => x.Round).Distinct().Count(), 
-                                    0, 
+                                    league.RoundsToPlay ?? 0, 
+                                    results.Select(x=>x.RoundMatch.Round).Distinct().Count(), 
                                     list.OrderByDescending(x=>x.WonGames)
                                             .ThenBy(x => x.LostGames)
                                             .ThenByDescending(x=>x.PointDifference));
