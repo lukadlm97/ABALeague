@@ -108,6 +108,7 @@
                             <td>
                                 <a asp-controller="Roster" asp-action="History" asp-route-leagueId="@item.LeagueId" asp-route-teamId="@Model.Id" class="btn btn-outline-primary">Investigate</a>
                                 <a asp-controller="Team" asp-action="Performance" asp-route-leagueId="@item.LeagueId" asp-route-teamId="@Model.Id" class="btn btn-outline-primary">Performance</a>
+                                <a asp-controller="Team" asp-action="Matches" asp-route-leagueId="@item.LeagueId" asp-route-teamId="@Model.Id" class="btn btn-outline-primary">Matches</a>
 
                             </td>
                         </tr>

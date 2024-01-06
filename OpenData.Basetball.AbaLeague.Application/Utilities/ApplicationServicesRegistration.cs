@@ -6,6 +6,8 @@ using System.Reflection;
 using MediatR;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
+using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
+using OpenData.Basketball.AbaLeague.Application.Services.Implementation;
 
 namespace OpenData.Basketball.AbaLeague.Application.Utilities
 {
@@ -22,6 +24,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
         public static IServiceCollection ConfigureAdminApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IDocumentFetcher, DocumentFetcher>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IStandingsService, StandingsService>();
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             return services;

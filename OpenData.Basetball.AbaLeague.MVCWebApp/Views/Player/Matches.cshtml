@@ -1,0 +1,5 @@
+﻿@model PlayerGameViewModel
+
+<h2>@Model.PlayerName - @Model.TeamName [@Model.LeagueName]</h2>
+
+@await Html.PartialAsync("_TeamMatchs", Model)

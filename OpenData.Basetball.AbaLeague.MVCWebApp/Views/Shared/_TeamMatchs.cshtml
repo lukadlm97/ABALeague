@@ -1,0 +1,143 @@
+﻿@model TeamMatchViewModel
+
+<div class="container mt-4">
+    <h3>Team Scores</h3>
+    @if (Model.TeamScoreItems != null && Model.TeamScoreItems.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Round</th>
+                    <th>Match No</th>
+                    <th>Opponent</th>
+                    <th>Home/Away</th>
+                    <th>Venue</th>
+                    <th>Attendency</th>
+                    <th>W/L</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var scoreItem in Model.TeamScoreItems)
+                {
+                    <tr style="background-color: @(scoreItem.IsHomeGame ? "#f0f0f0" : "inherit");">
+                        <td>@scoreItem.Round</td>
+                        <td>@scoreItem.MatchNo</td>
+                        <td>@scoreItem.OponentName</td>
+                        <td>@(scoreItem.IsHomeGame ? "Home" : "Away")</td>
+                        <td>@scoreItem.Venue</td>
+                        <td>@scoreItem.Attendency</td>
+                        <td style="background-color: @(scoreItem.WinTheGame ?? false ? "green" : "red");">
+                            @(scoreItem.WinTheGame ?? false ? "W" : "L")
+                        </td>
+                        <td>@scoreItem.Result </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No scores available</p>
+    }
+</div>
+
+<div class="container mt-4">
+    <h3>Team Schedule</h3>
+    @if (Model.TeamScheduledItems != null && Model.TeamScheduledItems.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <td>Round</td>
+                    <th>Opponent</th>
+                    <th>Home/Away</th>
+                    <th>Oponent Current Ranking</th>
+                    <th>Oponent Recent Form</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var scheduleItem in Model.TeamScheduledItems)
+                {
+                    <tr style="background-color: @(scheduleItem.IsHomeGame ? "#f0f0f0" : "inherit");">
+                        <td>@scheduleItem.Date.ToShortDateString()</td>
+                        <td>@scheduleItem.Round</td>
+                        <td>@scheduleItem.OponentName</td>
+                        <td>@(scheduleItem.IsHomeGame ? "Home" : "Away")</td>
+                        <td>@scheduleItem.OponentCurrentRanking</td>
+                        <td>
+                            @if (scheduleItem.OponentRecentForm != null && scheduleItem.OponentRecentForm.Any())
+                            {
+                                if (scheduleItem.OponentRecentForm.Count > 4)
+                                {
+                                    foreach (var result in scheduleItem.OponentRecentForm.TakeLast(5))
+                                    {
+                                        @if (result)
+                                        {
+                                            <span class="result-@(result ? "win" : "loss")">
+                                                <span class="result-space">&nbsp;</span>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="result-@(result ? "win" : "loss")">
+                                                <span class="result-space">&nbsp;</span>
+                                            </span>
+                                        }
+                                        <span>&nbsp;</span>
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (var result in scheduleItem.OponentRecentForm.TakeLast(scheduleItem.OponentRecentForm.Count))
+                                    {
+                                        @if (result)
+                                        {
+                                            <span class="result-@(result ? "win" : "loss")">
+                                                <span class="result-space">&nbsp;</span>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="result-@(result ? "win" : "loss")">
+                                                <span class="result-space">&nbsp;</span>
+                                            </span>
+                                        }
+                                        <span>&nbsp;</span>
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                <span>No recent results</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No schedule available</p>
+    }
+</div>
+<style>
+    .result-win {
+        color: white;
+        background-color: green;
+        font-size: 14px;
+    }
+
+    .result-loss {
+        color: white;
+        background-color: red;
+        font-size: 14px;
+    }
+
+    .result-space {
+        margin-right: 1px; /* Adjust the margin as needed */
+    }
+</style>

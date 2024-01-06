@@ -77,11 +77,14 @@
                                 @Html.DisplayFor(modelItem => item.Url)
                             </td>
                             <td>
-                                <a asp-controller="League" asp-action="Details" asp-route-teamId="@item.LeagueId" class="btn btn-outline-primary">Details</a>
                                 <a asp-controller="Player" asp-action="Performance"
                                     asp-route-leagueId="@item.LeagueId" asp-route-playerId="@Model.PlayerId"
                                     asp-route-teamId="@item.TeamId"
                                    class="btn btn-outline-secondary">Performance</a>
+                                <a asp-controller="Player" asp-action="Matches"
+                                   asp-route-leagueId="@item.LeagueId" asp-route-teamId="@item.TeamId"
+                                   asp-route-playerId="@Model.PlayerId"
+                                   class="btn btn-outline-primary">Matches</a>
 
                             </td>
                         </tr>

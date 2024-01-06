@@ -39,7 +39,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
             {
                 return Maybe<BoxscoreByPlayerDto>.None;
             }
-            List<GameStats> list = new List<GameStats>();
+            List<GameStatsByPlayerItemDto> list = new List<GameStatsByPlayerItemDto>();
             int homeGamesPlayed = 0;
             int homeGamesWon = 0;
             int totalGamesPlayed = 0;
@@ -80,15 +80,16 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 homeGamesPointScored += isHomeGame ? score.Points??0:0;
                 awayGamesPointScored += !isHomeGame ? score.Points ?? 0 :0;
                 var result = $"{matchResult.HomeTeamPoints}:{matchResult.AwayTeamPoint}";
-                list.Add(new GameStats(isHomeGame ?  score.RoundMatch.AwayTeam.Id: score.RoundMatch.HomeTeam.Id ,
+                list.Add(new GameStatsByPlayerItemDto(matchResult.RoundMatchId,
+                    isHomeGame ?  score.RoundMatch.AwayTeam.Id: score.RoundMatch.HomeTeam.Id ,
                     isHomeGame ? score.RoundMatch.AwayTeam.Name: score.RoundMatch.HomeTeam.Name , 
                     score.RoundMatch.DateTime, 
-                    score.RoundMatch.Round, 
+                    score.RoundMatch.Round,
+                    score.RoundMatch.MatchNo,
                     isHomeGame,
                     winTheGame,
                     matchResult.Venue, 
                     matchResult.Attendency, 
-                    score.RoundMatch.MatchNo,
                     score.Minutes,
                     score.Points,
                     score.ShotPrc,

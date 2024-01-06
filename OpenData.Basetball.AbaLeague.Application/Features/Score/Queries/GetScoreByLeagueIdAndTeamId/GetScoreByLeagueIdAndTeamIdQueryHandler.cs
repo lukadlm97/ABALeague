@@ -55,7 +55,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                 result.Venue,
                                                 result.HomeTeamPoints,
                                                 result.AwayTeamPoint,
-                                                scheduleItem.Round));
+                                                scheduleItem.Round,
+                                                null));
             }
 
             return new ScoreDto(list);

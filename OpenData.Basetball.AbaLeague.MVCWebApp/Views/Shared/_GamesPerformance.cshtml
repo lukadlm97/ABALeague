@@ -1,11 +1,16 @@
-﻿@model BoxscoreByPlayerViewModel
+﻿@model PerformanceViewModel
 
 <div class="container mt-4">
-    <h2>Player Boxscore: @Model.PlayerName</h2>
+    <h2>Team Boxscore: @Model.TeamName</h2>
 
     <div class="card mt-4">
         <div class="card-header">
-            <h4>@Model.PlayerName - @Model.TeamName (@Model.LeagueName)</h4>
+            <h4>@Model.LeagueName - @Model.TeamName</h4>
+        </div>
+        <div class="card-header">
+            <a asp-controller="Team" asp-action="Matches"
+               asp-route-leagueId="@Model.LeagueId" asp-route-teamId="@Model.TeamId"
+               class="btn btn-outline-primary">Matches</a>
         </div>
         <div class="card-body">
             <h5>Game Performances</h5>
@@ -16,18 +21,17 @@
                         <th>Round</th>
                         <th>Oponent Name</th>
                         <th>Home Game</th>
-                        <th>Score</th>
                         <th>Result</th>
                         <th>Venue</th>
                         <th>Attendency</th>
-                        <th>Minutes</th>
+                        <th>Result</th>
                         <th>Points</th>
                         <th>PlusMinus</th>
                         <th>RankValue</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var performance in Model.GamePerformance)
+                    @foreach (var performance in Model.StatsByRounds)
                     {
                         <tr>
                             <td>@performance.Date.ToShortDateString()</td>
@@ -37,10 +41,9 @@
                             <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
                                 @(performance.IsWinTheGame ? "W" : "L")
                             </td>
-                            <td>@performance.Result</td>
                             <td>@performance.Venue</td>
                             <td>@performance.Attendency</td>
-                            <td>@(performance.Minutes.HasValue ? performance.Minutes.Value.ToString(@"mm\:ss") : "-")</td>
+                            <td>@performance.Result</td>
                             <td>@performance.Points</td>
                             <td>@performance.PlusMinus</td>
                             <td>@performance.RankValue</td>
@@ -61,28 +64,28 @@
                         <h5>Average Boxscore Stats</h5>
                         <dl class="row">
                             <dt class="col-sm-6">Average Minutes</dt>
-                            <dd class="col-sm-6">@Model.AverageBoxscoreStatsView.AvgMinutes</dd>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgMinutes</dd>
 
                             <dt class="col-sm-6">Average Points</dt>
-                            <dd class="col-sm-6">@Model.AverageBoxscoreStatsView.AvgPoints</dd>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgPoints</dd>
 
                             <dt class="col-sm-6">Average Total Rebounds</dt>
-                            <dd class="col-sm-6">@Model.AverageBoxscoreStatsView.AvgTotalRebounds</dd>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgTotalRebounds</dd>
 
                             <dt class="col-sm-6">Average Assists</dt>
-                            <dd class="col-sm-6">@Model.AverageBoxscoreStatsView.AvgAssists</dd>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgAssists</dd>
 
                             <dt class="col-sm-6">Average Steals</dt>
-                            <dd class="col-sm-6">@Model.AverageBoxscoreStatsView.AvgSteals</dd>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgSteals</dd>
 
                             <dt class="col-sm-6">Average Turnover</dt>
-                            <dd class="col-sm-6">@Model.AverageBoxscoreStatsView.AvgTurnover</dd>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgTurnover</dd>
 
                             <dt class="col-sm-6">Average Plus-Minus</dt>
-                            <dd class="col-sm-6">@Model.AverageBoxscoreStatsView.AvgPlusMinus</dd>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgPlusMinus</dd>
 
                             <dt class="col-sm-6">Average Rank Value</dt>
-                            <dd class="col-sm-6">@Model.AverageBoxscoreStatsView.AvgRankValue</dd>
+                            <dd class="col-sm-6">@Model.AverageBoxscoreStats.AvgRankValue</dd>
                         </dl>
                     </div>
                 </div>
@@ -93,28 +96,28 @@
                         <h5>Advanced Boxscore Stats</h5>
                         <dl class="row">
                             <dt class="col-sm-6">Games Played</dt>
-                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStatsView.GamePlayed</dd>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.GamePlayed</dd>
 
                             <dt class="col-sm-6">Home Games Played</dt>
-                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStatsView.HomeGamesPlayed</dd>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.HomeGamesPlayed</dd>
 
                             <dt class="col-sm-6">Games Win</dt>
-                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStatsView.GamesWin</dd>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.GamesWin</dd>
 
                             <dt class="col-sm-6">Home Games Win</dt>
-                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStatsView.HomeGamesWin</dd>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.HomeGamesWin</dd>
 
                             <dt class="col-sm-6">Total Spectators</dt>
-                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStatsView.TotalSpectators</dd>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.TotalSpectators</dd>
 
                             <dt class="col-sm-6">Average Spectators</dt>
-                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStatsView.AverageSpectators</dd>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.AverageSpectators</dd>
 
                             <dt class="col-sm-6">Home Game Scored Points</dt>
-                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStatsView.HomeGameScoredPoints</dd>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.HomeGameScoredPoints</dd>
 
                             <dt class="col-sm-6">Away Game Scored Points</dt>
-                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStatsView.AwayGameScoredPoints</dd>
+                            <dd class="col-sm-6">@Model.AdvancedBoxscoreStats.AwayGameScoredPoints</dd>
                         </dl>
                     </div>
                 </div>
@@ -130,7 +133,6 @@
                         <th>Oponent Name</th>
                         <th>Home Game</th>
                         <th>Result</th>
-                        <th>Minutes</th>
                         <th>Points</th>
                         <th>Assists</th>
                         <th>Rebounds [D/O]</th>
@@ -141,7 +143,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var performance in Model.GamePerformance)
+                    @foreach (var performance in Model.StatsByRounds)
                     {
                         <tr>
                             <td>@performance.Date.ToShortDateString()</td>
@@ -150,7 +152,6 @@
                             <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
                                 @(performance.IsWinTheGame ? "W" : "L")
                             </td>
-                            <td>@performance.Minutes</td>
                             <td>@performance.Points</td>
                             <td>@performance.Assists</td>
                             <td>@performance.TotalRebounds [@performance.DefensiveRebounds/@performance.OffensiveRebounds]</td>
@@ -173,16 +174,14 @@
                         <th>Oponent Name</th>
                         <th>Home Game</th>
                         <th>Result</th>
-                        <th>Minutes</th>
                         <th>Points</th>
-                        <th>Shot Percantage</th>
                         <th>1Pt</th>
                         <th>2Pt</th>
                         <th>3Pt</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var performance in Model.GamePerformance)
+                    @foreach (var performance in Model.StatsByRounds)
                     {
                         <tr>
                             <td>@performance.Date.ToShortDateString()</td>
@@ -191,12 +190,10 @@
                             <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
                                 @(performance.IsWinTheGame ? "W" : "L")
                             </td>
-                            <td>@performance.Minutes</td>
                             <td>@performance.Points</td>
-                            <td>@performance.ShotPrc</td>
                             <td>@performance.ShotPrc1Pt [@performance.ShotMade1Pt/@performance.ShotAttempted1Pt]</td>
-                            <td>@performance.ShotPrc2Pt [@performance.ShotMade2Pt/@performance.ShotAttempted2Pt]</td>
-                            <td>@performance.ShotPrc3Pt [@performance.ShotMade3Pt/@performance.ShotAttempted3Pt]</td>
+                            <td>@performance.ShotPrc2Pt [@performance.ShotMade2Pt / @performance.ShotAttempted2Pt]</td>
+                            <td>@performance.ShotPrc3Pt [@performance.ShotMade3Pt / @performance.ShotAttempted3Pt]</td>
                         </tr>
                     }
                 </tbody>
@@ -212,7 +209,6 @@
                         <th>Oponent Name</th>
                         <th>Home Game</th>
                         <th>Result</th>
-                        <th>Minutes</th>
                         <th>Points</th>
                         <th>Point From Pain</th>
                         <th>Point From FastBreak</th>
@@ -222,7 +218,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var performance in Model.GamePerformance)
+                    @foreach (var performance in Model.StatsByRounds)
                     {
                         <tr>
                             <td>@performance.Date.ToShortDateString()</td>
@@ -231,7 +227,6 @@
                             <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
                                 @(performance.IsWinTheGame ? "W" : "L")
                             </td>
-                            <td>@performance.Minutes</td>
                             <td>@performance.Points</td>
                             <td>@performance.PointFromPain</td>
                             <td>@performance.PointFromFastBreak</td>

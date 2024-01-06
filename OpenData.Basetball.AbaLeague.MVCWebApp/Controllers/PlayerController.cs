@@ -12,12 +12,14 @@ using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.Create
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.UpdatePlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerAnotherNames;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerGames;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterHistoryByPlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.CreateTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.UpdateTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById;
+using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamGamesByLeagueId;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
@@ -361,6 +363,59 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     TotalSpectators = result.Value.AdvancedMatchCalcuations.TotalSpectators
 
                 }
+            });
+        }
+
+        public async Task<IActionResult> Matches(int playerId,
+                                                       int leagueId,
+                                                       int teamId,
+                                                       CancellationToken cancellationToken = default)
+        {
+            var gamesResult =
+                await _sender.Send(new GetPlayerGamesQuery(leagueId, teamId, playerId), cancellationToken);
+            var playerResult = await _sender.Send(new GetPlayerQuery(playerId), cancellationToken);
+            if (gamesResult.HasNoValue || playerResult.HasNoValue)
+            {
+                return View("Error", new InfoDescriptionViewModel() { Description = "not found any peformance" });
+            }
+
+            return View(new PlayerGameViewModel
+            {
+                PlayerId = playerResult.Value.Id,
+                PlayerName = playerResult.Value.Name,
+                LeagueId = gamesResult.Value.LeagueId,
+                TeamId = gamesResult.Value.TeamId,
+                LeagueName = gamesResult.Value.LeagueName,
+                TeamName = gamesResult.Value.TeamName,
+                TeamScoreItems = gamesResult.Value.GameStatsItems
+                                                .Select(x => new TeamGameViewModel()
+                                                {
+                                                    WinTheGame = x.WinTheGame,
+                                                    Attendency = x.Attendency,
+                                                    OponentName = x.OponentName,
+                                                    OponentId = x.OponentId,
+                                                    IsHomeGame = x.HomeGame,
+                                                    Date = x.Date,
+                                                    MatchId = x.RoundMatchId,
+                                                    MatchNo = x.MatchNo,
+                                                    Result = x.Result,
+                                                    ResultId = x.ResultId,
+                                                    Round = x.Round,
+                                                    Venue = x.Venue
+                                                }).ToList(),
+                TeamScheduledItems = gamesResult.Value.MatchItems
+                                                .Select(x => new TeamGameViewModel()
+                                                {
+                                                    OponentName = x.OponentName,
+                                                    OponentId = x.OponentId,
+                                                    OponentCurrentRanking = x.OponentCurrentRanking,
+                                                    IsHomeGame = x.HomeGame,
+                                                    Date = x.Date,
+                                                    MatchId = x.MatchNo,
+                                                    MatchNo = x.MatchNo,
+                                                    Round = x.Round,
+                                                    OponentRecentForm = x.OponentRecentForm.ToList()
+                                                }).ToList(),
             });
         }
     }

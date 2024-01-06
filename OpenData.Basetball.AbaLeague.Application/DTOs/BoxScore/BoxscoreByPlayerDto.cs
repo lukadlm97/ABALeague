@@ -12,7 +12,7 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore
                                         string TeamName, 
                                         int LeagueId, 
                                         string LeagueName,
-                                        IEnumerable<GameStats> Games,
+                                        IEnumerable<GameStatsByPlayerItemDto> Games,
                                         AverageBoxscoreCalcuationDto AverageBoxscoreCalcuations,
                                         AdvancedMatchCalcuationDto AdvancedMatchCalcuations);
 }
