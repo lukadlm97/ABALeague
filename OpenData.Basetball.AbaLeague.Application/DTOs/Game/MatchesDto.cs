@@ -1,5 +1,4 @@
-﻿using OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore;
-using OpenData.Basketball.AbaLeague.Application.DTOs.LeagueTeam;
+﻿using OpenData.Basketball.AbaLeague.Application.DTOs.LeagueTeam;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -33,5 +33,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
 
             return null; // Return null if the team code cannot be extracted
         }
+        public static TimeSpan? GetTimeSpanSum(this IEnumerable<TimeSpan> sourceList)
+        {
+            double doubleAverageTicks = sourceList.Sum(timeSpan => timeSpan.Ticks);
+            long longAverageTicks = Convert.ToInt64(doubleAverageTicks);
+
+            return new TimeSpan(longAverageTicks);
+        }
     }
 }

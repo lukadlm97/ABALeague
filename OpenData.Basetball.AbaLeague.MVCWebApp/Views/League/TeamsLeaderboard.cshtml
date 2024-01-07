@@ -1,0 +1,197 @@
+﻿@model LeagueTeamsStatsViewModel
+
+<h2>League Leaderboard by Teams- @Model.LeagueName</h2>
+
+@if (Model.StatsItem != null && Model.StatsItem.Any())
+{
+    <div class="container mt-4">
+        <h3>Offensive Characteristics</h3>
+        <table class="table" id="offensiveTable">
+            <thead>
+                <tr>
+                    <th class="sortable" onclick="sortTable(0, 'offensiveTable', true)">Team</th>
+                    <th class="sortable" onclick="sortTable(1, 'offensiveTable', true)">Points</th>
+                    <th class="sortable" onclick="sortTable(2, 'offensiveTable', true)">2Pt Made</th>
+                    <th class="sortable" onclick="sortTable(3, 'offensiveTable', true)">2Pt Attempted</th>
+                    <th class="sortable" onclick="sortTable(4, 'offensiveTable', true)">3Pt Made</th>
+                    <th class="sortable" onclick="sortTable(5, 'offensiveTable', true)">3Pt Attempted</th>
+                    <th class="sortable" onclick="sortTable(6, 'offensiveTable', true)">1Pt Made</th>
+                    <th class="sortable" onclick="sortTable(7, 'offensiveTable', true)">1Pt Attempted</th>
+                    <th class="sortable" onclick="sortTable(8, 'offensiveTable', true)">Point from Pain</th>
+                    <th class="sortable" onclick="sortTable(9, 'offensiveTable', true)">Point from 2nd Chance</th>
+                    <th class="sortable" onclick="sortTable(10, 'offensiveTable', true)">Point from Fast Break</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StatsItem)
+                {
+                    <tr>
+                        <td>@item.TeamName</td>
+                        <td>@item.Points</td>
+                        <td>@item.ShotMade2Pt</td>
+                        <td>@item.ShotAttempted2Pt</td>
+                        <td>@item.ShotMade3Pt</td>
+                        <td>@item.ShotAttempted3Pt</td>
+                        <td>@item.ShotMade1Pt</td>
+                        <td>@item.ShotAttempted1Pt</td>
+                        <td>@item.PointFromPain</td>
+                        <td>@item.PointFrom2ndChance</td>
+                        <td>@item.PointFromFastBreak</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container mt-4">
+        <h3>Defensive Characteristics</h3>
+        <table class="table" id="defensiveTable">
+            <thead>
+                <tr>
+                    <th class="sortable" onclick="sortTable(0, 'defensiveTable', false)">Team</th>
+                    <th class="sortable" onclick="sortTable(1, 'defensiveTable', false)">Assists</th>
+                    <th class="sortable" onclick="sortTable(2, 'defensiveTable', false)">Defensive Rebounds</th>
+                    <th class="sortable" onclick="sortTable(3, 'defensiveTable', false)">Offensive Rebounds</th>
+                    <th class="sortable" onclick="sortTable(4, 'defensiveTable', false)">Total Rebounds</th>
+                    <th class="sortable" onclick="sortTable(5, 'defensiveTable', false)">Steals</th>
+                    <th class="sortable" onclick="sortTable(6, 'defensiveTable', false)">Turnover</th>
+                    <th class="sortable" onclick="sortTable(7, 'defensiveTable', false)">In Favor of Block</th>
+                    <th class="sortable" onclick="sortTable(8, 'defensiveTable', false)">Against Block</th>
+                    <th class="sortable" onclick="sortTable(9, 'defensiveTable', false)">Committed Foul</th>
+                    <th class="sortable" onclick="sortTable(10, 'defensiveTable', false)">Received Foul</th>
+                    <th class="sortable" onclick="sortTable(11, 'defensiveTable', false)">Plus-Minus</th>
+                    <th class="sortable" onclick="sortTable(12, 'defensiveTable', false)">Rank Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StatsItem)
+                {
+                    <tr>
+                        <td>@item.TeamName</td>
+                        <td>@item.Assists</td>
+                        <td>@item.DefensiveRebounds</td>
+                        <td>@item.OffensiveRebounds</td>
+                        <td>@item.TotalRebounds</td>
+                        <td>@item.Steals</td>
+                        <td>@item.Turnover</td>
+                        <td>@item.InFavoureOfBlock</td>
+                        <td>@item.AgainstBlock</td>
+                        <td>@item.CommittedFoul</td>
+                        <td>@item.ReceivedFoul</td>
+                        <td>@item.PlusMinus</td>
+                        <td>@item.RankValue</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No stats available for this league.</p>
+}
+
+<style>
+    .sortable {
+        cursor: pointer;
+    }
+
+        .sortable:hover {
+            text-decoration: underline;
+        }
+
+    .desc::after {
+        content: " ▼";
+    }
+
+    .asc::after {
+        content: " ▲";
+    }
+
+    .paging {
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    var offensiveCurrentSortColumn = null;
+    var defensiveCurrentSortColumn = null;
+    var offensiveCurrentSortOrder = 'asc';
+    var defensiveCurrentSortOrder = 'asc';
+
+    function sortTable(column, tableId, isOffensive) {
+        var table = document.getElementById(tableId);
+        var rows = table.getElementsByTagName('tr');
+        var currentSortOrder = isOffensive ? offensiveCurrentSortOrder : defensiveCurrentSortOrder;
+
+        var switching = true;
+
+        while (switching) {
+            switching = false;
+
+            for (var i = 1; i < (rows.length - 1); i++) {
+                var shouldSwitch = false;
+                var x = rows[i].getElementsByTagName('td')[column];
+                var y = rows[i + 1].getElementsByTagName('td')[column];
+
+                if (currentSortOrder === 'asc') {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+
+        if (isOffensive) {
+            offensiveCurrentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            offensiveCurrentSortColumn = column;
+        } else {
+            defensiveCurrentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            defensiveCurrentSortColumn = column;
+        }
+
+        var headers = table.getElementsByTagName('th');
+        for (var j = 0; j < headers.length; j++) {
+            if (j !== column) {
+                headers[j].classList.remove('desc', 'asc');
+            }
+        }
+
+        headers[column].classList.toggle(currentSortOrder);
+    }
+
+    function showPage(page, tableId, isOffensive) {
+        var table = document.getElementById(tableId);
+        var rows = table.getElementsByTagName('tr');
+
+        var start = (page - 1) * rowsPerPage;
+        var end = start + rowsPerPage;
+
+        for (var i = 1; i < rows.length; i++) {
+            if (i > start && i <= end) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+
+    }
+
+  
+    // Call showPage on page load with default page number (1)
+    window.onload = function () {
+        showPage(1, 'offensiveTable', true);
+        showPage(1, 'defensiveTable', false);
+    };
+</script>

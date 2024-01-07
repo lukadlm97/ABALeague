@@ -9,8 +9,10 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeag
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetStandingsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayersStatByLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.ProcessorTypes.Queries;
+using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamStatsByLeagueId;
 using OpenData.Basketball.AbaLeague.Domain.Enums;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
@@ -255,6 +257,103 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             };
             ViewBag.Title = leagueDetailsViewModel.LeagueName + " -" + modelName;
             return View(leagueDetailsViewModel);
+        }
+
+        public async Task<IActionResult> TeamsLeaderboard(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var results = await _sender.Send(new GetTeamStatsByLeagueIdQuery(leagueId), cancellationToken);
+
+            var modelName = " Leaderboard";
+
+            if (results.HasNoValue)
+            {
+                ViewBag.Title = modelName;
+                return View("Error");
+            }
+
+            ViewBag.Title = results.Value.LeagueName + " -" + modelName;
+            return View(new LeagueTeamsStatsViewModel
+            {
+                LeagueId = results.Value.LeagueId,
+                LeagueName = results.Value.LeagueName,
+                StatsItem = results.Value.StatItems.Select(x=>new LeagueTeamsStatsItemViewModel
+                {
+                    AgainstBlock = x.AgainstBlock,
+                    Assists = x.Assists,
+                    CommittedFoul = x.CommittedFoul,
+                    DefensiveRebounds = x.DefensiveRebounds,
+                    InFavoureOfBlock = x.InFavoureOfBlock,
+                    OffensiveRebounds = x.OffensiveRebounds,
+                    PlusMinus = x.PlusMinus,
+                    PointFrom2ndChance = x.PointFrom2ndChance,
+                    PointFromFastBreak = x.PointFromFastBreak,
+                    PointFromPain = x.PointFromPain,
+                    Points = x.Points,
+                    RankValue = x.RankValue,
+                    ReceivedFoul = x.ReceivedFoul,
+                    ShotAttempted1Pt = x.ShotAttempted1Pt,
+                    ShotAttempted2Pt = x.ShotAttempted2Pt,
+                    ShotAttempted3Pt = x.ShotAttempted3Pt,
+                    ShotMade1Pt = x.ShotMade1Pt,
+                    ShotMade2Pt = x.ShotMade2Pt,
+                    ShotMade3Pt = x.ShotMade3Pt,
+                    Steals = x.Steals,
+                    TeamId = x.TeamId,
+                    TeamName = x.TeamName,
+                    TotalRebounds = x.TotalRebounds,
+                    Turnover = x.Turnover
+                }).ToList()
+            });
+        }
+
+        public async Task<IActionResult> PlayersLeaderboard(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var results = await _sender.Send(new GetPlayersStatByLeagueQuery(leagueId), cancellationToken);
+
+            var modelName = " Leaderboard";
+
+            if (results.HasNoValue)
+            {
+                ViewBag.Title = modelName;
+                return View("Error");
+            }
+
+            ViewBag.Title = results.Value.LeagueName + " -" + modelName;
+            return View(new LeaguePlayersStatsViewModel
+            {
+                LeagueId = results.Value.LeagueId,
+                LeagueName = results.Value.LeagueName,
+                StatsItem = results.Value.StatItems.Select(x => new LeaguePlayersStatsItemViewModel
+                {
+                    TeamId =x.TeamId,
+                    TeamName =x.TeamName,
+                    Minutes =x.Minutes,
+                    PlayerId = x.PlayerId, 
+                    PlayerName = x.PlayerName,
+                    AgainstBlock = x.AgainstBlock,
+                    Assists = x.Assists,
+                    CommittedFoul = x.CommittedFoul,
+                    DefensiveRebounds = x.DefensiveRebounds,
+                    InFavoureOfBlock = x.InFavoureOfBlock,
+                    OffensiveRebounds = x.OffensiveRebounds,
+                    PlusMinus = x.PlusMinus,
+                    PointFrom2ndChance = x.PointFrom2ndChance,
+                    PointFromFastBreak = x.PointFromFastBreak,
+                    PointFromPain = x.PointFromPain,
+                    Points = x.Points,
+                    RankValue = x.RankValue,
+                    ReceivedFoul = x.ReceivedFoul,
+                    ShotAttempted1Pt = x.ShotAttempted1Pt,
+                    ShotAttempted2Pt = x.ShotAttempted2Pt,
+                    ShotAttempted3Pt = x.ShotAttempted3Pt,
+                    ShotMade1Pt = x.ShotMade1Pt,
+                    ShotMade2Pt = x.ShotMade2Pt,
+                    ShotMade3Pt = x.ShotMade3Pt,
+                    Steals = x.Steals,
+                    TotalRebounds = x.TotalRebounds,
+                    Turnover = x.Turnover
+                }).ToList()
+            });
         }
     }
 }

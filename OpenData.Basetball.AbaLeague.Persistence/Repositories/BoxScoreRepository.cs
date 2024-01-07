@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.Persistence;
 using OpenData.Basetball.AbaLeague.Persistence.Repositories;
 using OpenData.Basketball.AbaLeague.Application.Contracts;
@@ -32,6 +33,20 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
                                 .Include(x=>x.RoundMatch)
                                     .ThenInclude(x => x.HomeTeam)
                                 .Where(x => x.RosterItemId == rosterItemId);
+        }
+
+        public async Task<IEnumerable<BoxScore>> SearchByLeagueId(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var league = await _dbContext.Leagues
+                                        .Include(x=>x.RoundMatches)
+                                        .FirstOrDefaultAsync(x=>x.Id == leagueId);
+            if(league == null)
+            {
+                return Array.Empty<BoxScore>();
+            }
+            var existingRoundMatches = league.RoundMatches.Select(x => x.Id);
+            return _dbContext.BoxScores
+                                .Where(x => existingRoundMatches.Contains(x.RoundMatchId));
         }
     }
 }

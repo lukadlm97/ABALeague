@@ -157,6 +157,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
             var advancedCalculation = new AdvancedMatchCalcuationDto(totalGamesPlayed ?? 0, homeGamesPlayed, totalGamesWon, homeGamesWon, totalSpectators, totalSpectators / totalGamesPlayed == 0 ? 1 : totalGamesPlayed ?? 1, homeGamesPointScored, awayGamesPointScored);
             var averageCalculation = new AverageBoxscoreCalcuationDto(
+                
                 TimeSpan.FromSeconds(0),
                 Math.Round((double)subsetBoxscores.Sum(x => x.Points) / totalGamesPlayed ?? 1, 2),
                 Math.Round((double)subsetBoxscores.Sum(x => x.TotalRebounds) / totalGamesPlayed ?? 1, 2),

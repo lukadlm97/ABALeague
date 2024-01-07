@@ -45,6 +45,10 @@
                     asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
                     <a asp-controller="League" asp-action="Standings"
                            asp-route-leagueId="@item.Id" class="btn btn-outline-info">Standings</a>
+                        <a asp-controller="League" asp-action="TeamsLeaderboard"
+                           asp-route-leagueId="@item.Id" class="btn btn-outline-danger">Teams Stats</a>
+                        <a asp-controller="League" asp-action="PlayersLeaderboard"
+                           asp-route-leagueId="@item.Id" class="btn btn-outline-warning">Player Stats</a>
                 </td>
             </tr>
         }

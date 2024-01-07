@@ -1,13 +1,14 @@
-﻿using OpenData.Basketball.AbaLeague.Application.DTOs.Game;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore
+namespace OpenData.Basketball.AbaLeague.Application.DTOs.Game
 {
-    public record GameStatsByTeamItemDto(int RoundMatchId,
+    public record GameStatsByPlayerItemDto(int RoundMatchId,
                             int OponentId,
                             string OponentName,
                             DateTime Date,
@@ -17,7 +18,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore
                             bool WinTheGame,
                             string Venue,
                             int Attendency,
-                            int? ResultId = null,
                             TimeSpan? Minutes = null,
                             int? Points = null,
                             decimal? ShotPrc = null,
@@ -45,8 +45,7 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore
                             int? PointFromFastBreak = null,
                             int? PlusMinus = null,
                             int? RankValue = null,
-                            string? Result = null)
-                : MatchItemDto(RoundMatchId,
+                            string? Result = null) : MatchItemDto(RoundMatchId,
                                                                     OponentId,
                                                                     OponentName,
                                                                     -1,

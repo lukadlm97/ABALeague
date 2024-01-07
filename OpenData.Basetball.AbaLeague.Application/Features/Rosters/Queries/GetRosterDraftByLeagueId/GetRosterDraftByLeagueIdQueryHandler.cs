@@ -44,7 +44,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             {
                 return Maybe<DraftRosterDto>.None;
             }
-            var existingRosterItems = await _unitOfWork.RosterRepository.GetByLeagueId(request.LeagueId, cancellationToken);
+            var existingRosterItems = await _unitOfWork.RosterRepository.SearchByLeagueId(request.LeagueId, cancellationToken);
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
             {
                 Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),

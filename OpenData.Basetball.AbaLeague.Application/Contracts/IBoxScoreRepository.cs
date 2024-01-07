@@ -8,9 +8,10 @@ using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basketball.AbaLeague.Application.Contracts
 {
-    public interface IBoxScoreRepository:IGenericRepository<BoxScore>
+    public interface IBoxScoreRepository : IGenericRepository<BoxScore>
     {
         Task<bool> Exist(int roundMatchId, int rosterItemId, CancellationToken cancellationToken = default);
         Task<IEnumerable<BoxScore>> GetByRosterItemId(int rosterItemId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<BoxScore>> SearchByLeagueId(int leagueId, CancellationToken cancellationToken = default);
     }
 }

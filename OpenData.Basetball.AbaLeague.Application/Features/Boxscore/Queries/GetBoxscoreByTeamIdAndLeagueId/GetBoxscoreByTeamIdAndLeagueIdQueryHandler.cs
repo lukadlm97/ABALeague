@@ -1,6 +1,7 @@
 ﻿using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basketball.AbaLeague.Application.Abstractions.Messaging;
 using OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Game;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 using OpenData.Basketball.AbaLeague.Application.Services.Implementation;
 using OpenData.Basketball.AbaLeague.Domain.Common;
