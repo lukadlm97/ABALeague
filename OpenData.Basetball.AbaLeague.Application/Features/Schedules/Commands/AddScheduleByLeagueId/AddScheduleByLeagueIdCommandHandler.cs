@@ -84,7 +84,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Commands.
 
                     await _unitOfWork.LeagueRepository.Update(league, cancellationToken);
                 }
-                await _unitOfWork.Save();
+                await _unitOfWork.Save(cancellationToken);
             }
             catch (Exception ex)
             {

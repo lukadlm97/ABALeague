@@ -10,7 +10,6 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
     {
 
         private readonly AbaLeagueDbContext _context;
-      //  private readonly IHttpContextAccessor _httpContextAccessor;
         private IPlayerRepository _playerRepository;
         private ITeamRepository _teamRepository;
         private IGenericRepository<League> _leagueRepository;
@@ -22,15 +21,17 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private IBoxScoreRepository _boxScoreRepository;
         private IRosterRepository _rosterRepository;
         private ISelectorResourcesRepository _selectorResourcesRepository;
+        private IGameLengthRepository _gameLengthRepository;
+        private ILeagueGameLengthRepository _leagueGameLengthRepository;
+        private ILevelsOfScaleRepository _levelsOfScaleRepository;
+        private IRangeScalesRepository _rangeScalesRepository;
+        private IStatsPropertyRepository _statsPropertyRepository;
         private IGenericRepository<ProcessorType> _processorTypeRepository;
 
 
-        public UnitOfWork(AbaLeagueDbContext context
-            //,IHttpContextAccessor httpContextAccessor
-            )
+        public UnitOfWork(AbaLeagueDbContext context)
         {
             _context = context;
-         //   this._httpContextAccessor = httpContextAccessor;
         }
 
         public IPlayerRepository PlayerRepository =>
@@ -68,17 +69,30 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         public ISelectorResourcesRepository SelectorResourcesRepository =>
           _selectorResourcesRepository ??= new SelectorResourcesRepository(_context);
 
+        public IGameLengthRepository GameLengthRepository =>
+          _gameLengthRepository ??= new GameLengthRepository(_context);
+
+        public ILeagueGameLengthRepository LeagueGameLengthRepository =>
+          _leagueGameLengthRepository ??= new LeagueGameLengthRepository(_context);
+
+        public ILevelsOfScaleRepository LevelsOfScaleRepository =>
+          _levelsOfScaleRepository ??= new LevelsOfScaleRepository(_context);
+
+        public IRangeScalesRepository RangeScalesRepository =>
+          _rangeScalesRepository ??= new RangeScalesRepository(_context);
+
+        public IStatsPropertyRepository StatsPropertyRepository =>
+          _statsPropertyRepository ??= new StatsPropertyRepository(_context);
+
         public void Dispose()
         {
             _context.Dispose();
             GC.SuppressFinalize(this);
         }
 
-        public async Task Save()
+        public async Task Save(CancellationToken cancellationToken = default)
         {
-          //  var username = _httpContextAccessor.HttpContext.User.FindFirst(CustomClaimTypes.Uid)?.Value;
-
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken: cancellationToken);
         }
     }
 }

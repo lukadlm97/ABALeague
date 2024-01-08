@@ -14,7 +14,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence
         {
         }
 
-        public virtual async Task<int> SaveChangesAsync(string username = "SYSTEM")
+        public virtual async Task<int> SaveChangesAsync(string username = "SYSTEM", 
+            CancellationToken cancellationToken = default)
         {
             foreach (var entry in base.ChangeTracker.Entries<AuditEntity>()
                          .Where(q => q.State == EntityState.Added || q.State == EntityState.Modified))

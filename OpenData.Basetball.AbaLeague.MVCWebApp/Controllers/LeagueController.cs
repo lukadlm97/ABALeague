@@ -12,8 +12,10 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeam
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayersStatByLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.ProcessorTypes.Queries;
+using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamRangeStatsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamStatsByLeagueId;
 using OpenData.Basketball.AbaLeague.Domain.Enums;
+using System.Collections.Frozen;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 {
@@ -100,7 +102,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             };
             ViewBag.Title = leagueDetailsViewModel.League.ShortName+" -"+modelName;
             return View(leagueDetailsViewModel);
-        }
+        }  
         public async Task<IActionResult> Save(CreateLeagueViewModel model, CancellationToken cancellationToken = default)
         {
                 if (!short.TryParse(model.SelectedProcessorTypeId, out short processor))
@@ -352,6 +354,42 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     Steals = x.Steals,
                     TotalRebounds = x.TotalRebounds,
                     Turnover = x.Turnover
+                }).ToList()
+            });
+        }
+
+        public async Task<IActionResult> RangeStatsByTeam(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var results = await _sender.Send(new GetTeamRangeStatsByLeagueIdQuery(leagueId, 
+                new List<StatsPropertyEnum>() { StatsPropertyEnum.Points}.ToFrozenSet()), cancellationToken);
+
+            var modelName = " Range Stats";
+
+            if (results.HasNoValue)
+            {
+                ViewBag.Title = modelName;
+                return View("Error");
+            }
+           
+
+
+            ViewBag.Title = results.Value.LeagueName + " -" + modelName;
+            return View(new LeagueRangeStatsViewModel
+            {
+                LeagueId = results.Value.LeagueId,
+                LeagueName=results.Value.LeagueName,
+                TeamItems = results.Value.Stats.OrderBy(x=>x.Key.teamName).Select(x => new LeagueTeamRangeStatsViewModel
+                {
+                    TeamId = x.Key.teamId,
+                    TeamName = x.Key.teamName,
+                    RangeStatsItems = x.Value.OrderBy(x=>x.Id).Select(y => new RangeStatsItemViewModel
+                    {
+                        Id = y.Id,
+                        Count = y.Count,
+                        MaxValue = y.MaxValue,
+                        MinValue = y.MinValue,
+                        StatsName = y.StatsProperty.ToString()
+                    }).ToList()
                 }).ToList()
             });
         }

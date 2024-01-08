@@ -60,7 +60,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Commands.AddS
                     await _unitOfWork.ResultRepository.Add(newItem, cancellationToken);
                 }
 
-                await _unitOfWork.Save();
+                await _unitOfWork.Save(cancellationToken);
             }
             catch (Exception ex)
             {
