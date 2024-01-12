@@ -45,7 +45,6 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
             League = new League()
             {
                 ShortName = league.Value.ShortName,
-                Season = league.Value.Season,
                 BaseUrl = league.Value.BaseUrl,
                 BoxScoreUrl = league.Value.BoxScoreUrl,
                 CalendarUrl = league.Value.CalendarUrl,
@@ -55,7 +54,7 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
                 StandingUrl = league.Value.StandingUrl
             };
         }
-
+        /*
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken = default)
         {
             IsLoaded = false;
@@ -73,8 +72,8 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
                 if (leagueId == null)
                 {
                     result = await _sender.Send(new CreateLeagueCommand(League.OfficalName, League.ShortName,
-                        League.Season, League.StandingUrl, League.CalendarUrl, League.MatchUrl, League.BoxScoreUrl,
-                        League.BaseUrl, League.RosterUrl, 1), cancellationToken);
+                      League.StandingUrl, League.CalendarUrl, League.MatchUrl, League.BoxScoreUrl,
+                        League.BaseUrl, League.RosterUrl, 1, 1), cancellationToken);
                    
                 }
                 else
@@ -101,5 +100,6 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
                 return RedirectToPage("/Leagues/Error");
             }
         }
+        */
     }
 }

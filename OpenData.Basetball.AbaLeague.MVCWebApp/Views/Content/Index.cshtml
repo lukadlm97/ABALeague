@@ -24,12 +24,19 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <a asp-controller="Schedule" asp-action="Index" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Schedule</a>
-                        <a asp-controller="Score" asp-action="Index" asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Score</a>
-                        <a asp-controller="Roster" asp-action="Draft" asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Roster Changes</a>
-                        <a asp-controller="Boxscore" asp-action="Index" asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Boxscore</a>
-
-                    </td>
+                        <a asp-controller="League" asp-action="Upsert"
+                           asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
+                        <a asp-controller="League" asp-action="SeasonResources"
+                           asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Resources</a>
+                        <a asp-controller="Schedule" asp-action="Index" 
+                            asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Schedule</a>
+                        <a asp-controller="Score" asp-action="Index" 
+                            asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Score</a>
+                        <a asp-controller="Roster" asp-action="Draft" 
+                            asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Roster Changes</a>
+                        <a asp-controller="Boxscore" asp-action="Index" 
+                            asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Boxscore</a>
+                       </td>
                 </tr>
             }
         }

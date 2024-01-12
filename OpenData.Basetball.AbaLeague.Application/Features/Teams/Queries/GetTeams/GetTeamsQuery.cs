@@ -5,7 +5,7 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeams
 {
-    public class GetTeamsQuery : IQuery<Maybe<TeamResponse>>
+    public class GetTeamsQuery : IQuery<Maybe<TeamDto>>
     {
         public GetTeamsQuery(string filter, int pageNumber, int pageSize)
         {

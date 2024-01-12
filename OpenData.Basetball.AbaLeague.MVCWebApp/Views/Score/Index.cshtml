@@ -10,6 +10,9 @@
         <thead>
             <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.OnWaitingScores[0].Round)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.OnWaitingScores[0].MatchNo)
                 </th>
                 <th>
@@ -45,6 +48,9 @@
                 @foreach (var item in Model.OnWaitingScores)
                 {
                     <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Round)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.MatchNo)
                         </td>
@@ -82,7 +88,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OnWaitingScores[0].MatchNo)
+                @Html.DisplayNameFor(model => model.ExistingScores[0].Round)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExistingScores[0].MatchNo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ExistingScores[0].HomeTeamName)
@@ -112,6 +121,9 @@
             @foreach (var item in Model.ExistingScores)
             {
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Round)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.MatchNo)
                     </td>
@@ -148,6 +160,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.OnWaitingScores[0].Round)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.OnWaitingScores[0].MatchNo)
             </th>
             <th>
@@ -166,6 +181,9 @@
             @foreach (var item in Model.ToBePlayed)
             {
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Round)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.MatchNo)
                     </td>

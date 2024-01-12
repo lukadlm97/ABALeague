@@ -41,6 +41,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
 
                 return Result.Failure(new Error("UnableToFoundProcessor", ""));
             }
+
+            var existingSeason = _unitOfWork.SeasonRepository.Get().FirstOrDefault(x => x.Id == request.SeasonId);
+            if (existingSeason == null)
+            {
+
+                return Result.Failure(new Error("UnableToFoundSeason", ""));
+            }
+
             try
             {
                 var result = await _unitOfWork.LeagueRepository.Add(new League()
@@ -52,10 +60,11 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
                     MatchUrl = request.MatchUrl,
                     OfficalName = request.OfficialName,
                     RosterUrl = request.RosterUrl,
-                    Season = request.Season,
                     StandingUrl = request.StandingUrl,
                     RoundMatches = new List<RoundMatch>(),
-                    ProcessorTypeId = existingProcessor.Id
+                    ProcessorTypeId = existingProcessor.Id,
+                    SeasonId = existingSeason.Id,
+                    RoundsToPlay = request.RoundsToPlay
                 }, cancellationToken);
 
                 await _unitOfWork.Save();

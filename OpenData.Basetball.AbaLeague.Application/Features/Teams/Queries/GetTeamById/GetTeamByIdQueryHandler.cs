@@ -11,7 +11,7 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById
 {
-    internal class GetTeamByIdQueryHandler : IQueryHandler<GetTeamByIdQuery, Maybe<TeamDto>>
+    internal class GetTeamByIdQueryHandler : IQueryHandler<GetTeamByIdQuery, Maybe<TeamItemDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,23 +19,27 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<Maybe<TeamDto>> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<TeamItemDto>> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 var existingTeam = await _unitOfWork.TeamRepository.Get(request.TeamId, cancellationToken);
+                var countries = _unitOfWork.CountryRepository.Get();
 
                 if (existingTeam == null)
                 {
-                    return Maybe<TeamDto>.None;
+                    return Maybe<TeamItemDto>.None;
                 }
 
-                return new TeamDto(existingTeam.Id, existingTeam.Name, existingTeam.ShortCode, existingTeam.CountryId);
+                return new TeamItemDto(existingTeam.Id,
+                                        existingTeam.Name, 
+                                        existingTeam.ShortCode,
+                                        existingTeam.CountryId,
+                                        countries?.FirstOrDefault(x=>x.Id == existingTeam.CountryId)?.Name!);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e); 
-                return Maybe<TeamDto>.None;
+                return Maybe<TeamItemDto>.None;
             }
         }
     }

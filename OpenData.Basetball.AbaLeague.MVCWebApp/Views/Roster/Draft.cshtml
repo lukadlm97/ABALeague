@@ -1,189 +1,203 @@
 ﻿@model OpenData.Basetball.AbaLeague.MVCWebApp.Models.DraftRosterViewModel
 
 
-<h4>Roster page</h4>
-<h5>Draft roster items</h5>
-<form asp-controller="Roster" asp-action="SaveDraftRosterItems" method="post" asp-route-leagueId="@Model.LeagueId">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.DraftRosterItems[0].LeagueName)</th>
-                <th>@Html.DisplayNameFor(model => model.DraftRosterItems[0].TeamName)</th>
-                <th>@Html.DisplayNameFor(model => model.DraftRosterItems[0].PlayerName)</th>
-                <th>Create Roster Items</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.DraftRosterItems != null && Model.DraftRosterItems.Any())
-            {
-                @foreach (var item in Model.DraftRosterItems)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.LeagueName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.TeamName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.PlayerName)</td>
-                        <td>
-                            <form method="post" asp-controller="Roster" asp-action="SaveDraftRosterItem" asp-route-leagueId="@Model.LeagueId" asp-route-teamId="@item.TeamId" asp-route-playerId="@item.PlayerId">
-                                <button type="submit" class="btn btn-outline-dark">Create Roster Item</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-success">Create Roster Items</button>
+<div class="container mt-4">
+    <h3>Roster page</h3>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Draft roster items</h4>
         </div>
-    </div>
-</form>
-
-
-
-<h5>Missing players at system</h5>
-<form asp-controller="Roster" asp-action="AddMissingPlayers" method="post" asp-route-leagueId="@Model.LeagueId">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].Name)</th>
-                <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].Position)</th>
-                <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].Height)</th>
-                <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].DateOfBirth)</th>
-                <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].Country)</th>
-                <th>Create Players</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.MissingPlayerItems != null && Model.MissingPlayerItems.Any())
-            {
-                @foreach (var item in Model.MissingPlayerItems)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Position)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Height)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateOfBirth)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Country)
-                        </td>
-                        <td>
-                            <a asp-controller="Player" asp-action="UpsertWithName"
-                               asp-route-playerName="@item.Name"
-                               asp-route-leagueId=@Model.LeagueId
-                               class="btn btn-outline-dark">Create Player</a>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table> 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-success">Create Players</button>
-        </div>
-    </div>
-</form>
-
-<h5>Existing roster items</h5>
-<form asp-controller="Score" asp-action="AddScores" method="post" asp-route-leagueId="@Model.LeagueId">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExistingRosterItems[0].LeagueName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExistingRosterItems[0].TeamName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExistingRosterItems[0].PlayerName)
-                </th>
-                <td>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <button type="submit" class="btn btn-success">Create Score From Draft</button>
-                        </div>
+        <div class="card-body">
+            <form asp-controller="Roster" asp-action="SaveDraftRosterItems" method="post"
+                asp-route-leagueId="@Model.LeagueId">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.DraftRosterItems[0].LeagueName)</th>
+                            <th>@Html.DisplayNameFor(model => model.DraftRosterItems[0].TeamName)</th>
+                            <th>@Html.DisplayNameFor(model => model.DraftRosterItems[0].PlayerName)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DraftRosterItems != null && Model.DraftRosterItems.Any())
+                        {
+                            @foreach (var item in Model.DraftRosterItems)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.LeagueName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TeamName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PlayerName)</td>
+                                    <td>
+                                        <form method="post" asp-controller="Roster" asp-action="SaveDraftRosterItem" 
+                                            asp-route-leagueId="@Model.LeagueId" asp-route-teamId="@item.TeamId" 
+                                            asp-route-playerId="@item.PlayerId">
+                                            <button type="submit" class="btn btn-outline-dark">Create Single Roster Item</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success">Create All Roster Items</button>
                     </div>
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.ExistingRosterItems != null && Model.ExistingRosterItems.Any())
-            {
-                @foreach (var item in Model.ExistingRosterItems)
-                {
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Missing players at system</h4>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Roster" asp-action="AddMissingPlayers" method="post" 
+                asp-route-leagueId="@Model.LeagueId">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].Position)</th>
+                            <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].Height)</th>
+                            <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].DateOfBirth)</th>
+                            <th>@Html.DisplayNameFor(model => model.MissingPlayerItems[0].Country)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.MissingPlayerItems != null && Model.MissingPlayerItems.Any())
+                        {
+                            @foreach (var item in Model.MissingPlayerItems)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Position)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Height)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DateOfBirth)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Country)
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Player" asp-action="UpsertWithName"
+                                           asp-route-playerName="@item.Name"
+                                           asp-route-leagueId=@Model.LeagueId
+                                           class="btn btn-outline-dark">Create Player</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success">Create Block of Players</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Existing roster items</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
                     <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExistingRosterItems[0].LeagueName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExistingRosterItems[0].TeamName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExistingRosterItems[0].PlayerName)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ExistingRosterItems != null && Model.ExistingRosterItems.Any())
+                    {
+                        @foreach (var item in Model.ExistingRosterItems)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LeagueName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TeamName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlayerName)
+                                </td>
+                                 
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Existing roster items with possible ended contract</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].LeagueName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].TeamName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].PlayerName)
+                        </th>
                         <td>
-                            @Html.DisplayFor(modelItem => item.LeagueName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TeamName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PlayerName)
-                        </td>
-                        <td>
-                            
                         </td>
                     </tr>
-                }
-            }
-        </tbody>
-    </table>
-</form>
+                </thead>
+                <tbody>
+                    @if (Model.ExistingRosterItemsWithEndedContract != null && Model.ExistingRosterItemsWithEndedContract.Any())
+                    {
+                        @foreach (var item in Model.ExistingRosterItemsWithEndedContract)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LeagueName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TeamName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlayerName)
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-
-
-
-<h5>Existing roster items with possible ended contract</h5>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].LeagueName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].TeamName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExistingRosterItemsWithEndedContract[0].PlayerName)
-            </th>
-            <td>
-                  
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.ExistingRosterItemsWithEndedContract != null && Model.ExistingRosterItemsWithEndedContract.Any())
-        {
-            @foreach (var item in Model.ExistingRosterItemsWithEndedContract)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LeagueName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TeamName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PlayerName)
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>

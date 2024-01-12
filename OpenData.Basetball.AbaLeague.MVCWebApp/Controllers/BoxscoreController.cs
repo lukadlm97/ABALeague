@@ -251,6 +251,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 HomeTeamPoints = realValuePointsByHomeTeam,
                 AwayTeamMatch = realValuepointsByAwayTeam == result.Value.MatchScore.AwayTeamPoints,
                 HomeTeamMatch = realValuePointsByHomeTeam == result.Value.MatchScore.HomeTeamPoints,
+                AvailableDraftBoxscoreItems = result.Value.DraftItems.Any(),
+                AvailableDraftRosterItems = result.Value.DraftRosterItems.Any(),
+                AvailableMissingPlayerItems = result.Value.MissingPlayers.Any(),
             };
 
             return View(boxscoreViewModel);
@@ -612,6 +615,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     HomeTeamPoints = realValuePointsByHomeTeam,
                     AwayTeamMatch = realValuepointsByAwayTeam == item.MatchScore.AwayTeamPoints,
                     HomeTeamMatch = realValuePointsByHomeTeam == item.MatchScore.HomeTeamPoints,
+                    AvailableDraftBoxscoreItems = item.DraftItems.Any(),
+                    AvailableDraftRosterItems = item.DraftRosterItems.Any(),
+                    AvailableMissingPlayerItems = item.MissingPlayers.Any(),
                 };
                 list.Add(boxscoreViewModel);
             }

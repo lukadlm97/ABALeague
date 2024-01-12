@@ -11,6 +11,9 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Team
     public record TeamRangeStatsItemDto(int Id,
                                             int? MinValue, 
                                             int? MaxValue,
-                                            int Count,
+                                            int ScoredWinCount,
+                                            int ScoredLossCount,
+                                            int ReceivedWinCount,
+                                            int ReceivedLossCount,
                                             StatsPropertyEnum StatsProperty);
 }

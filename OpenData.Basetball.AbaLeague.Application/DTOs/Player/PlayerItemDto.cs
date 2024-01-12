@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.DTOs.Player
 {
-    public record PlayerItemDto(string Name,
-                                [property: JsonCamelCaseEnumConverter] PositionEnum Position,
+    public record PlayerItemDto(int Id, 
+                                string Name,
+                                PositionEnum Position, 
                                 int Height,
-                                DateTime DateOfBirth,
-                                int? NationalityId);
+                                DateTime DateOfBirth, 
+                                int Age,
+                                int CountryId,
+                                string CountryName);
 }

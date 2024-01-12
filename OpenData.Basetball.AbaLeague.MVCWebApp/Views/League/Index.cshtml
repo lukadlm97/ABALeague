@@ -13,9 +13,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Leagues[0].ShortName)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Leagues[0].Season)
-        </th>
         <td>
 
         </td>
@@ -34,22 +31,15 @@
                     @Html.DisplayFor(modelItem => item.ShortName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Season)
-                </td>
-                <td>
                     <a asp-controller="League" asp-action="Details" 
-                    asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
-                    <a asp-controller="League" asp-action="Upsert" 
-                    asp-route-leagueId="@item.Id" class="btn btn-outline-secondary">Edit</a>
-                    <a asp-controller="League" asp-action="SeasonResources" 
-                    asp-route-leagueId="@item.Id" class="btn btn-outline-dark">Resources</a>
-                    <a asp-controller="League" asp-action="Standings"
-                           asp-route-leagueId="@item.Id" class="btn btn-outline-info">Standings</a>
+                        asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
+                   <a asp-controller="League" asp-action="Standings"
+                        asp-route-leagueId="@item.Id" class="btn btn-outline-info">Standings</a>
                     <a asp-controller="League" asp-action="TeamsLeaderboard"
                         asp-route-leagueId="@item.Id" class="btn btn-outline-danger">Teams Stats</a>
                     <a asp-controller="League" asp-action="PlayersLeaderboard"
                         asp-route-leagueId="@item.Id" class="btn btn-outline-warning">Player Stats</a>
-                    <a asp-controller="League" asp-action="RangeStatsByTeam"
+                        <a asp-controller="League" asp-action="LeagueRangeStatsByLeague"
                         asp-route-leagueId="@item.Id" class="btn btn-outline-info">Range Stats</a>
                 </td>
             </tr>

@@ -34,7 +34,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 Leagues = results.Value.LeagueResponses
                 .Select(x => new SingleLeagueViewModel()
-                { Id = x.Id, Name = x.OfficialName })
+                { 
+                    Id = x.Id ?? -1, 
+                    Name = x.OfficialName 
+                })
                 .ToList()
             };
 

@@ -30,12 +30,11 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return await _unitOfWork.LeagueRepository.Get(id,cancellationToken);
         }
 
-        public async Task Add(LeagueDto league, CancellationToken cancellationToken = default)
+        public async Task Add(LeagueItemDto league, CancellationToken cancellationToken = default)
         {
             var entity = new League()
             {
                 OfficalName = league.OfficialName,
-                Season = league.Season,
                 ShortName = league.ShortName,
                 StandingUrl = league.StandingUrl,
                 BaseUrl = league.BaseUrl,

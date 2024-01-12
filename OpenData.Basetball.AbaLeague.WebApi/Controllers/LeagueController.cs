@@ -32,7 +32,7 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> Create([FromBody]LeagueDto league, CancellationToken cancellationToken)
+        public async Task<IActionResult> Create([FromBody]LeagueItemDto league, CancellationToken cancellationToken)
         {
             await _leagueService.Add(league, cancellationToken);
 

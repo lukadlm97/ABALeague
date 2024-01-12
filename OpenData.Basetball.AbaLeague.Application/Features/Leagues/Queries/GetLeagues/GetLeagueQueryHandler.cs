@@ -6,35 +6,43 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues
 {
-    internal class GetLeagueQueryHandler : IQueryHandler<GetLeagueQuery, Maybe<LeaguesResponse>>
+    internal class GetLeagueQueryHandler : IQueryHandler<GetLeagueQuery, Maybe<LeaguesDto>>
     {
-        private readonly IGenericRepository<League> _leagueRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetLeagueQueryHandler(IGenericRepository<League> leagueRepository)
+        public GetLeagueQueryHandler(IGenericRepository<League> leagueRepository, IUnitOfWork unitOfWork)
         {
-            _leagueRepository = leagueRepository;
+            _unitOfWork = unitOfWork;
         }
-        public async Task<Maybe<LeaguesResponse>> Handle(GetLeagueQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<LeaguesDto>> Handle(GetLeagueQuery request, CancellationToken cancellationToken)
         {
-            var leagues = await _leagueRepository.GetAll(cancellationToken);
+            var leagues = await _unitOfWork.LeagueRepository.GetAll(cancellationToken);
+            var seasons = _unitOfWork.SeasonRepository.Get();
             if (!leagues.Any())
             {
-                return Maybe<LeaguesResponse>.None;
+                return Maybe<LeaguesDto>.None;
             }
 
-            var response = leagues.Select(x => new LeagueResponse(x.Id, 
-                x.OfficalName,
-                x.ShortName,
-                x.Season,
-                x.StandingUrl,
-                x.CalendarUrl,
-                x.MatchUrl, 
-                x.BoxScoreUrl, 
-                x.RosterUrl, 
-                x.BaseUrl,
-                x.ProcessorTypeId));
+            var response = leagues.Select(x => 
+            {
+                var season = seasons.FirstOrDefault(y => y.Id == x.SeasonId);
 
-            return new LeaguesResponse(response);
+                return new LeagueItemDto(x.Id,
+                                            x.OfficalName,
+                                            x.ShortName,
+                                            x.StandingUrl,
+                                            x.CalendarUrl,
+                                            x.MatchUrl,
+                                            x.BoxScoreUrl,
+                                            x.RosterUrl!,
+                                            x.BaseUrl!,
+                                            x.ProcessorTypeEnum ?? Domain.Enums.ProcessorType.Unknow,
+                                            season.Id!,
+                                            season.Name!,
+                                            x.RoundsToPlay);
+            });
+
+            return new LeaguesDto(response);
         }
     }
 }

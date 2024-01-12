@@ -8,18 +8,19 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
     {
         public CreateLeagueCommand(string officialName,
             string shortName,
-            string season,
             string standingUrl,
             string calendarUrl,
             string matchUrl,
             string boxScoreUrl,
             string baseUrl,
             string rosterUrl, 
-            short processorType)
+            short processorType,
+            int seasonId,
+            int roundsToPlay
+            )
         {
             OfficialName = officialName;
             ShortName = shortName;
-            Season = season;
             StandingUrl = standingUrl;
             CalendarUrl = calendarUrl;
             MatchUrl = matchUrl;
@@ -27,11 +28,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
             BaseUrl = baseUrl;
             RosterUrl = rosterUrl;
             ProcessorType = (Domain.Enums.ProcessorType) processorType;
+            SeasonId = seasonId;
+            RoundsToPlay = roundsToPlay;
         }
 
         public string OfficialName { get;  }
         public string ShortName { get;  }
-        public string Season { get;  }
         public string StandingUrl { get;  }
         public string CalendarUrl { get;  }
         public string MatchUrl { get;  }
@@ -39,5 +41,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
         public string BaseUrl { get;  }
         public string RosterUrl { get;  }
         public Domain.Enums.ProcessorType ProcessorType { get;  }
+        public int SeasonId { get;  }
+        public int RoundsToPlay { get;  }
     }
 }

@@ -14,6 +14,8 @@ using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlay
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerAnotherNames;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerGames;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.SearchPlayers;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.SearchPlayersByCountryId;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterHistoryByPlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.CreateTeam;
@@ -35,38 +37,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             _sender = sender;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index(CancellationToken cancellationToken = default)
-        {
-            var players = await _sender.Send(new GetPlayersQuery(), cancellationToken);
-            var countries = await _sender.Send(new GetCountriesQuery(), cancellationToken);
-
-            if (players.HasNoValue || countries.HasNoValue)
-            {
-                return View("Error");
-            }
-
-            ViewBag.Title = "Players";
-
-            List<PlayerViewModel> list = new List<PlayerViewModel>();
-
-            foreach (var player in players.Value.Players)
-            {
-                list.Add(new PlayerViewModel()
-                {
-                    Id = player.Id,
-                    Name = player.Name,
-                    Height = player.Height,
-                    DateOfBirth = player.DateOfBirth,
-                    Country = player.CountryId.ResolveCountryName(countries.Value.Countries)
-                });
-            }
-
-            return View(new IndexPlayerViewModel
-            {
-                Players = list
-            });
-        }
+     
 
         [HttpGet]
         public async Task<IActionResult> Details(int playerId, CancellationToken cancellationToken = default)
@@ -112,7 +83,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     Name = player.Value.Name,
                     Height = player.Value.Height,
                     DateOfBirth = player.Value.DateOfBirth,
-                    Country = player.Value.CountryId.ResolveCountryName(countries.Value.Countries),
+                    Country = player.Value.CountryName,
                     Position = player.Value.Position.ToString(),
                 },
                 Rosters = list
@@ -416,6 +387,115 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                     Round = x.Round,
                                                     OponentRecentForm = x.OponentRecentForm.ToList()
                                                 }).ToList(),
+            });
+        }
+        [HttpGet]
+        public async Task<IActionResult> Index(int page = 1,
+                                                int size = 10000,
+                                                CancellationToken cancellationToken = default)
+        {
+            var players = await _sender.Send(new GetPlayersQuery(page, size), cancellationToken);
+
+            if (players.HasNoValue)
+            {
+                return View("Error");
+            }
+
+            ViewBag.Title = "Players";
+
+            List<PlayerViewModel> list = new List<PlayerViewModel>();
+
+            foreach (var player in players.Value.Players)
+            {
+                list.Add(new PlayerViewModel()
+                {
+                    Id = player.Id,
+                    Name = player.Name,
+                    Height = player.Height,
+                    DateOfBirth = player.DateOfBirth,
+                    Country = player.CountryName,
+                    Age = player.Age,
+                });
+            }
+
+            return View(new PlayerIndexViewModel
+            {
+                Players = list.OrderBy(x => x.Name).ToList()
+            });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchPlayer(int page = 1,
+                                                int size = 10,
+                                                string searchName = "",
+                                                CancellationToken cancellationToken = default)
+        {
+            var players = await _sender.Send(new SearchPlayersQuery(page, size, searchName), cancellationToken);
+
+            if (players.HasNoValue)
+            {
+                return View("Error");
+            }
+
+            ViewBag.Title = "Players";
+
+            List<PlayerViewModel> list = new List<PlayerViewModel>();
+
+            foreach (var player in players.Value.Players)
+            {
+                list.Add(new PlayerViewModel()
+                {
+                    Id = player.Id,
+                    Name = player.Name,
+                    Height = player.Height,
+                    DateOfBirth = player.DateOfBirth,
+                    Country = player.CountryName,
+                    Age = player.Age,
+                });
+            }
+
+            return View(new PlayerIndexViewModel
+            {
+                Players = list.OrderBy(x => x.Name).ToList()
+            });
+        }
+        [HttpGet]
+        public async Task<IActionResult> SearchPlayerByCountry(int page = 1,
+                                                  int size = 10000,
+                                                  string selectedCountryId = "",
+                                                  CancellationToken cancellationToken = default)
+        {
+            if(!int.TryParse(selectedCountryId, out var countryId))
+            {
+                return View("Error");
+            }
+            var players = await _sender.Send(new SearchPlayersByCountryIdQuery(page, size, countryId), cancellationToken);
+
+            if (players.HasNoValue)
+            {
+                return View("Error");
+            }
+
+            ViewBag.Title = "Players";
+
+            List<PlayerViewModel> list = new List<PlayerViewModel>();
+
+            foreach (var player in players.Value.Players)
+            {
+                list.Add(new PlayerViewModel()
+                {
+                    Id = player.Id,
+                    Name = player.Name,
+                    Height = player.Height,
+                    DateOfBirth = player.DateOfBirth,
+                    Country = player.CountryName,
+                    Age = player.Age,
+                });
+            }
+
+            return View(new PlayerIndexViewModel
+            {
+                Players = list.OrderBy(x => x.Name).ToList()
             });
         }
     }

@@ -143,9 +143,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 {
                     Name = x.Name,
                     ShortName = x.ShortName,
-                    Id = x.Id ?? 0,
-                    Country = ReturnCountryName(countries.Value.Countries, x.CountryId ?? 0)
-                }).ToList(),
+                    Id = x.Id,
+                    Country = x.CountryName
+                }).OrderBy(x => x.Name).ToList(),
                 Filter = filter,
                 Number = pageNumber,
                 Size = pageSize
@@ -181,8 +181,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 {
                     Name = x.Name,
                     ShortName = x.ShortName,
-                    Id = x.Id ?? 0,
-                    Country = ReturnCountryName(countries.Value.Countries, x.CountryId ?? 0)
+                    Id = x.Id,
+                    Country = x.CountryName
                 }).Where(x => x.Name.ToLower().Contains(model.Filter.ToLower())).ToList(),
                 Filter = model.Filter,
                 Number = 1,
@@ -191,18 +191,6 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             return View("Index", indexViewModel);
         }
 
-        string ReturnCountryName(IEnumerable<CountryDto> countries, int id)
-        {
-            return countries?.FirstOrDefault(x => x.CountryId == id)?.Name;
-        }
-        string ReturnPlayerName(IEnumerable<PlayerDTO> players, int id)
-        {
-            return players?.FirstOrDefault(x => x.Id == id)?.Name;
-        }
-        string ReturnPlayerCountryName(IEnumerable<PlayerDTO> players, IEnumerable<CountryDto> countries, int id)
-        {
-            return countries.FirstOrDefault(x => players?.FirstOrDefault(x => x.Id == id)?.CountryId == x.CountryId)?.Name;
-        }
 
         public async Task<IActionResult> Details(int? teamId, CancellationToken cancellationToken = default)
         {
@@ -223,13 +211,13 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
 
-            var leagues = await _sender.Send(new GetExistingRostersByTeamQuery(team.Value.Id ?? 0), cancellationToken);
+            var leagues = await _sender.Send(new GetExistingRostersByTeamQuery(team.Value.Id), cancellationToken);
             if (leagues.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
 
-            var rosterResources = await _sender.Send(new GetSeasonResourcesByTeamQuery(team.Value.Id ?? 0), cancellationToken);
+            var rosterResources = await _sender.Send(new GetSeasonResourcesByTeamQuery(team.Value.Id), cancellationToken);
             if (leagues.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
@@ -241,21 +229,21 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 detailsViewModel = new TeamDetailsViewModel()
                 {
-                    Id = team.Value.Id ?? 0,
+                    Id = team.Value.Id,
                     ShortName = team.Value.ShortName,
-                    Country = ReturnCountryName(countries.Value.Countries, team.Value.CountryId ?? 0),
+                    Country = team.Value.CountryName,
                     Name = team.Value.Name,
                     RosterItems = new List<PlayerViewModel>()
                 };
                 return View(detailsViewModel);
             }
 
-            Maybe<RosterResponse>? rosterItems = null;
+            Maybe<RosterDto>? rosterItems = null;
             var listOfValues = leagues.Value.LeagueIds.ToList();
             int? leagueId = null;
             for (int i = listOfValues.Count() - 1; i > -1; i--)
             {
-                rosterItems = await _sender.Send(new GetRosterByTeamIdQuery(team.Value.Id ?? 0, listOfValues[i]), cancellationToken);
+                rosterItems = await _sender.Send(new GetRosterByTeamIdQuery(team.Value.Id, listOfValues[i]), cancellationToken);
                 if (rosterItems.HasValue && rosterItems.Value.Items.Any())
                 {
                     leagueId = i;
@@ -269,7 +257,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
 
-            var players = await _sender.Send(new GetPlayersQuery(), cancellationToken);
+            var players = await _sender.Send(new GetPlayersQuery(1, 100), cancellationToken);
             if (players.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
@@ -288,7 +276,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         DateOfBirth = player.DateOfBirth,
                         Id = player.Id,
                         Height = player.Height,
-                        Country = ReturnCountryName(countries.Value.Countries, player.CountryId)
+                        Country = player.CountryName
                     });
                 }
             }
@@ -303,7 +291,6 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     {
                         LeagueId = rosterItem.LeagueId,
                         LeagueName = rosterItem.LeagueName,
-                        Season = rosterItem.Season,
                         ShortName = rosterItem.ShortName,
                         TeamName = rosterItem.TeamName,
                         Url = rosterItem.Url
@@ -315,9 +302,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             detailsViewModel = new TeamDetailsViewModel()
             {
-                Id = team.Value.Id ?? 0,
+                Id = team.Value.Id,
                 ShortName = team.Value.ShortName,
-                Country = ReturnCountryName(countries.Value.Countries, team.Value.CountryId ?? 0),
+                Country = team.Value.CountryName,
                 Name = team.Value.Name,
                 RosterItems = list,
                 RosterHistory = history,

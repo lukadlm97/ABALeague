@@ -12,10 +12,10 @@
                 @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamName)
             </th>
             <th>
-                    @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamUrl)
+                @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamUrl)
             </th>
             <th>
-                    @Html.DisplayNameFor(model => model.ExistingTeams[0].Url)
+                @Html.DisplayNameFor(model => model.ExistingTeams[0].Url)
             </th>
             <td>
             </td>
@@ -144,4 +144,6 @@ else
     </p>
 }
 
-<a asp-controller="Team" asp-action="Upsert" asp-route-name="null" asp-route-teamId="null" class="btn btn-outline-primary">Create team</a>
+<a asp-controller="Team" asp-action="Upsert" 
+    asp-route-name="null" asp-route-teamId="null" 
+    class="btn btn-outline-primary">Create Team</a>

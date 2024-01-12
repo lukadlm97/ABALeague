@@ -1,0 +1,33 @@
+﻿@model LeagueRangeStatsViewModel
+
+<h2>League Range Stats - @Model.LeagueName</h2>
+<form asp-controller="League" asp-action="LeagueRangeStatsByLeague" method="post">
+    <input type="hidden" asp-for="LeagueId" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedStatsProperties)
+        <div class="col-md-10">
+            <select asp-for="SelectedStatsPropertyId" class="form-control" asp-items="Model.SelectedStatsProperties"></select>
+        </div>
+    </div> <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-success">Search Stats</button>
+        </div>
+    </div>
+</form>
+
+
+
+@if (Model.TeamItems != null && Model.TeamItems.Any())
+{
+    foreach (var teamStats in Model.TeamItems)
+    {
+        @await Html.PartialAsync("_RangeStatsByTeam", teamStats);
+    }
+
+}
+else
+{
+    <p>No range stats available for this league.</p>
+}
+
+

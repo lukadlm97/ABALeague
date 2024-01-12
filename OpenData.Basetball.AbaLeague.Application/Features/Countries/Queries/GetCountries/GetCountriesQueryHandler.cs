@@ -5,7 +5,7 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries
 {
-    public class GetCountriesQueryHandler : IQueryHandler<GetCountriesQuery, Maybe<CountryResponse>>
+    public class GetCountriesQueryHandler : IQueryHandler<GetCountriesQuery, Maybe<CountryDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,18 +13,17 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.G
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<Maybe<CountryResponse>> Handle(GetCountriesQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<CountryDto>> Handle(GetCountriesQuery request, CancellationToken cancellationToken)
         {
-            var countries = await _unitOfWork.CountryRepository.Get(cancellationToken);
+            var countries = _unitOfWork.CountryRepository.Get().ToList();
             if (countries == null)
             {
-                return Maybe<CountryResponse>.None;
+                return Maybe<CountryDto>.None;
             }
 
-
-            var dto =  countries.Select(x => new CountryDto(x.Id, x.Name));
-
-            return new CountryResponse(dto);
+            return new CountryDto(countries
+                                        .Select(x => new CountryItemDto(x.Id, x.Name))
+                                        .OrderBy(x=>x.Name));
         }
     }
 }

@@ -25,7 +25,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
         {
             var league = await _unitOfWork.LeagueRepository.Get(leagueId, cancellationToken);
             var teams = await _unitOfWork.TeamRepository.GetAll(cancellationToken);
-            var countries = await _unitOfWork.CountryRepository.Get(cancellationToken);
+            var countries = _unitOfWork.CountryRepository.Get();
             var matchRounds = await _unitOfWork.CalendarRepository.SearchByLeague(leagueId, cancellationToken);
             var results = await _unitOfWork.ResultRepository.SearchByLeague(leagueId, cancellationToken);
             if (league == null || matchRounds == null || results == null)

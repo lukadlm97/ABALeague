@@ -4,7 +4,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Utilities
 {
     public static class StringExstentions
     {
-        public static string ResolveCountryName(this int id, IEnumerable<CountryDto> countries)
+        public static string ResolveCountryName(this int id, IEnumerable<CountryItemDto> countries)
         {
             return countries?.FirstOrDefault(x => x.CountryId == id)?.Name;
         }

@@ -33,6 +33,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence
         public DbSet<LeagueGameLength> LeagueGameLengths { get; set; }
         public DbSet<StatsProperty> StatsProperties { get; set; }
         public DbSet<RangeScale> RangeScales { get; set; }
+        public DbSet<Season> Seasons { get; set; }
+        public DbSet<CompetitionOrganization> CompetitionOrganizations { get; set; }
   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

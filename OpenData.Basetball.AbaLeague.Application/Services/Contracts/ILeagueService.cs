@@ -8,7 +8,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
     {
         Task<IEnumerable<League>> Get(CancellationToken cancellationToken = default);
         Task<League> Get(int id, CancellationToken cancellationToken = default);
-        Task Add(LeagueDto league, CancellationToken cancellationToken = default);
+        Task Add(LeagueItemDto league, CancellationToken cancellationToken = default);
         Task Delete(int id, CancellationToken cancellationToken = default);
         Task<IEnumerable<RoundMatchDto>> GetCalendarDraft(int leagueId,CancellationToken cancellationToken = default);
         Task<IEnumerable<RoundMatchDto>> GetEuroleagueCalendarDraft(int leagueId,CancellationToken cancellationToken = default);

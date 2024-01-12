@@ -107,20 +107,21 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
         }
 
-        public async Task<Team> Add(TeamDto teamDto, CancellationToken cancellationToken)
+        public async Task<Team> Add(AddTeamDto teamDto, CancellationToken cancellationToken)
         {
             var team = new Team() 
                 { 
                     Name = teamDto.Name, 
                     ShortCode = teamDto.ShortName ?? string.Empty,
-                    RosterItems = new List<RosterItem>()
+                    RosterItems = new List<RosterItem>(),
+                    CountryId = teamDto.CountryId,
                 };
             await _unitOfWork.TeamRepository.Add(team, cancellationToken);
             await _unitOfWork.Save();
             return team;
         }
 
-        public async Task<IEnumerable<Team>> Add(IEnumerable<TeamDto> teamsDto, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Team>> Add(IEnumerable<AddTeamDto> teamsDto, CancellationToken cancellationToken)
         {
             List<Team> teams = new List<Team>();
             foreach (var teamDto in teamsDto)
@@ -142,7 +143,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return teams;
         }
 
-        public async Task<Team> Update(int id,TeamDto team, CancellationToken cancellationToken)
+        public async Task<Team> Update(int id , AddTeamDto team, CancellationToken cancellationToken)
         {
             var existingTeam = await _unitOfWork.TeamRepository
                                         .Get(id,cancellationToken);

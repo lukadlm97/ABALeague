@@ -3,41 +3,46 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
+using OpenData.Basketball.AbaLeague.Domain.Entities;
+using static OpenData.Basketball.AbaLeague.Application.Validation.ValidationErrors;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById
 {
-    public class GetLeagueByIdQueryHandler : IQueryHandler<GetLeagueByIdQuery, Maybe<LeagueResponse>>
+    public class GetLeagueByIdQueryHandler : IQueryHandler<GetLeagueByIdQuery, Maybe<LeagueItemDto>>
     {
-        private readonly IGenericRepository<League> _leagueRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetLeagueByIdQueryHandler(IGenericRepository<League> leagueRepository)
+        public GetLeagueByIdQueryHandler(IUnitOfWork unitOfWork)
         {
-            _leagueRepository = leagueRepository;
+            _unitOfWork = unitOfWork;
         }
-        public async Task<Maybe<LeagueResponse>> Handle(GetLeagueByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<LeagueItemDto>> Handle(GetLeagueByIdQuery request, CancellationToken cancellationToken)
         {
             if (request.LeagueId <= 0)
             {
-                return Maybe<LeagueResponse>.None;
+                return Maybe<LeagueItemDto>.None;
             }
 
-            var league = await _leagueRepository.Get(request.LeagueId, cancellationToken);
+            var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
             if (league == null)
             {
-                return Maybe<LeagueResponse>.None;
+                return Maybe<LeagueItemDto>.None;
             }
-
-            var response = new LeagueResponse(league.Id,
-                league.OfficalName, 
-                league.ShortName,
-                league.Season,
-                league.StandingUrl, 
-                league.CalendarUrl, 
-                league.MatchUrl,
-                league.BoxScoreUrl,
-                league.RosterUrl,
-                league.BaseUrl,
-                league.ProcessorTypeId);
+            var seasons = _unitOfWork.SeasonRepository.Get();
+            var season = seasons.FirstOrDefault(y => y.Id == league.SeasonId);
+            var response = new LeagueItemDto(league.Id,
+                                                league.OfficalName, 
+                                                league.ShortName,
+                                                league.StandingUrl, 
+                                                league.CalendarUrl, 
+                                                league.MatchUrl,
+                                                league.BoxScoreUrl,
+                                                league.BaseUrl,
+                                                league.RosterUrl,
+                                                league.ProcessorTypeEnum ?? Domain.Enums.ProcessorType.Unknow,
+                                                season.Id!,
+                                                season.Name!,
+                                                league.RoundsToPlay);
 
             return response;
         }

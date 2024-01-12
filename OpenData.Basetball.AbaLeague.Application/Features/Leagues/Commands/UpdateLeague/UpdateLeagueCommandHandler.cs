@@ -30,6 +30,19 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Up
             {
                 return Result.Failure(new Error("NotFound",string.Format("Unable to found league with id:{0}", request.Id)));
             }
+            var existingProcessor = (await _unitOfWork.ProcessorTypeRepository.GetAll(cancellationToken))
+                                                      .FirstOrDefault(x => x.Id == (short)request.ProcessorType);
+            if (existingProcessor == null)
+            {
+
+                return Result.Failure(new Error("UnableToFoundProcessor", ""));
+            }
+            var existingSeason = _unitOfWork.SeasonRepository.Get().FirstOrDefault(x => x.Id == request.SeasonId);
+            if (existingSeason == null)
+            {
+
+                return Result.Failure(new Error("UnableToFoundSeason", ""));
+            }
 
             try
             {
@@ -40,8 +53,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Up
                 existingLeague.MatchUrl = request.MatchUrl;
                 existingLeague.OfficalName = request.OfficialName;
                 existingLeague.RosterUrl = request.RosterUrl;
-                existingLeague.Season = request.Season;
                 existingLeague.StandingUrl = request.StandingUrl;
+                existingLeague.ProcessorTypeId = existingProcessor.Id;
+                existingLeague.SeasonId = existingSeason.Id;
+                existingLeague.RoundsToPlay = request.RoundsToPlay;
 
                 await _unitOfWork.LeagueRepository.Update(existingLeague, cancellationToken);
 

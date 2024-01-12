@@ -1,72 +1,97 @@
-﻿@model IndexPlayerViewModel 
-
-<h3>
-    List of all playeres that is saved at system
-</h3>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Players[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Players[0].DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Players[0].Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Players[0].Height)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Players[0].Position)
-            </th>
-            <td>
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Players.Any())
-        {
-            @foreach (var item in Model.Players)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateOfBirth)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Country)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Height)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Position)
-                    </td>
-                    <td>
-                        <a asp-controller="Player" asp-action="Details" asp-route-playerId="@item.Id" class="btn btn-outline-primary">Details</a>
-                        <a asp-controller="Player" asp-action="Upsert" asp-route-playerId="@item.Id" class="btn btn-outline-secondary">Edit</a>
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
-            <p>Problems with loading players</p>
-        }
-            
-    </tbody>
-</table>
-
-<p>
-    <a asp-controller="Player" asp-action="Upsert" class="btn btn-success">Create New Player</a>
-</p>
+﻿@model PlayerIndexViewModel 
 
 
 
+<div class="container mt-4">
+    <h3>List of all playeres that is saved at system</h3>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Draft roster items</h4>
+        </div>
+        <div class="card-body">
+            <label for="playerSearch">Search:</label>
+            <input type="text" id="playerSearch" placeholder="Enter player name">
+            <button id="searchButton" class="btn btn-primary">Search</button>
 
+            <table class="table" id="playersTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Players[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Players[0].DateOfBirth)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Players[0].Country)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Players[0].Height)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Players[0].Position)
+                        </th>
+                        <td>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Players.Any())
+                    {
+                        @foreach (var item in Model.Players)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateOfBirth) [@Html.DisplayFor(modelItem => item.Age)]
 
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Country)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Height)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Position)
+                                </td>
+                                <td>
+                                    <a asp-controller="Player" asp-action="Details" asp-route-playerId="@item.Id"
+                                       class="btn btn-outline-primary">Details</a>
+                                    <a asp-controller="Player" asp-action="Upsert" asp-route-playerId="@item.Id"
+                                       class="btn btn-outline-secondary">Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <p>Problems with loading players</p>
+                    }
+
+                </tbody>
+            </table>
+            <p>
+                <a asp-controller="Player" asp-action="Upsert" class="btn btn-success">Create New Player</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    // Add script for search functionality
+    $(document).ready(function () {
+        $("#searchButton").click(function () {
+            var searchText = $("#playerSearch").val().toLowerCase();
+            console.log(searchText);
+            $("#playersTable tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1)
+            });
+        });
+    });
+</script>

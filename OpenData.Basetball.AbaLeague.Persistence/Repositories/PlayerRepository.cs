@@ -92,5 +92,10 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 
             return await anotherNames.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower(), cancellationToken);
         }
+
+        public IQueryable<Player> Get()
+        {
+            return _dbContext.Players.AsQueryable();
+        }
     }
 }

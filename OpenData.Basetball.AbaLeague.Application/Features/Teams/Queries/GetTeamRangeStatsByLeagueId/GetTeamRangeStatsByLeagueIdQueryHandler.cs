@@ -42,8 +42,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
             }
 
             var rangeScalesAvailableByLeague = _unitOfWork.RangeScalesRepository
-                                               .Get().Where(x=>x.GameLengthId == leagueGameLength.GameLengthId)
-                                               .ToList();
+                                               .Get()
+                                               .Where(x=> x.GameLengthId == leagueGameLength.GameLengthId)
+                                               .ToList()
+                                               .Where(x=>request.StatsProperties.Contains(x.StatsPropertyEnum));
             if(rangeScalesAvailableByLeague == null || !rangeScalesAvailableByLeague.Any())
             {
                 return Maybe<TeamRangeStatsDto>.None;
@@ -66,13 +68,16 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
 
                 foreach (var availabeRangesEnum in rangeScalesAvailableByLeague.Select(x=>x.StatsPropertyEnum).Distinct())
                 {
-                    Dictionary<int,int> counter= new Dictionary<int, int>();
+                    Dictionary<int, int> offensiveWinCounter= new Dictionary<int, int>();
+                    Dictionary<int, int> offensiveLostCounter= new Dictionary<int, int>();
+                    Dictionary<int, int> defensiveWinCounter = new Dictionary<int, int>();
+                    Dictionary<int, int> defensiveLostCounter = new Dictionary<int, int>();
                     int other = 0;
                     switch (availabeRangesEnum)
                     {
                         case Domain.Enums.StatsPropertyEnum.Points:
-                            var points = results.games.Select(x => x.Points);
-                            foreach (var pointItem in points)
+                            var points = results.games.Select(x => (x.Points, x.WinTheGame));
+                            foreach (var (pointItem, isWin) in points)
                             {
                                 foreach (var availabeRangeItem in rangeScalesAvailableByLeague
                                         .Where(x=>x.StatsPropertyEnum == availabeRangesEnum))
@@ -81,11 +86,22 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                                     {
                                         if(pointItem <= availabeRangeItem.MaxValue)
                                         {
-                                            if (!counter.ContainsKey(availabeRangeItem.Id))
+                                            if (isWin)
                                             {
-                                                counter[availabeRangeItem.Id] = 0;
+                                                if (!offensiveWinCounter.ContainsKey(availabeRangeItem.Id))
+                                                {
+                                                    offensiveWinCounter[availabeRangeItem.Id] = 0;
+                                                }
+                                                offensiveWinCounter[availabeRangeItem.Id]++;
                                             }
-                                            counter[availabeRangeItem.Id]++;
+                                            else
+                                            {
+                                                if (!offensiveLostCounter.ContainsKey(availabeRangeItem.Id))
+                                                {
+                                                    offensiveLostCounter[availabeRangeItem.Id] = 0;
+                                                }
+                                                offensiveLostCounter[availabeRangeItem.Id]++;
+                                            }
                                             break;
                                         }
                                     }
@@ -94,11 +110,22 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                                     {
                                         if (pointItem >= availabeRangeItem.MinValue)
                                         {
-                                            if (!counter.ContainsKey(availabeRangeItem.Id))
+                                            if (isWin)
                                             {
-                                                counter[availabeRangeItem.Id] = 0;
+                                                if (!offensiveWinCounter.ContainsKey(availabeRangeItem.Id))
+                                                {
+                                                    offensiveWinCounter[availabeRangeItem.Id] = 0;
+                                                }
+                                                offensiveWinCounter[availabeRangeItem.Id]++;
                                             }
-                                            counter[availabeRangeItem.Id]++;
+                                            else
+                                            {
+                                                if (!offensiveLostCounter.ContainsKey(availabeRangeItem.Id))
+                                                {
+                                                    offensiveLostCounter[availabeRangeItem.Id] = 0;
+                                                }
+                                                offensiveLostCounter[availabeRangeItem.Id]++;
+                                            }
                                             break;
                                         }
                                     }
@@ -109,11 +136,103 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                                     if (pointItem >= availabeRangeItem.MinValue  && 
                                         pointItem <= availabeRangeItem.MaxValue)
                                     {
-                                        if (!counter.ContainsKey(availabeRangeItem.Id))
+                                        if (isWin)
                                         {
-                                            counter[availabeRangeItem.Id] = 0;
+                                            if (!offensiveWinCounter.ContainsKey(availabeRangeItem.Id))
+                                            {
+                                                offensiveWinCounter[availabeRangeItem.Id] = 0;
+                                            }
+                                            offensiveWinCounter[availabeRangeItem.Id]++;
                                         }
-                                        counter[availabeRangeItem.Id]++;
+                                        else
+                                        {
+                                            if (!offensiveLostCounter.ContainsKey(availabeRangeItem.Id))
+                                            {
+                                                offensiveLostCounter[availabeRangeItem.Id] = 0;
+                                            }
+                                            offensiveLostCounter[availabeRangeItem.Id]++;
+                                        }
+                                        break;
+                                    }
+                                    other++;
+                                }
+                            }
+                            var oponentPoints = results.games.Select(x => (x.OponentPoints, x.WinTheGame));
+                            foreach (var (pointItem, isWin) in oponentPoints)
+                            {
+                                foreach (var availabeRangeItem in rangeScalesAvailableByLeague
+                                        .Where(x => x.StatsPropertyEnum == availabeRangesEnum))
+                                {
+                                    if (availabeRangeItem.MinValue == null)
+                                    {
+                                        if (pointItem <= availabeRangeItem.MaxValue)
+                                        {
+                                            if (isWin)
+                                            {
+                                                if (!defensiveWinCounter.ContainsKey(availabeRangeItem.Id))
+                                                {
+                                                    defensiveWinCounter[availabeRangeItem.Id] = 0;
+                                                }
+                                                defensiveWinCounter[availabeRangeItem.Id]++;
+                                            }
+                                            else
+                                            {
+                                                if (!defensiveLostCounter.ContainsKey(availabeRangeItem.Id))
+                                                {
+                                                    defensiveLostCounter[availabeRangeItem.Id] = 0;
+                                                }
+                                                defensiveLostCounter[availabeRangeItem.Id]++;
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    if (availabeRangeItem.MaxValue == null)
+                                    {
+                                        if (pointItem >= availabeRangeItem.MinValue)
+                                        {
+                                            if (isWin)
+                                            {
+                                                if (!defensiveWinCounter.ContainsKey(availabeRangeItem.Id))
+                                                {
+                                                    defensiveWinCounter[availabeRangeItem.Id] = 0;
+                                                }
+                                                defensiveWinCounter[availabeRangeItem.Id]++;
+                                            }
+                                            else
+                                            {
+                                                if (!defensiveLostCounter.ContainsKey(availabeRangeItem.Id))
+                                                {
+                                                    defensiveLostCounter[availabeRangeItem.Id] = 0;
+                                                }
+                                                defensiveLostCounter[availabeRangeItem.Id]++;
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    if (availabeRangeItem.MaxValue < pointItem)
+                                    {
+                                        continue;
+                                    }
+                                    if (pointItem >= availabeRangeItem.MinValue &&
+                                        pointItem <= availabeRangeItem.MaxValue)
+                                    {
+                                        if (isWin)
+                                        {
+                                            if (!defensiveWinCounter.ContainsKey(availabeRangeItem.Id))
+                                            {
+                                                defensiveWinCounter[availabeRangeItem.Id] = 0;
+                                            }
+                                            defensiveWinCounter[availabeRangeItem.Id]++;
+                                        }
+                                        else
+                                        {
+                                            if (!defensiveLostCounter.ContainsKey(availabeRangeItem.Id))
+                                            {
+                                                defensiveLostCounter[availabeRangeItem.Id] = 0;
+                                            }
+                                            defensiveLostCounter[availabeRangeItem.Id]++;
+                                        }
                                         break;
                                     }
                                     other++;
@@ -129,20 +248,24 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                                                             .OrderBy(x => x.Id)
                                                             .ToList())
                     {
-                       if(counter.TryGetValue(range.Id, out var count))
-                       {
-                            list.Add(new TeamRangeStatsItemDto(range.Id, 
-                                                                range.MinValue, 
-                                                                range.MaxValue, 
-                                                                count, 
-                                                                range.StatsPropertyEnum));
-                            continue;
-                       }
-                       list.Add(new TeamRangeStatsItemDto(range.Id,
-                                                               range.MinValue,
-                                                               range.MaxValue,
-                                                               0,
-                                                               range.StatsPropertyEnum));
+                        int offensiveWinCount = 0;
+                        int offensiveLossCount = 0;
+                        int defensiveWinCount = 0;
+                        int defensiveLossCount = 0;
+                        offensiveWinCounter.TryGetValue(range.Id, out offensiveWinCount);
+                        offensiveLostCounter.TryGetValue(range.Id, out offensiveLossCount);
+                        defensiveWinCounter.TryGetValue(range.Id, out defensiveWinCount);
+                        defensiveLostCounter.TryGetValue(range.Id, out defensiveLossCount);
+                    
+                        list.Add(new TeamRangeStatsItemDto(range.Id, 
+                                                            range.MinValue, 
+                                                            range.MaxValue, 
+                                                            offensiveWinCount,
+                                                            offensiveLossCount,
+                                                            defensiveWinCount,
+                                                            defensiveLossCount,
+                                                            range.StatsPropertyEnum));
+                          
                     }
                 }
                 dictionary.Add((teamItem.Id, teamItem.Name), list.ToFrozenSet());

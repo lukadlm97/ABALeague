@@ -20,10 +20,6 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 
         }
 
-        public async Task<IEnumerable<Country>?> Get(CancellationToken cancellationToken = default)
-        {
-            return await _dbContext.Countries.ToListAsync(cancellationToken);
-        }
 
         public async Task<Country?> GetByIso3(string id, CancellationToken cancellationToken = default)
         {
@@ -33,6 +29,11 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         public async Task<Country?> GetByAbaCode(string id, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Countries.SingleOrDefaultAsync(x => x.AbaLeagueCode == id, cancellationToken);
+        }
+
+        public IQueryable<Country> Get()
+        {
+            return _dbContext.Countries.AsQueryable();
         }
     }
 }

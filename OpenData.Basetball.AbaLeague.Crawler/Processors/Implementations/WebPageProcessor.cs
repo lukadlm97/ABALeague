@@ -308,109 +308,296 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             var homeBoxScore = new List<PlayerScore>();
             var awayBoxScore = new List<PlayerScore>();
 
+            var webDocument = await _documentFether
+                .FetchDocument(matchUrl, cancellationToken);
+
+            var homeTeamPlayers = webDocument.QuerySelectorAll("table.match_boxscore_team_table")[0]
+                .QuerySelectorAll("tbody > tr");
+            var name = string.Empty;
+
          
-                var webDocument = await _documentFether
-                    .FetchDocument(matchUrl, cancellationToken);
+            foreach (var playerRow in homeTeamPlayers)
+            {
+                TimeSpan? min = null;
+                int? points = null;
+                decimal? shotPrc = null;
+                int? shotMade2Pt = null;
+                int? shotAttempted2Pt = null;
+                decimal? shotPrc2Pt = null;
+                int? shotMade3Pt = null;
+                int? shotAttempted3Pt = null;
+                decimal? shotPrc3Pt = null;
+                int? shotMade1Pt = null;
+                int? shotAttempted1Pt = null;
+                decimal? shotPrc1Pt = null;
+                int? defensiveRebounds = null;
+                int? offensiveRebounds = null;
+                int? totalRebounds = null;
+                int? assists = null;
+                int? steals = null;
+                int? turnover = null;
+                int? inFavoureOfBlock = null;
+                int? againstBlock = null;
+                int? committedFoul = null;
+                int? receivedFoul = null;
+                int? pointFromPain = null;
+                int? pointFrom2ndChance = null;
 
-                var homeTeamPlayers = webDocument.QuerySelectorAll("table.match_boxscore_team_table")[0]
-                    .QuerySelectorAll("tbody > tr");
+                int? pointFromFastBreak = null;
+                int? plusMinus = null;
+                int? rankValue = null;
 
-                foreach (var playerRow in homeTeamPlayers)
+                try
                 {
                     var columns = playerRow.QuerySelectorAll("td");
-                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href")
-                                            .ExtractNameFromUrl()
-                                            .ReplaceSpecialCharactersWithZ()
-                                            .ReplaceSpecialCharactersWithC()
-                                            .ReplaceSpecialCharactersWithS()
-                                            .ReplaceSpecialCharactersWithDJ()
-                                            .FixDzPlayerNames();
+                    name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href")
+                                           .ExtractNameFromUrl()
+                                           .ReplaceSpecialCharactersWithZ()
+                                           .ReplaceSpecialCharactersWithC()
+                                           .ReplaceSpecialCharactersWithS()
+                                           .ReplaceSpecialCharactersWithDJ()
+                                           .FixDzPlayerNames();
                     var minutes = columns[2].InnerHtml;
-                    var min = minutes.ConvertToNullableTimeSpan();
+                    min = minutes.ConvertToNullableTimeSpan();
                     if (minutes == "00:00")
                     {
                         homeBoxScore.Add(new PlayerScore(name, min));
                         continue;
-                        
+
                     }
-                    var points = columns[3].InnerHtml.ConvertToNullableInt();
-                    var shotPrc = columns[4].InnerHtml.ConvertToNullableDecimal();
-                    var shotMade2Pt = columns[5].InnerHtml.ConvertToNullableInt();
-                    var shotAttempted2Pt = columns[6].InnerHtml.ConvertToNullableInt();
-                    var shotPrc2Pt = columns[7].InnerHtml.ConvertToNullableDecimal();
-                    var shotMade3Pt = columns[8].InnerHtml.ConvertToNullableInt();
-                    var shotAttempted3Pt = columns[9].InnerHtml.ConvertToNullableInt();
-                    var shotPrc3Pt = columns[10].InnerHtml.ConvertToNullableDecimal();
-                    var shotMade1Pt = columns[11].InnerHtml.ConvertToNullableInt();
-                    var shotAttempted1Pt = columns[12].InnerHtml.ConvertToNullableInt();
-                    var shotPrc1Pt = columns[13].InnerHtml.ConvertToNullableDecimal();
-                    var defensiveRebounds = columns[14].InnerHtml.ConvertToNullableInt();
-                    var offensiveRebounds = columns[15].InnerHtml.ConvertToNullableInt();
-                    var totalRebounds = columns[16].InnerHtml.ConvertToNullableInt();  
-                    var assists = columns[17].InnerHtml.ConvertToNullableInt();
-                    var steals = columns[18].InnerHtml.ConvertToNullableInt();
-                    var turnover = columns[19].InnerHtml.ConvertToNullableInt();
-                    var inFavoureOfBlock = columns[20].InnerHtml.ConvertToNullableInt();
-                    var againstBlock = columns[21].InnerHtml.ConvertToNullableInt();
-                    var committedFoul = columns[22].InnerHtml.ConvertToNullableInt();
-                    var receivedFoul = columns[23].InnerHtml.ConvertToNullableInt();
-                    var pointFromPain = columns[24].InnerHtml.ConvertToNullableInt();
-                    var pointFrom2ndChance = columns[25].InnerHtml.ConvertToNullableInt();
-                    var pointFromFastBreak = columns[26].InnerHtml.ConvertToNullableInt();
-                    var plusMinus = columns[27].InnerHtml.ConvertToNullableInt();
-                    var rankValue = columns[28].InnerHtml.ConvertToNullableInt();
-
-                    homeBoxScore.Add(new PlayerScore(name,min,points,shotPrc,shotMade2Pt,shotAttempted2Pt,shotPrc2Pt,shotMade3Pt,shotAttempted3Pt,shotPrc3Pt,shotMade1Pt,shotAttempted1Pt,shotPrc1Pt,defensiveRebounds,offensiveRebounds,totalRebounds,assists,steals,turnover,inFavoureOfBlock,againstBlock,committedFoul,receivedFoul,pointFromPain,pointFrom2ndChance,pointFromFastBreak,plusMinus,rankValue));
+                    points = columns[3].InnerHtml.ConvertToNullableInt();
+                    shotPrc = columns[4].InnerHtml.ConvertToNullableDecimal();
+                    shotMade2Pt = columns[5].InnerHtml.ConvertToNullableInt();
+                    shotAttempted2Pt = columns[6].InnerHtml.ConvertToNullableInt();
+                    shotPrc2Pt = columns[7].InnerHtml.ConvertToNullableDecimal();
+                    shotMade3Pt = columns[8].InnerHtml.ConvertToNullableInt();
+                    shotAttempted3Pt = columns[9].InnerHtml.ConvertToNullableInt();
+                    shotPrc3Pt = columns[10].InnerHtml.ConvertToNullableDecimal();
+                    shotMade1Pt = columns[11].InnerHtml.ConvertToNullableInt();
+                    shotAttempted1Pt = columns[12].InnerHtml.ConvertToNullableInt();
+                    shotPrc1Pt = columns[13].InnerHtml.ConvertToNullableDecimal();
+                    defensiveRebounds = columns[14].InnerHtml.ConvertToNullableInt();
+                    offensiveRebounds = columns[15].InnerHtml.ConvertToNullableInt();
+                    totalRebounds = columns[16].InnerHtml.ConvertToNullableInt();
+                    assists = columns[17].InnerHtml.ConvertToNullableInt();
+                    steals = columns[18].InnerHtml.ConvertToNullableInt();
+                    turnover = columns[19].InnerHtml.ConvertToNullableInt();
+                    inFavoureOfBlock = columns[20].InnerHtml.ConvertToNullableInt();
+                    againstBlock = columns[21].InnerHtml.ConvertToNullableInt();
+                    committedFoul = columns[22].InnerHtml.ConvertToNullableInt();
+                    receivedFoul = columns[23].InnerHtml.ConvertToNullableInt();
+                    pointFromPain = columns[24].InnerHtml.ConvertToNullableInt();
+                    pointFrom2ndChance = columns[25].InnerHtml.ConvertToNullableInt();
+                    pointFromFastBreak = columns[26].InnerHtml.ConvertToNullableInt();
+                    plusMinus = columns[27].InnerHtml.ConvertToNullableInt();
+                    rankValue = columns[28].InnerHtml.ConvertToNullableInt();
+                    
+                    homeBoxScore.Add(new PlayerScore(name, 
+                                                        min, 
+                                                        points, 
+                                                        shotPrc, 
+                                                        shotMade2Pt,
+                                                        shotAttempted2Pt,
+                                                        shotPrc2Pt, 
+                                                        shotMade3Pt, 
+                                                        shotAttempted3Pt,
+                                                        shotPrc3Pt, 
+                                                        shotMade1Pt, 
+                                                        shotAttempted1Pt, 
+                                                        shotPrc1Pt, 
+                                                        defensiveRebounds,
+                                                        offensiveRebounds, 
+                                                        totalRebounds,
+                                                        assists,
+                                                        steals,
+                                                        turnover, 
+                                                        inFavoureOfBlock, 
+                                                        againstBlock, 
+                                                        committedFoul, 
+                                                        receivedFoul, 
+                                                        pointFromPain, 
+                                                        pointFrom2ndChance,
+                                                        pointFromFastBreak,
+                                                        plusMinus, 
+                                                        rankValue));
                 }
-                var awayTeamPlayers = webDocument.QuerySelectorAll("table.match_boxscore_team_table")[1]
-                    .QuerySelectorAll("tbody > tr");
+                catch(Exception ex)
+                {
+                    var logger = _loggerFactory.CreateLogger("Values");
+                    logger.LogError("Unable to found boxscore for {0} at team {1} with message {2}", name, name, ex.Message);
+                    homeBoxScore.Add(new PlayerScore(name,
+                                                        min,
+                                                        points,
+                                                        shotPrc,
+                                                        shotMade2Pt,
+                                                        shotAttempted2Pt,
+                                                        shotPrc2Pt,
+                                                        shotMade3Pt,
+                                                        shotAttempted3Pt,
+                                                        shotPrc3Pt,
+                                                        shotMade1Pt,
+                                                        shotAttempted1Pt,
+                                                        shotPrc1Pt,
+                                                        defensiveRebounds,
+                                                        offensiveRebounds,
+                                                        totalRebounds,
+                                                        assists,
+                                                        steals,
+                                                        turnover,
+                                                        inFavoureOfBlock,
+                                                        againstBlock,
+                                                        committedFoul,
+                                                        receivedFoul,
+                                                        pointFromPain,
+                                                        pointFrom2ndChance,
+                                                        pointFromFastBreak,
+                                                        plusMinus,
+                                                        rankValue));
+                }
+              
+            }
+            var awayTeamPlayers = webDocument.QuerySelectorAll("table.match_boxscore_team_table")[1]
+                .QuerySelectorAll("tbody > tr");
 
-                foreach (var playerRow in awayTeamPlayers)
+            foreach (var playerRow in awayTeamPlayers)
+            {
+                TimeSpan? min = null;
+                int? points = null;
+                decimal? shotPrc = null;
+                int? shotMade2Pt = null;
+                int? shotAttempted2Pt = null;
+                decimal? shotPrc2Pt = null;
+                int? shotMade3Pt = null;
+                int? shotAttempted3Pt = null;
+                decimal? shotPrc3Pt = null;
+                int? shotMade1Pt = null;
+                int? shotAttempted1Pt = null;
+                decimal? shotPrc1Pt = null;
+                int? defensiveRebounds = null;
+                int? offensiveRebounds = null;
+                int? totalRebounds = null;
+                int? assists = null;
+                int? steals = null;
+                int? turnover = null;
+                int? inFavoureOfBlock = null;
+                int? againstBlock = null;
+                int? committedFoul = null;
+                int? receivedFoul = null;
+                int? pointFromPain = null;
+                int? pointFrom2ndChance = null;
+
+                int? pointFromFastBreak = null;
+                int? plusMinus = null;
+                int? rankValue = null;
+
+                try
                 {
                     var columns = playerRow.QuerySelectorAll("td");
-                    var name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href")
-                                            .ExtractNameFromUrl()
-                                            .ReplaceSpecialCharactersWithZ()
-                                            .ReplaceSpecialCharactersWithC()
-                                            .ReplaceSpecialCharactersWithS()
-                                            .ReplaceSpecialCharactersWithDJ()
-                                            .FixDzPlayerNames();
+                    name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href")
+                                           .ExtractNameFromUrl()
+                                           .ReplaceSpecialCharactersWithZ()
+                                           .ReplaceSpecialCharactersWithC()
+                                           .ReplaceSpecialCharactersWithS()
+                                           .ReplaceSpecialCharactersWithDJ()
+                                           .FixDzPlayerNames();
                     var minutes = columns[2].InnerHtml;
-                    var min = minutes.ConvertToNullableTimeSpan();
+                    min = minutes.ConvertToNullableTimeSpan();
                     if (minutes == "00:00")
                     {
                         awayBoxScore.Add(new PlayerScore(name, min));
                         continue;
 
                     }
-                    var points = columns[3].InnerHtml.ConvertToNullableInt();
-                    var shotPrc = columns[4].InnerHtml.ConvertToNullableDecimal();
-                    var shotMade2Pt = columns[5].InnerHtml.ConvertToNullableInt();
-                    var shotAttempted2Pt = columns[6].InnerHtml.ConvertToNullableInt();
-                    var shotPrc2Pt = columns[7].InnerHtml.ConvertToNullableDecimal();
-                    var shotMade3Pt = columns[8].InnerHtml.ConvertToNullableInt();
-                    var shotAttempted3Pt = columns[9].InnerHtml.ConvertToNullableInt();
-                    var shotPrc3Pt = columns[10].InnerHtml.ConvertToNullableDecimal();
-                    var shotMade1Pt = columns[11].InnerHtml.ConvertToNullableInt();
-                    var shotAttempted1Pt = columns[12].InnerHtml.ConvertToNullableInt();
-                    var shotPrc1Pt = columns[13].InnerHtml.ConvertToNullableDecimal();
-                    var defensiveRebounds = columns[14].InnerHtml.ConvertToNullableInt();
-                    var offensiveRebounds = columns[15].InnerHtml.ConvertToNullableInt();
-                    var totalRebounds = columns[16].InnerHtml.ConvertToNullableInt();
-                    var assists = columns[17].InnerHtml.ConvertToNullableInt();
-                    var steals = columns[18].InnerHtml.ConvertToNullableInt();
-                    var turnover = columns[19].InnerHtml.ConvertToNullableInt();
-                    var inFavoureOfBlock = columns[20].InnerHtml.ConvertToNullableInt();
-                    var againstBlock = columns[21].InnerHtml.ConvertToNullableInt();
-                    var committedFoul = columns[22].InnerHtml.ConvertToNullableInt();
-                    var receivedFoul = columns[23].InnerHtml.ConvertToNullableInt();
-                    var pointFromPain = columns[24].InnerHtml.ConvertToNullableInt();
-                    var pointFrom2ndChance = columns[25].InnerHtml.ConvertToNullableInt();
-                    var pointFromFastBreak = columns[26].InnerHtml.ConvertToNullableInt();
-                    var plusMinus = columns[27].InnerHtml.ConvertToNullableInt();
-                    var rankValue = columns[28].InnerHtml.ConvertToNullableInt();
+                    points = columns[3].InnerHtml.ConvertToNullableInt();
+                    shotPrc = columns[4].InnerHtml.ConvertToNullableDecimal();
+                    shotMade2Pt = columns[5].InnerHtml.ConvertToNullableInt();
+                    shotAttempted2Pt = columns[6].InnerHtml.ConvertToNullableInt();
+                    shotPrc2Pt = columns[7].InnerHtml.ConvertToNullableDecimal();
+                    shotMade3Pt = columns[8].InnerHtml.ConvertToNullableInt();
+                    shotAttempted3Pt = columns[9].InnerHtml.ConvertToNullableInt();
+                    shotPrc3Pt = columns[10].InnerHtml.ConvertToNullableDecimal();
+                    shotMade1Pt = columns[11].InnerHtml.ConvertToNullableInt();
+                    shotAttempted1Pt = columns[12].InnerHtml.ConvertToNullableInt();
+                    shotPrc1Pt = columns[13].InnerHtml.ConvertToNullableDecimal();
+                    defensiveRebounds = columns[14].InnerHtml.ConvertToNullableInt();
+                    offensiveRebounds = columns[15].InnerHtml.ConvertToNullableInt();
+                    totalRebounds = columns[16].InnerHtml.ConvertToNullableInt();
+                    assists = columns[17].InnerHtml.ConvertToNullableInt();
+                    steals = columns[18].InnerHtml.ConvertToNullableInt();
+                    turnover = columns[19].InnerHtml.ConvertToNullableInt();
+                    inFavoureOfBlock = columns[20].InnerHtml.ConvertToNullableInt();
+                    againstBlock = columns[21].InnerHtml.ConvertToNullableInt();
+                    committedFoul = columns[22].InnerHtml.ConvertToNullableInt();
+                    receivedFoul = columns[23].InnerHtml.ConvertToNullableInt();
+                    pointFromPain = columns[24].InnerHtml.ConvertToNullableInt();
+                    pointFrom2ndChance = columns[25].InnerHtml.ConvertToNullableInt();
+                    pointFromFastBreak = columns[26].InnerHtml.ConvertToNullableInt();
+                    plusMinus = columns[27].InnerHtml.ConvertToNullableInt();
+                    rankValue = columns[28].InnerHtml.ConvertToNullableInt();
 
-                    awayBoxScore.Add(new PlayerScore(name, min, points, shotPrc, shotMade2Pt, shotAttempted2Pt, shotPrc2Pt, shotMade3Pt, shotAttempted3Pt, shotPrc3Pt, shotMade1Pt, shotAttempted1Pt, shotPrc1Pt, defensiveRebounds, offensiveRebounds, totalRebounds, assists, steals, turnover, inFavoureOfBlock, againstBlock, committedFoul, receivedFoul, pointFromPain, pointFrom2ndChance, pointFromFastBreak, plusMinus, rankValue));
+                    awayBoxScore.Add(new PlayerScore(name,
+                                                        min, 
+                                                        points,
+                                                        shotPrc, 
+                                                        shotMade2Pt, 
+                                                        shotAttempted2Pt, 
+                                                        shotPrc2Pt, 
+                                                        shotMade3Pt, 
+                                                        shotAttempted3Pt,
+                                                        shotPrc3Pt, 
+                                                        shotMade1Pt,
+                                                        shotAttempted1Pt,
+                                                        shotPrc1Pt, 
+                                                        defensiveRebounds, 
+                                                        offensiveRebounds, 
+                                                        totalRebounds, 
+                                                        assists, 
+                                                        steals,
+                                                        turnover, 
+                                                        inFavoureOfBlock, 
+                                                        againstBlock, 
+                                                        committedFoul, 
+                                                        receivedFoul, 
+                                                        pointFromPain,
+                                                        pointFrom2ndChance,
+                                                        pointFromFastBreak,
+                                                        plusMinus, 
+                                                        rankValue));
+                }
+                catch(Exception ex)
+                {
+                    var logger = _loggerFactory.CreateLogger("Values");
+                    logger.LogError("Unable to found boxscore for {0} at team {1} with message {2}",name, name, ex.Message);
+                    awayBoxScore.Add(new PlayerScore(name,
+                                                        min,
+                                                        points,
+                                                        shotPrc,
+                                                        shotMade2Pt,
+                                                        shotAttempted2Pt,
+                                                        shotPrc2Pt,
+                                                        shotMade3Pt,
+                                                        shotAttempted3Pt,
+                                                        shotPrc3Pt,
+                                                        shotMade1Pt,
+                                                        shotAttempted1Pt,
+                                                        shotPrc1Pt,
+                                                        defensiveRebounds,
+                                                        offensiveRebounds,
+                                                        totalRebounds,
+                                                        assists,
+                                                        steals,
+                                                        turnover,
+                                                        inFavoureOfBlock,
+                                                        againstBlock,
+                                                        committedFoul,
+                                                        receivedFoul,
+                                                        pointFromPain,
+                                                        pointFrom2ndChance,
+                                                        pointFromFastBreak,
+                                                        plusMinus,
+                                                        rankValue));
+                }
+             
             }
             
 

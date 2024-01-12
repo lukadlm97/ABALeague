@@ -33,10 +33,17 @@
                 <tbody>
                     @foreach (var performance in Model.StatsByRounds)
                     {
-                        <tr>
+                        <tr style="background-color: @(performance.IsHomeGame ? "#f0f0f0" : "inherit");">
                             <td>@performance.Date.ToShortDateString()</td>
                             <td>@performance.Round</td>
-                            <td>@performance.OponentName</td>
+                            <td>
+                                <a asp-controller="Team"
+                                   asp-action="Performance"
+                                   asp-route-leagueId="@Model.LeagueId"
+                                   asp-route-teamId="@performance.OponentId">
+                                    @performance.OponentName
+                                </a>
+                            </td>
                             <td>@(performance.IsHomeGame ? "H" : "A")</td>
                             <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
                                 @(performance.IsWinTheGame ? "W" : "L")
@@ -145,9 +152,16 @@
                 <tbody>
                     @foreach (var performance in Model.StatsByRounds)
                     {
-                        <tr>
+                        <tr style="background-color: @(performance.IsHomeGame ? "#f0f0f0" : "inherit");">
                             <td>@performance.Date.ToShortDateString()</td>
-                            <td>@performance.OponentName</td>
+                            <td>
+                                <a asp-controller="Team"
+                                   asp-action="Performance"
+                                   asp-route-leagueId="@Model.LeagueId"
+                                   asp-route-teamId="@performance.OponentId">
+                                    @performance.OponentName
+                                </a>
+                            </td>
                             <td>@(performance.IsHomeGame ? "H" : "A")</td>
                             <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
                                 @(performance.IsWinTheGame ? "W" : "L")
@@ -183,9 +197,16 @@
                 <tbody>
                     @foreach (var performance in Model.StatsByRounds)
                     {
-                        <tr>
+                        <tr style="background-color: @(performance.IsHomeGame ? "#f0f0f0" : "inherit");">
                             <td>@performance.Date.ToShortDateString()</td>
-                            <td>@performance.OponentName</td>
+                            <td>
+                                <a asp-controller="Team"
+                                   asp-action="Performance"
+                                   asp-route-leagueId="@Model.LeagueId"
+                                   asp-route-teamId="@performance.OponentId">
+                                    @performance.OponentName
+                                </a>
+                            </td>
                             <td>@(performance.IsHomeGame ? "H" : "A")</td>
                             <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
                                 @(performance.IsWinTheGame ? "W" : "L")
@@ -220,9 +241,16 @@
                 <tbody>
                     @foreach (var performance in Model.StatsByRounds)
                     {
-                        <tr>
+                        <tr style="background-color: @(performance.IsHomeGame ? "#f0f0f0" : "inherit");">
                             <td>@performance.Date.ToShortDateString()</td>
-                            <td>@performance.OponentName</td>
+                            <td>
+                                <a asp-controller="Team"
+                                   asp-action="Performance"
+                                   asp-route-leagueId="@Model.LeagueId"
+                                   asp-route-teamId="@performance.OponentId">
+                                    @performance.OponentName
+                                </a>
+                            </td>
                             <td>@(performance.IsHomeGame ? "H" : "A")</td>
                             <td style="background-color: @(performance.IsWinTheGame ? "green" : "red");">
                                 @(performance.IsWinTheGame ? "W" : "L")

@@ -5,7 +5,7 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries
 {
-    public class GetCountriesQuery : IQuery<Maybe<CountryResponse>>
+    public class GetCountriesQuery : IQuery<Maybe<CountryDto>>
     {
 
 

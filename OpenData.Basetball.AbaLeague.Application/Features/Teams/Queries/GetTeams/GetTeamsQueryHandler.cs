@@ -2,10 +2,12 @@
 using OpenData.Basketball.AbaLeague.Application.Abstractions.Messaging;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Team;
 using OpenData.Basketball.AbaLeague.Domain.Common;
+using System.Collections.Frozen;
+using System.Linq;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeams
 {
-    internal class GetTeamsQueryHandler : IQueryHandler<GetTeamsQuery,Maybe<TeamResponse>>
+    internal class GetTeamsQueryHandler : IQueryHandler<GetTeamsQuery,Maybe<TeamDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,21 +15,29 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<Maybe<TeamResponse>> Handle(GetTeamsQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<TeamDto>> Handle(GetTeamsQuery request, CancellationToken cancellationToken)
         {
             if (request.PageNumber <= 0 || request.PageSize <= 0)
             {
-                return Maybe<TeamResponse>.None;
+                return Maybe<TeamDto>.None;
             }
             var teams = await _unitOfWork.TeamRepository.GetAll(cancellationToken);
+            var countries = _unitOfWork.CountryRepository.Get();
 
             if (teams == null)
             {
-                return Maybe<TeamResponse>.None;
+                return Maybe<TeamDto>.None;
             }
 
-            var teamResponse = new TeamResponse(teams.Skip((request.PageNumber-1)*request.PageSize).Take(request.PageSize).Select(x => new TeamDto(x.Id, x.Name, x.ShortCode, x.CountryId)));
-            return teamResponse;
+            return new TeamDto(teams
+                .Skip((request.PageNumber-1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new TeamItemDto(x.Id, 
+                                                x.Name,
+                                                x.ShortCode,
+                                                x.CountryId, 
+                                                countries?.FirstOrDefault(y=>y.Id==x.CountryId)?.Name!))
+                .ToFrozenSet());
 
         }
     }

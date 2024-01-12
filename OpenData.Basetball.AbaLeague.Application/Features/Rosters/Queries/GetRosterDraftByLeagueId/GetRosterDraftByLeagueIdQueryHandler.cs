@@ -83,7 +83,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             List<DraftRosterItemDto> draftRosterItems = new List<DraftRosterItemDto>();
             List<DraftRosterItemDto> existingDraftRosterItems = new List<DraftRosterItemDto>();
             List<DraftRosterItemDto> draftRosterItemsWithEndedContract = new List<DraftRosterItemDto>();
-            List<PlayerItemDto> missingPlayers = new List<PlayerItemDto>();
+            List<PlayerItemDraftDto> missingPlayers = new List<PlayerItemDraftDto>();
 
             foreach(var rosterItem in rosterItems)
             {
@@ -109,13 +109,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
 
                     if(natioanality == null)
                     {
-                        missingPlayers.Add(new PlayerItemDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, null));
+                        missingPlayers.Add(new PlayerItemDraftDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, null));
                         continue;
                     }
                     player = await _unitOfWork.PlayerRepository.GetPlayerByAnotherName(rosterItem.Name, cancellationToken);
                     if (player == null)
                     {
-                        missingPlayers.Add(new PlayerItemDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, natioanality.Id));
+                        missingPlayers.Add(new PlayerItemDraftDto(rosterItem.Name, MapToEnum(rosterItem.Position), (int)rosterItem.Height, rosterItem.DateOfBirth, natioanality.Id));
                         continue;
                     }
                     if(existingRosterItems.Any(x => x.TeamId == rosterItem.TeamId &&

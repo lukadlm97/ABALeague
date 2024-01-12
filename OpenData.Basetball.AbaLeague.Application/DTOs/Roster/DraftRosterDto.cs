@@ -9,6 +9,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Roster
 {
     public record DraftRosterDto(IEnumerable<DraftRosterItemDto> DraftRosterItems, 
                                     IEnumerable<DraftRosterItemDto> ExistingRosterItems,
-                                    IEnumerable<PlayerItemDto> MissingPlayers,
+                                    IEnumerable<PlayerItemDraftDto> MissingPlayers,
                                     IEnumerable<DraftRosterItemDto> DraftRosterItemsWithEndedContract);
 }

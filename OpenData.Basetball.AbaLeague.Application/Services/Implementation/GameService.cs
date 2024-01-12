@@ -61,6 +61,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             int totalGamesWon = 0;
             int totalSpectators = 0;
             int awayGamesPointScored = 0;
+            int? oponentScore = null;
             foreach (var item in roundMatches)
             {
                 var matchResult = results.FirstOrDefault(x => x.RoundMatchId == item.Id);
@@ -77,6 +78,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     homeGame = true;
                     oponentId = item.AwayTeamId ?? 0;
                     oponentName = item.AwayTeam.Name;
+                    oponentScore = matchResult.AwayTeamPoint;
                     wonTheGame = matchResult.HomeTeamPoints > matchResult.AwayTeamPoint;
                     homeGamesPlayed++;
                     homeGamesWon += wonTheGame ? 1 : 0;
@@ -87,6 +89,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     homeGame = false;
                     oponentId = item.HomeTeamId ?? 0;
                     oponentName = item.HomeTeam.Name;
+                    oponentScore = matchResult.HomeTeamPoints;
                     wonTheGame = matchResult.HomeTeamPoints < matchResult.AwayTeamPoint;
                     awayGamesPointScored += matchResult.AwayTeamPoint;
                 }
@@ -144,7 +147,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                   selectedBoxscores.Sum(x => x.PointFromFastBreak),
                   selectedBoxscores.Sum(x => x.PlusMinus),
                   selectedBoxscores.Sum(x => x.RankValue),
-                  $"{matchResult.HomeTeamPoints}:{matchResult.AwayTeamPoint}"
+                  $"{matchResult.HomeTeamPoints}:{matchResult.AwayTeamPoint}",
+                  oponentScore
                   ));
             }
             if (!includeAdvancedCalculation)

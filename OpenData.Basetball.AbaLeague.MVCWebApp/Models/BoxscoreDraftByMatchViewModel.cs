@@ -15,6 +15,10 @@
         public IList<BoxscoreItemViewModel> AwayExistingBoxscoreItems { get; set; }
         public IList<DraftRosterItemViewModel> DraftRosterItems { get; set; }
         public IList<string> MissingPlayerItems { get; set; }
+        //= HomeDraftBoxscoreItems.Any() || AwayDraftBoxscoreItems.Any();
+        public bool AvailableDraftBoxscoreItems { get; set; } 
+        public bool AvailableDraftRosterItems { get; set; } 
+        public bool AvailableMissingPlayerItems { get; set; } 
 
     }
 }

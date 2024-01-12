@@ -5,6 +5,7 @@ using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.CreateLeague;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.UpdateLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetStandingsByLeagueId;
@@ -12,6 +13,8 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeam
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayersStatByLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.ProcessorTypes.Queries;
+using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
+using OpenData.Basketball.AbaLeague.Application.Features.StatsProperties.Queries;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamRangeStatsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamStatsByLeagueId;
 using OpenData.Basketball.AbaLeague.Domain.Enums;
@@ -51,15 +54,34 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
         public async Task<IActionResult> Upsert(int? leagueId, CancellationToken cancellationToken = default)
         {
-            var processorType = await _sender.Send(new GetProcessorTypeQuery(), cancellationToken);
-            if (processorType.HasNoValue)
+            var processorTypeResult = await _sender.Send(new GetProcessorTypeQuery(), cancellationToken);
+            if (processorTypeResult.HasNoValue)
             {
                 return View("Error");
             }
-            var leagueViewModel = new CreateLeagueViewModel()
+            var seasonsResult = await _sender.Send(new GetSeasonsQuery(), cancellationToken);
+            if (seasonsResult.HasNoValue)
             {
-                League = new LeagueDto(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty,string.Empty, string.Empty, 1),
-                ProcessorTypes = new SelectList(processorType.Value, "Id", "Name"),
+                return View("Error");
+            }
+            var leagueViewModel = new LeagueUpsertViewModel()
+            {
+                League = new LeagueItemViewModel {
+                    Id = null,
+                    BaseUrl = string.Empty,
+                    BoxScoreUrl = string.Empty,
+                    CalendarUrl = string.Empty,
+                    MatchUrl = string.Empty,
+                    OfficialName = string.Empty,
+                    RosterUrl = string.Empty,
+                    ShortName = string.Empty,
+                    StandingUrl = string.Empty,
+                    SelectedProcessorTypeId = 1.ToString(),
+                    SelectedSeasonId = 1.ToString(),
+                    ProcessorTypes = new SelectList(processorTypeResult.Value, "Id", "Name") ,
+                    Seasons = new SelectList(seasonsResult.Value.SeasonItems, "Id", "Name"),
+                    RoundsToPlay = 0,
+                },
             };
             var modelName = "Insert";
             if (leagueId == null)
@@ -72,13 +94,23 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 return View("Error");
             }
-
-            leagueViewModel.League = new LeagueDto(results.Value.OfficialName, results.Value.ShortName,
-                results.Value.Season, results.Value.StandingUrl, results.Value.CalendarUrl, results.Value.MatchUrl,
-                results.Value.BoxScoreUrl, results.Value.BaseUrl, results.Value.RosterUrl, results.Value.ProcessorTypeId??1);
-            leagueViewModel.SelectedProcessorTypeId =  (results.Value.ProcessorTypeId ?? 1).ToString();
-           
-
+            leagueViewModel.League = new LeagueItemViewModel
+            {
+                Id = results.Value.Id,
+                BaseUrl = results.Value.BaseUrl,
+                BoxScoreUrl = results.Value.BoxScoreUrl,
+                CalendarUrl = results.Value.CalendarUrl,
+                MatchUrl = results.Value.MatchUrl,
+                OfficialName = results.Value.OfficialName,
+                RosterUrl = results.Value.RosterUrl,
+                ShortName = results.Value.ShortName,
+                StandingUrl = results.Value.StandingUrl,
+                SelectedProcessorTypeId = ((int) results.Value.ProcessorType).ToString(),
+                SelectedSeasonId = ((int)results.Value.SeasonId).ToString(),
+                ProcessorTypes = new SelectList(processorTypeResult.Value, "Id", "Name"),
+                Seasons = new SelectList(seasonsResult.Value.SeasonItems, "Id", "Name"),
+                RoundsToPlay = results.Value.RoundsToPlay ?? 0
+            };
             ViewBag.Title = "Update";
             return View(leagueViewModel);
         }
@@ -103,24 +135,67 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             ViewBag.Title = leagueDetailsViewModel.League.ShortName+" -"+modelName;
             return View(leagueDetailsViewModel);
         }  
-        public async Task<IActionResult> Save(CreateLeagueViewModel model, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Save(LeagueUpsertViewModel model, CancellationToken cancellationToken = default)
         {
-                if (!short.TryParse(model.SelectedProcessorTypeId, out short processor))
+            if (!short.TryParse(model.League.SelectedProcessorTypeId, out short processorId))
+            {
+                return View("Error", new InfoDescriptionViewModel()
                 {
-                    return View("Error", new InfoDescriptionViewModel()
-                    {
-                        Description = "Unable to parse processory type id"
-                    });
-                }
-                var result = await _sender.Send(new CreateLeagueCommand(model.League.OfficialName, model.League.ShortName, model.League.Season, model.League.StandingUrl, model.League.CalendarUrl, model.League.MatchUrl, model.League.BoxScoreUrl, model.League.BaseUrl, model.League.RosterUrl, processor));
+                    Description = "Unable to parse processory type id"
+                });
+            }
+            if (!int.TryParse(model.League.SelectedSeasonId, out int seasonId))
+            {
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = "Unable to parse processory type id"
+                });
+            }
+            if (model.League.Id == null)
+            {
+                var result = await _sender.Send(
+                    new CreateLeagueCommand(model.League.OfficialName,
+                                            model.League.ShortName, 
+                                            model.League.StandingUrl, 
+                                            model.League.CalendarUrl, 
+                                            model.League.MatchUrl, 
+                                            model.League.BoxScoreUrl,
+                                            model.League.BaseUrl, 
+                                            model.League.RosterUrl,
+                                            processorId,
+                                            seasonId,
+                                            model.League.RoundsToPlay));
 
                 if (result.IsSuccess)
                 {
-
                     string redirectUrl = $"/League/Index";
                     return Redirect(redirectUrl);
                 }
                 return RedirectToAction("Error");
+            }
+            else
+            {
+                var result = await _sender.Send(
+                    new UpdateLeagueCommand(model.League.Id ?? 0, 
+                                            model.League.OfficialName,
+                                            model.League.ShortName,
+                                            model.League.StandingUrl,
+                                            model.League.CalendarUrl,
+                                            model.League.MatchUrl,
+                                            model.League.BoxScoreUrl,
+                                            model.League.BaseUrl,
+                                            model.League.RosterUrl,
+                                            processorId,
+                                            seasonId,
+                                            model.League.RoundsToPlay));
+                if (result.IsSuccess)
+                {
+                    string redirectUrl = $"/League/Index";
+                    return Redirect(redirectUrl);
+                }
+                return RedirectToAction("Error");
+            }
+           
             
 
             // If the model state is not valid, you can return the view with validation errors
@@ -140,15 +215,30 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error");
             }
 
-            var existingResources = results.Value.Where(x=>x.MaterializationStatus==MaterializationStatus.Exist).Select(x =>
-                new AddSeasonResourceDraftDto(x.TeamId??0, league.Value.Id, x.Url, x.Name, x.TeamUrl, x.IncrowdUrl));
-            var notExistingTeams = results.Value.Where(x => x.MaterializationStatus == MaterializationStatus.TeamNoExist).Select(x =>
-                new AddSeasonResourceDraftDto(x.TeamId ?? 0, league.Value.Id, x.Url, x.Name, x.TeamUrl, x.IncrowdUrl));
-            var notExistingResources = results.Value.Where(x => x.MaterializationStatus == MaterializationStatus.NotExist).Select(x =>
-                new AddSeasonResourceDraftDto(x.TeamId ?? 0, league.Value.Id, x.Url, x.Name, x.TeamUrl, x.IncrowdUrl));
+            var existingSeasonResources = results.Value.DraftTeamSeasonResourcesItems
+                                                        .Select(x => new AddSeasonResourceDraftDto(x.TeamId ?? 0, 
+                                                                                                    league.Value.Id ?? -1, 
+                                                                                                    x.Url, 
+                                                                                                    x.Name, 
+                                                                                                    x.TeamUrl, 
+                                                                                                    x.IncrowdUrl));
+            var notExistingTeams = results.Value.MissingTeamItems
+                                                    .Select(x =>  new AddSeasonResourceDraftDto(-1,
+                                                                                                league.Value.Id ?? -1, 
+                                                                                                string.Empty,
+                                                                                                x, 
+                                                                                                string.Empty, 
+                                                                                                string.Empty));
+            var notExistingResources = results.Value.ExistingTeamSeasonResourcesItems
+                                                        .Select(x => new AddSeasonResourceDraftDto(x.TeamId ?? 0, 
+                                                                                                    league.Value.Id ?? -1,
+                                                                                                    x.Url, 
+                                                                                                    x.Name,
+                                                                                                    x.TeamUrl, 
+                                                                                                    x.IncrowdUrl));
             var leagueDetailsViewModel = new SeasonResourcesViewModel()
             {
-                ExistingTeams = existingResources.ToList(),
+                ExistingTeams = existingSeasonResources.ToList(),
                 MissingTeams = notExistingTeams.ToList(),
                 NotExistingResourcesTeams = notExistingResources.ToList(),
                 LeagueId = leagueId
@@ -358,26 +448,55 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             });
         }
 
-        public async Task<IActionResult> RangeStatsByTeam(int leagueId, CancellationToken cancellationToken = default)
+
+        public async Task<IActionResult> LeagueRangeStatsByLeague(LeagueRangeStatsViewModel leagueRangeStatsViewModel, 
+                                                            CancellationToken cancellationToken = default)
         {
-            var results = await _sender.Send(new GetTeamRangeStatsByLeagueIdQuery(leagueId, 
-                new List<StatsPropertyEnum>() { StatsPropertyEnum.Points}.ToFrozenSet()), cancellationToken);
-
             var modelName = " Range Stats";
+            var statsPropertiesResult = await _sender.Send(new GetStatsPropertiesQuery(), cancellationToken);
+            if (statsPropertiesResult.HasNoValue)
+            {
+                ViewBag.Title = modelName;
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = "Unable to parse position id"
+                });
+            }
+            int selectedStatsProperty = 0;
+            List<StatsPropertyEnum> list = new List<StatsPropertyEnum>();
+            if (string.IsNullOrWhiteSpace(leagueRangeStatsViewModel.SelectedStatsPropertyId))
+            {
+                list.Add(StatsPropertyEnum.Points); 
+                selectedStatsProperty = (int) StatsPropertyEnum.Points;
+            }
+            else
+            {
+                if (!int.TryParse(leagueRangeStatsViewModel.SelectedStatsPropertyId, out selectedStatsProperty))
+                {
+                    return View("Error", new InfoDescriptionViewModel()
+                    {
+                        Description = "Unable to parse position id"
+                    });
+                }
+                list.Add((StatsPropertyEnum)selectedStatsProperty);
+            }
 
+            var results = await _sender.Send(new GetTeamRangeStatsByLeagueIdQuery(leagueRangeStatsViewModel.LeagueId,
+               list.ToFrozenSet()), cancellationToken);
             if (results.HasNoValue)
             {
                 ViewBag.Title = modelName;
-                return View("Error");
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = "Unable to found ranges for available scopes"
+                });
             }
            
-
-
             ViewBag.Title = results.Value.LeagueName + " -" + modelName;
             return View(new LeagueRangeStatsViewModel
             {
                 LeagueId = results.Value.LeagueId,
-                LeagueName=results.Value.LeagueName,
+                LeagueName = results.Value.LeagueName,
                 TeamItems = results.Value.Stats.OrderBy(x=>x.Key.teamName).Select(x => new LeagueTeamRangeStatsViewModel
                 {
                     TeamId = x.Key.teamId,
@@ -385,12 +504,17 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     RangeStatsItems = x.Value.OrderBy(x=>x.Id).Select(y => new RangeStatsItemViewModel
                     {
                         Id = y.Id,
-                        Count = y.Count,
+                        OffensiveWinCount = y.ScoredWinCount,
+                        OffensiveLossCount = y.ScoredLossCount,
+                        DefensiveWinCount = y.ReceivedWinCount,
+                        DefensiveLossCount = y.ReceivedLossCount,
                         MaxValue = y.MaxValue,
                         MinValue = y.MinValue,
                         StatsName = y.StatsProperty.ToString()
                     }).ToList()
-                }).ToList()
+                }).ToList(),
+                SelectedStatsProperties = new SelectList(statsPropertiesResult.Value.PropertyItems.ToList(), "Id", "Name"),
+                SelectedStatsPropertyId = selectedStatsProperty.ToString()
             });
         }
     }

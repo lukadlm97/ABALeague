@@ -33,20 +33,30 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return Redirect("Error");
             }
 
-            var selectedTeam = result.Value.FirstOrDefault(x => x.TeamId == teamId);
+            var selectedTeam = result.Value.DraftTeamSeasonResourcesItems.FirstOrDefault(x => x.TeamId == teamId);
             if (selectedTeam == null)
             {
                 return Redirect("Error");
             }
             var decorativeTeamName = selectedTeam.Name;
-            var resultOfAdding = await _sender.Send(new CreateSeasonResourcesCommand(new List<AddSeasonResourceDto> { new AddSeasonResourceDto(selectedTeam.TeamId ?? 0, leagueId, selectedTeam.Url, decorativeTeamName, selectedTeam.TeamUrl, selectedTeam.IncrowdUrl) }), cancellationToken);
-            if (result.HasNoValue)
+            var resultOfAdding = await _sender.Send(
+                new CreateSeasonResourcesCommand(
+                    new List<AddSeasonResourceDto> {
+                        new AddSeasonResourceDto(selectedTeam.TeamId ?? 0,
+                        leagueId, 
+                        selectedTeam.Url, 
+                        decorativeTeamName, 
+                        selectedTeam.TeamUrl, 
+                        selectedTeam.IncrowdUrl) }), 
+                cancellationToken);
+            if (resultOfAdding.IsFailure)
             {
                 return Redirect("Error");
             }
+
             return RedirectToAction("SeasonResources", "League", new
             {
-                LeagueId = 8
+                LeagueId = leagueId
             });
         }
 
@@ -55,19 +65,6 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
            RegisterTeamsForCompetition(SeasonResourcesViewModel seasonResourcesViewModel,
                                        CancellationToken cancellationToken = default)
         {
-            /*var result = await _sender.Send(new GetTeamsByLeagueIdQuery(seasonResourcesViewModel.LeagueId), cancellationToken);
-            if (result.HasNoValue)
-            {
-                return Redirect("Error");
-            }
-
-            var selectedTeam = result.Value.FirstOrDefault(x => x.TeamId == teamId);
-            if (selectedTeam == null)
-            {
-                return Redirect("Error");
-            }
-            var decorativeTeamName = selectedTeam.Name;
-            */
             List<AddSeasonResourceDto> list = new List<AddSeasonResourceDto> ();
 
             foreach(var item in seasonResourcesViewModel.NotExistingResourcesTeams)
@@ -96,7 +93,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
            RegisterTeamForCompetitionViaForm(SeasonResourcesDeterminateViewModel model,
                                        CancellationToken cancellationToken = default)
         {
-            var result = await _sender.Send(new GetTeamsQuery("",1,100), cancellationToken);
+            var result = await _sender.Send(new GetTeamsQuery("", 1, 100), cancellationToken);
             if (result.HasNoValue)
             {
                 return Redirect("Error");
@@ -110,14 +107,24 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             }
             var draftResources =
                 await _sender.Send(new GetTeamsByLeagueIdQuery(model.LeagueId), cancellationToken);
-            var selectedDrafrResource = draftResources.Value.FirstOrDefault(x => x.Name == model.TeamName);
+            var selectedDrafrResource = draftResources.Value
+                .DraftTeamSeasonResourcesItems
+                .FirstOrDefault(x => x.Name == model.TeamName);
             var selectedTeam = result.Value.Teams.FirstOrDefault(x => x.Id == teamId);
             if (selectedTeam == null || selectedDrafrResource == null)
             {
                 return Redirect("Error");
             }
             var decorativeTeamName = model.TeamName;
-            var resultOfAdding = await _sender.Send(new CreateSeasonResourcesCommand(new List<AddSeasonResourceDto> { new AddSeasonResourceDto(selectedTeam.Id ?? 0, model.LeagueId, selectedDrafrResource.Url, decorativeTeamName, selectedDrafrResource.TeamUrl, selectedDrafrResource.IncrowdUrl) }), cancellationToken);
+            var resultOfAdding = await _sender.Send(new CreateSeasonResourcesCommand(
+                new List<AddSeasonResourceDto> {
+                    new AddSeasonResourceDto(selectedTeam.Id,
+                                                model.LeagueId,
+                                                selectedDrafrResource.Url, 
+                                                decorativeTeamName, 
+                                                selectedDrafrResource.TeamUrl,
+                                                selectedDrafrResource.IncrowdUrl) 
+                                            }), cancellationToken);
             if (result.HasNoValue)
             {
                 return Redirect("Error");

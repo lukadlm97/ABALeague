@@ -1,0 +1,91 @@
+﻿@model LeagueTeamRangeStatsViewModel
+
+<h3>
+    Team: @Model.TeamName
+</h3>
+@if (Model.RangeStatsItems != null && Model.RangeStatsItems.Any())
+{
+    <table border="1">
+        <tr>
+            @foreach (var item in Model.RangeStatsItems)
+            {
+                <td>
+                    @if (item.MinValue == null)
+                    {
+                        <div>
+                            @("-" + item.MaxValue)
+                        </div>
+                    }
+                    else if (item.MaxValue == null)
+                    {
+                        <div>
+                            @(item.MinValue + "+")
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            @(item.MinValue + "-" + item.MaxValue)
+                        </div>
+                    }
+                </td>
+            }
+        </tr>
+        <tr>
+            @foreach (var item in Model.RangeStatsItems)
+            {
+                <td>
+                    <span style="color:green">
+                        @item.OffensiveWinCount
+                    </span>
+                    <span>
+                        /
+                    </span>
+                    <span style="color:red">
+                        @item.OffensiveLossCount
+                    </span>
+                </td>
+            }
+        </tr>
+        <tr>
+            @foreach (var item in Model.RangeStatsItems)
+            {
+                <td>
+                    <span style="color:green">
+                        @item.DefensiveWinCount
+                    </span>
+                    <span>
+                        /
+                    </span>
+                    <span style="color:red">
+                        @item.DefensiveLossCount
+                    </span>
+                </td>
+            }
+        </tr>
+    </table>
+}
+else
+{
+    <p>
+        No available ranges for the team.
+    </p>
+}
+
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    div {
+        margin: 4px;
+    }
+</style>

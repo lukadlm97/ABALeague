@@ -5,7 +5,7 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId
 {
-    public class GetRosterByTeamIdQuery : IQuery<Maybe<RosterResponse>>
+    public class GetRosterByTeamIdQuery : IQuery<Maybe<RosterDto>>
     {
         public GetRosterByTeamIdQuery(int teamId, int leagueId)
         {

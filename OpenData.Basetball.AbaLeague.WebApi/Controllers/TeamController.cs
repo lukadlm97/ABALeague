@@ -53,7 +53,7 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] TeamDto teamDto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Add([FromBody] AddTeamDto teamDto, CancellationToken cancellationToken = default)
         {
            var team =  await _teamService
                .Add(teamDto, cancellationToken);
@@ -62,7 +62,7 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         }
 
         [HttpPost("multiple")]
-        public async Task<IActionResult> Add([FromBody] IEnumerable<TeamDto> teams,
+        public async Task<IActionResult> Add([FromBody] IEnumerable<AddTeamDto> teams,
             CancellationToken cancellationToken = default)
         {
             var createdTeams = await _teamService
@@ -72,10 +72,10 @@ namespace OpenData.Basketball.AbaLeague.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id,[FromBody] TeamDto teamDto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Update(int id,[FromBody] AddTeamDto teamDto, CancellationToken cancellationToken = default)
         {
             var team = await _teamService
-                .Update(id,teamDto, cancellationToken);
+                .Update(id, teamDto, cancellationToken);
 
             return Ok(team);
         }

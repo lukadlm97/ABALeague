@@ -14,7 +14,7 @@ namespace OpenData.Basketball.AbaLeague.WebApp.Pages.Leagues
             _sender = sender;
         }
 
-        public IList<LeagueResponse> Leagues { get; set; }
+        public IList<LeagueItemDto> Leagues { get; set; }
         public bool IsSuccess { get; set; } = false;
         public string ErrorMessage { get; set; } = "There is no leagues to display.";
 

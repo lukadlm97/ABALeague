@@ -36,7 +36,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 
         public async Task<T> Get(int id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.FindAsync<T>(id,cancellationToken);
+            return await _dbContext.FindAsync<T>(id, cancellationToken);
         }
 
         public async Task<IReadOnlyList<T>> GetAll(CancellationToken cancellationToken = default)

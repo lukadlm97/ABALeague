@@ -4,7 +4,7 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById
 {
-    public class GetTeamByIdQuery : IQuery<Maybe<TeamDto>>
+    public class GetTeamByIdQuery : IQuery<Maybe<TeamItemDto>>
     {
         public GetTeamByIdQuery(int id)
         {

@@ -12,7 +12,6 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
     {
         public string OfficalName { get; set; }
         public string ShortName { get; set; }
-        public string Season { get; set; }
         public string StandingUrl { get; set; }
         public string CalendarUrl { get; set; }
         public string MatchUrl { get; set; }
@@ -26,6 +25,11 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public int? RoundsToPlay { get; set; }
         public ICollection<RoundMatch> RoundMatches { get; set; }
         public ICollection<ResourceSelector> ResourceSelectors { get; set; }
-
+        public virtual Season Season { get; set; }
+        public int SeasonId { get; set; }
+        public virtual Basketball.AbaLeague.Domain.Entities.CompetitionOrganization? CompetitionOrganization { get; set; }
+        public short? CompetitionOrganizationId { get; set; }
+        [NotMapped]
+        public Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum? CompetitionOrganizationEnumEnum => (Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum?) CompetitionOrganizationId;
     }
 }

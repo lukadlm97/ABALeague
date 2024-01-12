@@ -74,6 +74,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<short?>("CompetitionOrganizationId")
+                        .HasColumnType("smallint");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,9 +101,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.Property<int?>("RoundsToPlay")
                         .HasColumnType("int");
 
-                    b.Property<string>("Season")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SeasonId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
@@ -119,7 +121,11 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompetitionOrganizationId");
+
                     b.HasIndex("ProcessorTypeId");
+
+                    b.HasIndex("SeasonId");
 
                     b.ToTable("Leagues");
                 });
@@ -266,6 +272,12 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("BracketPosition")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Group")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IncrowdUrl")
                         .HasColumnType("nvarchar(max)");
@@ -445,6 +457,41 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.HasIndex("RosterItemId");
 
                     b.ToTable("BoxScores");
+                });
+
+            modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.CompetitionOrganization", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CompetitionOrganizations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = (short)1,
+                            Name = "League"
+                        },
+                        new
+                        {
+                            Id = (short)2,
+                            Name = "Groups"
+                        },
+                        new
+                        {
+                            Id = (short)3,
+                            Name = "Knockout"
+                        });
                 });
 
             modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.GameLength", b =>
@@ -759,6 +806,29 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
                     b.ToTable("RoundMatches");
                 });
 
+            modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.Season", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Seasons");
+                });
+
             modelBuilder.Entity("OpenData.Basketball.AbaLeague.Domain.Entities.StatsProperty", b =>
                 {
                     b.Property<short>("Id")
@@ -801,11 +871,25 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Migrations
 
             modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.League", b =>
                 {
+                    b.HasOne("OpenData.Basketball.AbaLeague.Domain.Entities.CompetitionOrganization", "CompetitionOrganization")
+                        .WithMany()
+                        .HasForeignKey("CompetitionOrganizationId");
+
                     b.HasOne("OpenData.Basketball.AbaLeague.Domain.Entities.ProcessorType", "ProcessorType")
                         .WithMany()
                         .HasForeignKey("ProcessorTypeId");
 
+                    b.HasOne("OpenData.Basketball.AbaLeague.Domain.Entities.Season", "Season")
+                        .WithMany()
+                        .HasForeignKey("SeasonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompetitionOrganization");
+
                     b.Navigation("ProcessorType");
+
+                    b.Navigation("Season");
                 });
 
             modelBuilder.Entity("OpenData.Basetball.AbaLeague.Domain.Entities.Player", b =>

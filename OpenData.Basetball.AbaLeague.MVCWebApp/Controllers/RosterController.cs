@@ -28,38 +28,35 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             _logger = logger;
             _sender = sender;
         }
-        public async Task<IActionResult> History(int? teamId, int? leagueId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> History(int? teamId, 
+                                                    int? leagueId,
+                                                    CancellationToken cancellationToken = default)
         {
             if (!teamId.HasValue || !leagueId.HasValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "missing team id" });
             }
 
-            var players = await _sender.Send(new GetPlayersQuery(), cancellationToken);
-            var countries = await _sender.Send(new GetCountriesQuery(), cancellationToken);
             var rosterItems = await _sender.Send(new GetRosterByTeamIdQuery(teamId ?? 0, leagueId ?? 0), cancellationToken);
 
-            if(players.HasNoValue ||  rosterItems.HasNoValue || countries.HasNoValue)
+            if(rosterItems.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
             List<PlayerViewModel> list = new List<PlayerViewModel>();
             foreach(var rosterItem in rosterItems.Value.Items)
             {
-                var player = players.Value.Players.FirstOrDefault(x => x.Id == rosterItem.PlayerId);
-                if (player != null)
-                {
                     list.Add(new PlayerViewModel()
                     {
-                        Name = player.Name,
-                        DateOfBirth = player.DateOfBirth,
-                        Id = player.Id,
-                        Height = player.Height,
-                        Country = player.CountryId.ResolveCountryName(countries.Value.Countries)
+                        Name = rosterItem.Name,
+                        DateOfBirth = rosterItem.DateOfBirth,
+                        Id = rosterItem.Id,
+                        Height = rosterItem.Height,
+                        Country = rosterItem.CountryName
                     });
-                }
             }
-            var resources= await _sender.Send(new GetSeasonResourcesByTeamAndLeagueQuery(teamId??0, leagueId??0), cancellationToken);
+            var resources= await _sender
+                .Send(new GetSeasonResourcesByTeamAndLeagueQuery(teamId ?? 0, leagueId ?? 0), cancellationToken);
 
             if (resources.HasNoValue)
             {
@@ -73,13 +70,13 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 RosterItems = list,
                 TeamId = teamId ?? 0,
                 LeagueId = leagueId ?? 0,
-            }
-            ;
+            };
 
             return View("History", viewModel);
         }
         [HttpGet("{leagueId:int}")]
-        public async Task<IActionResult> Draft(int leagueId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Draft(int leagueId, 
+                                                CancellationToken cancellationToken = default)
         {
             var result = await _sender.Send(new GetRosterDraftByLeagueIdQuery(leagueId), cancellationToken);
 
@@ -134,7 +131,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
 
         [HttpPost("")]
-        public async Task<IActionResult> SaveDraftRosterItems(int leagueId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> SaveDraftRosterItems(int leagueId, 
+                                                                CancellationToken cancellationToken = default)
         {
             var result = await _sender.Send(new GetRosterDraftByLeagueIdQuery(leagueId), cancellationToken);
             if (!result.HasValue)
@@ -148,8 +146,14 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 if (result.Value.DraftRosterItems.Any())
                 {
-                    var addRosterResult = await _sender.Send(new AddRosterItemsCommand(leagueId, result.Value.DraftRosterItems
-                        .Select(x => new Basketball.AbaLeague.Application.DTOs.Roster.AddRosterItemDto(x.PlayerId, x.LeagueId, x.TeamId, DateTime.UtcNow, null))), cancellationToken);
+                    var addRosterResult = await _sender.Send(
+                        new AddRosterItemsCommand(leagueId, 
+                        result.Value.DraftRosterItems.Select(x => 
+                        new Basketball.AbaLeague.Application.DTOs.Roster.AddRosterItemDto(x.PlayerId, 
+                                                                                            x.LeagueId, 
+                                                                                            x.TeamId, 
+                                                                                            DateTime.UtcNow,
+                                                                                            null))), cancellationToken);
 
                     if(addRosterResult.IsSuccess)
                     {
@@ -170,13 +174,20 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> SaveDraftRosterItem([FromQuery] int leagueId, [FromQuery] int teamId, [FromQuery] int playerId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> SaveDraftRosterItem([FromQuery] int leagueId,
+                                                                [FromQuery] int teamId, 
+                                                                [FromQuery] int playerId,
+                                                                CancellationToken cancellationToken = default)
         {
-            var addRosterResult = await _sender.Send(new AddRosterItemsCommand(leagueId, 
+            var addRosterResult = await _sender
+                .Send(new AddRosterItemsCommand(leagueId, 
                     new List<Basketball.AbaLeague.Application.DTOs.Roster.AddRosterItemDto>
                     {
-                        new Basketball.AbaLeague.Application.DTOs.Roster.AddRosterItemDto(playerId, leagueId, teamId, DateTime.UtcNow, null)
-                                }), cancellationToken);
+                        new Basketball.AbaLeague.Application.DTOs.Roster.AddRosterItemDto(playerId, 
+                                                                                            leagueId,
+                                                                                            teamId,
+                                                                                            DateTime.UtcNow, null)
+                    }), cancellationToken);
 
             if (addRosterResult.IsSuccess)
             {
@@ -191,14 +202,20 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
         }
 
-        [HttpPost("")]
-        public async Task<IActionResult> SaveHistoryDraftRosterItem([FromQuery] int leagueId, [FromQuery] int teamId, [FromQuery] int playerId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> SaveHistoryDraftRosterItem([FromQuery] int leagueId,
+                                                                    [FromQuery] int teamId, 
+                                                                    [FromQuery] int playerId,
+                                                                    CancellationToken cancellationToken = default)
         {
             var addRosterResult = await _sender.Send(new AddRosterItemsCommand(leagueId,
                     new List<Basketball.AbaLeague.Application.DTOs.Roster.AddRosterItemDto>
                     {
-                        new Basketball.AbaLeague.Application.DTOs.Roster.AddRosterItemDto(playerId, leagueId, teamId, DateTime.UtcNow, DateTime.UtcNow)
-                                }), cancellationToken);
+                        new Basketball.AbaLeague.Application.DTOs.Roster.AddRosterItemDto(playerId,
+                                                                                            leagueId,
+                                                                                            teamId,
+                                                                                            DateTime.UtcNow,
+                                                                                            DateTime.UtcNow)
+                    }), cancellationToken);
 
             if (addRosterResult.IsSuccess)
             {
@@ -214,9 +231,11 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> AddMissingPlayers(int leagueId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> AddMissingPlayers(int leagueId,
+                                                            CancellationToken cancellationToken = default)
         {
-            var result = await _sender.Send(new GetRosterDraftByLeagueIdQuery(leagueId), cancellationToken);
+            var result = await _sender
+                                    .Send(new GetRosterDraftByLeagueIdQuery(leagueId), cancellationToken);
             if (!result.HasValue)
             {
                 return View("Error", new InfoDescriptionViewModel()
@@ -228,8 +247,12 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 if (result.Value.MissingPlayers.Any())
                 {
-                    var addPlayersResult = await _sender.Send(new CreatePlayersCommand(result.Value.MissingPlayers
-                        .Select(x => new Basketball.AbaLeague.Application.DTOs.Player.AddPlayerDto(x.Name,x.Position,x.Height,x.DateOfBirth,x.NationalityId))), cancellationToken);
+                    var addPlayersResult = await _sender
+                        .Send(new CreatePlayersCommand(result.Value.MissingPlayers.Select(x => new Basketball.AbaLeague.Application.DTOs.Player.AddPlayerDto(x.Name,
+                                                                                    x.Position,
+                                                                                    x.Height,
+                                                                                    x.DateOfBirth,
+                                                                                    x.NationalityId))), cancellationToken);
 
                     if (addPlayersResult.IsSuccess)
                     {

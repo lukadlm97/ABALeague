@@ -28,6 +28,8 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         ILevelsOfScaleRepository LevelsOfScaleRepository { get; }
         IRangeScalesRepository RangeScalesRepository { get; }
         IStatsPropertyRepository StatsPropertyRepository { get; }
+        ISeasonRepository SeasonRepository { get; }
+        ICompetitionOrganizationRepository CompetitionOrganizationRepository { get; }
         Task Save(CancellationToken cancellationToken = default);
     }
 }

@@ -42,7 +42,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         Attendency = x.Attendency,
                         AwayTeamName = x.AwayTeamName,
                         AwayTeamPoints = x.AwayTeamPoints,
-                        Venue = x.Venue
+                        Venue = x.Venue,
+                        Round = x.Round
                     }).ToList(),
                     OnWaitingScores = result.Value.DraftScoreItems.Select(x => new ScoreItemViewModel
                     {
@@ -55,7 +56,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         Attendency = x.Attendency,
                         AwayTeamName = x.AwayTeamName,
                         AwayTeamPoints = x.AwayTeamPoints,
-                        Venue = x.Venue
+                        Venue = x.Venue,
+                        Round = x.Round
                     }).ToList(),
                     ToBePlayed = result.Value.PlannedToPlayItems.Select(x => new ScoreItemViewModel
                     {
@@ -68,7 +70,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         Attendency = x.Attendency,
                         AwayTeamName = x.AwayTeamName,
                         AwayTeamPoints = x.AwayTeamPoints,
-                        Venue = x.Venue
+                        Venue = x.Venue,
+                        Round = x.Round
                     }).ToList(),
                     LeagueId = leagueId
                 };

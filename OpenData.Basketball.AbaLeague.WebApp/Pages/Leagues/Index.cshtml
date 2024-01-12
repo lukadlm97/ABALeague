@@ -21,9 +21,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Leagues[0].ShortName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Leagues[0].Season)
-            </th>
             <td>
 
             </td>
@@ -37,9 +34,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ShortName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Season)
                 </td>
                 <td>
                         <a asp-page="Details" asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>

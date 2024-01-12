@@ -10,32 +10,38 @@ using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Score;
 using OpenData.Basketball.AbaLeague.Application.Utilities;
+using OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources;
+using System.Collections.Frozen;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId
 {
-    internal class GetTeamsByLeagueIdQueryHandler : IQueryHandler<GetTeamsByLeagueIdQuery, Maybe<IEnumerable<TeamDTO>>>
+    internal class GetTeamsByLeagueIdQueryHandler : 
+        IQueryHandler<GetTeamsByLeagueIdQuery, Maybe<TeamSeasonResourceDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDocumentFetcher _documentFetcher;
         private readonly ILoggerFactory _loggerFactory;
 
-        public GetTeamsByLeagueIdQueryHandler(IUnitOfWork unitOfWork, IDocumentFetcher documentFetcher, ILoggerFactory loggerFactory)
+        public GetTeamsByLeagueIdQueryHandler(IUnitOfWork unitOfWork, 
+                                                IDocumentFetcher documentFetcher, 
+                                                ILoggerFactory loggerFactory)
         {
             _unitOfWork = unitOfWork;
             _documentFetcher = documentFetcher;
             _loggerFactory = loggerFactory;
         }
-        public async Task<Maybe<IEnumerable<TeamDTO>>> Handle(GetTeamsByLeagueIdQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<TeamSeasonResourceDto>>
+            Handle(GetTeamsByLeagueIdQuery request, CancellationToken cancellationToken)
         {
             if (request.LeagueId <= 0)
             {
-                return Maybe<IEnumerable<TeamDTO>>.None;
+                return Maybe<TeamSeasonResourceDto>.None;
             }
 
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
             if (league == null)
             {
-                return Maybe<IEnumerable<TeamDTO>>.None;
+                return Maybe<TeamSeasonResourceDto>.None;
             }
             var seasonResources = await _unitOfWork.SeasonResourcesRepository.GetAll(cancellationToken);
             IWebPageProcessor? webPageProcessor = league.ProcessorTypeEnum switch
@@ -46,7 +52,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
             };
             if (webPageProcessor == null)
             {
-                return Maybe<IEnumerable<TeamDTO>>.None;
+                return Maybe<TeamSeasonResourceDto>.None;
             }
 
             var url = league.BaseUrl + league.StandingUrl;
@@ -64,13 +70,15 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
             }; ;
             if (teams == null || !teams.Any())
             {
-                return Maybe<IEnumerable<TeamDTO>>.None;
+                return Maybe<TeamSeasonResourceDto>.None;
             }
             var existingSeasonResorces =
                 await _unitOfWork.SeasonResourcesRepository.SearchByLeague(request.LeagueId, cancellationToken);
             var existingTeams = await _unitOfWork.TeamRepository.GetAll(cancellationToken);
 
-            var list = new List<TeamDTO>();
+            var existingTeamSeasonResources = new List<TeamItemDraftDto>();
+            var draftTeamSeasonResources = new List<TeamItemDraftDto>();
+            var missingTeamItems = new List<string>();
             foreach (var (name,teamUrl) in teams)
             {
                 if (!existingTeams.Any(x => name.ToLower().Contains(x.Name.ToLower())))
@@ -81,34 +89,38 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                         var selectedSeasonResources= seasonResources
                             .FirstOrDefault(x=>x.LeagueId == request.LeagueId && 
                                                 x.TeamName.ToLower() == name.ToLower());
-                        list.Add(new TeamDTO(selectedSeasonResources.TeamId,
-                                            name,
-                                            null,
-                                            teamUrl.Trim(league.BaseUrl),
-                                            teamUrl.Trim(league.BaseUrl).ExtractTeamCode(),
-                                            MaterializationStatus.Exist));
+
+                        existingTeamSeasonResources.Add(
+                            new TeamItemDraftDto(selectedSeasonResources.TeamId,
+                                                    name,
+                                                    null,
+                                                    teamUrl.Trim(league.BaseUrl),
+                                                    teamUrl.Trim(league.BaseUrl)
+                                                            .ExtractTeamCode()));
                         continue;
                     }
-                    list.Add(new TeamDTO(null, name, teamUrl, null, null, MaterializationStatus.TeamNoExist));
+                    missingTeamItems.Add(name);
                     continue;
                 }
                 var existingTeam = existingTeams.First(x => name.ToLower().Contains(x.Name.ToLower()));
                 if (existingSeasonResorces.Any(x => x.TeamName.ToLower().Contains(name.ToLower())))
                 {
-                    list.Add(new TeamDTO(existingTeam.Id,
-                                            name, 
-                                            null, 
-                                            teamUrl.Trim(league.BaseUrl), 
-                                            teamUrl.Trim(league.BaseUrl).ExtractTeamCode(), 
-                                            MaterializationStatus.Exist));
+                    draftTeamSeasonResources.Add(
+                        new TeamItemDraftDto(existingTeam.Id,
+                                                name, 
+                                                null, 
+                                                teamUrl.Trim(league.BaseUrl), 
+                                                teamUrl.Trim(league.BaseUrl)
+                                                        .ExtractTeamCode()));
                 }
                 else
                 {
-                    // add advanced handling
-                    list.Add(new TeamDTO(existingTeam.Id, name, teamUrl.Trim(league.BaseUrl), null, teamUrl.Trim(league.BaseUrl).ExtractTeamCode(), MaterializationStatus.NotExist));
+                    missingTeamItems.Add(name);
                 }
             }
-            return list;
+            return new TeamSeasonResourceDto(existingTeamSeasonResources.ToFrozenSet(),
+                                                draftTeamSeasonResources.ToFrozenSet(), 
+                                                missingTeamItems.ToFrozenSet());
         }
         
         async Task<string> GetStandingSelector(int leagueId, CancellationToken cancellationToken = default)

@@ -44,14 +44,15 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Game
                             int? PointFromFastBreak = null,
                             int? PlusMinus = null,
                             int? RankValue = null,
-                            string? Result = null)
+                            string? Result = null,
+                            int? OponentPoints = null)
                 : MatchItemDto(RoundMatchId,
-                                                                    OponentId,
-                                                                    OponentName,
-                                                                    -1,
-                                                                    new List<bool>(),
-                                                                    Date,
-                                                                    Round,
-                                                                    MatchNo,
-                                                                    HomeGame);
+                                OponentId,
+                                OponentName,
+                                -1,
+                                new List<bool>(),
+                                Date,
+                                Round,
+                                MatchNo,
+                                HomeGame);
 }

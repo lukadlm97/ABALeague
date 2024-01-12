@@ -3,6 +3,7 @@
     public class ScoreItemViewModel
     {
         public int? Id { get; set; }
+        public int Round { get; set; }
         public int MatchNo { get; set; }
         public int HomeTeamId { get; set; }
         public int AwayTeamId { get; set; }

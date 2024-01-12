@@ -27,7 +27,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private IRangeScalesRepository _rangeScalesRepository;
         private IStatsPropertyRepository _statsPropertyRepository;
         private IGenericRepository<ProcessorType> _processorTypeRepository;
-
+        private ISeasonRepository _seasonRepository;
+        private ICompetitionOrganizationRepository _competitionOrganizationRepository;
 
         public UnitOfWork(AbaLeagueDbContext context)
         {
@@ -83,6 +84,12 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
 
         public IStatsPropertyRepository StatsPropertyRepository =>
           _statsPropertyRepository ??= new StatsPropertyRepository(_context);
+
+        public ISeasonRepository SeasonRepository =>
+          _seasonRepository ??= new SeasonRepository(_context);
+        
+        public ICompetitionOrganizationRepository CompetitionOrganizationRepository =>
+          _competitionOrganizationRepository ??= new CompetitionOrganizationRepository(_context);
 
         public void Dispose()
         {
