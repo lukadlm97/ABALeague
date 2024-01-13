@@ -14,7 +14,8 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
                                 Domain.Enums.ProcessorType ProcessorType,
                                 int SeasonId,
                                 string SeasonName,
-                                int? RoundsToPlay
+                                int? RoundsToPlay,
+                                Domain.Enums.CompetitionOrganizationEnum CompetitionOrganization
                                 );
 
     public record LeaguesDto(IEnumerable<LeagueItemDto> LeagueResponses);

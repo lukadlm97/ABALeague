@@ -39,7 +39,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                                             x.ProcessorTypeEnum ?? Domain.Enums.ProcessorType.Unknow,
                                             season.Id!,
                                             season.Name!,
-                                            x.RoundsToPlay);
+                                            x.RoundsToPlay,
+                                            x.CompetitionOrganizationEnum ?? Domain.Enums.CompetitionOrganizationEnum.League);
             });
 
             return new LeaguesDto(response);

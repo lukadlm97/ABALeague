@@ -19,5 +19,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
         public string SelectedSeasonId { get; set; }
         public SelectList Seasons { get; set; }
         public int RoundsToPlay { get; set; }
+        public string SelectedCompetitionOrganizationId { get; set; }
+        public SelectList CompetitionOrganizations { get; set; }
     }
 }

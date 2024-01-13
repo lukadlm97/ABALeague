@@ -35,7 +35,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
                 return Result.Failure(new Error("AlreadyExist","league with specified official name or short name already exist"));
             }
             var existingProcessor = (await _unitOfWork.ProcessorTypeRepository.GetAll( cancellationToken))
-                                                        .FirstOrDefault(x=>x.Id == (short)request.ProcessorType);
+                                                        .FirstOrDefault(x=>x.Id == (short) request.ProcessorType);
             if(existingProcessor == null)
             {
 
@@ -44,6 +44,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
 
             var existingSeason = _unitOfWork.SeasonRepository.Get().FirstOrDefault(x => x.Id == request.SeasonId);
             if (existingSeason == null)
+            {
+
+                return Result.Failure(new Error("UnableToFoundSeason", ""));
+            }
+
+            var existingCompetitionOrganization = _unitOfWork.CompetitionOrganizationRepository.Get()
+                .FirstOrDefault(x => x.Id == (short) request.CompetitionOrganization);
+            if (existingCompetitionOrganization == null)
             {
 
                 return Result.Failure(new Error("UnableToFoundSeason", ""));
@@ -64,7 +72,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
                     RoundMatches = new List<RoundMatch>(),
                     ProcessorTypeId = existingProcessor.Id,
                     SeasonId = existingSeason.Id,
-                    RoundsToPlay = request.RoundsToPlay
+                    RoundsToPlay = request.RoundsToPlay,
+                    CompetitionOrganizationId = existingCompetitionOrganization.Id,
                 }, cancellationToken);
 
                 await _unitOfWork.Save();

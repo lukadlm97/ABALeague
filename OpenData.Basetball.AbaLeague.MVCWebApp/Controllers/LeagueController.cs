@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources;
+using OpenData.Basketball.AbaLeague.Application.Features.CompetitionOrganization.Queries.GetCompetionOrganizations;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.CreateLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.UpdateLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
@@ -64,6 +65,11 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 return View("Error");
             }
+            var competionOrganizationResult = await _sender.Send(new GetCompetionOrganizationsQuery(), cancellationToken);
+            if (competionOrganizationResult.HasNoValue)
+            {
+                return View("Error");
+            }
             var leagueViewModel = new LeagueUpsertViewModel()
             {
                 League = new LeagueItemViewModel {
@@ -81,6 +87,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     ProcessorTypes = new SelectList(processorTypeResult.Value, "Id", "Name") ,
                     Seasons = new SelectList(seasonsResult.Value.SeasonItems, "Id", "Name"),
                     RoundsToPlay = 0,
+                    CompetitionOrganizations = 
+                    new SelectList(competionOrganizationResult.Value.CompetionOrganizationItems,  "Id", "Name"),
+                    SelectedCompetitionOrganizationId = 1.ToString(),
                 },
             };
             var modelName = "Insert";
@@ -109,7 +118,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 SelectedSeasonId = ((int)results.Value.SeasonId).ToString(),
                 ProcessorTypes = new SelectList(processorTypeResult.Value, "Id", "Name"),
                 Seasons = new SelectList(seasonsResult.Value.SeasonItems, "Id", "Name"),
-                RoundsToPlay = results.Value.RoundsToPlay ?? 0
+                RoundsToPlay = results.Value.RoundsToPlay ?? 0,
+                CompetitionOrganizations =
+                    new SelectList(competionOrganizationResult.Value.CompetionOrganizationItems, "Id", "Name"),
+                SelectedCompetitionOrganizationId = ((short) (results.Value.CompetitionOrganization)).ToString()
             };
             ViewBag.Title = "Update";
             return View(leagueViewModel);
@@ -151,6 +163,13 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     Description = "Unable to parse processory type id"
                 });
             }
+            if (!short.TryParse(model.League.SelectedCompetitionOrganizationId, out short competitionOrganizationId))
+            {
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = "Unable to parse processory type id"
+                });
+            }
             if (model.League.Id == null)
             {
                 var result = await _sender.Send(
@@ -164,7 +183,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                             model.League.RosterUrl,
                                             processorId,
                                             seasonId,
-                                            model.League.RoundsToPlay));
+                                            model.League.RoundsToPlay,
+                                            competitionOrganizationId));
 
                 if (result.IsSuccess)
                 {
@@ -187,7 +207,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                             model.League.RosterUrl,
                                             processorId,
                                             seasonId,
-                                            model.League.RoundsToPlay));
+                                            model.League.RoundsToPlay,
+                                            competitionOrganizationId));
                 if (result.IsSuccess)
                 {
                     string redirectUrl = $"/League/Index";

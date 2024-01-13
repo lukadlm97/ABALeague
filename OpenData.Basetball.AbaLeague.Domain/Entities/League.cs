@@ -30,6 +30,6 @@ namespace OpenData.Basetball.AbaLeague.Domain.Entities
         public virtual Basketball.AbaLeague.Domain.Entities.CompetitionOrganization? CompetitionOrganization { get; set; }
         public short? CompetitionOrganizationId { get; set; }
         [NotMapped]
-        public Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum? CompetitionOrganizationEnumEnum => (Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum?) CompetitionOrganizationId;
+        public Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum? CompetitionOrganizationEnum => (Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum?) CompetitionOrganizationId;
     }
 }

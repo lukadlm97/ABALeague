@@ -89,6 +89,13 @@
                         <input asp-for="League.RoundsToPlay" class="form-control" />
                         <span asp-validation-for="League.RoundsToPlay" class="text-danger"></span>
                     </div>
+                </div> 
+                <div class="form-group">
+                    @Html.LabelFor(model => model.League.CompetitionOrganizations)
+                    <div class="col-md-10">
+                        <select asp-for="League.SelectedCompetitionOrganizationId" class="form-control"
+                                asp-items="Model.League.CompetitionOrganizations"></select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">

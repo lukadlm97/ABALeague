@@ -37,8 +37,17 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Up
 
                 return Result.Failure(new Error("UnableToFoundProcessor", ""));
             }
+
             var existingSeason = _unitOfWork.SeasonRepository.Get().FirstOrDefault(x => x.Id == request.SeasonId);
             if (existingSeason == null)
+            {
+
+                return Result.Failure(new Error("UnableToFoundSeason", ""));
+            }
+
+            var existingCompetitionOrganization = _unitOfWork.CompetitionOrganizationRepository.Get()
+               .FirstOrDefault(x => x.Id == (short)request.CompetitionOrganization);
+            if (existingCompetitionOrganization == null)
             {
 
                 return Result.Failure(new Error("UnableToFoundSeason", ""));
@@ -57,6 +66,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Up
                 existingLeague.ProcessorTypeId = existingProcessor.Id;
                 existingLeague.SeasonId = existingSeason.Id;
                 existingLeague.RoundsToPlay = request.RoundsToPlay;
+                existingLeague.CompetitionOrganizationId = existingCompetitionOrganization.Id;
 
                 await _unitOfWork.LeagueRepository.Update(existingLeague, cancellationToken);
 

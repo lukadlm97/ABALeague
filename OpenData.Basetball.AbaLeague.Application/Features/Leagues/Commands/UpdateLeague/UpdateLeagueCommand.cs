@@ -16,7 +16,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Up
             string rosterUrl,
             short processorType,
             int seasonId,
-            int roundsToPlay)
+            int roundsToPlay,
+            short competitionOrganization)
         {
             Id = id;
             OfficialName = officialName;
@@ -30,6 +31,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Up
             ProcessorType = (Domain.Enums.ProcessorType) processorType;
             SeasonId = seasonId;
             RoundsToPlay = roundsToPlay;
+            CompetitionOrganization = (Domain.Enums.CompetitionOrganizationEnum) competitionOrganization;
         }
 
         public int Id { get; }
@@ -44,5 +46,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Up
         public Domain.Enums.ProcessorType ProcessorType { get; }
         public int SeasonId { get; }
         public int RoundsToPlay { get; }
+        public Domain.Enums.CompetitionOrganizationEnum CompetitionOrganization { get; }
     }
 }
