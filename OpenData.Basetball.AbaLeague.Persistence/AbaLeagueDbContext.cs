@@ -35,6 +35,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence
         public DbSet<RangeScale> RangeScales { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<CompetitionOrganization> CompetitionOrganizations { get; set; }
+        public DbSet<HtmlQuerySelector> HtmlQuerySelector { get; set; }
   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

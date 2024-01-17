@@ -22,7 +22,7 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         IResultRepository ResultRepository { get; }
         IBoxScoreRepository BoxScoreRepository { get; }
         IRosterRepository RosterRepository { get; }
-        ISelectorResourcesRepository SelectorResourcesRepository { get; }
+        IResourceSelectorRepository SelectorResourcesRepository { get; }
         IGameLengthRepository GameLengthRepository { get; }
         ILeagueGameLengthRepository LeagueGameLengthRepository { get; }
         ILevelsOfScaleRepository LevelsOfScaleRepository { get; }
@@ -30,6 +30,7 @@ namespace OpenData.Basetball.AbaLeague.Application.Contracts
         IStatsPropertyRepository StatsPropertyRepository { get; }
         ISeasonRepository SeasonRepository { get; }
         ICompetitionOrganizationRepository CompetitionOrganizationRepository { get; }
+        IHtmlQuerySelectorRepository HtmlQuerySelectorRepository { get; }
         Task Save(CancellationToken cancellationToken = default);
     }
 }

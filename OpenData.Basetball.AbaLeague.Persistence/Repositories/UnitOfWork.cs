@@ -20,7 +20,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private IResultRepository _resultRepository;
         private IBoxScoreRepository _boxScoreRepository;
         private IRosterRepository _rosterRepository;
-        private ISelectorResourcesRepository _selectorResourcesRepository;
+        private IResourceSelectorRepository _selectorResourcesRepository;
         private IGameLengthRepository _gameLengthRepository;
         private ILeagueGameLengthRepository _leagueGameLengthRepository;
         private ILevelsOfScaleRepository _levelsOfScaleRepository;
@@ -29,6 +29,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private IGenericRepository<ProcessorType> _processorTypeRepository;
         private ISeasonRepository _seasonRepository;
         private ICompetitionOrganizationRepository _competitionOrganizationRepository;
+        private IHtmlQuerySelectorRepository _htmlQuerySelectorRepository;
 
         public UnitOfWork(AbaLeagueDbContext context)
         {
@@ -67,8 +68,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         public IGenericRepository<ProcessorType> ProcessorTypeRepository =>
           _processorTypeRepository ??= new GenericRepository<ProcessorType>(_context);
 
-        public ISelectorResourcesRepository SelectorResourcesRepository =>
-          _selectorResourcesRepository ??= new SelectorResourcesRepository(_context);
+        public IResourceSelectorRepository SelectorResourcesRepository =>
+          _selectorResourcesRepository ??= new ResourceSelectorRepository(_context);
 
         public IGameLengthRepository GameLengthRepository =>
           _gameLengthRepository ??= new GameLengthRepository(_context);
@@ -90,6 +91,9 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         
         public ICompetitionOrganizationRepository CompetitionOrganizationRepository =>
           _competitionOrganizationRepository ??= new CompetitionOrganizationRepository(_context);
+
+        public IHtmlQuerySelectorRepository HtmlQuerySelectorRepository =>
+          _htmlQuerySelectorRepository ??= new HtmlQuerySelectorRepository(_context);
 
         public void Dispose()
         {

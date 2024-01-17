@@ -4,6 +4,7 @@ using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Application.Abstractions.Messaging;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 using OpenData.Basketball.AbaLeague.Domain.Entities;
+using OpenData.Basketball.AbaLeague.Domain.Enums;
 using Result = OpenData.Basketball.AbaLeague.Domain.Common.Result;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.CreateLeague
@@ -75,6 +76,59 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
                     RoundsToPlay = request.RoundsToPlay,
                     CompetitionOrganizationId = existingCompetitionOrganization.Id,
                 }, cancellationToken);
+
+                await _unitOfWork.Save();
+                if (!string.IsNullOrEmpty(request.StandingsRowNameSelector))
+                {
+                    var exisitngSelectorType = _unitOfWork.HtmlQuerySelectorRepository
+                                                            .Get()
+                                                            .FirstOrDefault(x => 
+                                                            x.Id == (short) HtmlQuerySelectorEnum.StandingsRowName);
+                    if (exisitngSelectorType == null)
+                    {
+                        return Result.Failure(new Error("UnableToFoundSeason", ""));
+                    }
+                    await _unitOfWork.SelectorResourcesRepository.Add(new ResourceSelector()
+                    {
+                        HtmlQuerySelectorId = exisitngSelectorType.Id,
+                        LeagueId = result.Id,
+                        Value = request.StandingsRowNameSelector
+                    });
+                }
+                if (!string.IsNullOrEmpty(request.StandingsRowUrlSelector))
+                {
+                    var exisitngSelectorType = _unitOfWork.HtmlQuerySelectorRepository
+                                                            .Get()
+                                                            .FirstOrDefault(x =>
+                                                            x.Id == (short) HtmlQuerySelectorEnum.StandingsRowUrl);
+                    if (exisitngSelectorType == null)
+                    {
+                        return Result.Failure(new Error("UnableToFoundSeason", ""));
+                    }
+                    await _unitOfWork.SelectorResourcesRepository.Add(new ResourceSelector()
+                    {
+                        HtmlQuerySelectorId = exisitngSelectorType.Id,
+                        LeagueId = result.Id,
+                        Value = request.StandingsRowUrlSelector
+                    });
+                }
+                if (!string.IsNullOrEmpty(request.StandingsTableSelector))
+                {
+                    var exisitngSelectorType = _unitOfWork.HtmlQuerySelectorRepository
+                                                           .Get()
+                                                           .FirstOrDefault(x =>
+                                                           x.Id == (short) HtmlQuerySelectorEnum.StandingsTable);
+                    if (exisitngSelectorType == null)
+                    {
+                        return Result.Failure(new Error("UnableToFoundSeason", ""));
+                    }
+                    await _unitOfWork.SelectorResourcesRepository.Add(new ResourceSelector()
+                    {
+                        HtmlQuerySelectorId = exisitngSelectorType.Id,
+                        LeagueId = result.Id,
+                        Value = request.StandingsTableSelector
+                    });
+                }
 
                 await _unitOfWork.Save();
                 return Result.Success(result);

@@ -98,6 +98,27 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(model => model.League.StandingTableSelector)
+                    <div class="col-md-10">
+                        <input asp-for="League.StandingTableSelector" class="form-control" />
+                        <span asp-validation-for="League.StandingTableSelector" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.League.StandingRowName)
+                    <div class="col-md-10">
+                        <input asp-for="League.StandingRowName" class="form-control" />
+                        <span asp-validation-for="League.StandingRowName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.League.StandingRowUrl)
+                    <div class="col-md-10">
+                        <input asp-for="League.StandingRowUrl" class="form-control" />
+                        <span asp-validation-for="League.StandingRowUrl" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <button type="submit" class="btn btn-success">Save</button>
                     </div>

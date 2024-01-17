@@ -34,7 +34,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Com
                         TeamId = addSeasonResourceDto.TeamId,
                         TeamName = addSeasonResourceDto.TeamName,
                         TeamUrl = addSeasonResourceDto.TeamUrl??string.Empty,
-                        IncrowdUrl = addSeasonResourceDto.IncrowdUrl
+                        IncrowdUrl = addSeasonResourceDto.IncrowdUrl,
+                        BracketPosition = addSeasonResourceDto.BracketPosition,
+                        Group = addSeasonResourceDto.Group
                     });
                 }
 

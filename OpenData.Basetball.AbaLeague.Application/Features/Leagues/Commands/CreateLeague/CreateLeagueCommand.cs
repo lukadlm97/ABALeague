@@ -17,7 +17,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
             short processorType,
             int seasonId,
             int roundsToPlay, 
-            short competitionOrganization
+            short competitionOrganization,
+            string? standingsTable = null,
+            string? standingsRowName = null,
+            string? standingsRowUrl = null
             )
         {
             OfficialName = officialName;
@@ -32,6 +35,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
             SeasonId = seasonId;
             RoundsToPlay = roundsToPlay;
             CompetitionOrganization = (Domain.Enums.CompetitionOrganizationEnum) competitionOrganization;
+            StandingsTableSelector = standingsTable;
+            StandingsRowNameSelector = standingsRowName;
+            StandingsRowUrlSelector = standingsRowUrl;
         }
 
         public string OfficialName { get;  }
@@ -46,5 +52,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Commands.Cr
         public int SeasonId { get;  }
         public int RoundsToPlay { get;  }
         public Domain.Enums.CompetitionOrganizationEnum CompetitionOrganization { get;  }
+
+        public string? StandingsTableSelector { get; }
+        public string? StandingsRowNameSelector { get; }
+        public string? StandingsRowUrlSelector { get; }
     }
 }

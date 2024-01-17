@@ -184,7 +184,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                             processorId,
                                             seasonId,
                                             model.League.RoundsToPlay,
-                                            competitionOrganizationId));
+                                            competitionOrganizationId,
+                                            model.League.StandingTableSelector,
+                                            model.League.StandingRowName,
+                                            model.League.StandingRowUrl));
 
                 if (result.IsSuccess)
                 {

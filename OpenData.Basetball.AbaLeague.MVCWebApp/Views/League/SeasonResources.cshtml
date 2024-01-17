@@ -82,6 +82,12 @@ else
                             <a asp-controller="SeasonResource" asp-action="RegisterTeamForCompetition"
                             asp-route-leagueId="@Model.LeagueId"
                                asp-route-teamId="@item.TeamId" class="btn btn-outline-success">Register</a>
+                        @if (!Model.IsLeagueOrganization)
+                        {
+                            <a asp-controller="SeasonResource" asp-action="AssigneGroupOrBracketPosition"
+                               asp-route-leagueId="@Model.LeagueId"
+                               asp-route-teamId="@item.TeamId" class="btn btn-outline-success">Assigne Position</a>
+                        }
                     </td>
                 </tr>
             }
@@ -129,8 +135,11 @@ else
                 </td>
                 <td>
                         <a asp-controller="SeasonResource" asp-action="Determinate"
-                           asp-route-refName="@item.TeamName" asp-route-leagueId="@Model.LeagueId" 
-                           class="btn btn-outline-danger">Determiante</a>
+                           asp-route-refName="@item.TeamName" asp-route-leagueId="@Model.LeagueId"
+                           class="btn btn-outline-secondary">Connect To Existing Team</a>
+                        <a asp-controller="Team" asp-action="Upsert"
+                           asp-route-name="@item.TeamName" asp-route-teamId="null"
+                        class="btn btn-outline-primary">Create Team</a>
                 </td>
             </tr>
         }

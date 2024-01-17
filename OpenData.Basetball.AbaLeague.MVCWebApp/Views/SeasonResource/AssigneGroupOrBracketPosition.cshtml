@@ -1,0 +1,12 @@
+﻿@model SeasonResourcesAssigneGroupOrBracketPositionViewModel
+
+@if (Model.IsGroup)
+{
+    @await Html.PartialAsync("_AssigneGroupPosition", Model)
+    ;
+}
+else
+{
+    @await Html.PartialAsync("_AssigneBracketPosition", Model)
+    ;
+}
