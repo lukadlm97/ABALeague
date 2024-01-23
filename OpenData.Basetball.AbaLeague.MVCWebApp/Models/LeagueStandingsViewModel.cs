@@ -6,8 +6,6 @@
         public string LeagueName{ get; set;}
         public int TotalRounds { get; set; }
         public int PlayedRounds { get; set; }
-        public IList<LeagueStandingItemViewModel> StandingItems { get; set; }
-        public IList<LeagueStandingItemViewModel> HomeStandingItems { get; set; }
-        public IList<LeagueStandingItemViewModel> AwayStandingItems { get; set; }
+        public IList<StandingsViewModel> StandingItems { get; set; }
     }
 }

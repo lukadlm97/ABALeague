@@ -46,7 +46,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
             {
                 Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
-                Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Aba => new AbaPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Kls => new KlsPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             };
             if (processor == null)
@@ -84,6 +85,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                         string.Format(league.MatchUrl, x),
                     Domain.Enums.ProcessorType.Aba => league.BaseUrl +
                                                         string.Format(league.MatchUrl, x),
+                    Domain.Enums.ProcessorType.Kls => string.Format(league.MatchUrl, x),
                     Domain.Enums.ProcessorType.Unknow or null or _ => null
                 };
                 if (string.IsNullOrEmpty(url))
@@ -108,6 +110,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
             {
                 var match = matchesOnSchedule.FirstOrDefault(x=> x.MatchNo == item.MatchNo);
                 if (match == null)
+                {
+                    continue;
+                }
+                if(item.Attendency ==0 && item.HomeTeamPoint == 0 && item.AwayTeamPoint == 0)
                 {
                     continue;
                 }

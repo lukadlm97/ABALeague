@@ -21,8 +21,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
         public int RoundsToPlay { get; set; }
         public string SelectedCompetitionOrganizationId { get; set; }
         public SelectList CompetitionOrganizations { get; set; }
-        public string StandingTableSelector { get; set; }
-        public string StandingRowName { get; set; }
-        public string StandingRowUrl { get; set; }
+        public string? StandingTableSelector { get; set; }
+        public string? StandingRowName { get; set; }
+        public string? StandingRowUrl { get; set; }
     }
 }

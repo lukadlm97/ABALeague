@@ -1,0 +1,117 @@
+﻿@model StandingsViewModel
+
+<h5>@Model.Title</h5>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Position</th>
+            <th>Team</th>
+            <th>Played</th>
+            <th>Wins</th>
+            <th>Losses</th>
+            <th>Scored Points</th>
+            <th>Received Points</th>
+            <th>Point Difference</th>
+            <th>Recent Form</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.StandingItems != null && Model.StandingItems.Any())
+        {
+            var position = 1;
+            foreach (var standing in @Model.StandingItems)
+            {
+                <tr>
+                    <td>@position</td>
+                    <td>
+                        <a asp-controller="Team"
+                           asp-action="Performance"
+                           asp-route-leagueId="@Model.LeagueId"
+                           asp-route-teamId="@standing.TeamId">@standing.TeamName</a>
+                    </td>
+                    <td>@standing.PlayedGames</td>
+                    <td>@standing.WonGames</td>
+                    <td>@standing.LostGames</td>
+                    <td>@standing.ScoredPoints</td>
+                    <td>@standing.ReceivedPoints</td>
+                    <td>@standing.PointDifference</td>
+                    <td>
+                        @if (standing.RecentForm != null && standing.RecentForm.Any())
+                        {
+                            if (standing.RecentForm.Count > 4)
+                            {
+                                foreach (var result in standing.RecentForm.TakeLast(5))
+                                {
+                                    @if (result)
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    <span>&nbsp;</span>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var result in standing.RecentForm.TakeLast(standing.RecentForm.Count))
+                                {
+                                    @if (result)
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="result-@(result ? "win" : "loss")">
+                                            <span class="result-space">&nbsp;</span>
+                                        </span>
+                                    }
+                                    <span>&nbsp;</span>
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            <span>No recent results</span>
+                        }
+                    </td>
+                </tr>
+                position++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7">No standings available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<style>
+    .result-win {
+        color: white;
+        background-color: green;
+        font-size: 14px;
+    }
+
+    .result-loss {
+        color: white;
+        background-color: red;
+        font-size: 14px;
+    }
+
+    .result-space {
+        margin-right: 1px; /* Adjust the margin as needed */
+    }
+</style>

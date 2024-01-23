@@ -5,6 +5,7 @@ using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Domain.Entities;
 using static OpenData.Basketball.AbaLeague.Application.Validation.ValidationErrors;
+using OpenData.Basketball.AbaLeague.Application.Utilities;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById
 {
@@ -30,6 +31,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
             }
             var seasons = _unitOfWork.SeasonRepository.Get();
             var season = seasons.FirstOrDefault(y => y.Id == league.SeasonId);
+            var htmlSelectors = _unitOfWork.SelectorResourcesRepository.Get()
+                                            .Where(x=> x.LeagueId == request.LeagueId)
+                                            .ToList();
+
             var response = new LeagueItemDto(league.Id,
                                                 league.OfficalName, 
                                                 league.ShortName,
@@ -43,7 +48,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                                                 season.Id!,
                                                 season.Name!,
                                                 league.RoundsToPlay,
-                                                league.CompetitionOrganizationEnum ?? Domain.Enums.CompetitionOrganizationEnum.League);
+                                                league.CompetitionOrganizationEnum ?? Domain.Enums.CompetitionOrganizationEnum.League,
+                                                htmlSelectors.DetermianteSelectorValue(Domain.Enums.HtmlQuerySelectorEnum.StandingsRowName),
+                                                htmlSelectors.DetermianteSelectorValue(Domain.Enums.HtmlQuerySelectorEnum.StandingsRowUrl),
+                                                htmlSelectors.DetermianteSelectorValue(Domain.Enums.HtmlQuerySelectorEnum.StandingsTable));
 
             return response;
         }

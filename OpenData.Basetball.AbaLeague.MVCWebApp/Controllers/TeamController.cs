@@ -115,7 +115,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             });
         }
 
-        public async Task<IActionResult> Index(string filter = null, int pageNumber = 1, int pageSize = 50, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Index(string filter = null, int pageNumber = 1, int pageSize = 1000, CancellationToken cancellationToken = default)
         {
             var countries = await _sender.Send(new GetCountriesQuery(), cancellationToken);
 
@@ -257,28 +257,19 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
 
-            var players = await _sender.Send(new GetPlayersQuery(1, 100), cancellationToken);
-            if (players.HasNoValue)
-            {
-                return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
-            }
-
             List<PlayerViewModel> list = new List<PlayerViewModel>();
 
             foreach (var rosterItem in rosterItems.Value.Items)
             {
-                var player = players.Value.Players.FirstOrDefault(x => x.Id == rosterItem.PlayerId);
-                if (player != null)
+                list.Add(new PlayerViewModel()
                 {
-                    list.Add(new PlayerViewModel()
-                    {
-                        Name = player.Name,
-                        DateOfBirth = player.DateOfBirth,
-                        Id = player.Id,
-                        Height = player.Height,
-                        Country = player.CountryName
-                    });
-                }
+                    Name = rosterItem.Name,
+                    DateOfBirth = rosterItem.DateOfBirth,
+                    Id = rosterItem.Id,
+                    Height = rosterItem.Height,
+                    Country = rosterItem.CountryName
+                });
+                
             }
             List<SeasonResourceViewModel> history = new List<SeasonResourceViewModel>();
 

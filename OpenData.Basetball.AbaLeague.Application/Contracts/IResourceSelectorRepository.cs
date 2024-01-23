@@ -13,5 +13,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
         Task<ResourceSelector?> GetByLeagueIdAndSelectorType(int leagueId,
                                                                 short selectorType,
                                                                 CancellationToken cancellationToken = default); 
+        IQueryable<ResourceSelector> Get();
     }
 }

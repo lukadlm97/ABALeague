@@ -53,7 +53,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Commands.AddS
                         RoundMatch = calendarItem,
                         RoundMatchId = calendarItem.Id,
                         Attendency = item.Attendency,
-                        Venue = item.Venue,
+                        Venue = item.Venue ?? string.Empty,
                         AwayTeamPoint = item.AwayTeamPoints,
                         HomeTeamPoints = item.HomeTeamPoints
                     };

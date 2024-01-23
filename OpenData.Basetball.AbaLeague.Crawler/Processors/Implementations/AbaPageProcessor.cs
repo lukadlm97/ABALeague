@@ -16,12 +16,12 @@ using Microsoft.Extensions.Logging;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 {
-    public class WebPageProcessor : IWebPageProcessor
+    public class AbaPageProcessor : IWebPageProcessor
     {
         private readonly IDocumentFetcher _documentFether;
         private readonly ILoggerFactory _loggerFactory;
 
-        public WebPageProcessor(IDocumentFetcher documentFether, ILoggerFactory loggerFactory)
+        public AbaPageProcessor(IDocumentFetcher documentFether, ILoggerFactory loggerFactory)
         {
             _documentFether = documentFether;
             _loggerFactory = loggerFactory;
@@ -52,21 +52,12 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                     .GetAttribute("href")
                     .Trim();
 
-                name = RemoveAccents(name);
+                name = name.RemoveAccents();
                 teams.Add((name, url));
             }
 
             return teams;
 
-        }
-        string RemoveAccents(string input)
-        {
-            string normalized = input.Normalize(NormalizationForm.FormKD);
-            Encoding removal = Encoding.GetEncoding(Encoding.ASCII.CodePage,
-                new EncoderReplacementFallback(""),
-                new DecoderReplacementFallback(""));
-            byte[] bytes = removal.GetBytes(normalized);
-            return Encoding.ASCII.GetString(bytes);
         }
 
         public async Task<IReadOnlyList<(int? No, string Name, string Position, decimal Height, DateTime DateOfBirth, string Nationality, DateTime Start, DateTime? End)>> GetRoster(string teamUrl, CancellationToken cancellationToken = default)

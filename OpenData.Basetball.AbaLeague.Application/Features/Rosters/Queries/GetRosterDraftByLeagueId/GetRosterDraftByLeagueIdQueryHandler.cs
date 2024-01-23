@@ -48,7 +48,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
             {
                 Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
-                Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Aba => new AbaPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Kls => new KlsPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             };
             if (processor is null)
@@ -71,6 +72,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                     foreach (var team in teamSeasonResources)
                     {
                         var url = league.BaseUrl + team.TeamSourceUrl;
+                        var items = await processor.GetRoster(url, cancellationToken);
+                        rosterItems.AddRange(items.Select(x => (x.No, x.Name, x.Position, x.Height, x.DateOfBirth, x.Nationality, x.Start, x.End, team.TeamId, team.LeagueId)));
+                    }
+                    break;
+                case Domain.Enums.ProcessorType.Kls:
+                    foreach (var team in teamSeasonResources)
+                    {
+                        var url = league.BaseUrl + string.Format(league.RosterUrl, team.TeamUrl);
                         var items = await processor.GetRoster(url, cancellationToken);
                         rosterItems.AddRange(items.Select(x => (x.No, x.Name, x.Position, x.Height, x.DateOfBirth, x.Nationality, x.Start, x.End, team.TeamId, team.LeagueId)));
                     }
@@ -99,11 +108,19 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                 }
                 if(player == null)
                 {
+                    if (string.IsNullOrWhiteSpace(rosterItem.Name))
+                    {
+                        var logger =_loggerFactory.CreateLogger(Constants.PlaceHolderContants.CoachPosition);
+                        logger.LogError("missing name:" + rosterItem.Name);
+                        continue;
+                    }
                     var natioanality = league.ProcessorTypeEnum switch
                     {
                         Domain.Enums.ProcessorType.Euro => await _unitOfWork.CountryRepository.GetByIso3(rosterItem.Nationality, cancellationToken),
                         Domain.Enums.ProcessorType.Aba => await _unitOfWork.CountryRepository
                         .GetByAbaCode(rosterItem.Nationality, cancellationToken),
+                        Domain.Enums.ProcessorType.Kls => await _unitOfWork.CountryRepository
+                        .GetByIso3(rosterItem.Nationality, cancellationToken),
                         Domain.Enums.ProcessorType.Unknow or null or _ => null
                     };
 
@@ -178,10 +195,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             switch (value.Trim().ToLower())
             {
                 case "shooting guard":
+                case "shootingguard":
                     return PositionEnum.ShootingGuard;
                 case "center":
                     return PositionEnum.Center;
                 case "power forward":
+                case "powerforward":
                     return PositionEnum.PowerForward;
                 case "guard":
                     return PositionEnum.Guard;

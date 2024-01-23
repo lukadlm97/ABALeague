@@ -6,6 +6,7 @@ namespace OpenData.Basketball.AbaLeague.Domain.Enums
     {
         Unknow = 1,
         Euro = 2,
-        Aba = 3
+        Aba = 3,
+        Kls = 4
     }
 }

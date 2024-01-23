@@ -31,7 +31,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 return teams;
             }
             var webDocument = await _documentFetcher
-                .FetchDocument(leagueUrl, cancellationToken);
+               .FetchDocumentBySelenium(leagueUrl, cancellationToken);
 
             var teamElements = webDocument.QuerySelectorAll(standingsTableSelector);
 
@@ -49,7 +49,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 .QuerySelectorAll(standingsTableRowNameSelector)[0]
                 .InnerHtml
                 .Trim();
-                    name = name.Substring(0, name.IndexOf('<'));
+                    name = name.Substring(0, name.IndexOf('<')).Trim();
 
                     var url = teamElement
                         .QuerySelectorAll(standingsTableRowUrlSelector)[0]

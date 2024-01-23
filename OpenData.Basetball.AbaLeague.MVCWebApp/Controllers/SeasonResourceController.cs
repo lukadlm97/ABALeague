@@ -10,6 +10,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeam
 using OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Commands.CreateSeasonResources;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeams;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 {
@@ -55,11 +56,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 return Redirect("Error");
             }
-
-            return RedirectToAction("SeasonResources", "League", new
-            {
-                LeagueId = leagueId
-            });
+            var url = $"League/SeasonResources?leagueId={leagueId}";
+            return Redirect(url);
         }
 
         [HttpPost]
@@ -69,7 +67,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         {
             List<AddSeasonResourceDto> list = new List<AddSeasonResourceDto> ();
 
-            foreach(var item in seasonResourcesViewModel.NotExistingResourcesTeams)
+            foreach(var item in seasonResourcesViewModel.DraftTeams)
             {
                 list.Add(new AddSeasonResourceDto(item.TeamId,
                     item.LeagueId, 
@@ -85,10 +83,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             {
                 return Redirect("Error");
             }
-            return RedirectToAction("SeasonResources", "League", new
-            {
-                LeagueId = seasonResourcesViewModel.LeagueId
-            });
+            var url = $"League/SeasonResources?leagueId={seasonResourcesViewModel.LeagueId}";
+            return Redirect(url);
         }
         [HttpPost]
         public async Task<IActionResult>
@@ -107,11 +103,34 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     Description = "Unable to parse team id"
                 });
             }
+            if (!model.IsLeague)
+            {
+                if(model.IsGroup)
+                {
+                    if (string.IsNullOrEmpty(model.GroupName))
+                    {
+                        return View("Error", new InfoDescriptionViewModel()
+                        {
+                            Description = "Unable to parse team group name"
+                        });
+                    }
+                }
+                else
+                {
+                    if (model.BaracketPosition == null)
+                    {
+                        return View("Error", new InfoDescriptionViewModel()
+                        {
+                            Description = "Unable to parse team baracket position"
+                        });
+                    }
+                }
+            }
             var draftResources =
                 await _sender.Send(new GetTeamsByLeagueIdQuery(model.LeagueId), cancellationToken);
             var selectedDrafrResource = draftResources.Value
-                .DraftTeamSeasonResourcesItems
-                .FirstOrDefault(x => x.Name == model.TeamName);
+                .MissingTeamItems
+                .FirstOrDefault(x => x.Name.ToLower() == model.TeamName.ToLower());
             var selectedTeam = result.Value.Teams.FirstOrDefault(x => x.Id == teamId);
             if (selectedTeam == null || selectedDrafrResource == null)
             {
@@ -125,13 +144,16 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                 selectedDrafrResource.Url, 
                                                 decorativeTeamName, 
                                                 selectedDrafrResource.TeamUrl,
-                                                selectedDrafrResource.IncrowdUrl) 
+                                                selectedDrafrResource.IncrowdUrl,
+                                                model.GroupName,
+                                                model.BaracketPosition) 
                                             }), cancellationToken);
             if (result.HasNoValue)
             {
                 return Redirect("Error");
             }
-            var url = $"League/SeasonResources/{teamId}";
+            
+            var url = $"League/SeasonResources?leagueId={model.LeagueId}";
             return Redirect(url);
         }
 
@@ -139,19 +161,26 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
           Determinate([FromQuery] int leagueId, [FromQuery] string refName, CancellationToken cancellationToken = default)
         {
             var result = await _sender.Send(new GetTeamsQuery("",1,100), cancellationToken);
-
             if (result.HasNoValue)
             {
                 return Redirect("Error");
             }
 
-            return View(new SeasonResourcesDeterminateViewModel
+            var leagueResult = await _sender.Send(new GetLeagueByIdQuery(leagueId), cancellationToken);
+            if (leagueResult.HasNoValue)
+            {
+                return Redirect("Error");
+            }
+            var resource = new SeasonResourcesDeterminateViewModel
             {
                 LeagueId = leagueId,
                 TeamName = refName,
                 SelectedTeamId = result.Value.Teams.FirstOrDefault().Id.ToString(),
                 Teams = new SelectList(result.Value.Teams, "Id", "Name"),
-            });
+                IsLeague = leagueResult.Value.CompetitionOrganization == Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum.League,
+                IsGroup = leagueResult.Value.CompetitionOrganization == Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum.Groups,
+            };
+            return View(resource);
         }
 
         public async Task<IActionResult>  AssigneGroupOrBracketPosition([FromQuery] int leagueId, 
@@ -166,7 +195,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 LeagueId = leagueId,
                 TeamId = teamId,
                 TeamName = team.Value.Name,
-                LeagueName = team.Value.Name,
+                LeagueName = league.Value.OfficialName,
                 IsGroup = league.Value.CompetitionOrganization == Basketball.AbaLeague.Domain.Enums.CompetitionOrganizationEnum.Groups
             });
         }

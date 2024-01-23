@@ -26,27 +26,39 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
             var players = _unitOfWork.PlayerRepository.Get().ToList();
             var countries = _unitOfWork.CountryRepository.Get().ToList();
-            if (team == null || league == null)
+            if (team == null || league == null || players == null)
             {
                 return Maybe<RosterDto>.None;
             }
 
-            var roster = await _unitOfWork.RosterRepository.GetAll(cancellationToken);
-            var currentRosters = roster.Where(x => x.LeagueId == league.Id && x.TeamId == request.TeamId);
-            return new RosterDto(currentRosters.Select(
-                x => new RosterItemDto(x.PlayerId,
-                x.LeagueId,
-                x.DateOfInsertion,
-                x.EndOfActivePeriod, 
-                players?.FirstOrDefault(y=>y.Id == x.PlayerId)?.Name!, 
-                players.FirstOrDefault(y=>y.Id == x.PlayerId).PositionEnum,
-                players.FirstOrDefault(y=>y.Id == x.PlayerId).Height,
-                players.FirstOrDefault(y=>y.Id == x.PlayerId).DateOfBirth,
+            var roster = await _unitOfWork.RosterRepository.SearchByLeagueId(league.Id, cancellationToken);
+            var currentRosters = roster.Where(x => x.TeamId == request.TeamId);
+            List<RosterItemDto> list = new List<RosterItemDto>();
+
+            foreach (var item in currentRosters)
+            {
+                var selectedPlayer = players.FirstOrDefault(y => y.Id == item.PlayerId);
+                if (selectedPlayer == null)
+                {
+                    continue;
+                }
+                var newItem = new RosterItemDto(item.PlayerId,
+                item.LeagueId,
+               item.DateOfInsertion,
+                item.EndOfActivePeriod,
+                selectedPlayer.Name,
+                selectedPlayer.PositionEnum,
+                selectedPlayer.Height,
+                selectedPlayer.DateOfBirth,
                 DistanceCalculator
-                .CalculateAge(DateOnly.FromDateTime(players.FirstOrDefault(y => y.Id == x.PlayerId).DateOfBirth), DateOnly.FromDateTime(DateTime.UtcNow)),
-                players.FirstOrDefault(y=>y.Id == x.PlayerId).CountryId,
-                countries.FirstOrDefault(z=>z.Id == players.FirstOrDefault(y=>y.Id == x.PlayerId).CountryId).Name
-                )));
+                .CalculateAge(DateOnly.FromDateTime(selectedPlayer.DateOfBirth), DateOnly.FromDateTime(DateTime.UtcNow)),
+                selectedPlayer.CountryId,
+                countries?.FirstOrDefault(z => z.Id == selectedPlayer.CountryId)?.Name!
+                );
+                list.Add(newItem);
+            }
+
+            return new RosterDto(list);
         }
     }
 }

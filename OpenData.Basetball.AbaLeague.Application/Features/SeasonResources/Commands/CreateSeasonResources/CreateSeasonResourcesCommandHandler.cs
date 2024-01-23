@@ -29,11 +29,11 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Com
                     }
                     list.Add(new Basetball.AbaLeague.Domain.Entities.SeasonResources()
                     {
-                        TeamSourceUrl = addSeasonResourceDto.Url,
+                        TeamSourceUrl = addSeasonResourceDto.TeamUrl,
                         LeagueId = addSeasonResourceDto.LeagueId,
                         TeamId = addSeasonResourceDto.TeamId,
                         TeamName = addSeasonResourceDto.TeamName,
-                        TeamUrl = addSeasonResourceDto.TeamUrl??string.Empty,
+                        TeamUrl = addSeasonResourceDto.TeamUrl ?? string.Empty,
                         IncrowdUrl = addSeasonResourceDto.IncrowdUrl,
                         BracketPosition = addSeasonResourceDto.BracketPosition,
                         Group = addSeasonResourceDto.Group

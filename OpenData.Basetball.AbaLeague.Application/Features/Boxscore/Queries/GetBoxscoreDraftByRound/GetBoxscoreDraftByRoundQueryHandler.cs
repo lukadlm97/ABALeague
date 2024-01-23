@@ -76,7 +76,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                 IWebPageProcessor? processor = league.ProcessorTypeEnum switch
                 {
                     Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
-                    Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
+                    Domain.Enums.ProcessorType.Aba => new AbaPageProcessor(_documentFetcher, _loggerFactory),
+                    Domain.Enums.ProcessorType.Kls => new KlsPageProcessor(_documentFetcher, _loggerFactory),
                     Domain.Enums.ProcessorType.Unknow or null or _ => null
                 };
                 if (processor is null)
@@ -100,6 +101,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                     case Domain.Enums.ProcessorType.Aba:
                         rawUrl = league.BaseUrl + league.BoxScoreUrl;
                         url = string.Format(rawUrl, item.MatchNo);
+                        boxScoreItems = await processor.GetBoxScore(url, cancellationToken);
+                        break;
+                    case Domain.Enums.ProcessorType.Kls:
+                        url = string.Format(league.BoxScoreUrl, item.MatchNo);
                         boxScoreItems = await processor.GetBoxScore(url, cancellationToken);
                         break;
                     default:

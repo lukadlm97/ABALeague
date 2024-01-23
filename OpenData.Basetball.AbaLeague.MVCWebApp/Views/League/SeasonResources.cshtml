@@ -2,27 +2,27 @@
 
 <h2>@ViewBag.Title</h2>
 
-<h3>Existing resources</h3>
-@if (Model.ExistingTeams.Any())
+<h3>Draft season resources</h3>
+@if (Model.DraftTeams.Any())
 {
     <table class="table">
         <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamName)
+                    @Html.DisplayNameFor(model => model.DraftTeams[0].TeamName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamUrl)
+                    @Html.DisplayNameFor(model => model.DraftTeams[0].TeamUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ExistingTeams[0].Url)
+                    @Html.DisplayNameFor(model => model.DraftTeams[0].Url)
             </th>
             <td>
             </td>
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model.ExistingTeams)
+            @foreach (var item in Model.DraftTeams)
         {
             <tr>
                 <td>
@@ -34,6 +34,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Url)
                 </td>
+                    <td>
+                    @if (Model.IsLeagueOrganization)
+                    {
+                        <a asp-controller="SeasonResource" asp-action="RegisterTeamForCompetition"
+                            asp-route-leagueId="@Model.LeagueId"
+                            asp-route-teamId="@item.TeamId" class="btn btn-outline-success">Register</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="SeasonResource" asp-action="AssigneGroupOrBracketPosition"
+                            asp-route-leagueId="@Model.LeagueId"
+                            asp-route-teamId="@item.TeamId" class="btn btn-outline-success">Assigne Position</a>
+                    }
+                </td>
             </tr>
         }
         </tbody>
@@ -42,31 +56,31 @@
 else
 {
     <p>
-        There is no existing teams/resources at this section.
+        There is no existing draft for teams/resources at this section.
     </p>
 }
 
-<h3>Not existing resources</h3>
-@if (Model.NotExistingResourcesTeams.Any())
+<h3>Existing resources</h3>
+@if (Model.ExistingTeams.Any())
 {
         <table class="table">
             <thead>
             <tr>
                 <th>
-                        @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].TeamName)
+                    @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamName)
                 </th>
                 <th>
-                        @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].TeamUrl)
+                    @Html.DisplayNameFor(model => model.ExistingTeams[0].TeamUrl)
                 </th>
                 <th>
-                        @Html.DisplayNameFor(model => model.NotExistingResourcesTeams[0].Url)
+                    @Html.DisplayNameFor(model => model.ExistingTeams[0].Url)
                 </th>
                 <td>
                 </td>
             </tr>
             </thead>
             <tbody>
-             @foreach (var item in Model.NotExistingResourcesTeams)
+            @foreach (var item in Model.ExistingTeams)
             {
                 <tr>
                     <td>
@@ -77,17 +91,6 @@ else
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Url)
-                    </td>
-                    <td>
-                            <a asp-controller="SeasonResource" asp-action="RegisterTeamForCompetition"
-                            asp-route-leagueId="@Model.LeagueId"
-                               asp-route-teamId="@item.TeamId" class="btn btn-outline-success">Register</a>
-                        @if (!Model.IsLeagueOrganization)
-                        {
-                            <a asp-controller="SeasonResource" asp-action="AssigneGroupOrBracketPosition"
-                               asp-route-leagueId="@Model.LeagueId"
-                               asp-route-teamId="@item.TeamId" class="btn btn-outline-success">Assigne Position</a>
-                        }
                     </td>
                 </tr>
             }

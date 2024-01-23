@@ -15,7 +15,10 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
                                 int SeasonId,
                                 string SeasonName,
                                 int? RoundsToPlay,
-                                Domain.Enums.CompetitionOrganizationEnum CompetitionOrganization
+                                Domain.Enums.CompetitionOrganizationEnum CompetitionOrganization,
+                                string? StandingRowName = null,
+                                string? StandingRowUrl = null,
+                                string? StandingTableSelector = null
                                 );
 
     public record LeaguesDto(IEnumerable<LeagueItemDto> LeagueResponses);

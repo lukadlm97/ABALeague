@@ -8,6 +8,7 @@ using OpenData.Basketball.AbaLeague.Application.Services.Implementation;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 using OpenData.Basketball.AbaLeague.Domain.Entities;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,21 +32,45 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
         {
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
             var results = await _unitOfWork.ResultRepository.SearchByLeague(request.LeagueId, cancellationToken);
-            if(league == null || results == null) 
-            {
-                return Maybe<StandingsDto>.None;
-            }
-            var list = await _standingsService.GetByLeagueId(request.LeagueId, cancellationToken);
-            if(list == null || !list.Any())
+            var seasonResourcesByLeague = await _unitOfWork.SeasonResourcesRepository
+                                                            .SearchByLeague(request.LeagueId, cancellationToken);
+            if (league == null || results == null || seasonResourcesByLeague == null) 
             {
                 return Maybe<StandingsDto>.None;
             }
 
+            var list = await _standingsService.GetByLeagueId(request.LeagueId, cancellationToken);
+            if (list == null || !list.Any())
+            {
+                return Maybe<StandingsDto>.None;
+            }
+
+            List<GroupStandingsDto> groupStandings = new List<GroupStandingsDto>();
+            switch (league.CompetitionOrganizationEnum)
+            {
+                case Domain.Enums.CompetitionOrganizationEnum.Groups:
+                    var groups = seasonResourcesByLeague.Select(x=>x.Group).Distinct().ToList();
+                    foreach(var group in groups)
+                    {
+                        var teamIds = seasonResourcesByLeague.Where(x => x.Group == group)
+                                                                .Select(x => x.TeamId);
+                        var standings = list.Where(x => teamIds.Contains(x.TeamId));
+                        groupStandings.Add(new GroupStandingsDto(group, standings.ToFrozenSet()));
+                    }
+                    break;
+                default:
+                case Domain.Enums.CompetitionOrganizationEnum.League:
+                    break;
+            }
+            
+
             return new StandingsDto(league.Id, 
                                     league.OfficalName,
+                                    league.CompetitionOrganizationEnum,
                                     league.RoundsToPlay ?? 0, 
-                                    results.Select(x=>x.RoundMatch.Round).Distinct().Count(), 
-                                    list);
+                                    results.Select(x => x.RoundMatch.Round).Distinct().Count(), 
+                                    list.ToFrozenSet(),
+                                    groupStandings.ToFrozenSet());
         }
     }
 }

@@ -43,18 +43,19 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
             {
                 return Maybe<TeamSeasonResourceDto>.None;
             }
-            var seasonResources = await _unitOfWork.SeasonResourcesRepository.GetAll(cancellationToken);
+
             IWebPageProcessor? webPageProcessor = league.ProcessorTypeEnum switch
             {
                 Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
-                Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Aba => new AbaPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Kls => new KlsPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             };
             if (webPageProcessor == null)
             {
                 return Maybe<TeamSeasonResourceDto>.None;
             }
-
+            // find way to 
             var url = league.BaseUrl + league.StandingUrl;
 
             IReadOnlyList<(string, string)> teams = league.ProcessorTypeEnum switch
@@ -64,8 +65,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                                                 await GetStandingSelector(request.LeagueId),
                                                 await GetStandingRowNameSelector(request.LeagueId), 
                                                 await GetStandingRowUrlSelector(request.LeagueId), cancellationToken),
-                Domain.Enums.ProcessorType.Aba =>
-                await webPageProcessor.GetTeams(url, null, null, null, cancellationToken),
+                Domain.Enums.ProcessorType.Aba => await webPageProcessor.GetTeams(url, null, null, null, cancellationToken),
+                Domain.Enums.ProcessorType.Kls => await webPageProcessor
+                .GetTeams(league.StandingUrl,
+                            await GetStandingSelector(request.LeagueId),
+                            null,
+                            null,
+                            cancellationToken),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             }; ;
             if (teams == null || !teams.Any())
@@ -78,20 +84,16 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
 
             var existingTeamSeasonResources = new List<TeamItemDraftDto>();
             var draftTeamSeasonResources = new List<TeamItemDraftDto>();
-            var missingTeamItems = new List<string>();
-            foreach (var (name,teamUrl) in teams)
+            var missingTeamItems = new List<MissingTeamDto>();
+            foreach (var (name, teamUrl) in teams)
             {
-                if (!existingTeams.Any(x => name.ToLower().Contains(x.Name.ToLower())))
+                if(existingTeams.Any(x=> x.Name.Trim().ToLower() == name.Trim().ToLower()))
                 {
-                    if(seasonResources.Where(x => x.LeagueId == request.LeagueId)
-                        .Any(x=>x.TeamName.ToLower() == name.ToLower()))
+                    var selectedTeam = existingTeams.First(x=>x.Name.Trim().ToLower() == name.Trim().ToLower());
+                    if(existingSeasonResorces.Any(x=>x.TeamId == selectedTeam.Id))
                     {
-                        var selectedSeasonResources= seasonResources
-                            .FirstOrDefault(x=>x.LeagueId == request.LeagueId && 
-                                                x.TeamName.ToLower() == name.ToLower());
-
                         existingTeamSeasonResources.Add(
-                            new TeamItemDraftDto(selectedSeasonResources.TeamId,
+                            new TeamItemDraftDto(selectedTeam.Id,
                                                     name,
                                                     null,
                                                     teamUrl.Trim(league.BaseUrl),
@@ -99,23 +101,34 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                                                             .ExtractTeamCode()));
                         continue;
                     }
-                    missingTeamItems.Add(name);
-                    continue;
-                }
-                var existingTeam = existingTeams.First(x => name.ToLower().Contains(x.Name.ToLower()));
-                if (existingSeasonResorces.Any(x => x.TeamName.ToLower().Contains(name.ToLower())))
-                {
                     draftTeamSeasonResources.Add(
-                        new TeamItemDraftDto(existingTeam.Id,
-                                                name, 
-                                                null, 
-                                                teamUrl.Trim(league.BaseUrl), 
-                                                teamUrl.Trim(league.BaseUrl)
-                                                        .ExtractTeamCode()));
+                           new TeamItemDraftDto(selectedTeam.Id,
+                                                   name,
+                                                   null,
+                                                   teamUrl.Trim(league.BaseUrl),
+                                                   teamUrl.Trim(league.BaseUrl)
+                                                           .ExtractTeamCode()));
                 }
                 else
                 {
-                    missingTeamItems.Add(name);
+                    if(existingSeasonResorces.Any(x=> x.TeamName.Trim().ToLower() == name.Trim().ToLower()))
+                    {
+                        var selectedSeasonResource = existingSeasonResorces
+                            .First(x => x.TeamName.Trim().ToLower() == name.Trim().ToLower());
+                        var selectedTeam = existingTeams.First(x => x.Id == selectedSeasonResource.TeamId);
+                        existingTeamSeasonResources.Add(
+                           new TeamItemDraftDto(selectedTeam.Id,
+                                                   name,
+                                                   null,
+                                                   teamUrl.Trim(league.BaseUrl),
+                                                   teamUrl.Trim(league.BaseUrl)
+                                                           .ExtractTeamCode()));
+                        continue;
+                    }
+                    missingTeamItems.Add(new MissingTeamDto(name, null,
+                                                 teamUrl.Trim(league.BaseUrl),
+                                                 teamUrl.Trim(league.BaseUrl)
+                                                         .ExtractTeamCode()));
                 }
             }
             return new TeamSeasonResourceDto(existingTeamSeasonResources.ToFrozenSet(),

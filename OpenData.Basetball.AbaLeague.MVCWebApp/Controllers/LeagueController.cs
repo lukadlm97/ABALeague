@@ -90,6 +90,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     CompetitionOrganizations = 
                     new SelectList(competionOrganizationResult.Value.CompetionOrganizationItems,  "Id", "Name"),
                     SelectedCompetitionOrganizationId = 1.ToString(),
+                    StandingRowName =  string.Empty,
+                    StandingRowUrl = string.Empty,
+                    StandingTableSelector = string.Empty
                 },
             };
             var modelName = "Insert";
@@ -121,7 +124,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 RoundsToPlay = results.Value.RoundsToPlay ?? 0,
                 CompetitionOrganizations =
                     new SelectList(competionOrganizationResult.Value.CompetionOrganizationItems, "Id", "Name"),
-                SelectedCompetitionOrganizationId = ((short) (results.Value.CompetitionOrganization)).ToString()
+                SelectedCompetitionOrganizationId = ((short) (results.Value.CompetitionOrganization)).ToString(),
+                StandingRowName = results.Value.StandingRowName,
+                StandingRowUrl = results.Value.StandingRowUrl,
+                StandingTableSelector = results.Value.StandingTableSelector
             };
             ViewBag.Title = "Update";
             return View(leagueViewModel);
@@ -239,7 +245,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error");
             }
 
-            var existingSeasonResources = results.Value.DraftTeamSeasonResourcesItems
+            var draftSeasonResources = results.Value.DraftTeamSeasonResourcesItems
                                                         .Select(x => new AddSeasonResourceDraftDto(x.TeamId ?? 0, 
                                                                                                     league.Value.Id ?? -1, 
                                                                                                     x.Url, 
@@ -250,10 +256,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                     .Select(x =>  new AddSeasonResourceDraftDto(-1,
                                                                                                 league.Value.Id ?? -1, 
                                                                                                 string.Empty,
-                                                                                                x, 
-                                                                                                string.Empty, 
-                                                                                                string.Empty));
-            var notExistingResources = results.Value.ExistingTeamSeasonResourcesItems
+                                                                                                x.Name,
+                                                                                                x.Url,
+                                                                                                x.IncrowdUrl));
+            var existingResources = results.Value.ExistingTeamSeasonResourcesItems
                                                         .Select(x => new AddSeasonResourceDraftDto(x.TeamId ?? 0, 
                                                                                                     league.Value.Id ?? -1,
                                                                                                     x.Url, 
@@ -262,10 +268,11 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                                                                     x.IncrowdUrl));
             var leagueDetailsViewModel = new SeasonResourcesViewModel()
             {
-                ExistingTeams = existingSeasonResources.ToList(),
+                ExistingTeams = existingResources.ToList(),
                 MissingTeams = notExistingTeams.ToList(),
-                NotExistingResourcesTeams = notExistingResources.ToList(),
-                LeagueId = leagueId
+                DraftTeams = draftSeasonResources.ToList(),
+                LeagueId = leagueId,
+                IsLeagueOrganization = league.Value.CompetitionOrganization == CompetitionOrganizationEnum.League
             };
             ViewBag.Title = league.Value.ShortName + " -" + modelName;
             return View(leagueDetailsViewModel);
@@ -273,103 +280,133 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
         public async Task<IActionResult> Standings(int leagueId, CancellationToken cancellationToken = default)
         {
-            var results = await _sender.Send(new GetStandingsByLeagueIdQuery(leagueId), cancellationToken);
+            var standingsResult = await _sender.Send(new GetStandingsByLeagueIdQuery(leagueId), cancellationToken);
+            var leagueResult = await _sender.Send(new GetLeagueByIdQuery(leagueId), cancellationToken);
 
             var modelName = " Standings";
 
-            if (results.HasNoValue)
+            if (standingsResult.HasNoValue || leagueResult.HasNoValue)
             {
                 ViewBag.Title = modelName;
                 return View("Error");
             }
+            List<StandingsViewModel> standings = new List<StandingsViewModel>();
 
+            switch (leagueResult.Value.CompetitionOrganization)
+            {
+                case CompetitionOrganizationEnum.League:
+                    standings.Add(new StandingsViewModel
+                    {
+                        LeagueId = leagueId,
+                        Title = "Total standings",
+                        StandingItems = standingsResult.Value.StandingItems
+                                          .OrderByDescending(x => x.WonGames)
+                                          .ThenByDescending(x => x.PointDifference)
+                                          .ThenByDescending(x => x.ScoredHomePoints)
+                                          .Select(x => new LeagueStandingItemViewModel
+                                          {
+                                              CountryCode = x.CountryCode,
+                                              CountryId = x.CountryId,
+                                              LostGames = x.LostGames,
+                                              PlayedGames = x.PlayedGames,
+                                              PointDifference = x.PointDifference,
+                                              ReceivedPoints = x.ReceivedPoints,
+                                              ScoredPoints = x.ScoredPoints,
+                                              TeamId = x.TeamId,
+                                              TeamName = x.TeamName,
+                                              WonGames = x.WonGames,
+                                              RecentForm = x.RecentForm.ToList(),
+                                          }).ToList()
+                    });
+
+                    standings.Add(new StandingsViewModel
+                    {
+                        LeagueId = leagueId,
+                        Title = "Home match standings",
+                        StandingItems = standingsResult.Value.StandingItems
+                        .OrderByDescending(x => x.WonHomeGames)
+                        .ThenBy(x => x.LostHomeGames)
+                        .ThenByDescending(x => (x.ScoredHomePoints - x.ReceivedHomePoints))
+                        .Select(x => new LeagueStandingItemViewModel
+                        {
+                            CountryCode = x.CountryCode,
+                            CountryId = x.CountryId,
+                            LostGames = x.LostHomeGames,
+                            PlayedGames = x.PlayedHomeGames,
+                            PointDifference = x.ScoredHomePoints - x.ReceivedHomePoints,
+                            ReceivedPoints = x.ReceivedHomePoints,
+                            ScoredPoints = x.ScoredHomePoints,
+                            TeamId = x.TeamId,
+                            TeamName = x.TeamName,
+                            WonGames = x.WonHomeGames,
+                            RecentForm = x.HomeRecentForm.ToList()
+                        }).ToList()
+                    });
+
+                    standings.Add(new StandingsViewModel
+                    {
+                        LeagueId = leagueId,
+                        Title = "Away match standings",
+                        StandingItems = standingsResult.Value.StandingItems
+                        .OrderByDescending(x => x.WonAwayGames)
+                        .ThenBy(x => x.LostAwayGames)
+                        .ThenByDescending(x => (x.ScoredAwayPoints - x.ReceivedAwayPoints))
+                        .Select(x => new LeagueStandingItemViewModel
+                         {
+                             CountryCode = x.CountryCode,
+                             CountryId = x.CountryId,
+                             LostGames = x.LostAwayGames,
+                             PlayedGames = x.PlayedAwayGames,
+                             PointDifference = x.ScoredAwayPoints - x.ReceivedAwayPoints,
+                             ReceivedPoints = x.ReceivedAwayPoints,
+                             ScoredPoints = x.ScoredAwayPoints,
+                             TeamId = x.TeamId,
+                             TeamName = x.TeamName,
+                             WonGames = x.WonAwayGames,
+                             RecentForm = x.AwayRecentForm.ToList()
+                         }).ToList(),
+                    }); 
+                    break;
+                case CompetitionOrganizationEnum.Groups:
+                    foreach(var item in standingsResult.Value.GroupStandingItems)
+                    {
+                        standings.Add(new StandingsViewModel
+                        {
+                            LeagueId = leagueId,
+                            Title = $"Standings - {item.Name}",
+                            StandingItems = item.StandingsItems
+                                         .OrderByDescending(x => x.WonGames)
+                                         .ThenByDescending(x => x.PointDifference)
+                                         .ThenByDescending(x => x.ScoredHomePoints)
+                                         .Select(x => new LeagueStandingItemViewModel
+                                         {
+                                             CountryCode = x.CountryCode,
+                                             CountryId = x.CountryId,
+                                             LostGames = x.LostGames,
+                                             PlayedGames = x.PlayedGames,
+                                             PointDifference = x.PointDifference,
+                                             ReceivedPoints = x.ReceivedPoints,
+                                             ScoredPoints = x.ScoredPoints,
+                                             TeamId = x.TeamId,
+                                             TeamName = x.TeamName,
+                                             WonGames = x.WonGames,
+                                             RecentForm = x.RecentForm.ToList(),
+                                         }).ToList()
+                        });
+                    }
+
+
+                    break;
+                default: throw new NotImplementedException();
+            }
+          
             var leagueDetailsViewModel = new LeagueStandingsViewModel()
             {
-                LeagueId = results.Value.LeagueId,
-                LeagueName = results.Value.LeagueName,
-                PlayedRounds = results.Value.PlayedRounds,
-                TotalRounds = results.Value.TotalRounds,
-                StandingItems = results.Value.StandingItems.Select(x => new LeagueStandingItemViewModel
-                {
-                    CountryCode = x.CountryCode,
-                    CountryId = x.CountryId,
-                    LostAwayGames = x.LostAwayGames,
-                    LostGames = x.LostGames,
-                    LostHomeGames = x.LostHomeGames,
-                    PlayedAwayGames = x.PlayedAwayGames,
-                    PlayedGames = x.PlayedGames,
-                    PlayedHomeGames = x.PlayedHomeGames,
-                    PointDifference = x.PointDifference,
-                    ReceivedAwayPoints = x.ReceivedAwayPoints,
-                    ReceivedHomePoints = x.ReceivedHomePoints,
-                    ReceivedPoints = x.ReceivedPoints,
-                    ScoredAwayPoints = x.ScoredAwayPoints,
-                    ScoredHomePoints = x.ScoredHomePoints,
-                    ScoredPoints = x.ScoredPoints,
-                    TeamId = x.TeamId,
-                    TeamName = x.TeamName,
-                    WonAwayGames = x.WonAwayGames,  
-                    WonGames = x.WonGames,
-                    WonHomeGames = x.WonHomeGames,
-                    RecentForm = x.RecentForm.ToList(),
-                }).ToList(),
-                HomeStandingItems = results.Value.StandingItems.OrderByDescending(x => x.WonHomeGames)
-                                                                    .ThenBy(x => x.LostHomeGames)
-                                                                    .ThenByDescending(x =>
-                                                                        (x.ScoredHomePoints - x.ReceivedHomePoints)).Select(x => new LeagueStandingItemViewModel
-                {
-                    CountryCode = x.CountryCode,
-                    CountryId = x.CountryId,
-                    LostAwayGames = x.LostAwayGames,
-                    LostGames = x.LostGames,
-                    LostHomeGames = x.LostHomeGames,
-                    PlayedAwayGames = x.PlayedAwayGames,
-                    PlayedGames = x.PlayedGames,
-                    PlayedHomeGames = x.PlayedHomeGames,
-                    PointDifference = x.PointDifference,
-                    ReceivedAwayPoints = x.ReceivedAwayPoints,
-                    ReceivedHomePoints = x.ReceivedHomePoints,
-                    ReceivedPoints = x.ReceivedPoints,
-                    ScoredAwayPoints = x.ScoredAwayPoints,
-                    ScoredHomePoints = x.ScoredHomePoints,
-                    ScoredPoints = x.ScoredPoints,
-                    TeamId = x.TeamId,
-                    TeamName = x.TeamName,
-                    WonAwayGames = x.WonAwayGames,
-                    WonGames = x.WonGames,
-                    WonHomeGames = x.WonHomeGames,
-                    HomeRecentForm = x.HomeRecentForm.ToList()
-
-                }).ToList(),
-                 AwayStandingItems = results.Value.StandingItems.OrderByDescending(x=>x.WonAwayGames)
-                                                                    .ThenBy(x => x.LostAwayGames)
-                                                                    .ThenByDescending(x => 
-                                                                        (x.ScoredAwayPoints-x.ReceivedAwayPoints))
-                 .Select(x => new LeagueStandingItemViewModel
-                 {
-                     CountryCode = x.CountryCode,
-                     CountryId = x.CountryId,
-                     LostAwayGames = x.LostAwayGames,
-                     LostGames = x.LostGames,
-                     LostHomeGames = x.LostHomeGames,
-                     PlayedAwayGames = x.PlayedAwayGames,
-                     PlayedGames = x.PlayedGames,
-                     PlayedHomeGames = x.PlayedHomeGames,
-                     PointDifference = x.PointDifference,
-                     ReceivedAwayPoints = x.ReceivedAwayPoints,
-                     ReceivedHomePoints = x.ReceivedHomePoints,
-                     ReceivedPoints = x.ReceivedPoints,
-                     ScoredAwayPoints = x.ScoredAwayPoints,
-                     ScoredHomePoints = x.ScoredHomePoints,
-                     ScoredPoints = x.ScoredPoints,
-                     TeamId = x.TeamId,
-                     TeamName = x.TeamName,
-                     WonAwayGames = x.WonAwayGames,
-                     WonGames = x.WonGames,
-                     WonHomeGames = x.WonHomeGames,
-                     AwayRecentForm = x.AwayRecentForm.ToList()
-                 }).ToList(),
-                 
+                LeagueId = standingsResult.Value.LeagueId,
+                LeagueName = standingsResult.Value.LeagueName,
+                PlayedRounds = standingsResult.Value.PlayedRounds,
+                TotalRounds = standingsResult.Value.TotalRounds,
+                StandingItems = standings
             };
             ViewBag.Title = leagueDetailsViewModel.LeagueName + " -" + modelName;
             return View(leagueDetailsViewModel);

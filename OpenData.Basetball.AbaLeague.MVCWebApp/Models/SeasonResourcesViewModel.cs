@@ -6,8 +6,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
     {
         public int LeagueId { get; set; }
         public IList<AddSeasonResourceDraftDto> MissingTeams { get; set; }
+        public IList<AddSeasonResourceDraftDto> DraftTeams { get; set; }
         public IList<AddSeasonResourceDraftDto> ExistingTeams { get; set; }
-        public IList<AddSeasonResourceDraftDto> NotExistingResourcesTeams { get; set; }
         public bool IsLeagueOrganization { get; set; }
     }
 }

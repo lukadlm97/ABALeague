@@ -10,5 +10,5 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources
 {
     public record TeamSeasonResourceDto(FrozenSet<TeamItemDraftDto> ExistingTeamSeasonResourcesItems,
                                         FrozenSet<TeamItemDraftDto> DraftTeamSeasonResourcesItems,
-                                        FrozenSet<string> MissingTeamItems);
+                                        FrozenSet<MissingTeamDto> MissingTeamItems);
 }

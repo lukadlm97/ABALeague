@@ -8,6 +8,8 @@
     <form asp-controller="SeasonResource" asp-action="RegisterTeamForCompetitionViaForm" method="post">
         <input type="hidden" asp-for="@Model.LeagueId" /> 
         <input type="hidden" asp-for="@Model.TeamName" />
+        <input type="hidden" asp-for="@Model.IsLeague" />
+        <input type="hidden" asp-for="@Model.IsGroup" />
         <div class="form-group">
            <h6>@Model.TeamName</h6>
         </div>
@@ -17,6 +19,29 @@
                 <select asp-for="SelectedTeamId" class="form-control" asp-items="Model.Teams"></select>
             </div>
         </div>
+        @if(!@Model.IsLeague)
+        {
+            @if (@Model.IsGroup)
+            {
+               <div class="form-group">
+                    <label asp-for="GroupName" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="GroupName" class="form-control" />
+                        <span asp-validation-for="GroupName" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="BaracketPosition" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="BaracketPosition" class="form-control" />
+                        <span asp-validation-for="BaracketPosition" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+        }
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <button type="submit" class="btn btn-success">Register</button>

@@ -41,7 +41,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
             IWebPageProcessor? processor = league.ProcessorTypeEnum switch
             {
                 Domain.Enums.ProcessorType.Euro => new EuroPageProcessor(_documentFetcher, _loggerFactory),
-                Domain.Enums.ProcessorType.Aba => new WebPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Aba => new AbaPageProcessor(_documentFetcher, _loggerFactory),
+                Domain.Enums.ProcessorType.Kls => new KlsPageProcessor(_documentFetcher, _loggerFactory),
                 Domain.Enums.ProcessorType.Unknow or null or _ => null
             };
             if (processor is null)
@@ -55,7 +56,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
                 case Domain.Enums.ProcessorType.Euro:
                     var rawUrl = league.BaseUrl + league.CalendarUrl;
                     List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)> list = new List<(string HomeTeamName, string AwayTeamName, int? HomeTeamPoints, int? AwayTeamPoints, DateTime? Date, int? MatchNo, int? Round)>();
-                    for (int i=0;i< (subsetResources.Count()-1) * 2; i++)
+                    for (int i=0;i< league.RoundsToPlay; i++)
                     {
                         var url = string.Format(rawUrl, i+1);
                         list.AddRange(await processor.GetRegularSeasonCalendar(i + 1, url, cancellationToken));
@@ -64,6 +65,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
                     break;
                 case Domain.Enums.ProcessorType.Aba:
                     scheduleItems = await processor.GetRegularSeasonCalendar(league.BaseUrl + league.CalendarUrl, cancellationToken);
+                    break;
+                case Domain.Enums.ProcessorType.Kls:
+                    scheduleItems = await processor
+                        .GetRegularSeasonCalendar(league.CalendarUrl, cancellationToken);
                     break;
                 default:
                     throw new NotImplementedException();

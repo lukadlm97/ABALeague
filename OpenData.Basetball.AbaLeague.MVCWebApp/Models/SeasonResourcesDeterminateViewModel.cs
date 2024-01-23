@@ -9,5 +9,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 
         public string SelectedTeamId { get; set; }
         public SelectList Teams { get; set; }
+        public bool IsLeague { get; set; }
+        public bool IsGroup { get; set; }
+        public string? GroupName { get; set; }
+        public int? BaracketPosition { get; set; }
     }
 }

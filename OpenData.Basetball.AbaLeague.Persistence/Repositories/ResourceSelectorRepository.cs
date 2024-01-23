@@ -46,6 +46,11 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             throw new NotImplementedException();
         }
 
+        public IQueryable<ResourceSelector> Get()
+        {
+            return _dbContext.ResourceSelector;
+        }
+
         public Task<IReadOnlyList<ResourceSelector>> GetAll(CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();

@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Dom;
+using OpenData.Basetball.AbaLeague.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Linq;
 
 namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
 {
@@ -157,6 +159,15 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             var time = spplited[1];
 
             if (DateTime.TryParseExact(date + " " + time, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out DateTime dateOut))
+            {
+                return dateOut;
+            }
+            return null;
+        }
+        public static DateTime? ParseDateTimeFromKlsFormat(this string value)
+        {
+            if (DateTime.TryParseExact(value, "dd.MM.yyyy. HH:mm", CultureInfo.InvariantCulture,
                     DateTimeStyles.None, out DateTime dateOut))
             {
                 return dateOut;
@@ -312,6 +323,46 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             return input;
         }
 
+        public static string SwapFirstAndLastNameForBalkanPlayer(this string input)
+        {
+            var specialChars = new List<string>
+            {
+                "đ", "Š", "š", "Ž", "ž", "Ć", "Č", "ć", "č",  "Đ"
+            };
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return input;
+            }
+
+            bool isHomeName = false;
+            foreach(var inputChar in input)
+            {
+                if (specialChars.Contains(inputChar.ToString()))
+                {
+                    isHomeName = true;
+                    break;
+                }
+            }
+            if(!isHomeName )
+            {
+                return input;
+            }
+            // Split the input into parts using space as the separator
+            string[] nameParts = input.Split(' ');
+
+            // Check if there are at least two parts (first name and last name)
+            if (nameParts.Length >= 2)
+            {
+                // Swap the first and last names
+                string swappedName = $"{nameParts[1]} {nameParts[0]}";
+
+                return swappedName;
+            }
+
+            // If there's only one part or no parts, return the original input
+            return input;
+        }
+
         public static string FixDzPlayerNames(this string input)
         {
             if(input == "Nikola Dzurisic")
@@ -340,6 +391,169 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             }
 
             return input;
+        }
+
+        public static string RemoveAccents(this string input)
+        {
+            string normalized = input.Normalize(NormalizationForm.FormKD);
+            Encoding removal = Encoding.GetEncoding(Encoding.ASCII.CodePage,
+                new EncoderReplacementFallback(""),
+                new DecoderReplacementFallback(""));
+            byte[] bytes = removal.GetBytes(normalized);
+            return Encoding.ASCII.GetString(bytes);
+        }
+
+        public static (string no, string date, string height, string position) ExtractItems(this string bioInput)
+        {
+            // Define regular expressions for each piece of information
+            Regex numberRegex = new Regex(@"Broj: (\d+)<br>");
+            Regex yearOfBirthRegex = new Regex(@"Godište: (\d+)");
+            Regex heightRegex = new Regex(@"Visina: (\d+)\s*cm");
+            Regex heightAdvancedRegex = new Regex(@"Visina: (\d+)\s\s*cm");
+            Regex positionRegex = new Regex(@"Pozicija: (.+)</p>");
+            bioInput = bioInput.Replace("&nbsp;", string.Empty);
+
+            // Extract information using regular expressions
+            string number = GetMatch(bioInput, numberRegex);
+            string yearOfBirth = GetMatch(bioInput, yearOfBirthRegex);
+            string height = GetMatch(bioInput, heightRegex);
+            string position = GetMatch(bioInput, positionRegex);
+            if (string.IsNullOrEmpty(height))
+            {
+                height = GetMatch(bioInput, heightAdvancedRegex);
+            }
+
+            return (number, yearOfBirth, height, position);
+        }
+
+        public static string ExtractNameFromString(this string input)
+        {
+            // Define the regular expression
+            Regex nameRegex = new Regex(@"<strong>(.+?)<\/strong>");
+
+            // Extract the name using the regular expression
+            string extractedName = GetMatch(input, nameRegex);
+
+            // Display the extracted name
+            return extractedName;
+        }
+        static string GetMatch(string input, Regex regex)
+        {
+            Match match = regex.Match(input);
+            return match.Success ? match.Groups[1].Value : null;
+        }
+
+        public static string DeterminateIsoCode(this string input)
+        {
+            var defaultCountryCode = "SRB";
+            List<string> usualUsaNames = new List<string>()
+            {
+                "Tyron Jumord Harris","Kangu Kevin","Terry Lee Armstrong Ii","Kenny Martel Mathews Dye",
+                "Elvis Dale Harvey","Zachary Harvey","Jordan Callahan","Rashun Jarrell Davis",
+                "Zachary Cleveland Simmons","Jaylen Robert Andrews","Treacy Dante","Nelson Lamar Phillips Jr",
+                "Nelson Ellis Haskin","Wendell Jerome Green Jr","Dedric Lamont Boyd","Terrance Christopher Motley",
+                "Jalen Tyrese Finch","Lamont Lavell West","Kobe Thomas Webster","Quinterious Trayvon Croft",
+                "Penn Eral Jarred", "Scott Blakney"
+            };
+
+            List<string> usualChinaNames = new List<string>() { "Linjun Jiang", "Junwei Xu" };
+
+            if (usualUsaNames.Contains(input))
+            {
+                return "USA";
+            }
+
+            if (usualChinaNames.Contains(input))
+            {
+                return "CNH";
+            }
+
+            return defaultCountryCode;
+        }
+
+
+        public static PositionEnum ConvertPositionFromSerbian(this string source)
+        {
+            switch(source.ToLower())
+            {
+                case "plejmejker":
+                case " plejmejker / bek":
+                    return PositionEnum.Guard;
+                case "bek":
+                case "bek / krilo":
+                    return PositionEnum.ShootingGuard;
+                case "krilo":
+                case "bek/krilo":
+                case "krilo krilni centar":
+                case "krilo / krilni centar":
+                case "krilo /krilni centar":
+                    return PositionEnum.Forward;
+                case "krilni centar":
+                case "krilni centar/ centar":
+                case "krilni centar / centar":
+                    return PositionEnum.PowerForward;
+                case "centar":
+                    return PositionEnum.Center;
+                default:
+                    return PositionEnum.Coach;
+            }
+        }
+        static string NameSwap(this string input)
+        {
+            // Split the input into parts using space as the separator
+            string[] nameParts = input.Split(' ');
+
+            // Check if there are at least two parts (first name and last name)
+            if (nameParts.Length >= 2)
+            {
+                // Swap the first and last names
+                string swappedName = $"{nameParts[1]} {nameParts[0]}";
+
+                return swappedName;
+            }
+
+            // If there's only one part or no parts, return the original input
+            return input;
+        }
+
+        public static string CheckWellKnownName(this string input)
+        {
+            List<string> wellKnownNames= new List<string>()
+            {
+                "Cerovina Luka", "Barna Filip", "Nedeljkov Luka", "Sinovec Stefan",
+                 "Mikavica Bogdan", "Urban Kroflic", "Jovic Dragomir", "Gavrilovic Milos",
+                  "Vukas Ognjen", "Milin Matija", "Gutalj Marko", "Pilica Jasin",
+                   "Shkarban Bogdan"
+            };
+            if (wellKnownNames.Contains(input))
+            {
+                return input.NameSwap();
+            }
+            return input;
+        } 
+        public static string ReplaceSpaceChars(this string input)
+        {
+            if (input.Contains("&nbsp;"))
+            {
+                input = input.Replace("&nbsp;", string.Empty);
+            }
+
+            return input;
+        }
+
+        public static string SkipNumbers(this string input)
+        {
+            var startIndex = 0;
+            for(int i = 0; i < input.Length; i++)
+            {
+                if (!char.IsDigit(input[i]))
+                {
+                    startIndex = i;
+                    break;
+                }
+            }
+
+            return input.Substring(startIndex);
         }
     }
 }
