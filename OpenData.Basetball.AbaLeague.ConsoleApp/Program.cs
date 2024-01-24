@@ -1,6 +1,5 @@
-﻿using AngleSharp;
-using AngleSharp.Dom;
-
+﻿
+/*
 IConfiguration configuration = Configuration.Default.WithDefaultLoader();
 IBrowsingContext context=BrowsingContext.New(configuration);
 IDocument document = await context.OpenAsync(@"https://www.aba-liga.com/calendar/22/1/");
@@ -8,13 +7,13 @@ IDocument document = await context.OpenAsync(@"https://www.aba-liga.com/calendar
 
 var rounds = document.QuerySelectorAll("div.panel.panel-default");
 //var rounds = document.All.Where(m=>m.LocalName=="div" && m.ClassList.Equals("panel panel-default"));
-/*
+
 foreach (var element in rounds)
 {
 
     Console.WriteLine(element.OuterHtml);
 }
-*/
+
 //Console.WriteLine(document.DocumentElement.OuterHtml);
 foreach (var element in rounds)
 {
@@ -62,3 +61,26 @@ foreach (var element in rounds)
 }
 
 Console.ReadLine();
+*/
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using OpenData.Basetball.AbaLeague.Persistence;
+using OpenData.Basketball.AbaLeague.Application.Utilities;
+using OpenData.Basketball.AbaLeague.Application.Contracts;
+using OpenData.Basketball.AbaLeague.ConsoleApp.Helpers;
+using System.Runtime;
+using System.Text;
+
+var builder = Host.CreateDefaultBuilder();
+
+
+builder.ConfigureServices((hostContext, services) =>
+{ 
+    services.ConfigurePersistenceServices(hostContext.Configuration);
+
+    services.AddHostedService<AddReversNameToAnotherNameBackgroundService>();
+});
+
+builder.UseConsoleLifetime();
+await builder.RunConsoleAsync();

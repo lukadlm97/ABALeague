@@ -498,7 +498,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
                     return PositionEnum.Coach;
             }
         }
-        static string NameSwap(this string input)
+        public static string NameSwap(this string input)
         {
             // Split the input into parts using space as the separator
             string[] nameParts = input.Split(' ');

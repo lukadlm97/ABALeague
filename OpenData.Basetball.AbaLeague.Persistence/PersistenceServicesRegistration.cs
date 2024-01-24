@@ -13,7 +13,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence
 {
     public  static class PersistenceServicesRegistration
     {
-        public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, 
+            IConfiguration configuration)
         {
             var inMemoryContext =
                 bool.TryParse(configuration
@@ -58,6 +59,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence
 
             return services;
         }
+
 
         public static IHost MigrateDatabase(this IHost host)
         {
