@@ -83,41 +83,33 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                                             .ReplaceSpecialCharactersWithDJ()
                                             .ToTitleCase()
                                             .CheckWellKnownName()
+                                            .TrimStars()
                                             ;
                     var minutes = columns[16].InnerHtml;
-                    min = minutes.ConvertToNullableTimeSpan();
-                    if (minutes == "00:00")
+                    min = minutes.ConvertFromKlsTimeToNullableTimeSpan();
+                    if (minutes == "0")
                     {
                         homeBoxScore.Add(new PlayerScore(name, min));
                         continue;
 
                     }
-                    points = columns[2].InnerHtml.ConvertToNullableInt();
-                    shotPrc = columns[4].InnerHtml.ConvertToNullableDecimal();
-                    shotMade2Pt = columns[5].InnerHtml.ConvertToNullableInt();
-                    shotAttempted2Pt = columns[6].InnerHtml.ConvertToNullableInt();
-                    shotPrc2Pt = columns[7].InnerHtml.ConvertToNullableDecimal();
-                    shotMade3Pt = columns[8].InnerHtml.ConvertToNullableInt();
-                    shotAttempted3Pt = columns[9].InnerHtml.ConvertToNullableInt();
-                    shotPrc3Pt = columns[10].InnerHtml.ConvertToNullableDecimal();
-                    shotMade1Pt = columns[11].InnerHtml.ConvertToNullableInt();
-                    shotAttempted1Pt = columns[12].InnerHtml.ConvertToNullableInt();
-                    shotPrc1Pt = columns[13].InnerHtml.ConvertToNullableDecimal();
-                    defensiveRebounds = columns[14].InnerHtml.ConvertToNullableInt();
-                    offensiveRebounds = columns[15].InnerHtml.ConvertToNullableInt();
-                    totalRebounds = columns[16].InnerHtml.ConvertToNullableInt();
-                    assists = columns[17].InnerHtml.ConvertToNullableInt();
-                    steals = columns[18].InnerHtml.ConvertToNullableInt();
-                    turnover = columns[19].InnerHtml.ConvertToNullableInt();
-                    inFavoureOfBlock = columns[20].InnerHtml.ConvertToNullableInt();
-                    againstBlock = columns[21].InnerHtml.ConvertToNullableInt();
-                    committedFoul = columns[22].InnerHtml.ConvertToNullableInt();
-                    receivedFoul = columns[23].InnerHtml.ConvertToNullableInt();
-                    pointFromPain = columns[24].InnerHtml.ConvertToNullableInt();
-                    pointFrom2ndChance = columns[25].InnerHtml.ConvertToNullableInt();
-                    pointFromFastBreak = columns[26].InnerHtml.ConvertToNullableInt();
-                    plusMinus = columns[27].InnerHtml.ConvertToNullableInt();
                     rankValue = columns[1].InnerHtml.ConvertToNullableInt();
+                    points = columns[2].InnerHtml.ConvertToNullableInt();
+                    shotPrc = columns[10].InnerHtml.ConvertToNullableDecimal();
+
+                    (shotMade1Pt, shotAttempted1Pt) = columns[3].InnerHtml.UnpackSlashSeparatedValues();
+                    shotPrc1Pt = columns[4].InnerHtml.ConvertToNullableDecimal();
+                    (shotMade2Pt, shotAttempted2Pt) = columns[5].InnerHtml.UnpackSlashSeparatedValues();
+                    shotPrc2Pt = columns[6].InnerHtml.ConvertToNullableDecimal();
+                    (shotMade3Pt, shotAttempted3Pt) = columns[7].InnerHtml.UnpackSlashSeparatedValues();
+                    shotPrc3Pt = columns[8].InnerHtml.ConvertToNullableDecimal();
+                    shotPrc = columns[10].InnerHtml.ConvertToNullableDecimal();
+                    (offensiveRebounds, defensiveRebounds) = columns[11].InnerHtml.UnpackSlashSeparatedValues();
+                    totalRebounds = offensiveRebounds + defensiveRebounds;
+                    (steals, turnover) = columns[12].InnerHtml.UnpackSlashSeparatedValues();
+                    assists = columns[13].InnerHtml.ConvertToNullableInt();
+                    (inFavoureOfBlock, againstBlock) = columns[14].InnerHtml.UnpackSlashSeparatedValues();
+                    (committedFoul, receivedFoul) = columns[15].InnerHtml.UnpackSlashSeparatedValues();
 
                     homeBoxScore.Add(new PlayerScore(name,
                                                         min,
@@ -183,7 +175,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 }
 
             }
-            var awayTeamPlayers = webDocument.QuerySelectorAll("table.match_boxscore_team_table")[1]
+            var awayTeamPlayers = webDocument.QuerySelectorAll("table.table-stats")[1]
                 .QuerySelectorAll("tbody > tr");
 
             foreach (var playerRow in awayTeamPlayers)
@@ -220,47 +212,44 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 try
                 {
                     var columns = playerRow.QuerySelectorAll("td");
-                    name = columns[1].QuerySelectorAll("a")[0].GetAttribute("href")
-                                           .ExtractNameFromUrl()
-                                           .ReplaceSpecialCharactersWithZ()
-                                           .ReplaceSpecialCharactersWithC()
-                                           .ReplaceSpecialCharactersWithS()
-                                           .ReplaceSpecialCharactersWithDJ()
-                                           .FixDzPlayerNames();
-                    var minutes = columns[2].InnerHtml;
-                    min = minutes.ConvertToNullableTimeSpan();
-                    if (minutes == "00:00")
+                    name = columns[0].QuerySelectorAll("a")[0].InnerHtml
+                                            .SkipNumbers()
+                                           .Trim().ReplaceSpaceChars()
+                                            .SwapFirstAndLastNameForBalkanPlayer()
+                                            .Trim()
+                                            .ReplaceSpecialCharactersWithZ()
+                                            .ReplaceSpecialCharactersWithC()
+                                            .ReplaceSpecialCharactersWithS()
+                                            .ReplaceSpecialCharactersWithDJ()
+                                            .ToTitleCase()
+                                            .CheckWellKnownName()
+                                            .TrimStars()
+                                            ;
+                    var minutes = columns[16].InnerHtml;
+                    min = minutes.ConvertFromKlsTimeToNullableTimeSpan();
+                    if (minutes == "0")
                     {
                         awayBoxScore.Add(new PlayerScore(name, min));
                         continue;
 
                     }
-                    points = columns[3].InnerHtml.ConvertToNullableInt();
-                    shotPrc = columns[4].InnerHtml.ConvertToNullableDecimal();
-                    shotMade2Pt = columns[5].InnerHtml.ConvertToNullableInt();
-                    shotAttempted2Pt = columns[6].InnerHtml.ConvertToNullableInt();
-                    shotPrc2Pt = columns[7].InnerHtml.ConvertToNullableDecimal();
-                    shotMade3Pt = columns[8].InnerHtml.ConvertToNullableInt();
-                    shotAttempted3Pt = columns[9].InnerHtml.ConvertToNullableInt();
-                    shotPrc3Pt = columns[10].InnerHtml.ConvertToNullableDecimal();
-                    shotMade1Pt = columns[11].InnerHtml.ConvertToNullableInt();
-                    shotAttempted1Pt = columns[12].InnerHtml.ConvertToNullableInt();
-                    shotPrc1Pt = columns[13].InnerHtml.ConvertToNullableDecimal();
-                    defensiveRebounds = columns[14].InnerHtml.ConvertToNullableInt();
-                    offensiveRebounds = columns[15].InnerHtml.ConvertToNullableInt();
-                    totalRebounds = columns[16].InnerHtml.ConvertToNullableInt();
-                    assists = columns[17].InnerHtml.ConvertToNullableInt();
-                    steals = columns[18].InnerHtml.ConvertToNullableInt();
-                    turnover = columns[19].InnerHtml.ConvertToNullableInt();
-                    inFavoureOfBlock = columns[20].InnerHtml.ConvertToNullableInt();
-                    againstBlock = columns[21].InnerHtml.ConvertToNullableInt();
-                    committedFoul = columns[22].InnerHtml.ConvertToNullableInt();
-                    receivedFoul = columns[23].InnerHtml.ConvertToNullableInt();
-                    pointFromPain = columns[24].InnerHtml.ConvertToNullableInt();
-                    pointFrom2ndChance = columns[25].InnerHtml.ConvertToNullableInt();
-                    pointFromFastBreak = columns[26].InnerHtml.ConvertToNullableInt();
-                    plusMinus = columns[27].InnerHtml.ConvertToNullableInt();
-                    rankValue = columns[28].InnerHtml.ConvertToNullableInt();
+                    rankValue = columns[1].InnerHtml.ConvertToNullableInt();
+                    points = columns[2].InnerHtml.ConvertToNullableInt();
+                    shotPrc = columns[10].InnerHtml.ConvertToNullableDecimal();
+
+                    (shotMade1Pt, shotAttempted1Pt) = columns[3].InnerHtml.UnpackSlashSeparatedValues();
+                    shotPrc1Pt = columns[4].InnerHtml.ConvertToNullableDecimal();
+                    (shotMade2Pt, shotAttempted2Pt) = columns[5].InnerHtml.UnpackSlashSeparatedValues();
+                    shotPrc2Pt = columns[6].InnerHtml.ConvertToNullableDecimal();
+                    (shotMade3Pt, shotAttempted3Pt) = columns[7].InnerHtml.UnpackSlashSeparatedValues();
+                    shotPrc3Pt = columns[8].InnerHtml.ConvertToNullableDecimal();
+                    shotPrc = columns[10].InnerHtml.ConvertToNullableDecimal();
+                    (offensiveRebounds, defensiveRebounds) = columns[11].InnerHtml.UnpackSlashSeparatedValues();
+                    totalRebounds = offensiveRebounds + defensiveRebounds;
+                    (steals, turnover) = columns[12].InnerHtml.UnpackSlashSeparatedValues();
+                    assists = columns[13].InnerHtml.ConvertToNullableInt();
+                    (inFavoureOfBlock, againstBlock) = columns[14].InnerHtml.UnpackSlashSeparatedValues();
+                    (committedFoul, receivedFoul) = columns[15].InnerHtml.UnpackSlashSeparatedValues();
 
                     awayBoxScore.Add(new PlayerScore(name,
                                                         min,

@@ -32,7 +32,7 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
         }
         public static TimeSpan? ConvertToNullableTimeSpan(this string value)
         {
-            if (string.IsNullOrWhiteSpace(value) || !value.Contains(':')) return new TimeSpan(0,0,0,0);
+           if (string.IsNullOrWhiteSpace(value) || !value.Contains(':')) return new TimeSpan(0,0,0,0);
            var array = value.Split(':');
            var minutes = 0;
            var seconds = 0;
@@ -40,7 +40,6 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
            int.TryParse(array[1], out seconds);
 
            return new TimeSpan(0, 0, minutes, seconds);
-
         }
 
         public static decimal? ConvertToNullableDecimal(this string value)
@@ -554,6 +553,37 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
             }
 
             return input.Substring(startIndex);
+        }
+
+        public static TimeSpan? ConvertFromKlsTimeToNullableTimeSpan(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return new TimeSpan(0, 0, 0, 0);
+            var minutes = 0;
+            var seconds = 0;
+            int.TryParse(value, out minutes);
+
+            return new TimeSpan(0, 0, minutes, seconds);
+        }
+
+        public static (int made, int attempt) UnpackSlashSeparatedValues(this string input)
+        {
+            var made = 0; 
+            var attempt = 0;
+            if (string.IsNullOrWhiteSpace(input) || input == "\\")
+            {
+                return (made, attempt);
+            }
+
+            var segments = input.Split('/');
+            made = int.Parse(segments[0]);
+            attempt = int.Parse(segments[1]);
+
+            return (made, attempt);
+        }
+
+        public static string TrimStars(this string input)
+        {
+            return input.Trim('*');
         }
     }
 }
