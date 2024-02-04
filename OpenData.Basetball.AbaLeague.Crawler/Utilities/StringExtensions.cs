@@ -585,5 +585,32 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Utilities
         {
             return input.Trim('*');
         }
+
+        public static string ReversNameSwap(this string input)
+        {
+            // Split the input into parts using space as the separator
+            string[] nameParts = input.Split(' ');
+
+            // Check if there are at least two parts (first name and last name)
+            if (nameParts.Length == 2)
+            {
+                // Swap the first and last names
+                string swappedName = $"{nameParts[1]} {nameParts[0]}";
+
+                return swappedName;
+            }
+
+            if(nameParts.Length > 2)
+            {
+                var lastName = nameParts[nameParts.Length - 1];
+                // Swap the first and last names
+                string swappedName = string.Join(' ',nameParts.SkipLast(1));
+
+                return $"{lastName} {swappedName}";
+            }
+
+            // If there's only one part or no parts, return the original input
+            return input;
+        }
     }
 }

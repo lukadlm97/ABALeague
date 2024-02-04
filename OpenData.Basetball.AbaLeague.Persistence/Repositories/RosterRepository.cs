@@ -79,5 +79,21 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             var rosterItems = team.RosterItems;
             return rosterItems.Where(x => x.LeagueId == leagueId);
         }
+
+        public async Task<IQueryable<RosterItem>> 
+            SearchRosterByLeagueAndTeamId(int leagueId, int teamId, CancellationToken cancellationToken = default)
+        {
+            var league = await _dbContext.Leagues.FirstOrDefaultAsync(x => x.Id == leagueId, cancellationToken);
+            if (league == null)
+            {
+                return Array.Empty<RosterItem>().AsQueryable();
+            }
+
+            return _dbContext.RosterItems
+                .Include(x => x.Team)
+                .Include(x => x.Player)
+                .Include(x => x.League)
+                .Where(x => x.LeagueId == leagueId && x.TeamId == teamId);
+        }
     }
 }

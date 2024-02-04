@@ -13,5 +13,6 @@
         public int? AwayTeamPoints { get; set; }
         public int? Attendency { get; set; }
         public string? Venue { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }

@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <td>@Html.DisplayNameFor(modelItem => modelItem.PlayerDetails.Position)</td>
-                    <td>@Html.DisplayFor(modelItem => modelItem.PlayerDetails.Position)</td>
+                    <td style="background-color: @Model.PlayerDetails.PositionColor;">@Html.DisplayFor(modelItem => modelItem.PlayerDetails.Position)</td>
                 </tr>
                 <tr>
                     <td>@Html.DisplayNameFor(modelItem => modelItem.PlayerDetails.Country)</td>

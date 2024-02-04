@@ -20,5 +20,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
         Task<IEnumerable<RoundMatch>> SearchByLeagueIdAndTeamId(int leagueId,
                                                                     int teamId,
                                                                     CancellationToken cancellationToken = default);
+      
     }
 }

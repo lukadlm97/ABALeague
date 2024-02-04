@@ -24,6 +24,7 @@
                         <th>Points</th>
                         <th>PlusMinus</th>
                         <th>RankValue</th>
+                        <th>Boxscore</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,6 +52,11 @@
                             <td>@performance.Points</td>
                             <td>@performance.PlusMinus</td>
                             <td>@performance.RankValue</td>
+                            <td>
+                                <a asp-controller="Game" asp-action="Details" 
+                                asp-route-matchResultId="@performance.MatchResultId"
+                                   class="btn btn-danger">Details</a>
+                            </td>
                         </tr>
                     }
                 </tbody>

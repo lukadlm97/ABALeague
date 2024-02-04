@@ -17,5 +17,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Score
                                 int? HomeTeamPoints,
                                 int? AwayTeamPoints,
                                 int Round, 
-                                int? ResultId);
+                                int? ResultId,
+                                DateTime? Date);
 }

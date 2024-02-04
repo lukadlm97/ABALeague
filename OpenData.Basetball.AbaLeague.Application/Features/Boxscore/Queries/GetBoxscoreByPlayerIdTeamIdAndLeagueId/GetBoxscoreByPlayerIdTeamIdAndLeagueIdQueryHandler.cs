@@ -118,7 +118,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                     score.PointFromFastBreak, 
                     score.PlusMinus,
                     score.RankValue,
-                    result));
+                    result,
+                    matchResult.Id));
             }
 
             var advancedCalculation = new AdvancedMatchCalcuationDto(totalGamesPlayed, homeGamesPlayed, totalGamesWon, homeGamesWon, totalSpectators, totalSpectators / totalGamesPlayed, homeGamesPointScored, awayGamesPointScored);

@@ -12,7 +12,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
         private readonly AbaLeagueDbContext _context;
         private IPlayerRepository _playerRepository;
         private ITeamRepository _teamRepository;
-        private IGenericRepository<League> _leagueRepository;
+        private ILeagueRepository _leagueRepository;
         private ISeasonResourcesRepository _seasonResourcesRepository;
         private ICountryRepository _countryRepository;
         private IPositionRepository _positionRepository;
@@ -40,8 +40,8 @@ namespace OpenData.Basetball.AbaLeague.Persistence.Repositories
             _playerRepository ??= new PlayerRepository(_context);
         
 
-        public IGenericRepository<League> LeagueRepository =>
-            _leagueRepository ??= new GenericRepository<League>(_context);
+        public ILeagueRepository LeagueRepository =>
+            _leagueRepository ??= new LeagueRepository(_context);
 
         public ITeamRepository TeamRepository =>
             _teamRepository ??= new TeamRepository(_context);

@@ -17,6 +17,7 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             return await _dbContext.Results.AnyAsync(x => x.RoundMatchId == matchRoundId, cancellationToken);
         }
 
+       
         public async Task<Result?> GetByMatchRound(int matchRoundId, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Results
@@ -48,14 +49,14 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             return finalResultSet;
         }
 
-        public async Task<IEnumerable<Result>> SearchByLeagueAndRoundNo(int leagueId, int roundNo, CancellationToken cancellationToken = default)
+        public  IQueryable<Result> SearchByLeagueAndRoundNo(int leagueId, int roundNo, CancellationToken cancellationToken = default)
         {
-            var league = await _dbContext.Leagues
+            var league =  _dbContext.Leagues
                 .Include(x => x.RoundMatches)
-                .FirstOrDefaultAsync(x => x.Id == leagueId, cancellationToken);
+                .FirstOrDefault(x => x.Id == leagueId);
             if (league == null)
             {
-                return Array.Empty<Result>();
+                return Array.Empty<Result>().AsQueryable();
             }
 
             var results = _dbContext.Results;
@@ -77,7 +78,18 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
                 }
             }
 
-            return finalResultSet;
+            return finalResultSet.AsQueryable();
         }
+
+        public async Task<Result?> GetByMatchResult(int matchResultId, CancellationToken cancellationToken = default)
+        {
+           return await _dbContext.Results
+                                  .Include(x => x.RoundMatch)
+                                      .ThenInclude(x=> x.HomeTeam)
+                                  .Include(x => x.RoundMatch)
+                                      .ThenInclude(x=> x.AwayTeam)
+                                  .FirstOrDefaultAsync(x=> x.Id == matchResultId, cancellationToken);    
+        }
+
     }
 }

@@ -37,37 +37,64 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
                 .QuerySelectorAll("tbody > tr");
             var name = string.Empty;
 
+            TimeSpan? min = null;
+            int? points = null;
+            decimal? shotPrc = null;
+            int? shotMade2Pt = null;
+            int? shotAttempted2Pt = null;
+            decimal? shotPrc2Pt = null;
+            int? shotMade3Pt = null;
+            int? shotAttempted3Pt = null;
+            decimal? shotPrc3Pt = null;
+            int? shotMade1Pt = null;
+            int? shotAttempted1Pt = null;
+            decimal? shotPrc1Pt = null;
+            int? defensiveRebounds = null;
+            int? offensiveRebounds = null;
+            int? totalRebounds = null;
+            int? assists = null;
+            int? steals = null;
+            int? turnover = null;
+            int? inFavoureOfBlock = null;
+            int? againstBlock = null;
+            int? committedFoul = null;
+            int? receivedFoul = null;
+            int? pointFromPain = null;
+            int? pointFrom2ndChance = null;
 
+            int? pointFromFastBreak = null;
+            int? plusMinus = null;
+            int? rankValue = null;
             foreach (var playerRow in homeTeamPlayers)
             {
-                TimeSpan? min = null;
-                int? points = null;
-                decimal? shotPrc = null;
-                int? shotMade2Pt = null;
-                int? shotAttempted2Pt = null;
-                decimal? shotPrc2Pt = null;
-                int? shotMade3Pt = null;
-                int? shotAttempted3Pt = null;
-                decimal? shotPrc3Pt = null;
-                int? shotMade1Pt = null;
-                int? shotAttempted1Pt = null;
-                decimal? shotPrc1Pt = null;
-                int? defensiveRebounds = null;
-                int? offensiveRebounds = null;
-                int? totalRebounds = null;
-                int? assists = null;
-                int? steals = null;
-                int? turnover = null;
-                int? inFavoureOfBlock = null;
-                int? againstBlock = null;
-                int? committedFoul = null;
-                int? receivedFoul = null;
-                int? pointFromPain = null;
-                int? pointFrom2ndChance = null;
+                min = null;
+                points = null;
+                shotPrc = null;
+                shotMade2Pt = null;
+                shotAttempted2Pt = null;
+                shotPrc2Pt = null;
+                shotMade3Pt = null;
+                shotAttempted3Pt = null;
+                shotPrc3Pt = null;
+                shotMade1Pt = null;
+                shotAttempted1Pt = null;
+                shotPrc1Pt = null;
+                defensiveRebounds = null;
+                offensiveRebounds = null;
+                totalRebounds = null;
+                assists = null;
+                steals = null;
+                turnover = null;
+                inFavoureOfBlock = null;
+                againstBlock = null;
+                committedFoul = null;
+                receivedFoul = null;
+                pointFromPain = null;
+                pointFrom2ndChance = null;
 
-                int? pointFromFastBreak = null;
-                int? plusMinus = null;
-                int? rankValue = null;
+                pointFromFastBreak = null;
+                plusMinus = null;
+                rankValue = null;
 
                 try
                 {
@@ -180,34 +207,34 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
 
             foreach (var playerRow in awayTeamPlayers)
             {
-                TimeSpan? min = null;
-                int? points = null;
-                decimal? shotPrc = null;
-                int? shotMade2Pt = null;
-                int? shotAttempted2Pt = null;
-                decimal? shotPrc2Pt = null;
-                int? shotMade3Pt = null;
-                int? shotAttempted3Pt = null;
-                decimal? shotPrc3Pt = null;
-                int? shotMade1Pt = null;
-                int? shotAttempted1Pt = null;
-                decimal? shotPrc1Pt = null;
-                int? defensiveRebounds = null;
-                int? offensiveRebounds = null;
-                int? totalRebounds = null;
-                int? assists = null;
-                int? steals = null;
-                int? turnover = null;
-                int? inFavoureOfBlock = null;
-                int? againstBlock = null;
-                int? committedFoul = null;
-                int? receivedFoul = null;
-                int? pointFromPain = null;
-                int? pointFrom2ndChance = null;
+                min = null;
+                points = null;
+                shotPrc = null;
+                shotMade2Pt = null;
+                shotAttempted2Pt = null;
+                shotPrc2Pt = null;
+                shotMade3Pt = null;
+                shotAttempted3Pt = null;
+                shotPrc3Pt = null;
+                shotMade1Pt = null;
+                shotAttempted1Pt = null;
+                shotPrc1Pt = null;
+                defensiveRebounds = null;
+                offensiveRebounds = null;
+                totalRebounds = null;
+                assists = null;
+                steals = null;
+                turnover = null;
+                inFavoureOfBlock = null;
+                againstBlock = null;
+                committedFoul = null;
+                receivedFoul = null;
+                pointFromPain = null;
+                pointFrom2ndChance = null;
 
-                int? pointFromFastBreak = null;
-                int? plusMinus = null;
-                int? rankValue = null;
+                pointFromFastBreak = null;
+                plusMinus = null;
+                rankValue = null;
 
                 try
                 {

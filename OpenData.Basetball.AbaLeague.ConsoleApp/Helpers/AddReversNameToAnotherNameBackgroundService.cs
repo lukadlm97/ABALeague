@@ -39,12 +39,19 @@ namespace OpenData.Basketball.AbaLeague.ConsoleApp.Helpers
             foreach (var rosterItem in rosterItems)
             {
                 var selectedPlayer = players.FirstOrDefault(x => x.Id == rosterItem.PlayerId);
-                if (selectedPlayer == null || selectedPlayer.CountryId != srbCountry.Id)
+                if (selectedPlayer == null 
+                    //|| selectedPlayer.CountryId != srbCountry.Id
+                    )
                 {
                     continue;
                 }
-                var name = selectedPlayer.Name.NameSwap();
-                if(!await _unitOfWork.PlayerRepository
+                var name = selectedPlayer.Name.ReversNameSwap();
+                var exisitingNames = await _unitOfWork.PlayerRepository.GetAnotherNames(selectedPlayer.Id, stoppingToken);
+                if (exisitingNames.Select(x=>x.Name.ToLower() == name.ToLower()).Any())
+                {
+                    continue;
+                }
+                if (!await _unitOfWork.PlayerRepository
                                         .AddAnotherName(selectedPlayer.Id, name, stoppingToken))
                 {
                     continue;

@@ -4,6 +4,7 @@ using OpenData.Basketball.AbaLeague.Application.DTOs.Schedule;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Score;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,10 +57,11 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                 result.HomeTeamPoints,
                                                 result.AwayTeamPoint,
                                                 scheduleItem.Round,
-                                                null));
+                                                null,
+                                                scheduleItem.DateTime));
             }
 
-            return new ScoreDto(list);
+            return new ScoreDto(list.ToFrozenSet());
         }
     }
 }

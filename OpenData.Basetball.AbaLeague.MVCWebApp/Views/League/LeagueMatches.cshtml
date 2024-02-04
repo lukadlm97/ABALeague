@@ -1,0 +1,67 @@
+﻿@model LeagueMatchesViewModel
+
+<div class="container mt-4">
+    <h2>League: @Model.LeagueName</h2>
+
+    @if (Model.RoundMathes != null && Model.RoundMathes.Any())
+    {
+        foreach(var item in Model.RoundMathes)
+        {
+             <div class="card mt-4">
+                <div class="card-header">
+                    <h4>Round @item.Round</h4>
+                </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Match No</th>
+                            <th>Home Team</th>
+                            <th>Away Name</th>
+                            <th>Score</th>
+                            <th>Venue</th>
+                            <th>Attendency</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (item.Scores != null && item.Scores.Any())
+                        {
+                            @foreach (var performance in item.Scores)
+                            {
+                                <tr>
+                                    <td>@performance.DateTime</td>
+                                    <td>@performance.MatchNo</td>
+                                    <td>@performance.HomeTeamName</td>
+                                    <td>@performance.AwayTeamName</td>
+                                    <td>@performance.HomeTeamPoints:@performance.AwayTeamPoints</td>
+                                    <td>@performance.Venue</td>
+                                    <td>@performance.Attendency</td>
+                                    <td>
+                                        <a asp-controller="Game" asp-action="Details"
+                                           asp-route-matchResultId="@performance.Id"
+                                           class="btn btn-danger">Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        @if (item.Schedules != null && item.Schedules.Any())
+                        {
+                            @foreach (var performance in item.Schedules)
+                            {
+                                <tr>
+                                    <td>@performance.DateTime</td>
+                                    <td>@performance.MatchNo</td>
+                                    <td>@performance.HomeTeamName</td>
+                                    <td>@performance.AwayTeamName</td>
+                                    <td colspan="3" class="text-center">to be played</td>
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+            </div>
+        }
+       
+    }
+</div>

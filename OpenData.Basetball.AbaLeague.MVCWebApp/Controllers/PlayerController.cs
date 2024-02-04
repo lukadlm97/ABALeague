@@ -37,8 +37,6 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             _sender = sender;
         }
 
-     
-
         [HttpGet]
         public async Task<IActionResult> Details(int playerId, CancellationToken cancellationToken = default)
         {
@@ -85,6 +83,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     DateOfBirth = player.Value.DateOfBirth,
                     Country = player.Value.CountryName,
                     Position = player.Value.Position.ToString(),
+                    PositionColor = player.Value.Position.ConvertPositionEnumToColor()
                 },
                 Rosters = list
             });
@@ -298,7 +297,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 TotalRebounds = x.TotalRebounds,
                 Turnover = x.Turnover,
                 Venue = x.Venue,
-                Result = x.Result
+                Result = x.Result,
+                MatchResultId = x.MatchResultId ?? 0
             });
 
             return View(new BoxscoreByPlayerViewModel

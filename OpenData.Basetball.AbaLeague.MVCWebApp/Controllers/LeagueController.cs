@@ -14,6 +14,8 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeam
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayersStatByLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.ProcessorTypes.Queries;
+using OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByLeagueId;
+using OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoresByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
 using OpenData.Basketball.AbaLeague.Application.Features.StatsProperties.Queries;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamRangeStatsByLeagueId;
@@ -576,6 +578,146 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 }).ToList(),
                 SelectedStatsProperties = new SelectList(statsPropertiesResult.Value.PropertyItems.ToList(), "Id", "Name"),
                 SelectedStatsPropertyId = selectedStatsProperty.ToString()
+            });
+        }
+
+        //TODO add league results by rounds
+        public async Task<IActionResult> LeagueMatches(int leagueId, CancellationToken cancellationToken = default)
+        {
+            var leagueResult = await _sender.Send(new GetLeagueByIdQuery(leagueId), cancellationToken);
+            var matchResults = await _sender.Send(new GetScoresByLeagueIdQuery(leagueId), cancellationToken);
+            var matchScheduled = await _sender.Send(new GetScheduleByLeagueIdQuery(leagueId), cancellationToken);
+            
+            if(leagueResult.HasNoValue || matchResults.HasNoValue || matchScheduled.HasNoValue)
+            {
+                return View("Error", new InfoDescriptionViewModel
+                {
+                    Description = ""
+                });
+            }
+
+
+            Dictionary<int , (List<ScoreItemViewModel> scores,List<ScheduleItemViewModel> schedules)> dictionary =
+                new Dictionary<int , (List<ScoreItemViewModel>, List<ScheduleItemViewModel>)>();
+
+            foreach(var item in matchResults.Value.ScoreItems)
+            {
+                if(dictionary.TryGetValue(item.Round, out var selectedItem))
+                {
+                    selectedItem.scores.Add(new ScoreItemViewModel
+                    {
+                        Id = item.ResultId,
+                        Attendency = item.Attendency,
+                        AwayTeamId = item.AwayTeamId,
+                        AwayTeamName = item.AwayTeamName,
+                        AwayTeamPoints = item.AwayTeamPoints,
+                        DateTime = item.Date ?? default(DateTime),
+                        HomeTeamId = item.HomeTeamId,
+                        HomeTeamName = item.HomeTeamName,
+                        HomeTeamPoints = item.HomeTeamPoints,
+                        MatchNo = item.MatchNo,
+                        Round = item.Round,
+                        Venue = item.Venue
+                    });
+                }
+                else
+                {
+                    dictionary.Add(item.Round, (new List<ScoreItemViewModel>(), new List<ScheduleItemViewModel>()));
+                    dictionary[item.Round].scores.Add((new ScoreItemViewModel
+                    {
+                        Id = item.ResultId,
+                        Attendency = item.Attendency,
+                        AwayTeamId = item.AwayTeamId,
+                        AwayTeamName = item.AwayTeamName,
+                        AwayTeamPoints = item.AwayTeamPoints,
+                        DateTime = item.Date ?? default(DateTime),
+                        HomeTeamId = item.HomeTeamId,
+                        HomeTeamName = item.HomeTeamName,
+                        HomeTeamPoints = item.HomeTeamPoints,
+                        MatchNo = item.MatchNo,
+                        Round = item.Round,
+                        Venue = item.Venue
+                    }));
+                }
+              
+            }
+
+            foreach (var item in matchScheduled.Value.ExistingScheduleItems)
+            {
+                if (dictionary.TryGetValue(item.Round, out var selectedItem))
+                {
+                    if(selectedItem.scores.Any(x => x.MatchNo == item.MatchNo))
+                    {
+                        continue;
+                    }
+                    selectedItem.schedules.Add(new ScheduleItemViewModel
+                    {
+                        Id = item.Id,
+                        AwayTeamId = item.AwayTeamId,
+                        AwayTeamName = item.AwayTeamName,
+                        DateTime = item.DateTime,
+                        HomeTeamId = item.HomeTeamId,
+                        HomeTeamName = item.HomeTeamName,
+                        MatchNo = item.MatchNo,
+                        Round = item.Round,
+                    });
+                }
+                else
+                {
+                    dictionary.Add(item.Round, (new List<ScoreItemViewModel>(), new List<ScheduleItemViewModel>())); 
+                    dictionary[item.Round].schedules.Add(new ScheduleItemViewModel
+                    {
+                        Id = item.Id,
+                        AwayTeamId = item.AwayTeamId,
+                        AwayTeamName = item.AwayTeamName,
+                        DateTime = item.DateTime,
+                        HomeTeamId = item.HomeTeamId,
+                        HomeTeamName = item.HomeTeamName,
+                        MatchNo = item.MatchNo,
+                        Round = item.Round,
+                    });
+                }
+            }
+
+            return View(new LeagueMatchesViewModel
+            {
+                LeagueId = leagueResult.Value.Id??0,
+                LeagueName = leagueResult.Value.OfficialName,
+                RoundMathes = dictionary
+                .OrderBy(x => x.Key)
+                .Select(x=>new LeagueRoundMatchesViewModel
+                {
+                    Round = x.Key,
+                    Scores = x.Value.scores == null? new List<ScoreItemViewModel>() : 
+                    x.Value.scores.OrderBy(x=>x.DateTime).Select(y=>new ScoreItemViewModel
+                    {
+                        Id= y.Id,
+                        Attendency = y.Attendency,
+                        AwayTeamId= y.AwayTeamId,
+                        AwayTeamName = y.AwayTeamName,
+                        AwayTeamPoints = y.AwayTeamPoints,
+                        DateTime = y.DateTime,
+                        HomeTeamId= y.HomeTeamId,       
+                        HomeTeamName= y.HomeTeamName,
+                        HomeTeamPoints = y.HomeTeamPoints,
+                        MatchNo= y.MatchNo,
+                        Round = y.Round,
+                        Venue = y.Venue,
+                    }).ToList(),
+                    Schedules = x.Value.schedules == null ? new List<ScheduleItemViewModel>() :
+                    x.Value.schedules.OrderBy(x => x.DateTime)
+                    .Select(y => new ScheduleItemViewModel
+                    {
+                        Id = y.Id,
+                        AwayTeamId = y.AwayTeamId,
+                        AwayTeamName = y.AwayTeamName,
+                        DateTime = y.DateTime,
+                        HomeTeamId = y.HomeTeamId,
+                        HomeTeamName = y.HomeTeamName,
+                        MatchNo = y.MatchNo,
+                        Round = y.Round,
+                    }).ToList(),
+                }).ToList(),
             });
         }
     }

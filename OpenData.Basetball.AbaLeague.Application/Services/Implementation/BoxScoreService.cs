@@ -12,7 +12,8 @@ using System.Globalization;
 
 namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 {
-    public class BoxScoreService:IBoxScoreService
+    public class BoxScoreService
+        :  IBoxScoreService
     {
         private readonly IWebPageProcessor _webPageProcessor;
         private readonly IUnitOfWork _unitOfWork;
@@ -47,7 +48,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                         missingPlayerAtRoster.Add(rosterHomeTeam.Name + " -> " + homeTeamStat.Name);
                         continue;
                     }
-                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterHomeTeam.Name, match.Round,
+                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterItem.Player.PositionEnum, rosterHomeTeam.Name,  match.Round,
                         match.MatchNo, homeTeamStat.Minutes,
                         homeTeamStat.Points, homeTeamStat.ShotPrc, homeTeamStat.ShotMade2Pt,
                         homeTeamStat.ShotAttempted2Pt, homeTeamStat.ShotPrc2Pt, homeTeamStat.ShotMade3Pt,
@@ -77,7 +78,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                         missingPlayerAtRoster.Add(rosterAwayTeam.Name + " -> " + awayTeamStat.Name);
                         continue;
                     }
-                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterAwayTeam.Name, match.Round,
+                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterItem.Player.PositionEnum, rosterAwayTeam.Name, match.Round,
                         match.MatchNo, awayTeamStat.Minutes,
                         awayTeamStat.Points, awayTeamStat.ShotPrc, awayTeamStat.ShotMade2Pt,
                         awayTeamStat.ShotAttempted2Pt, awayTeamStat.ShotPrc2Pt, awayTeamStat.ShotMade3Pt,
@@ -176,7 +177,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                         missingPlayerAtRoster.Add(rosterHomeTeam.Name + " -> " + homeTeamStat.Name);
                         continue;
                     }
-                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterHomeTeam.Name, match.Round,
+                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterItem.Player.PositionEnum, rosterHomeTeam.Name, match.Round,
                         match.MatchNo, homeTeamStat.Minutes,
                         homeTeamStat.Points, homeTeamStat.ShotPrc, homeTeamStat.ShotMade2Pt,
                         homeTeamStat.ShotAttempted2Pt, homeTeamStat.ShotPrc2Pt, homeTeamStat.ShotMade3Pt,
@@ -208,7 +209,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                         missingPlayerAtRoster.Add(rosterAwayTeam.Name + " -> " + awayTeamStat.Name);
                         continue;
                     }
-                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterAwayTeam.Name, match.Round,
+                    var newBoxScore = new BoxScoreItemDto(rosterItem.Id, match.Id, rosterItem.Player.Name, rosterItem.Player.PositionEnum, rosterAwayTeam.Name, match.Round,
                         match.MatchNo, awayTeamStat.Minutes,
                         awayTeamStat.Points, awayTeamStat.ShotPrc, awayTeamStat.ShotMade2Pt,
                         awayTeamStat.ShotAttempted2Pt, awayTeamStat.ShotPrc2Pt, awayTeamStat.ShotMade3Pt,
@@ -298,7 +299,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     await _unitOfWork.BoxScoreRepository.Add(newItem, cancellationToken);
                     await _unitOfWork.Save();
 
-                    var outputItem = new BoxScoreItemDto(0, newItem.RoundMatchId, rosterItem.PlayerId.ToString(), rosterItem.TeamId.ToString(), roundMatch.Round, roundMatch.MatchNo);
+                    var outputItem = new BoxScoreItemDto(0, newItem.RoundMatchId, rosterItem.PlayerId.ToString(), Basetball.AbaLeague.Domain.Enums.PositionEnum.Coach, rosterItem.TeamId.ToString(), roundMatch.Round, roundMatch.MatchNo);
 
                     output.Add(outputItem);
                 }
@@ -372,7 +373,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     await _unitOfWork.BoxScoreRepository.Add(newItem, cancellationToken);
                     await _unitOfWork.Save();
 
-                    var outputItem = new BoxScoreItemDto(0, newItem.RoundMatchId, rosterItem.PlayerId.ToString(), rosterItem.TeamId.ToString(), roundMatch.Round, roundMatch.MatchNo);
+                    var outputItem = new BoxScoreItemDto(0, newItem.RoundMatchId, rosterItem.PlayerId.ToString(), rosterItem.Player.PositionEnum, rosterItem.TeamId.ToString(), roundMatch.Round, roundMatch.MatchNo);
 
                     output.Add(outputItem);
                 }

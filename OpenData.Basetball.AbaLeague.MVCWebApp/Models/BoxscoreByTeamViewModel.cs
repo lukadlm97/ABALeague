@@ -37,5 +37,6 @@
         public int? PlusMinus { get; set; } = null;
         public int? RankValue { get; set; } = null;
         public string? Result { get; set; } = null;
+        public int MatchResultId { get; set; }
     }
 }

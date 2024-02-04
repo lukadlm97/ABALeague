@@ -22,8 +22,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Commands.A
             Handle(AddBoxscoreByRoundNoCommand request, CancellationToken cancellationToken)
         {
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
-            var matchResults = await _unitOfWork.ResultRepository
-                .SearchByLeagueAndRoundNo(request.LeagueId, request.RoundNo, cancellationToken);
+            var matchResults = _unitOfWork.ResultRepository
+                .SearchByLeagueAndRoundNo(request.LeagueId, request.RoundNo, cancellationToken).ToList();
             if (league == null || matchResults == null || !matchResults.Any() || !request.Boxscores.Any())
             {
                 return

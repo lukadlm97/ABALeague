@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenData.Basetball.AbaLeague.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore
     public record BoxScoreItemDto(int RosterItemId, 
                                     int MatchRoundId, 
                                     string PlayerName, 
+                                    PositionEnum PlayerPosition, 
                                     string TeamName, 
                                     int Round, 
                                     int MatchNo,
@@ -38,5 +40,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore
                                     int? PointFrom2ndChance = null,
                                     int? PointFromFastBreak = null, 
                                     int? PlusMinus = null, 
-                                    int? RankValue = null);
+                                    int? RankValue = null,
+                                    int? PlayerId = null);
 }

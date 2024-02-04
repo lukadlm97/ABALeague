@@ -1,0 +1,327 @@
+﻿@model GameDetailsViewModel
+<div class="container mt-4">
+<h2>@Model.MatchResult.HomeTeamName [@Model.MatchResult.HomeTeamPoints] vs [@Model.MatchResult.AwayTeamPoints] @Model.MatchResult.AwayTeamName</h2>
+    <div class="card mt-4">
+        <div class="card-header">
+<div>
+    <p>Round: @Model.MatchResult.Round</p>
+    <p>Attendance: @Model.MatchResult.Attendency</p>
+    <p>Venue: @Model.MatchResult.Venue</p> 
+    <p>Match No: @Model.MatchResult.MatchNo</p>
+</div>
+        </div>
+
+<div class="card-body">
+    <h3>@Model.MatchResult.HomeTeamName</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].PlayerName) </th>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].Minutes) </th>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].Points) </th>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].ShotPrc) </th>
+                <th>1pt</th>
+                <th>2pt</th>
+                <th>3pt</th>
+                <th>O/D [T]</th>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].Assists) </th>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].Steals) </th>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].Turnover) </th>
+                <th>Block [made/received]</th>
+                <th>Foul [made/received]</th>
+                <th>Points From [Pain/2nd/FB]  </th>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].PlusMinus) </th>
+                <th> @Html.DisplayNameFor(model => model.HomaTeamPlayers[0].RankValue) </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.HomaTeamPlayers)
+            {
+                 <tr bgcolor=@item.PositionColor>
+                    <td>
+                        <a asp-controller="Player"
+                            asp-action="Details"
+                            asp-route-playerId="@item.PlayerId">
+                            @Html.DisplayFor(modelItem => item.PlayerName)
+                        </a>
+                    </td>
+                    @if (item.Minutes == null || item.Minutes == TimeSpan.FromSeconds(0))
+                    {
+                        <td colspan="15" class="text-center">Not Played via Coach Decision</td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Minutes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Points)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShotPrc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShotMade1Pt)/@Html.DisplayFor(modelItem => item.ShotAttempted1Pt)
+                            [@Html.DisplayFor(modelItem => item.ShotPrc1Pt)]
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShotMade2Pt)/@Html.DisplayFor(modelItem => item.ShotAttempted2Pt)
+                            [@Html.DisplayFor(modelItem => item.ShotPrc2Pt)]
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShotMade3Pt)/@Html.DisplayFor(modelItem => item.ShotAttempted3Pt)
+                            [@Html.DisplayFor(modelItem => item.ShotPrc3Pt)]
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DefensiveRebounds)/@Html.DisplayFor(modelItem => item.OffensiveRebounds)
+                            [@Html.DisplayFor(modelItem => item.TotalRebounds)]
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Assists)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Steals)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Turnover)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InFavoureOfBlock)/@Html.DisplayFor(modelItem => item.AgainstBlock)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CommittedFoul)/@Html.DisplayFor(modelItem => item.ReceivedFoul)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PointFromPain)/
+                            @Html.DisplayFor(modelItem => item.PointFrom2ndChance)/
+                            @Html.DisplayFor(modelItem => item.PointFromFastBreak)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PlusMinus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RankValue)
+                        </td>
+                    }
+                </tr>
+            }
+            <tr>
+                <th>
+                    Total
+                </th>
+                <th>
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.Points
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.ShotPrc
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.ShotMade1Pt/@Model.HomeTeamTotal.ShotAttempted1Pt
+                    [@Model.HomeTeamTotal.ShotPrc1Pt]
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.ShotMade2Pt/@Model.HomeTeamTotal.ShotAttempted2Pt
+                    [@Model.HomeTeamTotal.ShotPrc2Pt]
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.ShotMade3Pt/@Model.HomeTeamTotal.ShotAttempted3Pt
+                    [@Model.HomeTeamTotal.ShotPrc3Pt]
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.DefensiveRebounds/@Model.HomeTeamTotal.OffensiveRebounds
+                    [@Model.HomeTeamTotal.TotalRebounds]
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.Assists
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.Steals
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.Turnover
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.InFavoureOfBlock/@Model.HomeTeamTotal.AgainstBlock
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.CommittedFoul/@Model.HomeTeamTotal.ReceivedFoul
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.PointFromPain/
+                    @Model.HomeTeamTotal.PointFrom2ndChance/
+                    @Model.HomeTeamTotal.PointFromFastBreak
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.PlusMinus
+                </th>
+                <th>
+                    @Model.HomeTeamTotal.RankValue
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+        <div class="card-body">
+        <h3>@Model.MatchResult.AwayTeamName</h3>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                    <tr>
+                        
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].PlayerName) 
+
+
+                    </th>
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].Minutes) </th>
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].Points) </th>
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].ShotPrc) </th>
+                    <th>1pt</th>
+                    <th>2pt</th>
+                    <th>3pt</th>
+                    <th>O/D [T]</th>
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].Assists) </th>
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].Steals) </th>
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].Turnover) </th>
+                    <th>Block [made/received]</th>
+                    <th>Foul [made/received]</th>
+                    <th>Points From [Pain/2nd/FB]  </th>
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].PlusMinus) </th>
+                    <th> @Html.DisplayNameFor(model => model.AwayTeamPlayers[0].RankValue) </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AwayTeamPlayers)
+                {
+                        <tr bgcolor=@item.PositionColor>
+                        <td>
+                            <a asp-controller="Player"
+                                asp-action="Details"
+                                asp-route-playerId="@item.PlayerId">
+                                @Html.DisplayFor(modelItem => item.PlayerName)
+                            </a>
+                        </td>
+
+                        @if (item.Minutes == null || item.Minutes == TimeSpan.FromSeconds(0))
+                        {
+                            <td colspan="15" class="text-center">Not Played via Coach Decision</td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Minutes)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Points)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShotPrc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShotMade1Pt)/@Html.DisplayFor(modelItem => item.ShotAttempted1Pt)
+                                [@Html.DisplayFor(modelItem => item.ShotPrc1Pt)]
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShotMade2Pt)/@Html.DisplayFor(modelItem => item.ShotAttempted2Pt)
+                                [@Html.DisplayFor(modelItem => item.ShotPrc2Pt)]
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShotMade3Pt)/@Html.DisplayFor(modelItem => item.ShotAttempted3Pt)
+                                [@Html.DisplayFor(modelItem => item.ShotPrc3Pt)]
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DefensiveRebounds)/@Html.DisplayFor(modelItem => item.OffensiveRebounds)
+                                [@Html.DisplayFor(modelItem => item.TotalRebounds)]
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Assists)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Steals)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Turnover)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InFavoureOfBlock)/@Html.DisplayFor(modelItem => item.AgainstBlock)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CommittedFoul)/@Html.DisplayFor(modelItem => item.ReceivedFoul)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PointFromPain)/
+                                @Html.DisplayFor(modelItem => item.PointFrom2ndChance)/
+                                @Html.DisplayFor(modelItem => item.PointFromFastBreak)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PlusMinus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RankValue)
+                            </td>
+                        }
+                   
+                    </tr>
+                }
+                <tr>
+                    <th>
+                        Total
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.Points
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.ShotPrc
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.ShotMade1Pt/@Model.AwayTeamTotal.ShotAttempted1Pt
+                        [@Model.AwayTeamTotal.ShotPrc1Pt]
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.ShotMade2Pt/@Model.AwayTeamTotal.ShotAttempted2Pt
+                        [@Model.AwayTeamTotal.ShotPrc2Pt]
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.ShotMade3Pt/@Model.AwayTeamTotal.ShotAttempted3Pt
+                        [@Model.AwayTeamTotal.ShotPrc3Pt]
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.DefensiveRebounds/@Model.AwayTeamTotal.OffensiveRebounds
+                        [@Model.AwayTeamTotal.TotalRebounds]
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.Assists
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.Steals
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.Turnover
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.InFavoureOfBlock/@Model.AwayTeamTotal.AgainstBlock
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.CommittedFoul/@Model.AwayTeamTotal.ReceivedFoul
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.PointFromPain/
+                        @Model.AwayTeamTotal.PointFrom2ndChance/
+                        @Model.AwayTeamTotal.PointFromFastBreak
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.PlusMinus
+                    </th>
+                    <th>
+                        @Model.AwayTeamTotal.RankValue
+                    </th>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>

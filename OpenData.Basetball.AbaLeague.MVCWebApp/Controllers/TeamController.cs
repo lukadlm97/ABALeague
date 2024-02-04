@@ -353,7 +353,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 Result = x.Result,
                 ShotPrc1Pt = x.ShotPrc1Pt,
                 ShotPrc2Pt = x.ShotPrc2Pt,
-                ShotPrc3Pt = x.ShotPrc3Pt
+                ShotPrc3Pt = x.ShotPrc3Pt,
+                MatchResultId = x.ResultId??0
             });
 
             return View(new PerformanceViewModel

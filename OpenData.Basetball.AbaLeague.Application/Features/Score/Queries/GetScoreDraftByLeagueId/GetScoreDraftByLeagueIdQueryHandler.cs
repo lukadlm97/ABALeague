@@ -131,7 +131,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                         item.HomeTeamPoint,
                                                         item.AwayTeamPoint,
                                                         match.Round,
-                                                        null));
+                                                        null,
+                                                        match.DateTime));
                     continue;
                 }
                 
@@ -148,7 +149,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                         item.HomeTeamPoint,
                                                         item.AwayTeamPoint,
                                                         match.Round,
-                                                        null));
+                                                        null,
+                                                        match.DateTime));
                     continue;
                 }
 
@@ -163,7 +165,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                     item.HomeTeamPoint,
                                                     item.AwayTeamPoint, 
                                                     match.Round,
-                                                    null));
+                                                    null,
+                                                    match.DateTime));
             }
 
             // populate existing result that we don't fetch from API
@@ -186,7 +189,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
                                                       existingItem.HomeTeamPoints,
                                                       existingItem.AwayTeamPoint,
                                                       scheduleItem.Round,
-                                                      null));
+                                                      null,
+                                                      scheduleItem.DateTime));
                         continue;
                     }
                     throw new NotImplementedException();

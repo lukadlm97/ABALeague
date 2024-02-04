@@ -20,8 +20,9 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 
         public async Task<bool> Exist(int roundMatchId, int rosterItemId, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.BoxScores.AnyAsync(
-                x => x.RoundMatchId == roundMatchId && x.RosterItemId == rosterItemId, cancellationToken);
+            return await _dbContext.BoxScores.AnyAsync(x => x.RoundMatchId == roundMatchId && 
+                                                            x.RosterItemId == rosterItemId, 
+                                                            cancellationToken);
         }
 
         public async Task<IEnumerable<BoxScore>>
@@ -47,6 +48,36 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             var existingRoundMatches = league.RoundMatches.Select(x => x.Id);
             return _dbContext.BoxScores
                                 .Where(x => existingRoundMatches.Contains(x.RoundMatchId));
+        }
+
+       
+
+        public IQueryable<BoxScore> SearchByMatchRoundId(int roundMatchId,
+                                        CancellationToken cancellationToken = default)
+        {
+            return _dbContext.BoxScores.Where(x=> x.RoundMatchId == roundMatchId);
+        }
+
+        public IQueryable<BoxScore> SearchByMatchRoundAndRosterIds(int roundMatchId, 
+                                                                    IEnumerable<int> rosterItemIds)
+        {
+            var boxscores = _dbContext.BoxScores.Where(x => x.RoundMatchId == roundMatchId);
+            List<BoxScore> list = new List<BoxScore>();
+
+            foreach(var rosterItemId in rosterItemIds)
+            {
+                var boxscore = boxscores.FirstOrDefault(x=>x.RosterItemId == rosterItemId);
+                if(boxscore != null)
+                {
+                    list.Add(boxscore);
+                }
+            }
+            return list.AsQueryable(); 
+        }
+
+        public IQueryable<BoxScore> Get()
+        {
+            return _dbContext.BoxScores;
         }
     }
 }

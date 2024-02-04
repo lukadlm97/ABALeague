@@ -139,10 +139,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                                                                     selectedRosterItem.Id, 
                                                                     cancellationToken))
                     {
-                        boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, homeTeam.Name, roundMatch.Round, roundMatch.MatchNo,  item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
+                        boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, player.PositionEnum, homeTeam.Name, roundMatch.Round, roundMatch.MatchNo,  item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
                         continue;
                     }
-                    existingBoxScoreItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, homeTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
+                    existingBoxScoreItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, player.PositionEnum, homeTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
                 }
                 else
                 {
@@ -179,10 +179,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                                                                      selectedRosterItem.Id,
                                                                      cancellationToken))
                     {
-                        boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, awayTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
+                        boxscoreDraftItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, player.PositionEnum, awayTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
                         continue;
                     }
-                    existingBoxScoreItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, awayTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
+                    existingBoxScoreItems.Add(new BoxScoreItemDto(selectedRosterItem.Id, roundMatch.Id, player.Name, player.PositionEnum, awayTeam.Name, roundMatch.Round, roundMatch.MatchNo, item.Minutes, item.Points, item.ShotPrc, item.ShotMade2Pt, item.ShotAttempted2Pt, item.ShotPrc2Pt, item.ShotMade3Pt, item.ShotAttempted3Pt, item.shotPrc3Pt, item.ShotMade1Pt, item.ShotAttempted1Pt, item.ShotPrc1Pt, item.DefensiveRebounds, item.OffensiveRebounds, item.TotalRebounds, item.Assists, item.Steals, item.Turnover, item.InFavoureOfBlock, item.AgainstBlock, item.CommittedFoul, item.ReceivedFoul, item.PointFromPain, item.PointFrom2ndChance, item.PointFromFastBreak, item.PlusMinus, item.RankValue));
                 }
                 else
                 {
@@ -202,7 +202,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
                                             result.HomeTeamPoints, 
                                             result.AwayTeamPoint,
                                             result.RoundMatch.Round,
-                                            result.RoundMatchId), 
+                                            result.RoundMatchId,
+                                            result.RoundMatch.DateTime), 
                 boxscoreDraftItems, 
                 existingBoxScoreItems, 
                 draftRosterItems, 
