@@ -1,0 +1,134 @@
+﻿@model PlayersByCountryViewModel
+
+<h2>Players by countries</h2>
+<form id="searchForm" class="form-horizontal" method="get" action="@Url.Action("PlayersByCountry", "Player")">
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(model => model.Countries)
+        <div class="col-md-10">
+            <select asp-for="SelectedCountryId" class="form-control" asp-items="Model.Countries"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+
+@if(Model.PlayerItems == null || !Model.PlayerItems.Any())
+{
+    <p>
+        There is no players to display for selected country.
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name [Team]
+                </th>
+                <th>
+                    Age
+                </th>
+                <th>
+                    Height
+                </th>
+                <th>
+                    Position
+                </th>
+                <th>
+                    Performance Date
+                </th>
+                <th>
+                    Minutes
+                </th>
+                <th>
+                    Points
+                </th>
+                <th>
+                    Assists
+                </th>
+                <th>
+                    Rebounds [d/o]
+                </th>
+                <th>
+                    Steal
+                </th>
+                <th>
+                    Turnover
+                </th>
+                <th>
+                    Blocks [m/on]
+                </th>
+                <th>
+                    Rank value
+                </th>
+                <th>
+                    Plus minus
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.PlayerItems)
+            {
+                <tr bgcolor =@item.PositionColor>
+                    <td>
+                        <a asp-controller="Player"
+                           asp-action="Details"
+                           asp-route-playerId="@item.PlayerId">
+                            @Html.DisplayFor(modelItem => item.PlayerName)
+                        </a>
+                        [<a asp-controller="Team"
+                            asp-action="Details"
+                            asp-route-teamId="@item.TeamId">
+                            @Html.DisplayFor(modelItem => item.TeamName)
+                        </a>]
+                    </td>
+                    <td>
+                        @item.Age
+                    </td>
+                    <td>
+                        @item.Height
+                    </td>
+                    <td >
+                        @item.Position
+                    </td>
+                    <td>
+                        @item.DatePerformance
+                    </td>
+                    <td>
+                        @item.Minutes
+                    </td>
+                    <td>
+                        @item.Points
+                    </td>
+                    <td>
+                        @item.Assists
+                    </td>
+                    <td>
+                        @item.TotalRebounds [@item.DefensiveRebounds/@item.OffensiveRebounds]
+                    </td>
+                    <td>
+                        @item.Steals
+                    </td>
+                    <td>
+                        @item.Turnover
+                    </td>
+                    <td>
+                        @item.InFavoureOfBlock/@item.AgainstBlock
+                    </td>
+                    <td>
+                        @item.RankValue
+                    </td>
+                    <td>
+                        @item.PlusMinus
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

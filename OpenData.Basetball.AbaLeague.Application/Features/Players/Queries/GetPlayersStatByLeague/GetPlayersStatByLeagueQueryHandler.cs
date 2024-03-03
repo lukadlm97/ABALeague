@@ -63,8 +63,16 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.Get
                 {
                     continue;
                 }
-                list.Add(new PlayerStatsItemByLeagueDto(player.Id,
-                    player.Name,
+                list.Add(new PlayerStatsItemByLeagueDto(new DTOs.Player.PlayerItemDto(player.Id,
+                    player.Name, 
+                    player.PositionEnum,
+                    player.Height, 
+                    player.DateOfBirth,
+                    DistanceCalculator
+                .CalculateAge(DateOnly.FromDateTime(player.DateOfBirth), DateOnly.FromDateTime(DateTime.UtcNow)),
+                    player.CountryId,
+                    player.CountryId.ToString()
+     ),
                     team.Id,
                     team.Name,
                     Math.Round((decimal)selectedBoxscores.Sum(x => x.Points) / gamesPlayed, 2),

@@ -3,7 +3,6 @@ using AngleSharp.Dom;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using OpenData.Basetball.AbaLeague.Crawler.Configurations;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
 using OpenQA.Selenium;

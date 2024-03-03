@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenData.Basetball.AbaLeague.Domain.Enums;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.DTOs.Game
 {
-    public record PlayerStatsItemByLeagueDto(int PlayerId,
-                                        string PlayerName,
+    public record PlayerStatsItemByLeagueDto(PlayerItemDto Player,
                                         int TeamId,
                                         string TeamName,
                                         decimal? Points = null,
@@ -32,7 +33,8 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Game
                                         decimal? PointFromFastBreak = null,
                                         decimal? PlusMinus = null,
                                         decimal? RankValue = null,
-                                        TimeSpan? Minutes = null) : 
+                                        TimeSpan? Minutes = null,
+                                        DateTime? PerformanceDate = null) : 
         StatsItemByLeagueDto(
             TeamId, 
             TeamName, 

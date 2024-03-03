@@ -29,5 +29,6 @@
         public int? PointFromFastBreak { get; set; } = null;
         public int? PlusMinus { get; set; } = null;
         public int? RankValue { get; set; } = null;
+        public DateTime? DatePerformance { get; set; }
     }
 }

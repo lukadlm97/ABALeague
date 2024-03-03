@@ -17,5 +17,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
             GetTeamRosterByLeagueId(int leagueId, int teamId, CancellationToken  cancellationToken = default);
         Task<IEnumerable<RosterItem>> SearchByLeagueId(int leagueId, CancellationToken cancellationToken = default);
         Task<IQueryable<RosterItem>> SearchRosterByLeagueAndTeamId(int leagueId, int teamId, CancellationToken cancellationToken = default);
+        IQueryable<RosterItem> Get();
     }
 }

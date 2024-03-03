@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
+using OpenData.Basetball.AbaLeague.Persistence.Migrations;
 using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBoxscoreByPlayerIdAndLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
@@ -14,6 +15,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlay
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerAnotherNames;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerGames;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayersByCountryId;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.SearchPlayers;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.SearchPlayersByCountryId;
 using OpenData.Basketball.AbaLeague.Application.Features.Positions.Queries.GetPositions;
@@ -459,6 +461,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 Players = list.OrderBy(x => x.Name).ToList()
             });
         }
+        
         [HttpGet]
         public async Task<IActionResult> SearchPlayerByCountry(int page = 1,
                                                   int size = 10000,
@@ -498,5 +501,63 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 Players = list.OrderBy(x => x.Name).ToList()
             });
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> PlayersByCountry(string? selectedCountryId= null,
+            CancellationToken cancellationToken = default)
+        {
+            var countries = await _sender.Send(new GetCountriesQuery(), cancellationToken);
+            if (countries.HasNoValue)
+            {
+                return View("Error");
+            }
+            var viewModel = new PlayersByCountryViewModel
+            {
+                Countries = new SelectList(countries.Value.Countries, "CountryId", "Name"),
+            };
+            if (!int.TryParse(selectedCountryId, out int countryId))
+            {
+                return View(viewModel);
+            }
+
+            var players = await _sender.Send(new GetPlayersByCountryIdQuery(countryId), cancellationToken);
+            if (players.HasNoValue)
+            {
+                return View("Error");
+            }
+            
+            viewModel.SelectedCountryId = countryId.ToString();
+            viewModel.PlayerItems = players.Value.Players.Select(x => new PlayerByCountryViewModel
+            {
+                PlayerId = x.Player.Id,
+                PlayerName = x.Player.Name,
+                Position = x.Player.Position.ToString(),
+                PositionColor = x.Player.Position.ConvertPositionEnumToColor(),
+                TeamId = x.TeamId,
+                TeamName = x.TeamName,
+                Minutes = x.Minutes,
+                Points = (int?) x.Points,
+                Assists = (int?) x.Assists,
+                DefensiveRebounds = (int?) x.DefensiveRebounds,
+                OffensiveRebounds = (int?) x.OffensiveRebounds,
+                TotalRebounds = (int?) x.TotalRebounds,
+                InFavoureOfBlock = (int?)x.InFavoureOfBlock,
+                AgainstBlock = (int?) x.AgainstBlock,
+                Steals = (int?) x.Steals,
+                Turnover = (int?) x.Turnover,
+                RankValue = (int?) x.RankValue,
+                PlusMinus = (int?) x.PlusMinus,
+                Age = x.Player.Age,
+                Height = x.Player.Height,
+                DatePerformance = x.PerformanceDate
+            }).OrderByDescending(x => x.Points)
+                .ThenBy(x => x.Age)
+              .ToList();
+
+            return View(viewModel);
+        }
+
+
     }
 }

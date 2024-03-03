@@ -1,13 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OpenData.Basetball.AbaLeague.Persistence;
+﻿using OpenData.Basetball.AbaLeague.Persistence;
 using OpenData.Basketball.AbaLeague.Application.Contracts;
 using OpenData.Basketball.AbaLeague.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 {

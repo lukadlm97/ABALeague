@@ -16,6 +16,11 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         {
         }
 
+        public IQueryable<League> Get()
+        {
+            return _dbContext.Leagues;
+        }
+
         public League? SearchLeagueByRoundMatchId(int roundMatchId)
         {
             var roundMatch = _dbContext.RoundMatches.FirstOrDefault(x => x.Id == roundMatchId);

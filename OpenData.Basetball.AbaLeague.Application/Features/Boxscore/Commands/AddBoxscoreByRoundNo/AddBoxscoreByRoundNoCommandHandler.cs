@@ -23,8 +23,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Commands.A
         {
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
             var matchResults = _unitOfWork.ResultRepository
-                .SearchByLeagueAndRoundNo(request.LeagueId, request.RoundNo, cancellationToken).ToList();
-            if (league == null || matchResults == null || !matchResults.Any() || !request.Boxscores.Any())
+                .SearchByLeagueAndRoundNo(request.LeagueId, request.RoundNo, cancellationToken)
+                .ToList();
+            if (league == null || 
+                    matchResults == null || 
+                    !matchResults.Any() || 
+                    !request.Boxscores.Any())
             {
                 return
                     Domain.Common.Result.Failure(new Error("000", "Unable to find new league, match results or boxscore existing"));

@@ -11,6 +11,8 @@
             <label for="playerSearch">Search:</label>
             <input type="text" id="playerSearch" placeholder="Enter player name">
             <button id="searchButton" class="btn btn-primary">Search</button>
+            <a asp-controller="Player" asp-action="PlayersByCountry"
+            class="btn btn-outline-secondary">By Country Analyse</a>
 
             <table class="table" id="playersTable">
                 <thead>

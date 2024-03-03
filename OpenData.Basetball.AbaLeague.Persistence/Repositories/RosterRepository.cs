@@ -95,5 +95,10 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
                 .Include(x => x.League)
                 .Where(x => x.LeagueId == leagueId && x.TeamId == teamId);
         }
+
+        public IQueryable<RosterItem> Get()
+        {
+            return _dbContext.RosterItems;
+        }
     }
 }

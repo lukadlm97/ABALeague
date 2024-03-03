@@ -8,6 +8,7 @@ using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Contracts;
 using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 using OpenData.Basketball.AbaLeague.Application.Services.Implementation;
+using OpenData.Basketball.AbaLeague.Application.Configurations.Players;
 
 namespace OpenData.Basketball.AbaLeague.Application.Utilities
 {
@@ -26,7 +27,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
             services.AddScoped<IDocumentFetcher, DocumentFetcher>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IStandingsService, StandingsService>();
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
+            // business logic configurations
+            services.Configure<PlayerSettings>(configuration.GetSection(nameof(PlayerSettings)));
 
             return services;
         }

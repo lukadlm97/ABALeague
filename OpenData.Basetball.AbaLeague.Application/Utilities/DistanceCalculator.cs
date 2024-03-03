@@ -8,7 +8,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
 {
     public static class DistanceCalculator
     {
-        public static int CalculateAge(DateOnly birthDate, DateOnly currentDate)
+        public static int CalculateAge(this DateOnly birthDate, DateOnly currentDate)
         {
             int age = currentDate.Year - birthDate.Year;
 

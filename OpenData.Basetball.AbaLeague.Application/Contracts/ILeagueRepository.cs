@@ -11,5 +11,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
     public interface ILeagueRepository : IGenericRepository<League>
     {
         League? SearchLeagueByRoundMatchId(int roundMatchId);
+        IQueryable<League> Get();
     }
 }

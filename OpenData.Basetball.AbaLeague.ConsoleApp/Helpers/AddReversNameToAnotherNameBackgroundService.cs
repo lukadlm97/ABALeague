@@ -3,7 +3,6 @@ using Microsoft.Extensions.Hosting;
 using OpenData.Basetball.AbaLeague.Application.Contracts;
 using OpenData.Basetball.AbaLeague.Persistence.Repositories;
 using OpenData.Basetball.AbaLeague.Crawler.Utilities;
-using OpenQA.Selenium.DevTools.V114.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
