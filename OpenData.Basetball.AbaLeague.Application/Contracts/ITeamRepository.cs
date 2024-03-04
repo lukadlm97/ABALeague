@@ -8,5 +8,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
     {
         IEnumerable<Team> Get(IEnumerable<int> ids,CancellationToken  cancellationToken=default);
         Task<Team?> GetRoster(int teamId, CancellationToken cancellationToken = default);
+        IQueryable<Team> Get();
     }
 }

@@ -9,5 +9,6 @@
         public IList<BoxscoreByTeamViewModel> StatsByRounds { get; set; }
         public AverageBoxscoreStatsViewModel AverageBoxscoreStats { get; set; }
         public AdvancedBoxscoreStatsViewModel AdvancedBoxscoreStats { get; set; }
+        public PerformanceByPositionViewModel PerformanceByPosition { get; set; }
     }
 }

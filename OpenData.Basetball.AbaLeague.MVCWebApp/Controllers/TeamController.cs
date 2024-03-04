@@ -14,6 +14,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRost
 using OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoreByLeagueIdAndTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Queries.GetSeasonResourcesByTeam;
+using OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositions;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.CreateTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.UpdateTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById;
@@ -309,15 +310,18 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                         int teamId,
                                                         CancellationToken cancellationToken = default)
         {
-            var result = await _sender
+            var gamePerformance = await _sender
                 .Send(new GetBoxscoreByTeamIdAndLeagueIdQuery(leagueId, teamId), cancellationToken);
+            var perforamanceByPostion = await _sender
+                .Send(new GetByPositionsQuery(teamId, leagueId), cancellationToken);
 
-            if (result.HasNoValue)
+
+            if (gamePerformance.HasNoValue || perforamanceByPostion.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "not found any peformance" });
             }
 
-            var gamePerformanceItems = result.Value.Games.Select(x => new BoxscoreByTeamViewModel
+            var gamePerformanceItems = gamePerformance.Value.Games.Select(x => new BoxscoreByTeamViewModel
             {
                 AgainstBlock = x.AgainstBlock,
                 Assists = x.Assists,
@@ -357,35 +361,65 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 MatchResultId = x.ResultId??0
             });
 
+            
             return View(new PerformanceViewModel
             {
-                LeagueId = result.Value.LeagueId,
-                LeagueName = result.Value.LeagueName,
-                TeamId = result.Value.TeamId,
-                TeamName = result.Value.TeamName,
+                LeagueId = gamePerformance.Value.LeagueId,
+                LeagueName = gamePerformance.Value.LeagueName,
+                TeamId = gamePerformance.Value.TeamId,
+                TeamName = gamePerformance.Value.TeamName,
                 StatsByRounds = gamePerformanceItems.ToList(),
                 AverageBoxscoreStats = new AverageBoxscoreStatsViewModel
                 {
-                    AvgAssists = result.Value.AverageBoxscoreCalcuations.AvgAssists,
-                    AvgMinutes = result.Value.AverageBoxscoreCalcuations.AvgMinutes,
-                    AvgPlusMinus = result.Value.AverageBoxscoreCalcuations.AvgPlusMinus,
-                    AvgPoints = result.Value.AverageBoxscoreCalcuations.AvgPoints,
-                    AvgRankValue = result.Value.AverageBoxscoreCalcuations.AvgRankValue,
-                    AvgSteals = result.Value.AverageBoxscoreCalcuations.AvgSteals,
-                    AvgTotalRebounds = result.Value.AverageBoxscoreCalcuations.AvgTotalRebounds,
-                    AvgTurnover = result.Value.AverageBoxscoreCalcuations.AvgTurnover,
+                    AvgAssists = gamePerformance.Value.AverageBoxscoreCalcuations.AvgAssists,
+                    AvgMinutes = gamePerformance.Value.AverageBoxscoreCalcuations.AvgMinutes,
+                    AvgPlusMinus = gamePerformance.Value.AverageBoxscoreCalcuations.AvgPlusMinus,
+                    AvgPoints = gamePerformance.Value.AverageBoxscoreCalcuations.AvgPoints,
+                    AvgRankValue = gamePerformance.Value.AverageBoxscoreCalcuations.AvgRankValue,
+                    AvgSteals = gamePerformance.Value.AverageBoxscoreCalcuations.AvgSteals,
+                    AvgTotalRebounds = gamePerformance.Value.AverageBoxscoreCalcuations.AvgTotalRebounds,
+                    AvgTurnover = gamePerformance.Value.AverageBoxscoreCalcuations.AvgTurnover,
 
                 },
                 AdvancedBoxscoreStats = new AdvancedBoxscoreStatsViewModel
                 {
-                    AverageSpectators = result.Value.AdvancedMatchCalcuations.AverageSpectators,
-                    AwayGameScoredPoints = result.Value.AdvancedMatchCalcuations.AwayGameScoredPoints,
-                    GamePlayed = result.Value.AdvancedMatchCalcuations.GamePlayed,
-                    GamesWin = result.Value.AdvancedMatchCalcuations.GamesWin,
-                    HomeGameScoredPoints = result.Value.AdvancedMatchCalcuations.HomeGameScoredPoints,
-                    HomeGamesPlayed = result.Value.AdvancedMatchCalcuations.HomeGamesPlayed,
-                    HomeGamesWin = result.Value.AdvancedMatchCalcuations.HomeGamesWin,
-                    TotalSpectators = result.Value.AdvancedMatchCalcuations.TotalSpectators
+                    AverageSpectators = gamePerformance.Value.AdvancedMatchCalcuations.AverageSpectators,
+                    AwayGameScoredPoints = gamePerformance.Value.AdvancedMatchCalcuations.AwayGameScoredPoints,
+                    GamePlayed = gamePerformance.Value.AdvancedMatchCalcuations.GamePlayed,
+                    GamesWin = gamePerformance.Value.AdvancedMatchCalcuations.GamesWin,
+                    HomeGameScoredPoints = gamePerformance.Value.AdvancedMatchCalcuations.HomeGameScoredPoints,
+                    HomeGamesPlayed = gamePerformance.Value.AdvancedMatchCalcuations.HomeGamesPlayed,
+                    HomeGamesWin = gamePerformance.Value.AdvancedMatchCalcuations.HomeGamesWin,
+                    TotalSpectators = gamePerformance.Value.AdvancedMatchCalcuations.TotalSpectators
+                },
+                PerformanceByPosition = new PerformanceByPositionViewModel
+                {
+                    PerformanceByPosition = perforamanceByPostion.Value.Items
+                    .OrderBy(x=>x.PositionEnum)
+                    .Select(x=>new PerformanceByPositionItemViewModel
+                    {
+                        ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
+                        ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
+                        ParticipationBlocksOn = x.BoxScoreItemDto.ParticipationBlocksOn,
+                        ParticipationDefensiveRebounds = x.BoxScoreItemDto.ParticipationDefensiveRebounds,
+                        ParticipationOffensiveRebounds = x.BoxScoreItemDto.ParticipationOffensiveRebounds,
+                        ParticipationPoints = x.BoxScoreItemDto.ParticipationPoints,
+                        ParticipationRebounds = x.BoxScoreItemDto.ParticipationRebounds,
+                        ParticipationSteals = x.BoxScoreItemDto.ParticipationSteals,
+                        ParticipationTurnovers = x.BoxScoreItemDto.ParticipationTurnovers,
+                        Position = x.PositionEnum,
+                        PositionName = x.PositionEnum.ToString(),
+                        TotalAssists = x.BoxScoreItemDto.TotalAssists,
+                        TotalBlocksMade = x.BoxScoreItemDto.TotalBlocksMade,
+                        TotalBlocksOn = x.BoxScoreItemDto.TotalBlocksOn,
+                        TotalDefensiveRebounds = x.BoxScoreItemDto.TotalDefensiveRebounds,
+                        TotalOffensiveRebounds = x.BoxScoreItemDto.TotalOffensiveRebounds,
+                        TotalPoints = x.BoxScoreItemDto.TotalPoints,
+                        TotalRebounds = x.BoxScoreItemDto.TotalRebounds,
+                        TotalSteals = x.BoxScoreItemDto.TotalSteals,
+                        TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers,
+                        
+                    }).ToList()
                 }
             });
         }

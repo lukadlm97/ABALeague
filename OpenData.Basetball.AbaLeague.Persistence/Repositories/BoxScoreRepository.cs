@@ -85,5 +85,12 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             return _dbContext.BoxScores
                                 .Include(x => x.RoundMatch);
         }
+
+        public IQueryable<BoxScore> GetWithRosterItemDetailsIncluded()
+        {
+            return _dbContext.BoxScores
+                              .Include(x => x.RosterItem)
+                                .ThenInclude(x=>x.Player);
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
     {
         IQueryable<BoxScore> Get();
         IQueryable<BoxScore> GetWithRoundMatchIncluded();
+        IQueryable<BoxScore> GetWithRosterItemDetailsIncluded();
         Task<bool> Exist(int roundMatchId, int rosterItemId, CancellationToken cancellationToken = default);
         Task<IEnumerable<BoxScore>> GetByRosterItemId(int rosterItemId, CancellationToken cancellationToken = default);
         Task<IEnumerable<BoxScore>> SearchByLeagueId(int leagueId, CancellationToken cancellationToken = default);

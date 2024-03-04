@@ -27,6 +27,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
             services.AddScoped<IDocumentFetcher, DocumentFetcher>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IStandingsService, StandingsService>();
+            services.AddScoped<IStatisticsCalculator, StatisticsCalculator>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
             // business logic configurations

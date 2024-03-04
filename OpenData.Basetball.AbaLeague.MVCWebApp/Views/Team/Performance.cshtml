@@ -1,3 +1,67 @@
 ﻿@model PerformanceViewModel
 
 @await Html.PartialAsync("_GamesPerformance", Model);
+
+
+<h2>Performance by Position</h2>
+
+@if (Model.PerformanceByPosition != null 
+    && Model.PerformanceByPosition.PerformanceByPosition != null
+    && Model.PerformanceByPosition.PerformanceByPosition.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Total Points</th>
+                <th>Participation Points</th>
+                <th>Total Rebounds</th>
+                <th>Participation Rebounds</th>
+                <th>Total Assists</th>
+                <th>Participation Assists</th>
+                <th>Total Turnovers</th>
+                <th>Participation Turnovers</th>
+                <th>Total Steals</th>
+                <th>Participation Steals</th>
+                <th>Total Offensive Rebounds</th>
+                <th>Participation Offensive Rebounds</th>
+                <th>Total Defensive Rebounds</th>
+                <th>Participation Defensive Rebounds</th>
+                <th>Total Blocks On</th>
+                <th>Participation Blocks On</th>
+                <th>Total Blocks Made</th>
+                <th>Participation Blocks Made</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PerformanceByPosition.PerformanceByPosition)
+            {
+                <tr>
+                    <td>@item.PositionName</td>
+                    <td>@item.TotalPoints</td>
+                    <td>@item.ParticipationPoints</td>
+                    <td>@item.TotalRebounds</td>
+                    <td>@item.ParticipationRebounds</td>
+                    <td>@item.TotalAssists</td>
+                    <td>@item.ParticipationAssists</td>
+                    <td>@item.TotalTurnovers</td>
+                    <td>@item.ParticipationTurnovers</td>
+                    <td>@item.TotalSteals</td>
+                    <td>@item.ParticipationSteals</td>
+                    <td>@item.TotalOffensiveRebounds</td>
+                    <td>@item.ParticipationOffensiveRebounds</td>
+                    <td>@item.TotalDefensiveRebounds</td>
+                    <td>@item.ParticipationDefensiveRebounds</td>
+                    <td>@item.TotalBlocksOn</td>
+                    <td>@item.ParticipationBlocksOn</td>
+                    <td>@item.TotalBlocksMade</td>
+                    <td>@item.ParticipationBlocksMade</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No performance data available.</p>
+}
