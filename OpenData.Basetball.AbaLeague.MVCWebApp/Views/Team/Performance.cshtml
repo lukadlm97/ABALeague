@@ -1,7 +1,48 @@
-﻿@model PerformanceViewModel
+﻿@using OpenData.Basetball.AbaLeague.Domain.Enums
+@model PerformanceViewModel
 
 @await Html.PartialAsync("_GamesPerformance", Model);
 
+
+
+<h2>Roster Items by Positions</h2>
+
+@if (Model.RosterItemsByPositionsViewModel.RosterItems != null && 
+    Model.RosterItemsByPositionsViewModel.RosterItems.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var position in Enum.GetValues(typeof(PositionEnum)))
+                {
+                    <th>
+                        @position
+                    </th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            @foreach (var item in Model.RosterItemsByPositionsViewModel.RosterItems)
+            {
+               <td>
+                    @foreach(var player in item.Players)
+                    {
+                            @player.Name
+                            <br />
+                    }
+
+                </td>
+            }
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No roster items available.</p>
+}
 
 <h2>Performance by Position</h2>
 

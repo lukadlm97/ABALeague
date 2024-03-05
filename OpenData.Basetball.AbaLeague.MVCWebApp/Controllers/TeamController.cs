@@ -11,6 +11,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeag
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterPerPositionByTeamAndLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoreByLeagueIdAndTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Queries.GetSeasonResourcesByTeam;
@@ -314,9 +315,11 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 .Send(new GetBoxscoreByTeamIdAndLeagueIdQuery(leagueId, teamId), cancellationToken);
             var perforamanceByPostion = await _sender
                 .Send(new GetByPositionsQuery(teamId, leagueId), cancellationToken);
+            var playersByPosition = await _sender
+                .Send(new GetRosterPerPositionByTeamAndLeagueQuery(teamId, leagueId), cancellationToken);
 
 
-            if (gamePerformance.HasNoValue || perforamanceByPostion.HasNoValue)
+            if (gamePerformance.HasNoValue || perforamanceByPostion.HasNoValue || playersByPosition.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "not found any peformance" });
             }
@@ -420,6 +423,19 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers,
                         
                     }).ToList()
+                },
+                RosterItemsByPositionsViewModel = new RosterItemsByPositionsViewModel
+                {
+                    RosterItems = playersByPosition.Value.RosterEntriesByPositions.Select(x=> new RosterItemByPositionViewModel
+                    {
+                        Position = x.Key,
+                        PositionName = x.Key.ToString(),
+                        Players = x.Value.Select(x=>new PlayerViewModel
+                        {
+                            Name = x.Name,
+                            Position = x.Position.ToString()
+                        }).ToList()
+                    }).ToList(),
                 }
             });
         }

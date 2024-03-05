@@ -70,14 +70,15 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         public async Task<IEnumerable<RosterItem>> 
             GetTeamRosterByLeagueId(int leagueId, int teamId, CancellationToken cancellationToken = default)
         {
-            var team = _dbContext.Teams.Include(x => x.RosterItems).FirstOrDefault(x => x.Id == teamId);
+            var team = await _dbContext.Teams.Include(x => x.RosterItems)
+                                        .FirstOrDefaultAsync(x => x.Id == teamId);
             if (team == null)
             {
                 return Array.Empty<RosterItem>();
             }
 
-            var rosterItems = team.RosterItems;
-            return rosterItems.Where(x => x.LeagueId == leagueId);
+            return team.RosterItems.ToList()
+                        .Where(x => x.LeagueId == leagueId);
         }
 
         public async Task<IQueryable<RosterItem>> 
