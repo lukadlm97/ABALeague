@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
+using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.DTOs.SeasonResources;
 using OpenData.Basketball.AbaLeague.Application.Features.CompetitionOrganization.Queries.GetCompetionOrganizations;
@@ -17,6 +19,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.ProcessorTypes.Queries;
 using OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoresByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
+using OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositionsPerLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.StatsProperties.Queries;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamRangeStatsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamStatsByLeagueId;
@@ -718,6 +721,52 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         Round = y.Round,
                     }).ToList(),
                 }).ToList(),
+            });
+        }
+        public async Task<IActionResult> 
+            PerformanceByPosition(int leagueId, 
+                                    CancellationToken cancellationToken = default)
+        {
+            var performancesByPositions =
+                await _sender.Send(new GetByPositionsPerLeagueQuery(leagueId), cancellationToken);
+
+            if (performancesByPositions.HasNoValue)
+            {
+                return View("Error", new InfoDescriptionViewModel()
+                {
+                    Description = "Unable to find performances for league"
+                });
+            }
+
+            return View(new PerformanceByPositionViewModel
+            {
+                PerformanceByPosition = performancesByPositions.Value.Items.Select(x => new PerformanceByPositionItemViewModel
+                {
+                    ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
+                    ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
+                    ParticipationBlocksOn = x.BoxScoreItemDto.ParticipationBlocksOn,
+                    ParticipationDefensiveRebounds = x.BoxScoreItemDto.ParticipationDefensiveRebounds,
+                    ParticipationOffensiveRebounds = x.BoxScoreItemDto.ParticipationOffensiveRebounds,
+                    ParticipationPoints = x.BoxScoreItemDto.ParticipationPoints,
+                    ParticipationRebounds = x.BoxScoreItemDto.ParticipationRebounds,
+                    ParticipationSteals= x.BoxScoreItemDto.ParticipationSteals,
+                    ParticipationTurnovers = x.BoxScoreItemDto.ParticipationTurnovers,
+                    Position = x.PositionEnum,
+                    PositionColor = x.PositionEnum.ConvertPositionEnumToColor(),
+                    PositionName = x.PositionEnum.ToString(),
+                    TotalAssists = x.BoxScoreItemDto.TotalAssists,
+                    TotalBlocksMade = x.BoxScoreItemDto.TotalBlocksMade,
+                    TotalBlocksOn = x.BoxScoreItemDto.TotalBlocksOn,
+                    TotalDefensiveRebounds = x.BoxScoreItemDto.TotalDefensiveRebounds,
+                    TotalOffensiveRebounds = x.BoxScoreItemDto.TotalOffensiveRebounds,
+                    TotalPoints = x.BoxScoreItemDto.TotalPoints,
+                    TotalRebounds = x.BoxScoreItemDto.TotalRebounds,
+                    TotalSteals = x.BoxScoreItemDto.TotalSteals,
+                    TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers,
+                }).OrderBy(x => x.Position)
+                .ToList(),
+                LeagueId = performancesByPositions.Value.LeagueId,
+                LeagueName = performancesByPositions.Value.LeagueName
             });
         }
     }

@@ -7,16 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositions
+namespace OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositionsPerLeague
 {
-    public class GetByPositionsQuery : IQuery<Maybe<CategoriesByPositionDto>>
+    public class GetByPositionsPerLeagueQuery : IQuery<Maybe<CategoriesByPositionPerLeagueDto>>
     {
-        public GetByPositionsQuery(int teamId, int leagueId)
+        public GetByPositionsPerLeagueQuery(int leagueId)
         {
-            TeamId = teamId;
             LeagueId = leagueId;
         }
-        public int TeamId { get; init; }
-        public int LeagueId { get; init; }
+
+        public int LeagueId { get; }
     }
 }

@@ -1,64 +1,9 @@
-﻿@using OpenData.Basetball.AbaLeague.Domain.Enums
-@model PerformanceViewModel
+﻿@model PerformanceByPositionViewModel
 
-@await Html.PartialAsync("_GamesPerformance", Model);
+<h1>@Model.LeagueName</h1>
 
-
-
-<h2>Roster Items by Positions</h2>
-
-@if (Model.RosterItemsByPositionsViewModel.RosterItems != null && 
-    Model.RosterItemsByPositionsViewModel.RosterItems.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                @foreach (var position in Model.RosterItemsByPositionsViewModel.PositionItems)
-                {
-                    <th style="background-color: @position.color;">
-                        @position.key
-                    </th>
-                }
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            @foreach (var item in Model.RosterItemsByPositionsViewModel.RosterItems)
-            {
-                    <td style="background-color: @item.PositionColor;">
-                    @foreach(var player in item.Players)
-                    {
-                        
-                            <a asp-controller="Player"
-                                asp-action="Details"
-                               asp-route-playerId="@player.Id">
-                                @player.Name
-                            </a>
-                           
-                            <br />
-                       
-                    }
-
-                </td>
-            }
-            </tr>
-        </tbody>
-    </table>
-    <p>
-        * - not still in the roster
-    </p>
-}
-else
-{
-    <p>No roster items available.</p>
-}
-
-<h2>Performance by Position</h2>
-
-@if (Model.PerformanceByPosition != null 
-    && Model.PerformanceByPosition.PerformanceByPosition != null
-    && Model.PerformanceByPosition.PerformanceByPosition.Any())
+@if (Model.PerformanceByPosition != null
+       && Model.PerformanceByPosition.Any())
 {
     <table class="table">
         <thead>
@@ -73,7 +18,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.PerformanceByPosition.PerformanceByPosition)
+            @foreach (var item in Model.PerformanceByPosition)
             {
                 <tr style="background-color: @item.PositionColor;">
                     <td>@item.PositionName</td>
@@ -105,7 +50,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.PerformanceByPosition.PerformanceByPosition)
+            @foreach (var item in Model.PerformanceByPosition)
             {
                 <tr style="background-color: @item.PositionColor;">
                     <td>@item.TotalTurnovers</td>

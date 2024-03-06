@@ -12,19 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositions
+namespace OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositionsPerTeam
 {
-    internal class GetByPositionsQueryHandler : IQueryHandler<GetByPositionsQuery, Maybe<CategoriesByPositionDto>>
+    internal class GetByPositionsPerTeamQueryHandler(IUnitOfWork _unitOfWork,
+                                                        IStatisticsCalculator _statisticsCalculator) 
+        : IQueryHandler<GetByPositionsPerTeamQuery, Maybe<CategoriesByPositionPerTeamDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IStatisticsCalculator _statisticsCalculator;
-
-        public GetByPositionsQueryHandler(IUnitOfWork unitOfWork, IStatisticsCalculator statisticsCalculator)
-        {
-            _unitOfWork = unitOfWork;
-            _statisticsCalculator = statisticsCalculator;
-        }
-        public async Task<Maybe<CategoriesByPositionDto>> Handle(GetByPositionsQuery request,
+        public async Task<Maybe<CategoriesByPositionPerTeamDto>> Handle(GetByPositionsPerTeamQuery request,
                                                     CancellationToken cancellationToken)
         {
             var team = _unitOfWork.TeamRepository.Get()
@@ -33,8 +27,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.
                                     .FirstOrDefault(x => x.Id == request.LeagueId);
             if (team == null || league == null)
             {
-                return Maybe<CategoriesByPositionDto>.None;
+                return Maybe<CategoriesByPositionPerTeamDto>.None;
             }
+
             var boxscore = _unitOfWork.BoxScoreRepository.GetWithRosterItemDetailsIncluded()
                                 .Where(x => x.RosterItem.TeamId == team.Id 
                                             && x.RosterItem.LeagueId == league.Id)
@@ -49,11 +44,11 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.
                 PositionEnum.Center
             }.ToFrozenSet());
 
-            return new CategoriesByPositionDto(team.Id, 
-                                                team.Name, 
-                                                league.Id,
-                                                league.OfficalName, 
-                                                performanceByPosition);
+        return new CategoriesByPositionPerTeamDto(team.Id, 
+                                                    team.Name,
+                                                    league.Id,
+                                                    league.OfficalName, 
+                                                    performanceByPosition);
         }
     }
 }

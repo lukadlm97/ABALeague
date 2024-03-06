@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.DTOs.Statistic
 {
-    public record CategoriesByPositionDto(int TeamId, 
+    public record CategoriesByPositionPerTeamDto(int TeamId, 
                                             string TeamName, 
                                             int LeagueId, 
                                             string LeagueName,

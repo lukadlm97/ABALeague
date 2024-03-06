@@ -33,16 +33,18 @@
                 <td>
                     <a asp-controller="League" asp-action="Details" 
                         asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Details</a>
-                        <a asp-controller="League" asp-action="LeagueMatches"
+                    <a asp-controller="League" asp-action="LeagueMatches"
                         asp-route-leagueId="@item.Id" class="btn btn-outline-primary">Matches</a>
-                   <a asp-controller="League" asp-action="Standings"
+                    <a asp-controller="League" asp-action="Standings"
                         asp-route-leagueId="@item.Id" class="btn btn-outline-info">Standings</a>
                     <a asp-controller="League" asp-action="TeamsLeaderboard"
                         asp-route-leagueId="@item.Id" class="btn btn-outline-danger">Teams Stats</a>
                     <a asp-controller="League" asp-action="PlayersLeaderboard"
                         asp-route-leagueId="@item.Id" class="btn btn-outline-warning">Player Stats</a>
-                        <a asp-controller="League" asp-action="LeagueRangeStatsByLeague"
+                    <a asp-controller="League" asp-action="LeagueRangeStatsByLeague"
                         asp-route-leagueId="@item.Id" class="btn btn-outline-info">Range Stats</a>
+                    <a asp-controller="League" asp-action="PerformanceByPosition"
+                        asp-route-leagueId="@item.Id" class="btn btn-outline-info">Stats By Positions</a>
                 </td>
             </tr>
         }

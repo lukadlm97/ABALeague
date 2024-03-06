@@ -17,7 +17,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRost
 using OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoreByLeagueIdAndTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.SeasonResources.Queries.GetSeasonResourcesByTeam;
-using OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositions;
+using OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositionsPerTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.CreateTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Commands.UpdateTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById;
@@ -316,7 +316,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             var gamePerformance = await _sender
                 .Send(new GetBoxscoreByTeamIdAndLeagueIdQuery(leagueId, teamId), cancellationToken);
             var perforamanceByPostion = await _sender
-                .Send(new GetByPositionsQuery(teamId, leagueId), cancellationToken);
+                .Send(new GetByPositionsPerTeamQuery(teamId, leagueId), cancellationToken);
             var playersByPosition = await _sender
                 .Send(new GetRosterPerPositionByTeamAndLeagueQuery(teamId, leagueId), cancellationToken);
 
