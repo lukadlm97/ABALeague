@@ -2,6 +2,7 @@
 using OpenData.Basketball.AbaLeague.Application.Abstractions.Messaging;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Statistic;
+using OpenData.Basketball.AbaLeague.Application.Utilities;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 using System;
 using System.Collections.Frozen;
@@ -40,14 +41,20 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                                     .Where(x => playerIds.Contains(x.Id))
                                     .ToList();
             var playersByPositions = players.GroupBy(x => x.PositionEnum)
-                .Select(y => (y.Key, 
-                    y.Select(z => 
-                                new RosterEntryDto(z.Name,
-                                z.PositionEnum, 
+                .Select(y => (y.Key,
+                    y.Select(z =>
+                                new RosterItemDto(z.Id, 
+                                league.Id,
+                                rosterItems.FirstOrDefault(x=>x.PlayerId == z.Id).DateOfInsertion,
+                                rosterItems.FirstOrDefault(x => x.PlayerId == z.Id).EndOfActivePeriod, 
+                                z.Name,
+                                z.PositionEnum,
                                 z.Height,
-                                z.DateOfBirth, 
-                                z.Country, 
-                                z.CountryId)
+                                z.DateOfBirth,
+                                  DistanceCalculator
+                                .CalculateAge(DateOnly.FromDateTime(z.DateOfBirth), DateOnly.FromDateTime(DateTime.UtcNow)),
+                                z.CountryId,
+                                string.Empty)
                                 ).ToFrozenSet())
                     ).ToDictionary();
 

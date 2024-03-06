@@ -42,6 +42,16 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Commands.Ad
                         continue;
                     }
 
+                    var previouseExistingRosterMarks =
+                        _unitOfWork.RosterRepository
+                                    .Get()
+                                    .Where(x => x.PlayerId == item.PlayerId && item.End == null)
+                                    .ToList();
+                    foreach(var existingRosterItemWithValidContract in previouseExistingRosterMarks)
+                    {
+                        existingRosterItemWithValidContract.EndOfActivePeriod = DateTime.UtcNow;
+                    }
+
                     await _unitOfWork.RosterRepository.Add(new Basetball.AbaLeague.Domain.Entities.RosterItem
                     {
                         LeagueId = item.LeagueId,

@@ -12,5 +12,5 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Roster
         string TeamName, 
         int LeagueId, 
         string LeagueName,
-        FrozenDictionary<PositionEnum, FrozenSet<RosterEntryDto>> RosterEntriesByPositions);
+        FrozenDictionary<PositionEnum, FrozenSet<RosterItemDto>> RosterEntriesByPositions);
 }

@@ -6,6 +6,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
     {
         public PositionEnum Position { get; set; }
         public string PositionName { get; set; }
+        public string PositionColor { get; set; }
         public int TotalPoints { get; init; }
         public decimal ParticipationPoints { get; init; }
         public int TotalRebounds { get; init; }

@@ -13,10 +13,10 @@
     <table class="table">
         <thead>
             <tr>
-                @foreach (var position in Enum.GetValues(typeof(PositionEnum)))
+                @foreach (var position in Model.RosterItemsByPositionsViewModel.PositionItems)
                 {
-                    <th>
-                        @position
+                    <th style="background-color: @position.color;">
+                        @position.key
                     </th>
                 }
 
@@ -26,11 +26,18 @@
             <tr>
             @foreach (var item in Model.RosterItemsByPositionsViewModel.RosterItems)
             {
-               <td>
+                    <td style="background-color: @item.PositionColor;">
                     @foreach(var player in item.Players)
                     {
-                            @player.Name
+                        
+                            <a asp-controller="Player"
+                                asp-action="Details"
+                               asp-route-playerId="@player.Id">
+                                @player.Name
+                            </a>
+                           
                             <br />
+                       
                     }
 
                 </td>
@@ -77,7 +84,7 @@ else
         <tbody>
             @foreach (var item in Model.PerformanceByPosition.PerformanceByPosition)
             {
-                <tr>
+                <tr style="background-color: @item.PositionColor;">
                     <td>@item.PositionName</td>
                     <td>@item.TotalPoints</td>
                     <td>@item.ParticipationPoints</td>
@@ -101,6 +108,9 @@ else
             }
         </tbody>
     </table>
+    <p>
+        * - not still in the roster
+    </p>
 }
 else
 {

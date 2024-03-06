@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OpenData.Basetball.AbaLeague.Domain.Enums;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
+using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Country;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Player;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
@@ -364,7 +366,34 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 MatchResultId = x.ResultId??0
             });
 
-            
+            var resultRoster = playersByPosition.Value.RosterEntriesByPositions.Select(x => new RosterItemByPositionViewModel
+            {
+                Position = x.Key,
+                PositionName = x.Key.ToString(),
+                PositionColor = x.Key.ConvertPositionEnumToColor(),
+                Players = x.Value.Select(y => new PlayerAtRosterViewModel
+                {
+                    Id = y.PlayerId,
+                    Name = string.Concat(y.Name, y.End == null ? string.Empty : "*"),
+                    Position = y.Position.ToString(),
+                    IsActive = y.End == null
+                }).ToList(),
+
+            }).ToList();
+
+            foreach(var item in Enum.GetValues(typeof(PositionEnum)))
+            {
+                if (!resultRoster.Select(x => x.Position).ToList().Contains((PositionEnum)item))
+                {
+                    resultRoster.Add(new RosterItemByPositionViewModel
+                    {
+                        Position = (PositionEnum)item,
+                        PositionName = item.ToString(),
+                        PositionColor = ((PositionEnum)item).ConvertPositionEnumToColor(),
+                        Players = new List<PlayerAtRosterViewModel> { }
+                    });
+                }
+            }
             return View(new PerformanceViewModel
             {
                 LeagueId = gamePerformance.Value.LeagueId,
@@ -401,6 +430,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     .OrderBy(x=>x.PositionEnum)
                     .Select(x=>new PerformanceByPositionItemViewModel
                     {
+                        PositionColor = x.PositionEnum.ConvertPositionEnumToColor(),
                         ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
                         ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
                         ParticipationBlocksOn = x.BoxScoreItemDto.ParticipationBlocksOn,
@@ -421,21 +451,21 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         TotalRebounds = x.BoxScoreItemDto.TotalRebounds,
                         TotalSteals = x.BoxScoreItemDto.TotalSteals,
                         TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers,
-                        
                     }).ToList()
                 },
                 RosterItemsByPositionsViewModel = new RosterItemsByPositionsViewModel
                 {
-                    RosterItems = playersByPosition.Value.RosterEntriesByPositions.Select(x=> new RosterItemByPositionViewModel
+                    PositionItems = new List<(PositionEnum, string)>()
                     {
-                        Position = x.Key,
-                        PositionName = x.Key.ToString(),
-                        Players = x.Value.Select(x=>new PlayerViewModel
-                        {
-                            Name = x.Name,
-                            Position = x.Position.ToString()
-                        }).ToList()
-                    }).ToList(),
+                        (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor()),
+                        (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor()),
+                        (PositionEnum.Forward, PositionEnum.Forward.ConvertPositionEnumToColor()),
+                        (PositionEnum.PowerForward, PositionEnum.PowerForward.ConvertPositionEnumToColor()),
+                        (PositionEnum.Center, PositionEnum.Center.ConvertPositionEnumToColor()),
+                        (PositionEnum.Coach, PositionEnum.Coach.ConvertPositionEnumToColor()),
+                    },
+                    RosterItems = resultRoster.OrderBy(x=>x.Position).ToList(),
+
                 }
             });
         }
