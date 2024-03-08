@@ -20,6 +20,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetSc
 using OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoresByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
 using OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositionsPerLeague;
+using OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.GetByPositionsPerLeagues;
 using OpenData.Basketball.AbaLeague.Application.Features.StatsProperties.Queries;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamRangeStatsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamStatsByLeagueId;
@@ -723,8 +724,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 }).ToList(),
             });
         }
-        public async Task<IActionResult> 
-            PerformanceByPosition(int leagueId, 
+        public async Task<IActionResult>
+            TotalPerformancesByPositions(int leagueId, 
                                     CancellationToken cancellationToken = default)
         {
             var performancesByPositions =
@@ -738,9 +739,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 });
             }
 
-            return View(new PerformanceByPositionViewModel
+            return View(new TotalPerformanceByPositionViewModel
             {
-                PerformanceByPosition = performancesByPositions.Value.Items.Select(x => new PerformanceByPositionItemViewModel
+                PerformanceByPosition = performancesByPositions.Value.Items.Select(x => new TotalPerformanceByPositionItemViewModel
                 {
                     ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
                     ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
@@ -767,6 +768,54 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 .ToList(),
                 LeagueId = performancesByPositions.Value.LeagueId,
                 LeagueName = performancesByPositions.Value.LeagueName
+            });
+        }
+
+        public async Task<IActionResult> PerformancesByPositions(CancellationToken cancellationToken = default)
+        {
+            var categoriesByPositionAndLeagues = 
+                await _sender.Send(new GetByPositionsPerLeaguesQuery(), cancellationToken);
+
+            if (categoriesByPositionAndLeagues.HasNoValue)
+            {
+                return View("Error", new InfoDescriptionViewModel
+                {
+                    Description = ""
+                });
+            }
+
+            return View(new LeagueTotalPerformancesByPositionsViewModel
+            {
+                PerformanceByPositionViewModels = categoriesByPositionAndLeagues.Value.CategoriesByPositionPerLeague.Select(x=> new TotalPerformanceByPositionViewModel
+                {
+                    LeagueId = x.LeagueId,
+                    LeagueName = x.LeagueName,
+                    PerformanceByPosition = x.Items.Select(x => new TotalPerformanceByPositionItemViewModel
+                    {
+                        ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
+                        ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
+                        ParticipationBlocksOn = x.BoxScoreItemDto.ParticipationBlocksOn,
+                        ParticipationDefensiveRebounds = x.BoxScoreItemDto.ParticipationDefensiveRebounds,
+                        ParticipationOffensiveRebounds = x.BoxScoreItemDto.ParticipationOffensiveRebounds,
+                        ParticipationPoints = x.BoxScoreItemDto.ParticipationPoints,
+                        ParticipationRebounds = x.BoxScoreItemDto.ParticipationRebounds,
+                        ParticipationSteals = x.BoxScoreItemDto.ParticipationSteals,
+                        ParticipationTurnovers = x.BoxScoreItemDto.ParticipationTurnovers,
+                        Position = x.PositionEnum,
+                        PositionColor = x.PositionEnum.ConvertPositionEnumToColor(),
+                        PositionName = x.PositionEnum.ToString(),
+                        TotalAssists = x.BoxScoreItemDto.TotalAssists,
+                        TotalBlocksMade = x.BoxScoreItemDto.TotalBlocksMade,
+                        TotalBlocksOn = x.BoxScoreItemDto.TotalBlocksOn,
+                        TotalDefensiveRebounds = x.BoxScoreItemDto.TotalDefensiveRebounds,
+                        TotalOffensiveRebounds = x.BoxScoreItemDto.TotalOffensiveRebounds,
+                        TotalPoints = x.BoxScoreItemDto.TotalPoints,
+                        TotalRebounds = x.BoxScoreItemDto.TotalRebounds,
+                        TotalSteals = x.BoxScoreItemDto.TotalSteals,
+                        TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers,
+                    }).OrderBy(x => x.Position)
+                .ToList(),
+                }).ToList()
             });
         }
     }

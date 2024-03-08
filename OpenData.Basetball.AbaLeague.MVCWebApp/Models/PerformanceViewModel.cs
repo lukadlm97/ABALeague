@@ -10,6 +10,6 @@
         public AverageBoxscoreStatsViewModel AverageBoxscoreStats { get; set; }
         public AdvancedBoxscoreStatsViewModel AdvancedBoxscoreStats { get; set; }
         public RosterItemsByPositionsViewModel RosterItemsByPositionsViewModel { get; set; }
-        public PerformanceByPositionViewModel PerformanceByPosition { get; set; }
+        public TotalPerformanceByPositionViewModel PerformanceByPosition { get; set; }
     }
 }

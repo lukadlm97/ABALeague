@@ -424,11 +424,11 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     HomeGamesWin = gamePerformance.Value.AdvancedMatchCalcuations.HomeGamesWin,
                     TotalSpectators = gamePerformance.Value.AdvancedMatchCalcuations.TotalSpectators
                 },
-                PerformanceByPosition = new PerformanceByPositionViewModel
+                PerformanceByPosition = new TotalPerformanceByPositionViewModel
                 {
                     PerformanceByPosition = perforamanceByPostion.Value.Items
                     .OrderBy(x=>x.PositionEnum)
-                    .Select(x=>new PerformanceByPositionItemViewModel
+                    .Select(x=>new TotalPerformanceByPositionItemViewModel
                     {
                         PositionColor = x.PositionEnum.ConvertPositionEnumToColor(),
                         ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,

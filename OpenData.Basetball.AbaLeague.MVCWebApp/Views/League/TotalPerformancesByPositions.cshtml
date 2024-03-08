@@ -1,0 +1,398 @@
+﻿@model LeagueTotalPerformancesByPositionsViewModel
+
+
+<h3>Points</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalPoints)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationPoints)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Rebounds</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalRebounds)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationRebounds)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Assists</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalAssists)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationAssists)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Turnovers</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalTurnovers)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationTurnovers)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Steals</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalSteals)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationSteals)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Offensive Rebounds</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalOffensiveRebounds)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationOffensiveRebounds)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Defensive Rebounds</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalDefensiveRebounds)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationDefensiveRebounds)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Blocks On</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalBlocksOn)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationBlocksOn)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Blocks Made</h3>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.TotalBlocksMade)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            @foreach (var item in Model.PerformanceByPositionViewModels)
+            {
+                <th>@item.LeagueName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemByPosition in Model.PerformanceByPositionViewModels.First().PerformanceByPosition)
+        {
+            <tr style="background-color:@itemByPosition.PositionColor">
+                @foreach (var itemsByPosition in Model.PerformanceByPositionViewModels)
+                {
+                    <td>@(itemsByPosition.PerformanceByPosition.FirstOrDefault(p => p.Position == itemByPosition.Position)?.ParticipationBlocksMade)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

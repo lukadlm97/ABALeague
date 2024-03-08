@@ -9,6 +9,8 @@ using OpenData.Basetball.AbaLeague.Crawler.Fetchers.Implementation;
 using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 using OpenData.Basketball.AbaLeague.Application.Services.Implementation;
 using OpenData.Basketball.AbaLeague.Application.Configurations.Players;
+using OpenData.Basketball.AbaLeague.Application.Behaviourses;
+using OpenData.Basketball.AbaLeague.Application.Configurations;
 
 namespace OpenData.Basketball.AbaLeague.Application.Utilities
 {
@@ -29,9 +31,20 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
             services.AddScoped<IStandingsService, StandingsService>();
             services.AddScoped<IStatisticsCalculator, StatisticsCalculator>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
 
             // business logic configurations
             services.Configure<PlayerSettings>(configuration.GetSection(nameof(PlayerSettings)));
+            services.Configure<CacheSettings>(configuration.GetSection(nameof(CacheSettings)));
+
+            services.ConfigureFusionCache(configuration);
+
+            return services;
+        }
+        public static IServiceCollection ConfigureFusionCache(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMemoryCache();
+            services.AddFusionCache();
 
             return services;
         }

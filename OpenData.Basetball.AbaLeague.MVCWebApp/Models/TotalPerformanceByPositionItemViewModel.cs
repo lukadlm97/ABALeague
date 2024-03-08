@@ -2,7 +2,7 @@
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 {
-    public class PerformanceByPositionItemViewModel
+    public class TotalPerformanceByPositionItemViewModel
     {
         public PositionEnum Position { get; set; }
         public string PositionName { get; set; }
