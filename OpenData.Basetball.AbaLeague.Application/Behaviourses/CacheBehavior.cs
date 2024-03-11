@@ -19,7 +19,9 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace OpenData.Basketball.AbaLeague.Application.Behaviourses
 {
-    public class CachingBehavior<TRequest, TResponse>(IFusionCache _fusionCache, IOptions<CacheSettings> _settings, ILogger<TResponse> _logger)
+    public class CachingBehavior<TRequest, TResponse>(IFusionCache _fusionCache, 
+                                                        IOptions<CacheSettings> _settings, 
+                                                        ILogger<TResponse> _logger)
         : IPipelineBehavior<TRequest, TResponse> where TRequest : ICacheableMediatrQuery
     {
         private readonly CacheSettings _cacheSettings = _settings.Value;

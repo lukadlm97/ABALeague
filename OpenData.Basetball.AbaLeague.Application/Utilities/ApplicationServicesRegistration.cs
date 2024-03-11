@@ -16,11 +16,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
 {
     public  static class ApplicationServicesRegistration
     {
-        public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, 
+                                                                        IConfiguration configuration)
         {
-           // services.AddScoped<IEuroleagueProcessor, EuroPageProcessor>();
-           // services.AddScoped<IWebPageProcessor, WebPageProcessor>();
-
             return services;
         }
 
@@ -32,6 +30,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
             services.AddScoped<IStatisticsCalculator, StatisticsCalculator>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheInvalidationBehavior<,>));
 
             // business logic configurations
             services.Configure<PlayerSettings>(configuration.GetSection(nameof(PlayerSettings)));

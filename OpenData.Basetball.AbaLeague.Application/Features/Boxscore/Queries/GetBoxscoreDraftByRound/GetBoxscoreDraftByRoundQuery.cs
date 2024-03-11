@@ -1,4 +1,5 @@
 ﻿using OpenData.Basketball.AbaLeague.Application.Abstractions.Messaging;
+using OpenData.Basketball.AbaLeague.Application.Constants;
 using OpenData.Basketball.AbaLeague.Application.Contracts;
 using OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore;
 using OpenData.Basketball.AbaLeague.Domain.Common;
@@ -24,7 +25,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
 
         public bool BypassCache => false;
 
-        public string CacheKey => $"BoxscoreByRound{Round}ByLeagueId{LeagueId}";
+        public string CacheKey =>
+            string.Format(CacheKeyConstants.BoxscoreByRoundAndLeagueId, Round, LeagueId);
 
         public TimeSpan? SlidingExpiration => TimeSpan.FromSeconds(90);
     }
