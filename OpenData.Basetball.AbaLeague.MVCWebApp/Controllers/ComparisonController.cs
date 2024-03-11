@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 
@@ -28,10 +29,30 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         {
             ViewBag.Title = "Comparison Leagues";
 
-            return View(new CompareLeaguesViewModel
+            if(selectedHomeLeagueId != null && selectedAwayLeagueId != null)
             {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                var leagues = await _sender.Send(new GetLeagueQuery(), cancellationToken);
 
-            });
+                if (leagues.HasNoValue)
+                {
+                    return View("Error");
+                }
+
+                return View(new CompareLeaguesViewModel
+                {
+                    IsLoadedComparisonResult = false,
+                    AwayLeaguesSelection = new SelectList(leagues.Value.LeagueResponses, "Id", "OfficialName"),
+                    HomeLeaguesSelection = new SelectList(leagues.Value.LeagueResponses, "Id", "OfficialName"),
+                    SelectedAwayLeague = 1.ToString(),
+                    SelectedHomeLeague = 1.ToString()
+
+                });
+            }
+           
         }
 
         [HttpGet]
