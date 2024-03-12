@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenData.Basketball.AbaLeague.Application.DTOs.Statistic;
+using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,5 +29,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
                                          int TotalBlocksMade,
                                          decimal AvgBlocksMade,
                                          int GamesPlayed,
-                                         int GamesToPlay);
+                                         int GamesToPlay,
+                                         FrozenSet<CategoriesItemDto> Items);
 }

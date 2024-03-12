@@ -1,4 +1,6 @@
-﻿namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
+﻿using OpenData.Basetball.AbaLeague.Domain.Enums;
+
+namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 {
     public class ComparePerformanceItemViewModel
     {
@@ -22,5 +24,6 @@
         public decimal AvgBlocksMade { get; init; }
         public int GamesPlayed { get; init; }
         public int GamesToPlay { get; init; }
+        public IList<TotalPerformanceByPositionItemViewModel> PerformanceByPositions { get; set; }
     }
 }

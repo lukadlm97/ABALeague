@@ -4,7 +4,7 @@
 @if (!Model.IsLoadedComparisonResult)
 {
     <div class="form-horizontal">
-        <form asp-controller="Comparison" asp-action="CompareLeagues" method="post">
+        <form asp-controller="Comparison" asp-action="CompareLeagues" method="get">
             <input type="hidden" asp-for="@Model.IsLoadedComparisonResult" />
             <hr />
             <div class="form-group">
@@ -29,30 +29,218 @@
 }
 @if (Model.IsLoadedComparisonResult)
 {
-    <table>
+    <table class="performance-table">
         <thead>
-        <th>
-            League names
-        </th>
-        <th>
-                @Model.HomeLeague.Name
-        </th>
-        <th>
-                @Model.AwayLeague.Name
-        </th>
+            <tr>
+                <th>League names</th>
+                <th>@Model.HomeLeague.Name</th>
+                <th>@Model.AwayLeague.Name</th>
+            </tr>
         </thead>
         <tbody>
             <tr>
+                <td>Games</td>
+                <td>@Model.HomeLeague.GamesPlayed/@Model.HomeLeague.TotalGames</td>
+                <td>@Model.AwayLeague.GamesPlayed/@Model.AwayLeague.TotalGames</td>
+            </tr>
+            <tr>
+                <td>Points</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalPoints [@Model.HomeLeague.CorePerformance.AvgPoints]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalPoints [@Model.AwayLeague.CorePerformance.AvgPoints]</td>
+            </tr>
+            <tr>
+                <td>Rebounds</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalRebounds [@Model.HomeLeague.CorePerformance.AvgRebounds]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalRebounds [@Model.AwayLeague.CorePerformance.AvgRebounds]</td>
+            </tr>
+            <tr>
+                <td>Assists</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalAssists [@Model.HomeLeague.CorePerformance.AvgAssists]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalAssists [@Model.AwayLeague.CorePerformance.AvgAssists]</td>
+            </tr>
+            <tr>
+                <td>Defensive Rebounds</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalDefensiveRebounds [@Model.HomeLeague.CorePerformance.AvgDefensiveRebounds]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalDefensiveRebounds [@Model.AwayLeague.CorePerformance.AvgDefensiveRebounds]</td>
+            </tr>
+            <tr>
+                <td>Offensive Rebounds</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalOffensiveRebounds [@Model.HomeLeague.CorePerformance.AvgOffensiveRebounds]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalOffensiveRebounds [@Model.AwayLeague.CorePerformance.AvgOffensiveRebounds]</td>
+            </tr>
+             <tr>
+                <td>Steals</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalSteals [@Model.HomeLeague.CorePerformance.AvgSteals]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalSteals [@Model.AwayLeague.CorePerformance.AvgSteals]</td>
+            </tr>
+             <tr>
+                <td>Turnovers</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalTurnovers [@Model.HomeLeague.CorePerformance.AvgTurnovers]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalTurnovers [@Model.AwayLeague.CorePerformance.AvgTurnovers]</td>
+            </tr>
+            <tr>
+                <td>Blocks Made</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalBlocksMade [@Model.HomeLeague.CorePerformance.AvgBlocksMade]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalBlocksMade [@Model.AwayLeague.CorePerformance.AvgBlocksMade]</td>
+            </tr>
+            <tr>
+                <td>Blocks On</td>
+                <td>@Model.HomeLeague.CorePerformance.TotalBlocksOn [@Model.HomeLeague.CorePerformance.AvgBlocksOn]</td>
+                <td>@Model.AwayLeague.CorePerformance.TotalBlocksOn [@Model.AwayLeague.CorePerformance.AvgBlocksOn]</td>
+            </tr>
+            <th>Points</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+                <tr style="background-color:@position.positionColor">
+                    <td>@position.name</td>
+                    <td>
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalPoints
+                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationPoints]
+                    </td>
+                    <td>
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalPoints
+                        [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x=>x.Position == position.positionEnum).ParticipationPoints]
+                    </td>
+                </tr>
+            }
+             <th>Rebounds</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+                <tr style="background-color:@position.positionColor">
+                    <td>@position.name</td>
+                    <td>
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalRebounds
+                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationRebounds]
+                    </td>
+                    <td>
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalRebounds
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationRebounds]
+                    </td>
+                </tr>
+            }
+        <th>Assists</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+            <tr style="background-color:@position.positionColor">
+                <td>@position.name</td>
                 <td>
-                    Points
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalAssists
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).ParticipationAssists]
                 </td>
                 <td>
-                    @Model.HomeLeague.CorePerformance.TotalPoints
-                </td>
-                <td>
-                    @Model.AwayLeague.CorePerformance.TotalPoints
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalAssists
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationAssists]
                 </td>
             </tr>
+            }
+        <th>Turnover</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+            <tr style="background-color:@position.positionColor">
+                <td>@position.name</td>
+                <td>
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalTurnovers
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).ParticipationTurnovers]
+                </td>
+                <td>
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalTurnovers
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationTurnovers]
+                </td>
+            </tr>
+            }
+             <th>Points</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+                <tr style="background-color:@position.positionColor">
+                    <td>@position.name</td>
+                    <td>
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalSteals
+                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationSteals]
+                    </td>
+                    <td>
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalSteals
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationSteals]
+                    </td>
+                </tr>
+            }
+        <th>Offensive Rebounds</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+            <tr style="background-color:@position.positionColor">
+                <td>@position.name</td>
+                <td>
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalOffensiveRebounds
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).ParticipationOffensiveRebounds]
+                </td>
+                <td>
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalOffensiveRebounds
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationOffensiveRebounds]
+                </td>
+            </tr>
+            }
+             <th>Defensive Rebounds</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+                <tr style="background-color:@position.positionColor">
+                    <td>@position.name</td>
+                    <td>
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalDefensiveRebounds
+                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationDefensiveRebounds]
+                    </td>
+                    <td>
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalDefensiveRebounds
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationDefensiveRebounds]
+                    </td>
+                </tr>
+            }
+             <th>Block on</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+                <tr style="background-color:@position.positionColor">
+                    <td>@position.name</td>
+                    <td>
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalBlocksOn
+                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationBlocksOn]
+                    </td>
+                    <td>
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalBlocksOn
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationBlocksOn]
+                    </td>
+                </tr>
+            }
+        <th>Block made</th>
+            @foreach (var position in @Model.PositionsWithColors)
+            {
+            <tr style="background-color:@position.positionColor">
+                <td>@position.name</td>
+                <td>
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalBlocksMade
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).ParticipationBlocksMade]
+                </td>
+                <td>
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalBlocksMade
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationBlocksMade]
+                </td>
+            </tr>
+            }
         </tbody>
     </table>
+
 }
+
+<style>
+    .performance-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .performance-table th, .performance-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .performance-table th {
+            background-color: #f2f2f2;
+        }
+</style>
