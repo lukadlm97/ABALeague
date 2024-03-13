@@ -28,5 +28,10 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
                     .ThenInclude(x=>x.Player)
                 .FirstOrDefaultAsync(x => x.Id == teamId, cancellationToken);
         }
+
+        public IQueryable<Team> GetWithCountry()
+        {
+            return _dbContext.Teams.Include(x => x.Country);
+        }
     }
 }

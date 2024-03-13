@@ -5,6 +5,7 @@
         public int LeagueId { get; set; }
         public int LeagueName { get; set; }
         public int CurrentRang { get; set; }
-        public IList<RosterItemsByPositionsViewModel> RosterItems { get; set; }
+        public ComparePerformanceItemViewModel Performance { get; set; }
+        public RosterItemsByPositionsViewModel RosterItems { get; set; }
     }
 }

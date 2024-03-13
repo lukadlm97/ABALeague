@@ -6,6 +6,8 @@ using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueComparisonByLeagueIds;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId;
+using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamsComparisonByTeamIds;
 using System.Collections.Frozen;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
@@ -204,14 +206,198 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CompareTeams(CancellationToken cancellationToken = default)
+        public async Task<IActionResult> CompareTeams([FromQuery] string SelectedLeague, 
+                                                        [FromQuery] string SelectedHomeTeam, 
+                                                        [FromQuery] string SelectedAwayTeam,
+                                                        [FromQuery] bool IsLeagueSelected,
+                                                        CancellationToken cancellationToken = default)
         {
-            ViewBag.Title = "Comparison Leagues";
-
-            return View(new CompareLeaguesViewModel
+            ViewBag.Title = "Comparison Teams";
+            if (string.IsNullOrWhiteSpace(SelectedLeague))
             {
+                var leagues = await _sender.Send(new GetLeagueQuery(), cancellationToken);
 
-            });
+                if (leagues.HasNoValue)
+                {
+                    return View("Error");
+                }
+
+                return View(new CompareTeamsViewModel
+                {
+                    IsLoadedComparisonResult = false,
+                    IsLeagueSelected = false,
+                    LeagueSelection = new SelectList(leagues.Value.LeagueResponses, "Id", "OfficialName"),
+                    SelectedLeague = 1.ToString(),
+
+                });
+            }
+            else
+            {
+                if(string.IsNullOrWhiteSpace(SelectedLeague) ||
+                    !int.TryParse(SelectedLeague, out int leagueId))
+                {
+                    return View("Error");
+                }
+                else
+                {
+                    if (IsLeagueSelected)
+                    {
+                        if (string.IsNullOrWhiteSpace(SelectedHomeTeam) ||
+                   string.IsNullOrWhiteSpace(SelectedAwayTeam) ||
+                   !int.TryParse(SelectedHomeTeam, out int homeTeamId) ||
+                   !int.TryParse(SelectedAwayTeam, out int awayTeamId))
+                        {
+                            return View("Error");
+                        }
+                        var result = await _sender.Send(new GetTeamsComparisonByTeamIdsQuery(new List<(int, int)>()
+                {
+                    (homeTeamId, leagueId),
+                    (awayTeamId, leagueId)
+                }.ToFrozenSet()), cancellationToken);
+
+                        if (result.HasNoValue)
+                        {
+                            return View("Error");
+                        }
+
+                        var homeTeam = result.Value.TeamCompareItems.FirstOrDefault();
+                        var awayTeam = result.Value.TeamCompareItems.LastOrDefault();
+                        if (homeTeam == null || awayTeam == null)
+                        {
+                            return View("Error");
+                        }
+
+                        return View(new CompareTeamsViewModel
+                        {
+                            IsLoadedComparisonResult = true,
+                            HomeTeam = new CompareTeamViewModel
+                            {
+                                Id = homeTeam.TeamItem.Id,
+                                Name = homeTeam.TeamItem.Name,
+                                RosterItems = new RosterItemsByPositionsViewModel
+                                {
+                                    PositionItems = new List<(PositionEnum, string)>()
+                            {
+                                (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor()),
+                                (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor()),
+                                (PositionEnum.Forward, PositionEnum.Forward.ConvertPositionEnumToColor()),
+                                (PositionEnum.PowerForward, PositionEnum.PowerForward.ConvertPositionEnumToColor()),
+                                (PositionEnum.Center, PositionEnum.Center.ConvertPositionEnumToColor()),
+                            },
+                                    RosterItems = homeTeam.RosterEntriesByPosition.Select(keyValuePair => new RosterItemByPositionViewModel
+                                    {
+                                        Players = keyValuePair.Value.Select(x => new PlayerAtRosterViewModel
+                                        {
+                                            Id = x.Id,
+                                            IsActive = x.End == null,
+                                            Name = x.Name,
+                                            Position = x.Position.ToString()
+                                        }).ToList(),
+                                        Position = keyValuePair.Key,
+                                        PositionColor = keyValuePair.Key.ConvertPositionEnumToColor(),
+                                        PositionName = keyValuePair.Key.ToString()
+                                    }).ToList()
+                                },
+                                CorePerformance = new ComparePerformanceItemViewModel
+                                {
+                                    AvgAssists = 0,
+                                    AvgBlocksMade = 0,
+                                    AvgBlocksOn = 0,
+                                    AvgDefensiveRebounds = 0,
+                                    AvgOffensiveRebounds = 0,
+                                    AvgPoints = 0,
+                                    AvgRebounds = 0,
+                                    AvgSteals = 0,
+                                    AvgTurnovers = 0,
+                                    GamesPlayed = 0,
+                                    GamesToPlay = 0,
+                                    TotalAssists = 0,
+                                    TotalBlocksMade = 0,
+                                    TotalBlocksOn = 0,
+                                    TotalDefensiveRebounds = 0,
+                                    TotalPoints = 0,
+                                    TotalOffensiveRebounds = 0,
+                                    TotalRebounds = 0,
+                                    TotalSteals = 0,
+                                    TotalTurnovers = 0
+
+                                }
+                            },
+                            AwayTeam = new CompareTeamViewModel
+                            {
+                                Id = awayTeam.TeamItem.Id,
+                                Name = awayTeam.TeamItem.Name,
+                                RosterItems = new RosterItemsByPositionsViewModel
+                                {
+                                    PositionItems = new List<(PositionEnum, string)>()
+                            {
+                                (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor()),
+                                (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor()),
+                                (PositionEnum.Forward, PositionEnum.Forward.ConvertPositionEnumToColor()),
+                                (PositionEnum.PowerForward, PositionEnum.PowerForward.ConvertPositionEnumToColor()),
+                                (PositionEnum.Center, PositionEnum.Center.ConvertPositionEnumToColor()),
+                            },
+                                    RosterItems = awayTeam.RosterEntriesByPosition.Select(keyValuePair => new RosterItemByPositionViewModel
+                                    {
+                                        Players = keyValuePair.Value.Select(x => new PlayerAtRosterViewModel
+                                        {
+                                            Id = x.Id,
+                                            IsActive = x.End == null,
+                                            Name = x.Name,
+                                            Position = x.Position.ToString()
+                                        }).ToList(),
+                                        Position = keyValuePair.Key,
+                                        PositionColor = keyValuePair.Key.ConvertPositionEnumToColor(),
+                                        PositionName = keyValuePair.Key.ToString()
+                                    }).ToList()
+                                },
+                                CorePerformance = new ComparePerformanceItemViewModel
+                                {
+                                    AvgAssists = 0,
+                                    AvgBlocksMade = 0,
+                                    AvgBlocksOn = 0,
+                                    AvgDefensiveRebounds = 0,
+                                    AvgOffensiveRebounds = 0,
+                                    AvgPoints = 0,
+                                    AvgRebounds = 0,
+                                    AvgSteals = 0,
+                                    AvgTurnovers = 0,
+                                    GamesPlayed = 0,
+                                    GamesToPlay = 0,
+                                    TotalAssists = 0,
+                                    TotalBlocksMade = 0,
+                                    TotalBlocksOn = 0,
+                                    TotalDefensiveRebounds = 0,
+                                    TotalPoints = 0,
+                                    TotalOffensiveRebounds = 0,
+                                    TotalRebounds = 0,
+                                    TotalSteals = 0,
+                                    TotalTurnovers = 0
+
+                                }
+                            }
+                        });
+                    }
+                   
+                    var teams = await _sender.Send(new GetTeamsByLeagueIdQuery(leagueId), cancellationToken);
+                    if (teams.HasNoValue)
+                    {
+                        return View("Error");
+                    }
+                    return View(new CompareTeamsViewModel
+                    {
+                        IsLoadedComparisonResult = false,
+                        IsLeagueSelected = true,
+                        AwayTeamsSelection = new SelectList(teams.Value.ExistingTeamSeasonResourcesItems, "TeamId","Name"),
+                        HomeTeamsSelection = new SelectList(teams.Value.ExistingTeamSeasonResourcesItems, "TeamId","Name"),
+                        SelectedAwayTeam = teams.Value.ExistingTeamSeasonResourcesItems.FirstOrDefault().TeamId.ToString(),
+                        SelectedHomeTeam = teams.Value.ExistingTeamSeasonResourcesItems.LastOrDefault().TeamId.ToString(),
+                    });
+                    //TODO populate teams selection
+                }
+
+            }
+            throw new NotImplementedException();
         }
 
         [HttpGet]

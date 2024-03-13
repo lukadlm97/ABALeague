@@ -1,0 +1,166 @@
+﻿@model CompareTeamsViewModel
+
+
+@if (!Model.IsLoadedComparisonResult)
+{
+    if (Model.IsLeagueSelected)
+    {
+        <div class="form-horizontal">
+            <form asp-controller="Comparison" asp-action="CompareTeams" method="get">
+                <input type="hidden" asp-for="@Model.IsLoadedComparisonResult" />
+                <input type="hidden" asp-for="@Model.SelectedLeague" />
+                <input type="hidden" asp-for="@Model.IsLeagueSelected" />
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HomeTeamsSelection)
+                    <div class="col-md-10">
+                        <select asp-for="SelectedHomeTeam" class="form-control" asp-items="Model.HomeTeamsSelection"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AwayTeamsSelection)
+                    <div class="col-md-10">
+                        <select asp-for="SelectedAwayTeam" class="form-control" asp-items="Model.AwayTeamsSelection"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success">Compare</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="form-horizontal">
+            <form asp-controller="Comparison" asp-action="CompareTeams" method="get">
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LeagueSelection)
+                    <div class="col-md-10">
+                        <select asp-for="SelectedLeague" class="form-control" asp-items="Model.LeagueSelection"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success">Select</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+
+}
+@if (Model.IsLoadedComparisonResult)
+{
+    <table class="performance-table">
+        <thead>
+            <tr>
+                <th>Team names</th>
+                <th>@Model.HomeTeam.Name</th>
+                <th>@Model.AwayTeam.Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Games</td>
+                <td>@Model.HomeTeam.GamesPlayed/@Model.HomeTeam.TotalGames</td>
+                <td>@Model.AwayTeam.GamesPlayed/@Model.AwayTeam.TotalGames</td>
+            </tr>
+            <tr>
+                <td>Points</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalPoints [@Model.HomeTeam.CorePerformance.AvgPoints]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalPoints [@Model.AwayTeam.CorePerformance.AvgPoints]</td>
+            </tr>
+            <tr>
+                <td>Rebounds</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalRebounds [@Model.HomeTeam.CorePerformance.AvgRebounds]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalRebounds [@Model.AwayTeam.CorePerformance.AvgRebounds]</td>
+            </tr>
+            <tr>
+                <td>Assists</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalAssists [@Model.HomeTeam.CorePerformance.AvgAssists]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalAssists [@Model.AwayTeam.CorePerformance.AvgAssists]</td>
+            </tr>
+            <tr>
+                <td>Defensive Rebounds</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalDefensiveRebounds [@Model.HomeTeam.CorePerformance.AvgDefensiveRebounds]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalDefensiveRebounds [@Model.AwayTeam.CorePerformance.AvgDefensiveRebounds]</td>
+            </tr>
+            <tr>
+                <td>Offensive Rebounds</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalOffensiveRebounds [@Model.HomeTeam.CorePerformance.AvgOffensiveRebounds]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalOffensiveRebounds [@Model.AwayTeam.CorePerformance.AvgOffensiveRebounds]</td>
+            </tr>
+            <tr>
+                <td>Steals</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalSteals [@Model.HomeTeam.CorePerformance.AvgSteals]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalSteals [@Model.AwayTeam.CorePerformance.AvgSteals]</td>
+            </tr>
+            <tr>
+                <td>Turnovers</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalTurnovers [@Model.HomeTeam.CorePerformance.AvgTurnovers]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalTurnovers [@Model.AwayTeam.CorePerformance.AvgTurnovers]</td>
+            </tr>
+            <tr>
+                <td>Blocks Made</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalBlocksMade [@Model.HomeTeam.CorePerformance.AvgBlocksMade]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalBlocksMade [@Model.AwayTeam.CorePerformance.AvgBlocksMade]</td>
+            </tr>
+            <tr>
+                <td>Blocks On</td>
+                <td>@Model.HomeTeam.CorePerformance.TotalBlocksOn [@Model.HomeTeam.CorePerformance.AvgBlocksOn]</td>
+                <td>@Model.AwayTeam.CorePerformance.TotalBlocksOn [@Model.AwayTeam.CorePerformance.AvgBlocksOn]</td>
+            </tr>
+            @foreach(var item in Model.HomeTeam.RosterItems.PositionItems)
+            {
+                <tr style="background-color:@item.color">
+                    <td>@item.key</td>
+                    <td>
+                        @foreach(var position in Model.HomeTeam.RosterItems.RosterItems.Where(x=>x.Position == item.key))
+                        {
+                            @foreach(var rosterItem in position.Players)
+                            {
+
+                                <div>
+                                    @rosterItem.Name
+                                </div>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @foreach (var position in Model.AwayTeam.RosterItems.RosterItems.Where(x => x.Position == item.key))
+                        {
+                            @foreach (var rosterItem in position.Players)
+                            {
+
+                                <div>
+                                    @rosterItem.Name
+                                </div>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+<style>
+    .performance-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .performance-table th, .performance-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .performance-table th {
+            background-color: #f2f2f2;
+        }
+</style>
