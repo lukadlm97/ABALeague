@@ -19,12 +19,13 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Commands.AddS
 
         public bool BypassCache => false;
 
-        public string CacheKey => CacheKeyConstants.ScheduleByLeagueId;
+        public string CacheKey { get; private set; }
 
         public AddScoreByLeagueIdCommand(int leagueId, IEnumerable<AddScoreDto> scores)
         {
             LeagueId = leagueId;
             AddScoreItems = scores;
+            CacheKey = string.Format(CacheKeyConstants.ScheduleByLeagueId, leagueId);
         }
     }
 }

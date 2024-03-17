@@ -17,13 +17,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
 
         public bool BypassCache => false;
 
-        public string CacheKey => CacheKeyConstants.ScoresByLeagueId;
+        public string CacheKey { get; init; }
 
         public TimeSpan? SlidingExpiration => TimeSpan.FromSeconds(90);
 
         public GetScoreDraftByLeagueIdQuery(int leagueId)
         {
             LeagueId = leagueId;
+            CacheKey = string.Format(CacheKeyConstants.ScoresByLeagueId, leagueId);
         }
     }
 }

@@ -18,6 +18,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
         {
             LeagueId = leagueId;
             Round = round;
+            CacheKey =
+            string.Format(CacheKeyConstants.BoxscoreByRoundAndLeagueId, Round, LeagueId);
         }
 
         public int LeagueId { get; }
@@ -25,9 +27,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.Ge
 
         public bool BypassCache => false;
 
-        public string CacheKey =>
-            string.Format(CacheKeyConstants.BoxscoreByRoundAndLeagueId, Round, LeagueId);
+        public string CacheKey  { get; private set; }
 
-        public TimeSpan? SlidingExpiration => TimeSpan.FromSeconds(90);
+    public TimeSpan? SlidingExpiration => TimeSpan.FromSeconds(90);
     }
 }

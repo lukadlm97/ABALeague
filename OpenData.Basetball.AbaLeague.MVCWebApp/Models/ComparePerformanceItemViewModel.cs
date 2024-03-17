@@ -24,6 +24,6 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
         public decimal AvgBlocksMade { get; init; }
         public int GamesPlayed { get; init; }
         public int GamesToPlay { get; init; }
-        public IList<TotalPerformanceByPositionItemViewModel> PerformanceByPositions { get; set; }
+        public IList<TotalAndParticipatePerformanceByPositionItemViewModel> PerformanceByPositions { get; set; }
     }
 }

@@ -89,137 +89,137 @@
                 <td>@Model.AwayLeague.CorePerformance.TotalBlocksOn [@Model.AwayLeague.CorePerformance.AvgBlocksOn]</td>
             </tr>
             <th>Points</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-                <tr style="background-color:@position.positionColor">
+                <tr style="background-color:@position.color">
                     <td>@position.name</td>
                     <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalPoints
-                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationPoints]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalPoints
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationPoints]
                     </td>
                     <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalPoints
-                        [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x=>x.Position == position.positionEnum).ParticipationPoints]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalPoints
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationPoints]
                     </td>
                 </tr>
             }
              <th>Rebounds</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-                <tr style="background-color:@position.positionColor">
+            <tr style="background-color:@position.color">
                     <td>@position.name</td>
                     <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalRebounds
-                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationRebounds]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalRebounds
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationRebounds]
                     </td>
                     <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalRebounds
-                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationRebounds]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalRebounds
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationRebounds]
                     </td>
                 </tr>
             }
         <th>Assists</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-            <tr style="background-color:@position.positionColor">
+            <tr style="background-color:@position.color">
                 <td>@position.name</td>
                 <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalAssists
-                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).ParticipationAssists]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalAssists
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationAssists]
                 </td>
                 <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalAssists
-                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationAssists]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalAssists
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationAssists]
                 </td>
             </tr>
             }
         <th>Turnover</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-            <tr style="background-color:@position.positionColor">
+            <tr style="background-color:@position.color">
                 <td>@position.name</td>
                 <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalTurnovers
-                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).ParticipationTurnovers]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalTurnovers
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationTurnovers]
                 </td>
                 <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalTurnovers
-                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationTurnovers]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalTurnovers
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationTurnovers]
                 </td>
             </tr>
             }
              <th>Points</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-                <tr style="background-color:@position.positionColor">
+            <tr style="background-color:@position.color">
                     <td>@position.name</td>
                     <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalSteals
-                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationSteals]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalSteals
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationSteals]
                     </td>
                     <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalSteals
-                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationSteals]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalSteals
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationSteals]
                     </td>
                 </tr>
             }
         <th>Offensive Rebounds</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-            <tr style="background-color:@position.positionColor">
+            <tr style="background-color:@position.color">
                 <td>@position.name</td>
                 <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalOffensiveRebounds
-                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).ParticipationOffensiveRebounds]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalOffensiveRebounds
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationOffensiveRebounds]
                 </td>
                 <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalOffensiveRebounds
-                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationOffensiveRebounds]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalOffensiveRebounds
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationOffensiveRebounds]
                 </td>
             </tr>
             }
              <th>Defensive Rebounds</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-                <tr style="background-color:@position.positionColor">
+            <tr style="background-color:@position.color">
                     <td>@position.name</td>
                     <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalDefensiveRebounds
-                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationDefensiveRebounds]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalDefensiveRebounds
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationDefensiveRebounds]
                     </td>
                     <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalDefensiveRebounds
-                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationDefensiveRebounds]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalDefensiveRebounds
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationDefensiveRebounds]
                     </td>
                 </tr>
             }
              <th>Block on</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-                <tr style="background-color:@position.positionColor">
+            <tr style="background-color:@position.color">
                     <td>@position.name</td>
                     <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalBlocksOn
-                        [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x=>x.Position == position.positionEnum).ParticipationBlocksOn]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalBlocksOn
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationBlocksOn]
                     </td>
                     <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalBlocksOn
-                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationBlocksOn]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalBlocksOn
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationBlocksOn]
                     </td>
                 </tr>
             }
         <th>Block made</th>
-            @foreach (var position in @Model.PositionsWithColors)
+            @foreach (var position in @Model.PositionPlaceholderItems)
             {
-            <tr style="background-color:@position.positionColor">
+            <tr style="background-color:@position.color">
                 <td>@position.name</td>
                 <td>
-                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalBlocksMade
-                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).ParticipationBlocksMade]
+                        @Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalBlocksMade
+                    [@Model.HomeLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).ParticipationBlocksMade]
                 </td>
                 <td>
-                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.positionEnum).TotalBlocksMade
-                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.positionEnum).ParticipationBlocksMade]
+                        @Model.AwayLeague.CorePerformance.PerformanceByPositions.FirstOrDefault(x => x.Position == position.key).TotalBlocksMade
+                    [@Model.AwayLeague.CorePerformance.PerformanceByPositions.First(x => x.Position == position.key).ParticipationBlocksMade]
                 </td>
             </tr>
             }

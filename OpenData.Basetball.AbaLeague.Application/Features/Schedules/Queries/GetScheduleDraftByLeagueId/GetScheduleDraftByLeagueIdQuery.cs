@@ -20,12 +20,16 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.G
     {
         public int LeagueId { get; }
 
-        public GetScheduleDraftByLeagueIdQuery(int leagueId) => LeagueId = leagueId;
+        public GetScheduleDraftByLeagueIdQuery(int leagueId)
+        {
+            LeagueId = leagueId;
+            CacheKey = string.Format(CacheKeyConstants.ScheduleByLeagueId, leagueId);
+        }
 
 
         public bool BypassCache => false;
 
-        public string CacheKey => CacheKeyConstants.ScheduleByLeagueId;
+        public string CacheKey { get; private set; }
 
         public TimeSpan? SlidingExpiration => TimeSpan.FromSeconds(90);
     }

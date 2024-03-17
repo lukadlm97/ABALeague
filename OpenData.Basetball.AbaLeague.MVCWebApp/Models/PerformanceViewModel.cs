@@ -1,4 +1,6 @@
-﻿namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
+﻿using OpenData.Basetball.AbaLeague.Domain.Enums;
+
+namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 {
     public class PerformanceViewModel
     {
@@ -11,5 +13,6 @@
         public AdvancedBoxscoreStatsViewModel AdvancedBoxscoreStats { get; set; }
         public RosterItemsByPositionsViewModel RosterItemsByPositionsViewModel { get; set; }
         public TotalPerformanceByPositionViewModel PerformanceByPosition { get; set; }
+        public IList<(PositionEnum key, string color)>  PositionPlaceholderItems { get; set; }
     }
 }

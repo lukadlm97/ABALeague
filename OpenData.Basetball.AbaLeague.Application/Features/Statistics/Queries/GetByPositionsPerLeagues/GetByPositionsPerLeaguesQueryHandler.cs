@@ -47,7 +47,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Statistics.Queries.
                 {
                     continue;
                 }
-                var performanceByPosition = _statisticsCalculator.Calcualate(boxscore,
+                var performanceByPosition = _statisticsCalculator.CalcualatePerPosition(boxscore,
                                             new List<PositionEnum>()
                                             {
                                                 PositionEnum.Guard,

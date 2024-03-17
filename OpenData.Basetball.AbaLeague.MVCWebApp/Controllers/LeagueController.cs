@@ -741,7 +741,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             return View(new TotalPerformanceByPositionViewModel
             {
-                PerformanceByPosition = performancesByPositions.Value.Items.Select(x => new TotalPerformanceByPositionItemViewModel
+                PerformanceByPosition = performancesByPositions.Value.Items.Select(x => new TotalAndParticipatePerformanceByPositionItemViewModel
                 {
                     ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
                     ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
@@ -790,7 +790,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 {
                     LeagueId = x.LeagueId,
                     LeagueName = x.LeagueName,
-                    PerformanceByPosition = x.Items.Select(x => new TotalPerformanceByPositionItemViewModel
+                    PerformanceByPosition = x.Items.Select(x => new TotalAndParticipatePerformanceByPositionItemViewModel
                     {
                         ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
                         ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,

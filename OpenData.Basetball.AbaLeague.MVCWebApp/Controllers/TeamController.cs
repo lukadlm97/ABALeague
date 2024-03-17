@@ -428,7 +428,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 {
                     PerformanceByPosition = perforamanceByPostion.Value.Items
                     .OrderBy(x=>x.PositionEnum)
-                    .Select(x=>new TotalPerformanceByPositionItemViewModel
+                    .Select(x=>new TotalAndParticipatePerformanceByPositionItemViewModel
                     {
                         PositionColor = x.PositionEnum.ConvertPositionEnumToColor(),
                         ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
@@ -455,18 +455,16 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 },
                 RosterItemsByPositionsViewModel = new RosterItemsByPositionsViewModel
                 {
-                    PositionItems = new List<(PositionEnum, string)>()
-                    {
-                        (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor()),
-                        (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor()),
-                        (PositionEnum.Forward, PositionEnum.Forward.ConvertPositionEnumToColor()),
-                        (PositionEnum.PowerForward, PositionEnum.PowerForward.ConvertPositionEnumToColor()),
-                        (PositionEnum.Center, PositionEnum.Center.ConvertPositionEnumToColor()),
-                        (PositionEnum.Coach, PositionEnum.Coach.ConvertPositionEnumToColor()),
-                    },
                     RosterItems = resultRoster.OrderBy(x=>x.Position).ToList(),
-
-                }
+                },
+                PositionPlaceholderItems = new List<(PositionEnum, string)>()
+                {
+                    (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor()),
+                    (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor()),
+                    (PositionEnum.Forward, PositionEnum.Forward.ConvertPositionEnumToColor()),
+                    (PositionEnum.PowerForward, PositionEnum.PowerForward.ConvertPositionEnumToColor()),
+                    (PositionEnum.Center, PositionEnum.Center.ConvertPositionEnumToColor()),
+                },
             });
         }
 

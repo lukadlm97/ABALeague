@@ -4,6 +4,6 @@
     {
         public int LeagueId { get; set; }
         public string LeagueName { get; set; }
-        public IList<TotalPerformanceByPositionItemViewModel> PerformanceByPositions { get; set; }
+        public IList<TotalAndParticipatePerformanceByPositionItemViewModel> PerformanceByPositions { get; set; }
     }
 }

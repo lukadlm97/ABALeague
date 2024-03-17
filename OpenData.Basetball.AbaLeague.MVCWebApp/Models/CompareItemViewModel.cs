@@ -1,4 +1,6 @@
-﻿namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
+﻿using OpenData.Basetball.AbaLeague.Domain.Enums;
+
+namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 {
     public class CompareItemViewModel
     {

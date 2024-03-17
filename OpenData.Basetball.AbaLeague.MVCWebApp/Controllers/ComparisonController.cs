@@ -83,7 +83,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                 TotalRebounds = homeLeague.TotalRebounds,
                                 TotalSteals = homeLeague.TotalSteals,
                                 TotalTurnovers = homeLeague.TotalTurnovers,
-                                PerformanceByPositions = homeLeague.Items.Select(x => new TotalPerformanceByPositionItemViewModel
+                                PerformanceByPositions = homeLeague.Items.Select(x => new TotalAndParticipatePerformanceByPositionItemViewModel
                                 {
                                     ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
                                     ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
@@ -137,7 +137,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                 TotalRebounds = awayLeague.TotalRebounds,
                                 TotalSteals = awayLeague.TotalSteals,
                                 TotalTurnovers = awayLeague.TotalTurnovers,
-                                PerformanceByPositions = awayLeague.Items.Select(x => new TotalPerformanceByPositionItemViewModel
+                                PerformanceByPositions = awayLeague.Items.Select(x => new TotalAndParticipatePerformanceByPositionItemViewModel
                                 {
                                     ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
                                     ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
@@ -166,7 +166,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                             TotalGames = awayLeague.GamesToPlay,
 
                         },
-                        PositionsWithColors = new List<(PositionEnum, string, string)>
+                        PositionPlaceholderItems = new List<(PositionEnum key, string color, string name)>()
                         {
                             (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor(), PositionEnum.Guard.ToString()),
                             (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor(), PositionEnum.ShootingGuard.ToString()),
@@ -269,6 +269,16 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
                         return View(new CompareTeamsViewModel
                         {
+                            PositionPlaceholderItems = 
+                                new List<(PositionEnum key, string color, string name)>()
+                                {
+                                    (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor(), PositionEnum.Guard.ToString()),
+                                    (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor(), PositionEnum.ShootingGuard.ToString()),
+                                    (PositionEnum.Forward, PositionEnum.Forward.ConvertPositionEnumToColor(), PositionEnum.Forward.ToString()),
+                                    (PositionEnum.PowerForward, PositionEnum.PowerForward.ConvertPositionEnumToColor(), PositionEnum.PowerForward.ToString()),
+                                    (PositionEnum.Center, PositionEnum.Center.ConvertPositionEnumToColor(), PositionEnum.Center.ToString()),
+                                }
+                            ,
                             IsLoadedComparisonResult = true,
                             HomeTeam = new CompareTeamViewModel
                             {
@@ -276,14 +286,6 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                 Name = homeTeam.TeamItem.Name,
                                 RosterItems = new RosterItemsByPositionsViewModel
                                 {
-                                    PositionItems = new List<(PositionEnum, string)>()
-                            {
-                                (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor()),
-                                (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor()),
-                                (PositionEnum.Forward, PositionEnum.Forward.ConvertPositionEnumToColor()),
-                                (PositionEnum.PowerForward, PositionEnum.PowerForward.ConvertPositionEnumToColor()),
-                                (PositionEnum.Center, PositionEnum.Center.ConvertPositionEnumToColor()),
-                            },
                                     RosterItems = homeTeam.RosterEntriesByPosition.Select(keyValuePair => new RosterItemByPositionViewModel
                                     {
                                         Players = keyValuePair.Value.Select(x => new PlayerAtRosterViewModel
@@ -296,31 +298,57 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                         Position = keyValuePair.Key,
                                         PositionColor = keyValuePair.Key.ConvertPositionEnumToColor(),
                                         PositionName = keyValuePair.Key.ToString()
-                                    }).ToList()
+                                    }).ToList(),
+
                                 },
                                 CorePerformance = new ComparePerformanceItemViewModel
                                 {
-                                    AvgAssists = 0,
-                                    AvgBlocksMade = 0,
-                                    AvgBlocksOn = 0,
-                                    AvgDefensiveRebounds = 0,
-                                    AvgOffensiveRebounds = 0,
-                                    AvgPoints = 0,
-                                    AvgRebounds = 0,
-                                    AvgSteals = 0,
-                                    AvgTurnovers = 0,
-                                    GamesPlayed = 0,
+                                    AvgAssists = homeTeam.TotalAndAveragePerformance?.AverageAssists ?? 0,
+                                    AvgBlocksMade = homeTeam.TotalAndAveragePerformance?.AverageBlocksMade ?? 0,
+                                    AvgBlocksOn = homeTeam.TotalAndAveragePerformance?.AverageBlocksOn ?? 0,
+                                    AvgDefensiveRebounds = homeTeam.TotalAndAveragePerformance?.AverageDefensiveRebounds ?? 0,
+                                    AvgOffensiveRebounds = homeTeam.TotalAndAveragePerformance?.AverageOffensiveRebounds ?? 0,
+                                    AvgPoints = homeTeam.TotalAndAveragePerformance?.AveragePoints ?? 0,
+                                    AvgRebounds = homeTeam.TotalAndAveragePerformance?.AverageRebounds ?? 0,
+                                    AvgSteals = homeTeam.TotalAndAveragePerformance?.AverageSteals ?? 0,
+                                    AvgTurnovers = homeTeam.TotalAndAveragePerformance?.AverageTurnovers ?? 0,
+                                    GamesPlayed = homeTeam.TotalAndAveragePerformance?.GamesPlayed ?? 0,
                                     GamesToPlay = 0,
-                                    TotalAssists = 0,
-                                    TotalBlocksMade = 0,
-                                    TotalBlocksOn = 0,
-                                    TotalDefensiveRebounds = 0,
-                                    TotalPoints = 0,
-                                    TotalOffensiveRebounds = 0,
-                                    TotalRebounds = 0,
-                                    TotalSteals = 0,
-                                    TotalTurnovers = 0
-
+                                    TotalAssists = homeTeam.TotalAndAveragePerformance?.TotalAssists ?? 0,
+                                    TotalBlocksMade = homeTeam.TotalAndAveragePerformance?.TotalBlocksMade ?? 0,
+                                    TotalBlocksOn = homeTeam.TotalAndAveragePerformance?.TotalBlocksOn ?? 0,
+                                    TotalDefensiveRebounds = homeTeam.TotalAndAveragePerformance?.TotalDefensiveRebounds ?? 0,
+                                    TotalPoints = homeTeam.TotalAndAveragePerformance?.TotalPoints ?? 0,
+                                    TotalOffensiveRebounds = homeTeam.TotalAndAveragePerformance?.TotalOffensiveRebounds ?? 0,
+                                    TotalRebounds = homeTeam.TotalAndAveragePerformance?.TotalRebounds ?? 0,
+                                    TotalSteals = homeTeam.TotalAndAveragePerformance?.TotalSteals ?? 0,
+                                    TotalTurnovers = homeTeam.TotalAndAveragePerformance?.TotalTurnovers ?? 0,
+                                    PerformanceByPositions =
+                                    homeTeam.Items.Select(x => new TotalAndParticipatePerformanceByPositionItemViewModel
+                                    {
+                                        ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
+                                        ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
+                                        ParticipationBlocksOn = x.BoxScoreItemDto.ParticipationBlocksOn,
+                                        ParticipationDefensiveRebounds = x.BoxScoreItemDto.ParticipationDefensiveRebounds,
+                                        ParticipationOffensiveRebounds = x.BoxScoreItemDto.ParticipationOffensiveRebounds,
+                                        ParticipationPoints = x.BoxScoreItemDto.ParticipationPoints,
+                                        ParticipationRebounds = x.BoxScoreItemDto.ParticipationRebounds,
+                                        ParticipationSteals = x.BoxScoreItemDto.ParticipationSteals,
+                                        ParticipationTurnovers = x.BoxScoreItemDto.ParticipationTurnovers,
+                                        Position = x.PositionEnum,
+                                        PositionColor = x.PositionEnum.ConvertPositionEnumToColor(),
+                                        PositionName = x.PositionEnum.ToString(),
+                                        TotalAssists = x.BoxScoreItemDto.TotalAssists,
+                                        TotalBlocksMade = x.BoxScoreItemDto.TotalBlocksMade,
+                                        TotalBlocksOn = x.BoxScoreItemDto.TotalBlocksOn,
+                                        TotalDefensiveRebounds = x.BoxScoreItemDto.TotalDefensiveRebounds,
+                                        TotalOffensiveRebounds = x.BoxScoreItemDto.TotalOffensiveRebounds,
+                                        TotalPoints = x.BoxScoreItemDto.TotalPoints,
+                                        TotalRebounds = x.BoxScoreItemDto.TotalRebounds,
+                                        TotalSteals = x.BoxScoreItemDto.TotalSteals,
+                                        TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers
+                                    }).OrderBy(x => x.Position)
+                                    .ToList()
                                 }
                             },
                             AwayTeam = new CompareTeamViewModel
@@ -329,14 +357,6 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                 Name = awayTeam.TeamItem.Name,
                                 RosterItems = new RosterItemsByPositionsViewModel
                                 {
-                                    PositionItems = new List<(PositionEnum, string)>()
-                            {
-                                (PositionEnum.Guard, PositionEnum.Guard.ConvertPositionEnumToColor()),
-                                (PositionEnum.ShootingGuard, PositionEnum.ShootingGuard.ConvertPositionEnumToColor()),
-                                (PositionEnum.Forward, PositionEnum.Forward.ConvertPositionEnumToColor()),
-                                (PositionEnum.PowerForward, PositionEnum.PowerForward.ConvertPositionEnumToColor()),
-                                (PositionEnum.Center, PositionEnum.Center.ConvertPositionEnumToColor()),
-                            },
                                     RosterItems = awayTeam.RosterEntriesByPosition.Select(keyValuePair => new RosterItemByPositionViewModel
                                     {
                                         Players = keyValuePair.Value.Select(x => new PlayerAtRosterViewModel
@@ -349,34 +369,60 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                         Position = keyValuePair.Key,
                                         PositionColor = keyValuePair.Key.ConvertPositionEnumToColor(),
                                         PositionName = keyValuePair.Key.ToString()
-                                    }).ToList()
+                                    }).ToList(),
                                 },
+
                                 CorePerformance = new ComparePerformanceItemViewModel
                                 {
-                                    AvgAssists = 0,
-                                    AvgBlocksMade = 0,
-                                    AvgBlocksOn = 0,
-                                    AvgDefensiveRebounds = 0,
-                                    AvgOffensiveRebounds = 0,
-                                    AvgPoints = 0,
-                                    AvgRebounds = 0,
-                                    AvgSteals = 0,
-                                    AvgTurnovers = 0,
-                                    GamesPlayed = 0,
+                                    AvgAssists = awayTeam.TotalAndAveragePerformance?.AverageAssists ?? 0,
+                                    AvgBlocksMade = awayTeam.TotalAndAveragePerformance?.AverageBlocksMade ?? 0,
+                                    AvgBlocksOn = awayTeam.TotalAndAveragePerformance?.AverageBlocksOn ?? 0,
+                                    AvgDefensiveRebounds = awayTeam.TotalAndAveragePerformance?.AverageDefensiveRebounds ?? 0,
+                                    AvgOffensiveRebounds = awayTeam.TotalAndAveragePerformance?.AverageOffensiveRebounds ?? 0,
+                                    AvgPoints = awayTeam.TotalAndAveragePerformance?.AveragePoints ?? 0,
+                                    AvgRebounds = awayTeam.TotalAndAveragePerformance?.AverageRebounds ?? 0,
+                                    AvgSteals = awayTeam.TotalAndAveragePerformance?.AverageSteals ?? 0,
+                                    AvgTurnovers = awayTeam.TotalAndAveragePerformance?.AverageTurnovers ?? 0,
+                                    GamesPlayed = awayTeam.TotalAndAveragePerformance?.GamesPlayed ?? 0,
                                     GamesToPlay = 0,
-                                    TotalAssists = 0,
-                                    TotalBlocksMade = 0,
-                                    TotalBlocksOn = 0,
-                                    TotalDefensiveRebounds = 0,
-                                    TotalPoints = 0,
-                                    TotalOffensiveRebounds = 0,
-                                    TotalRebounds = 0,
-                                    TotalSteals = 0,
-                                    TotalTurnovers = 0
-
+                                    TotalAssists = awayTeam.TotalAndAveragePerformance?.TotalAssists ?? 0,
+                                    TotalBlocksMade = awayTeam.TotalAndAveragePerformance?.TotalBlocksMade ?? 0,
+                                    TotalBlocksOn = awayTeam.TotalAndAveragePerformance?.TotalBlocksOn ?? 0,
+                                    TotalDefensiveRebounds = awayTeam.TotalAndAveragePerformance?.TotalDefensiveRebounds ?? 0,
+                                    TotalPoints = awayTeam.TotalAndAveragePerformance?.TotalPoints ?? 0,
+                                    TotalOffensiveRebounds = awayTeam.TotalAndAveragePerformance?.TotalOffensiveRebounds ?? 0,
+                                    TotalRebounds = awayTeam.TotalAndAveragePerformance?.TotalRebounds ?? 0,
+                                    TotalSteals = awayTeam.TotalAndAveragePerformance?.TotalSteals ?? 0,
+                                    TotalTurnovers = awayTeam.TotalAndAveragePerformance?.TotalTurnovers ?? 0,
+                                    PerformanceByPositions =
+                                    awayTeam.Items.Select(x => new TotalAndParticipatePerformanceByPositionItemViewModel
+                                    {
+                                        ParticipationAssists = x.BoxScoreItemDto.ParticipationAssists,
+                                        ParticipationBlocksMade = x.BoxScoreItemDto.ParticipationBlocksMade,
+                                        ParticipationBlocksOn = x.BoxScoreItemDto.ParticipationBlocksOn,
+                                        ParticipationDefensiveRebounds = x.BoxScoreItemDto.ParticipationDefensiveRebounds,
+                                        ParticipationOffensiveRebounds = x.BoxScoreItemDto.ParticipationOffensiveRebounds,
+                                        ParticipationPoints = x.BoxScoreItemDto.ParticipationPoints,
+                                        ParticipationRebounds = x.BoxScoreItemDto.ParticipationRebounds,
+                                        ParticipationSteals = x.BoxScoreItemDto.ParticipationSteals,
+                                        ParticipationTurnovers = x.BoxScoreItemDto.ParticipationTurnovers,
+                                        Position = x.PositionEnum,
+                                        PositionColor = x.PositionEnum.ConvertPositionEnumToColor(),
+                                        PositionName = x.PositionEnum.ToString(),
+                                        TotalAssists = x.BoxScoreItemDto.TotalAssists,
+                                        TotalBlocksMade = x.BoxScoreItemDto.TotalBlocksMade,
+                                        TotalBlocksOn = x.BoxScoreItemDto.TotalBlocksOn,
+                                        TotalDefensiveRebounds = x.BoxScoreItemDto.TotalDefensiveRebounds,
+                                        TotalOffensiveRebounds = x.BoxScoreItemDto.TotalOffensiveRebounds,
+                                        TotalPoints = x.BoxScoreItemDto.TotalPoints,
+                                        TotalRebounds = x.BoxScoreItemDto.TotalRebounds,
+                                        TotalSteals = x.BoxScoreItemDto.TotalSteals,
+                                        TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers
+                                    }).OrderBy(x => x.Position)
+                                    .ToList()
                                 }
                             }
-                        });
+                        }); ;
                     }
                    
                     var teams = await _sender.Send(new GetTeamsByLeagueIdQuery(leagueId), cancellationToken);

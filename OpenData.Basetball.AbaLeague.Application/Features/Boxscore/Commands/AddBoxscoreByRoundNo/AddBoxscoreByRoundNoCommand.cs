@@ -19,6 +19,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Commands.A
             LeagueId = leagueId;
             Boxscores = boxscores;
             RoundNo = roundNo;
+            CacheKey = string.Format(CacheKeyConstants.BoxscoreByRoundAndLeagueId, RoundNo, LeagueId);
         }
 
         public int LeagueId { get; private set; }
@@ -27,8 +28,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Commands.A
 
         public bool BypassCache => false;
 
-        public string CacheKey => 
-            string.Format(CacheKeyConstants.BoxscoreByRoundAndLeagueId, RoundNo, LeagueId);
+        public string CacheKey { get; private set; }
 
     }
 }

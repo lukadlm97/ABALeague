@@ -13,10 +13,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
     public interface IStatisticsCalculator
     {
         FrozenSet<CategoriesItemDto>
-         Calcualate(IEnumerable<BoxScore> boxScores,
+         CalcualatePerPosition(IEnumerable<BoxScore> boxScores,
                     FrozenSet<PositionEnum> positions);
         FrozenSet<CategoriesItemByMatchDto>
-         CalcualateByMatch(IEnumerable<BoxScore> boxScores,
+         CalcualateByMatchPerPosition(IEnumerable<BoxScore> boxScores,
                     FrozenSet<PositionEnum> positions);
+        TotalAndAveragePerformanceDto
+            CalcualteTotalAndAveragePerformance(FrozenSet<BoxScore> boxScores);
     }
 }

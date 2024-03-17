@@ -20,13 +20,14 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Schedules.Commands.
 
         public bool BypassCache => false;
 
-        public string CacheKey => CacheKeyConstants.ScheduleByLeagueId;
+        public string CacheKey { get; private set; }
 
         public AddScheduleByLeagueIdCommand(IEnumerable<AddScheduleDto> addScheduleItems, int leagueId, bool isOffSeason = false)
         {
             AddScheduleItems = addScheduleItems;
             LeagueId = leagueId;
             IsOffSeason = isOffSeason;
+            CacheKey = string.Format(CacheKeyConstants.ScheduleByLeagueId,leagueId);
         }
     }
 }

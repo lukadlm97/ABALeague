@@ -43,7 +43,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                                             .Where(x => rosterItemIds.Contains(x.RosterItemId))
                                             .ToList();
 
-                var performanceByPosition = _statisticsCalculator.Calcualate(boxscores,
+                var performanceByPosition = _statisticsCalculator.CalcualatePerPosition(boxscores,
                                            new List<PositionEnum>()
                                            {
                                                 PositionEnum.Guard,

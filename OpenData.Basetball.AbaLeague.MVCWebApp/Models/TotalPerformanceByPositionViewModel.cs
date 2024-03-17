@@ -6,6 +6,6 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
     {
         public int LeagueId { get; set; }
         public string LeagueName { get; set; }
-        public IList<TotalPerformanceByPositionItemViewModel> PerformanceByPosition { get; set; }
+        public IList<TotalAndParticipatePerformanceByPositionItemViewModel> PerformanceByPosition { get; set; }
     }
 }

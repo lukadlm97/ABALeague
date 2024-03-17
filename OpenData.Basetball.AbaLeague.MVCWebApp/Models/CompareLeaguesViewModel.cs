@@ -5,7 +5,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 {
     public class CompareLeaguesViewModel
     {
-        public IList<(PositionEnum positionEnum, string positionColor, string name)> PositionsWithColors { get; set; }
+        public IList<(PositionEnum key, string color, string name)> PositionPlaceholderItems { get; set; }
         public CompareItemViewModel HomeLeague { get; set; }
         public CompareItemViewModel AwayLeague { get; set; }
         public bool IsLoadedComparisonResult { get; set; } = false;

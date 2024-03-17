@@ -16,7 +16,8 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamsComparisonByTeamIds
 {
-    public class GetTeamsComparisonByTeamIdsQueryQueryHandler(IUnitOfWork _unitOfWork, IStatisticsCalculator _statisticsCalculator)
+    public class GetTeamsComparisonByTeamIdsQueryQueryHandler(IUnitOfWork _unitOfWork, 
+                                                                IStatisticsCalculator _statisticsCalculator)
         : IQueryHandler<GetTeamsComparisonByTeamIdsQuery, Maybe<TeamCompareDto>>
     {
         public async Task<Maybe<TeamCompareDto>> 
@@ -44,7 +45,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                                             .Where(x => rosterItemIds.Contains(x.RosterItemId))
                                             .ToList();
 
-                var performanceByPosition = _statisticsCalculator.Calcualate(boxscores,
+                var performanceByPosition = _statisticsCalculator.CalcualatePerPosition(boxscores,
                                            new List<PositionEnum>()
                                            {
                                                 PositionEnum.Guard,
@@ -61,6 +62,10 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                 var players = _unitOfWork.PlayerRepository.Get()
                                         .Where(x => playerIds.Contains(x.Id))
                                         .ToList();
+
+                var totalAndAveragePerformance = _statisticsCalculator
+                                                .CalcualteTotalAndAveragePerformance(boxscores.ToFrozenSet());
+
                 var playersByPositions = players.GroupBy(x => x.PositionEnum)
                     .Select(y => (y.Key,
                         y.Select(z =>
@@ -82,7 +87,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                 (
                     new TeamItemDto(team.Id, team.Name, team.ShortCode, team.CountryId, team.Country?.Name ?? string.Empty),
                     performanceByPosition,
-                    playersByPositions.ToFrozenDictionary()
+                    playersByPositions.ToFrozenDictionary(),
+                    totalAndAveragePerformance
                 ));
             }
 
