@@ -1,6 +1,8 @@
 ﻿using OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Game;
+using OpenData.Basketball.AbaLeague.Domain.Entities;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,5 +31,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
                                                             int teamId,
                                                             bool includePlayed = false,
                                                             CancellationToken cancellationToken = default);
-     }
+        AdvancedMatchCalcuationDto? CalculateAdvancedMatch(FrozenSet<Result> results,
+                                                            int teamId);
+    }
 }

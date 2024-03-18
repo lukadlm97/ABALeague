@@ -17,7 +17,8 @@ using System.Threading.Tasks;
 namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamsComparisonByTeamIds
 {
     public class GetTeamsComparisonByTeamIdsQueryQueryHandler(IUnitOfWork _unitOfWork, 
-                                                                IStatisticsCalculator _statisticsCalculator)
+                                                                IStatisticsCalculator _statisticsCalculator,
+                                                                IGameService _gameService)
         : IQueryHandler<GetTeamsComparisonByTeamIdsQuery, Maybe<TeamCompareDto>>
     {
         public async Task<Maybe<TeamCompareDto>> 
@@ -55,16 +56,19 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                                                 PositionEnum.Center
                                            }.ToFrozenSet());
 
+                var totalAndAveragePerformance = _statisticsCalculator
+                                                .CalcualteTotalAndAveragePerformance(boxscores.ToFrozenSet());
+                
+                var results = await _unitOfWork.ResultRepository.SearchByLeague(leagueIdItem ?? 0, cancellationToken);
+                var advancedMatchStats = _gameService.CalculateAdvancedMatch(results.ToFrozenSet(), team.Id);
+
                 var playerIds = _unitOfWork.RosterRepository.Get()
-                                            .Where(x=>rosterItemIds.Contains(x.Id))
-                                            .Select(x => x.PlayerId)
-                                            .ToList();
+                                          .Where(x => rosterItemIds.Contains(x.Id))
+                                          .Select(x => x.PlayerId)
+                                          .ToList();
                 var players = _unitOfWork.PlayerRepository.Get()
                                         .Where(x => playerIds.Contains(x.Id))
                                         .ToList();
-
-                var totalAndAveragePerformance = _statisticsCalculator
-                                                .CalcualteTotalAndAveragePerformance(boxscores.ToFrozenSet());
 
                 var playersByPositions = players.GroupBy(x => x.PositionEnum)
                     .Select(y => (y.Key,
@@ -88,7 +92,8 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                     new TeamItemDto(team.Id, team.Name, team.ShortCode, team.CountryId, team.Country?.Name ?? string.Empty),
                     performanceByPosition,
                     playersByPositions.ToFrozenDictionary(),
-                    totalAndAveragePerformance
+                    totalAndAveragePerformance,
+                    advancedMatchStats
                 ));
             }
 

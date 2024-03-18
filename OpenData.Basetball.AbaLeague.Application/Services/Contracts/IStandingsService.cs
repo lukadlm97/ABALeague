@@ -12,7 +12,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
     public interface IStandingsService
     {
         Task<IEnumerable<StandingsItemDto>> 
-            GetByLeagueId(int leagueId,  
-                                            CancellationToken cancellationToken = default);
+            GetByLeagueId(int leagueId, CancellationToken cancellationToken = default);
     }
 }

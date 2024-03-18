@@ -6,6 +6,7 @@ using OpenData.Basketball.AbaLeague.Application.Services.Contracts;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 using OpenData.Basketball.AbaLeague.Domain.Entities;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,9 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             _unitOfWork = unitOfWork;
             _standingsService = standingsService;
         }
+
+       
+
         public async Task<(int? teamId,
                 string? teamName,
                 int? leagueId,
@@ -249,6 +253,57 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
 
 
             return (team.Id, team.Name, league.Id, league.OfficalName, matchesOnSchedule);
+        }
+
+        public AdvancedMatchCalcuationDto? 
+            CalculateAdvancedMatch(FrozenSet<Domain.Entities.Result> results, int teamId)
+        {
+            int homeGamesPlayed = 0;
+            int homeGamesWon = 0;
+            int homeGamesPointScored = 0;
+            int? totalGamesPlayed = 0;
+            int totalGamesWon = 0;
+            int totalSpectators = 0;
+            int awayGamesPointScored = 0;
+            bool wonTheGame = false;
+            foreach (var item in results)
+            {
+                var roundMatch = item.RoundMatch;
+                if (roundMatch == null || (roundMatch.HomeTeamId != teamId && roundMatch.AwayTeamId != teamId))
+                {
+                    continue;
+                }
+
+                if (roundMatch.HomeTeamId == teamId)
+                {
+                    wonTheGame = item.HomeTeamPoints > item.AwayTeamPoint;
+                    homeGamesPlayed++;
+                    homeGamesWon += wonTheGame ? 1 : 0;
+                    homeGamesPointScored += item.HomeTeamPoints;
+                }
+                else
+                {
+                    wonTheGame = item.HomeTeamPoints < item.AwayTeamPoint;
+                    awayGamesPointScored += item.AwayTeamPoint;
+                }
+                totalGamesPlayed++;
+                totalGamesWon += wonTheGame ? 1 : 0;
+                totalSpectators += item.Attendency;
+            }
+
+            return new AdvancedMatchCalcuationDto(totalGamesPlayed ?? 0, 
+                                                    homeGamesPlayed, 
+                                                    totalGamesWon, 
+                                                    homeGamesWon, 
+                                                    totalSpectators, 
+                                                    totalSpectators / (totalGamesPlayed == null 
+                                                    ? 
+                                                    1 
+                                                    :
+                                                    totalGamesPlayed)??0, 
+                                                    homeGamesPointScored, 
+                                                    awayGamesPointScored);
+
         }
     }
 }

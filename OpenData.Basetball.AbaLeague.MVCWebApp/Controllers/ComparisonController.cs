@@ -349,6 +349,17 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                         TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers
                                     }).OrderBy(x => x.Position)
                                     .ToList()
+                                },
+                                AdvancedBoxscoreStatsView = new AdvancedBoxscoreStatsViewModel
+                                {
+                                    AverageSpectators = homeTeam.MatchSuccessCalcuationDto.AverageSpectators,
+                                    TotalSpectators = homeTeam.MatchSuccessCalcuationDto.TotalSpectators,
+                                    AwayGameScoredPoints = homeTeam.MatchSuccessCalcuationDto.AwayGameScoredPoints,
+                                    GamePlayed = homeTeam.MatchSuccessCalcuationDto.GamePlayed,
+                                    GamesWin = homeTeam.MatchSuccessCalcuationDto.GamesWin,
+                                    HomeGameScoredPoints = homeTeam.MatchSuccessCalcuationDto.HomeGameScoredPoints,
+                                    HomeGamesPlayed = homeTeam.MatchSuccessCalcuationDto.HomeGamesPlayed,
+                                    HomeGamesWin = homeTeam.MatchSuccessCalcuationDto.HomeGamesWin,
                                 }
                             },
                             AwayTeam = new CompareTeamViewModel
@@ -420,6 +431,17 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                         TotalTurnovers = x.BoxScoreItemDto.TotalTurnovers
                                     }).OrderBy(x => x.Position)
                                     .ToList()
+                                },
+                                AdvancedBoxscoreStatsView = new AdvancedBoxscoreStatsViewModel
+                                {
+                                    AverageSpectators = awayTeam.MatchSuccessCalcuationDto.AverageSpectators,
+                                    TotalSpectators = awayTeam.MatchSuccessCalcuationDto.TotalSpectators,
+                                    AwayGameScoredPoints = awayTeam.MatchSuccessCalcuationDto.AwayGameScoredPoints,
+                                    GamePlayed = awayTeam.MatchSuccessCalcuationDto.GamePlayed,
+                                    GamesWin = awayTeam.MatchSuccessCalcuationDto.GamesWin,
+                                    HomeGameScoredPoints = awayTeam.MatchSuccessCalcuationDto.HomeGameScoredPoints,
+                                    HomeGamesPlayed = awayTeam.MatchSuccessCalcuationDto.HomeGamesPlayed,
+                                    HomeGamesWin = awayTeam.MatchSuccessCalcuationDto.HomeGamesWin,
                                 }
                             }
                         }); ;

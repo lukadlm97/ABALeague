@@ -86,42 +86,35 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             {
                 return new TotalAndAveragePerformanceDto();
             }
+
+            var gamesPlayed = boxScores.Select(x => x.RoundMatchId).Distinct().Count();
+
             var sumPoints = boxScores.Sum(x => x.Points);
-            var avgPoints = boxScores.Where(x => x.Minutes != null && x.Points != null)
-                                        .Average(x => x.Points)
-                                        .ConvertToDecimal();
+            var avgPoints = sumPoints / gamesPlayed;
+
             var sumDefensiveRebounds = boxScores.Sum(x => x.DefensiveRebounds);
-            var avgDefensiveRebounds = boxScores.Where(x => x.Minutes != null && x.DefensiveRebounds != null)
-                                        .Average(x => x.DefensiveRebounds)
-                                        .ConvertToDecimal();   
+            var avgDefensiveRebounds = sumDefensiveRebounds / gamesPlayed;   
+
             var sumOffensiveRebounds = boxScores.Sum(x => x.OffensiveRebounds);
-            var avgOffensiveRebounds = boxScores.Where(x => x.Minutes != null && x.OffensiveRebounds != null)
-                                        .Average(x => x.OffensiveRebounds)
-                                        .ConvertToDecimal();   
+            var avgOffensiveRebounds = sumOffensiveRebounds / gamesPlayed;  
+            
             var sumTotalRebounds = boxScores.Sum(x => x.TotalRebounds);
-            var avgTotalRebounds = boxScores.Where(x => x.Minutes != null && x.TotalRebounds != null)
-                                        .Average(x => x.TotalRebounds)
-                                        .ConvertToDecimal();   
+            var avgTotalRebounds = sumTotalRebounds / gamesPlayed;
+            
             var sumAssists = boxScores.Sum(x => x.Assists);
-            var avgAssists = boxScores.Where(x => x.Minutes != null && x.Assists != null)
-                                        .Average(x => x.Assists)
-                                        .ConvertToDecimal();  
+            var avgAssists = sumAssists / gamesPlayed;
+            
             var sumSteals = boxScores.Sum(x => x.Steals);
-            var avgSteals = boxScores.Where(x => x.Minutes != null && x.Steals != null)
-                                        .Average(x => x.Steals)
-                                        .ConvertToDecimal();  
+            var avgSteals = sumSteals/gamesPlayed;  
+
             var sumTurnover = boxScores.Sum(x => x.Turnover);
-            var avgTurnover = boxScores.Where(x => x.Minutes != null && x.Turnover != null)
-                                        .Average(x => x.Turnover)
-                                        .ConvertToDecimal();   
+            var avgTurnover = sumTurnover/gamesPlayed;
+            
             var sumInFavoureOfBlock = boxScores.Sum(x => x.InFavoureOfBlock);
-            var avgInFavoureOfBlock = boxScores.Where(x => x.Minutes != null && x.InFavoureOfBlock != null)
-                                        .Average(x => x.InFavoureOfBlock)
-                                        .ConvertToDecimal();  
+            var avgInFavoureOfBlock = sumInFavoureOfBlock / gamesPlayed;  
+
             var sumAgainstBlock = boxScores.Sum(x => x.AgainstBlock);
-            var avgAgainstBlock = boxScores.Where(x => x.Minutes != null && x.AgainstBlock != null)
-                                        .Average(x => x.AgainstBlock)
-                                        .ConvertToDecimal();
+            var avgAgainstBlock = sumAgainstBlock / gamesPlayed;
 
             return new TotalAndAveragePerformanceDto(sumPoints, avgPoints, 
                                                         sumTotalRebounds, avgTotalRebounds, 
@@ -132,7 +125,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                                                         sumDefensiveRebounds, avgDefensiveRebounds, 
                                                         sumAgainstBlock, avgAgainstBlock, 
                                                         sumInFavoureOfBlock, avgInFavoureOfBlock,
-                                                        boxScores.Select(x=>x.RoundMatchId).Distinct().Count());
+                                                        gamesPlayed);
         }
     }
 }

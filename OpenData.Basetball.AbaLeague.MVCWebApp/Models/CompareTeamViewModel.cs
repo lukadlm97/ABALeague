@@ -6,6 +6,7 @@
         public int LeagueName { get; set; }
         public int CurrentRang { get; set; }
         public RosterItemsByPositionsViewModel RosterItems { get; set; }
+        public AdvancedBoxscoreStatsViewModel AdvancedBoxscoreStatsView { get; set; }
 
     }
 }

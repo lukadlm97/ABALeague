@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenData.Basetball.AbaLeague.Persistence;
 using OpenData.Basetball.AbaLeague.Persistence.Repositories;
 using OpenData.Basketball.AbaLeague.Domain.Entities;
+using System.Threading;
 
 namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 {
@@ -34,7 +35,8 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
                 return Array.Empty<Result>();
             }
 
-            var results = _dbContext.Results;
+            var results = _dbContext.Results
+                              .Include(x => x.RoundMatch);
 
             List<Result> finalResultSet = new List<Result>();
             foreach(var roundMatch in league.RoundMatches)

@@ -113,6 +113,31 @@
                 <td>@Model.HomeTeam.CorePerformance.TotalBlocksOn [@Model.HomeTeam.CorePerformance.AvgBlocksOn]</td>
                 <td>@Model.AwayTeam.CorePerformance.TotalBlocksOn [@Model.AwayTeam.CorePerformance.AvgBlocksOn]</td>
             </tr>
+             <tr>
+                <td>Spectators</td>
+                <td>@Model.HomeTeam.AdvancedBoxscoreStatsView.TotalSpectators [@Model.HomeTeam.AdvancedBoxscoreStatsView.AverageSpectators]</td>
+                <td>@Model.AwayTeam.AdvancedBoxscoreStatsView.TotalSpectators [@Model.AwayTeam.AdvancedBoxscoreStatsView.AverageSpectators]</td>
+            </tr>
+            <tr>
+                <td>Games won [Played]</td>
+                <td>@Model.HomeTeam.AdvancedBoxscoreStatsView.GamesWin [@Model.HomeTeam.AdvancedBoxscoreStatsView.GamePlayed]</td>
+                <td>@Model.AwayTeam.AdvancedBoxscoreStatsView.GamesWin [@Model.AwayTeam.AdvancedBoxscoreStatsView.GamePlayed]</td>
+            </tr>
+             <tr>
+                <td>Home games W [Played]</td>
+                <td>@Model.HomeTeam.AdvancedBoxscoreStatsView.HomeGamesWin [@Model.HomeTeam.AdvancedBoxscoreStatsView.HomeGamesPlayed]</td>
+                <td>@Model.AwayTeam.AdvancedBoxscoreStatsView.HomeGamesWin [@Model.AwayTeam.AdvancedBoxscoreStatsView.HomeGamesPlayed]</td>
+            </tr>
+             <tr>
+                <td>Away games W [Played]</td>
+                <td>@(@Model.HomeTeam.AdvancedBoxscoreStatsView.GamesWin-@Model.HomeTeam.AdvancedBoxscoreStatsView.HomeGamesWin) [@(@Model.HomeTeam.AdvancedBoxscoreStatsView.GamePlayed-@Model.HomeTeam.AdvancedBoxscoreStatsView.HomeGamesPlayed)]</td>
+                <td>@(@Model.AwayTeam.AdvancedBoxscoreStatsView.GamesWin - @Model.AwayTeam.AdvancedBoxscoreStatsView.HomeGamesWin) [@(@Model.AwayTeam.AdvancedBoxscoreStatsView.GamePlayed-@Model.AwayTeam.AdvancedBoxscoreStatsView.HomeGamesPlayed)]</td>
+              </tr>
+             <tr>
+                <td>Home vs Away Points Scored</td>
+                <td>@Model.HomeTeam.AdvancedBoxscoreStatsView.HomeGameScoredPoints:@Model.HomeTeam.AdvancedBoxscoreStatsView.AwayGameScoredPoints</td>
+                <td>@Model.AwayTeam.AdvancedBoxscoreStatsView.HomeGameScoredPoints:@Model.AwayTeam.AdvancedBoxscoreStatsView.AwayGameScoredPoints</td>
+             </tr>
             @foreach(var item in Model.PositionPlaceholderItems)
             {
                 <tr style="background-color:@item.color">
