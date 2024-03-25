@@ -24,37 +24,34 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
 
             var team = await _unitOfWork.TeamRepository.GetRoster(request.TeamId, cancellationToken);
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
-            var players = _unitOfWork.PlayerRepository.Get().ToList();
-            var countries = _unitOfWork.CountryRepository.Get().ToList();
-            if (team == null || league == null || players == null)
+            if (team == null || league == null)
             {
                 return Maybe<RosterDto>.None;
             }
 
-            var roster = await _unitOfWork.RosterRepository.SearchByLeagueId(league.Id, cancellationToken);
-            var currentRosters = roster.Where(x => x.TeamId == request.TeamId);
-            List<RosterItemDto> list = new List<RosterItemDto>();
+            var roster = _unitOfWork.RosterRepository
+                                    .GetByLeagueIdAndTeamId(league.Id, team.Id)
+                                    .ToList();
 
-            foreach (var item in currentRosters)
+            List<RosterItemDto> list = new List<RosterItemDto>();
+            foreach (var item in roster)
             {
-                var selectedPlayer = players.FirstOrDefault(y => y.Id == item.PlayerId);
-                if (selectedPlayer == null)
-                {
-                    continue;
-                }
-                var newItem = new RosterItemDto(item.PlayerId,
-                item.LeagueId,
-               item.DateOfInsertion,
-                item.EndOfActivePeriod,
-                selectedPlayer.Name,
-                selectedPlayer.PositionEnum,
-                selectedPlayer.Height,
-                selectedPlayer.DateOfBirth,
-                DistanceCalculator
-                .CalculateAge(DateOnly.FromDateTime(selectedPlayer.DateOfBirth), DateOnly.FromDateTime(DateTime.UtcNow)),
-                selectedPlayer.CountryId,
-                countries?.FirstOrDefault(z => z.Id == selectedPlayer.CountryId)?.Name!
-                );
+                var newItem = 
+                new RosterItemDto(item.PlayerId,
+                                item.LeagueId,
+                                item.DateOfInsertion,
+                                item.EndOfActivePeriod,
+                                item.Player.Name,
+                                item.Player.PositionEnum,
+                                item.Player.Height,
+                                item.Player.DateOfBirth,
+                                DistanceCalculator
+                                .CalculateAge(DateOnly.FromDateTime(item.Player.DateOfBirth), 
+                                                DateOnly.FromDateTime(DateTime.UtcNow)),
+                                item.Player.CountryId,
+                                item.Player.Country?.Name!
+                                );
+
                 list.Add(newItem);
             }
 

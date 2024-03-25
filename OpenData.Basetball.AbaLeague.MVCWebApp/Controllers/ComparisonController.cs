@@ -3,10 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.Domain.Enums;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
+using OpenData.Basetball.AbaLeague.MVCWebApp.Models.Boxscore;
+using OpenData.Basetball.AbaLeague.MVCWebApp.Models.Partial;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueComparisonByLeagueIds;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetRegistredTeamsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamsComparisonByTeamIds;
 using System.Collections.Frozen;
 
@@ -195,8 +201,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View(new CompareLeaguesViewModel
                 {
                     IsLoadedComparisonResult = false,
-                    AwayLeaguesSelection = new SelectList(leagues.Value.LeagueResponses, "Id", "OfficialName"),
-                    HomeLeaguesSelection = new SelectList(leagues.Value.LeagueResponses, "Id", "OfficialName"),
+                    AwayLeaguesSelection = new SelectList(leagues.Value.LeagueItems, "Id", "OfficialName"),
+                    HomeLeaguesSelection = new SelectList(leagues.Value.LeagueItems, "Id", "OfficialName"),
                     SelectedAwayLeague = 1.ToString(),
                     SelectedHomeLeague = 1.ToString()
 
@@ -226,7 +232,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 {
                     IsLoadedComparisonResult = false,
                     IsLeagueSelected = false,
-                    LeagueSelection = new SelectList(leagues.Value.LeagueResponses, "Id", "OfficialName"),
+                    LeagueSelection = new SelectList(leagues.Value.LeagueItems, "Id", "OfficialName"),
                     SelectedLeague = 1.ToString(),
 
                 });
@@ -447,7 +453,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                         }); ;
                     }
                    
-                    var teams = await _sender.Send(new GetTeamsByLeagueIdQuery(leagueId), cancellationToken);
+                    var teams = await _sender.Send(new GetRegistredTeamsByLeagueIdQuery(leagueId), cancellationToken);
                     if (teams.HasNoValue)
                     {
                         return View("Error");
@@ -456,10 +462,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     {
                         IsLoadedComparisonResult = false,
                         IsLeagueSelected = true,
-                        AwayTeamsSelection = new SelectList(teams.Value.ExistingTeamSeasonResourcesItems, "TeamId","Name"),
-                        HomeTeamsSelection = new SelectList(teams.Value.ExistingTeamSeasonResourcesItems, "TeamId","Name"),
-                        SelectedAwayTeam = teams.Value.ExistingTeamSeasonResourcesItems.FirstOrDefault().TeamId.ToString(),
-                        SelectedHomeTeam = teams.Value.ExistingTeamSeasonResourcesItems.LastOrDefault().TeamId.ToString(),
+                        AwayTeamsSelection = new SelectList(teams.Value.Teams, "Id","Name"),
+                        HomeTeamsSelection = new SelectList(teams.Value.Teams, "Id", "Name"),
+                        SelectedAwayTeam = teams.Value.Teams.FirstOrDefault().Id.ToString(),
+                        SelectedHomeTeam = teams.Value.Teams.LastOrDefault().Id.ToString(),
                     });
                     //TODO populate teams selection
                 }
@@ -469,14 +475,147 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ComparePlayers(CancellationToken cancellationToken = default)
+        public async Task<IActionResult> ComparePlayers([FromQuery] string? SelectedLeagueId = null,
+                                                        [FromQuery] string? SelectedHomeTeamId = null,
+                                                        [FromQuery] string? SelectedAwayTeamId = null,
+                                                        [FromQuery] string? SelectedHomePlayerId = null,
+                                                        [FromQuery] string? SelectedAwayPlayerId = null,
+                                                        CancellationToken cancellationToken = default)
         {
-            ViewBag.Title = "Comparison Leagues";
+            ViewBag.Title = "Comparison Players";
+            int leagueId = 0;
+            int homeTeamId = 0;
+            int homePlayerId = 0;
+            int awayTeamId = 0;
+            int awayPlayerId = 0;
+            if (SelectedLeagueId == null)
+            {
+                var leagues = await _sender.Send(new GetLeagueQuery(), cancellationToken);
 
-            return View(new CompareLeaguesViewModel
+                if (leagues.HasNoValue)
+                {
+                    return View("Error");
+                }
+
+                return View(new ComparePlayersViewModel
+                {
+                    AvailableLeagues = new SelectList(leagues.Value.LeagueItems, "Id", "OfficialName"),
+                    SelectedLeagueId = null
+                });
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(SelectedHomeTeamId) &&
+                    string.IsNullOrWhiteSpace(SelectedAwayTeamId) &&
+                    int.TryParse(SelectedLeagueId, out leagueId))
+                {
+                    var teams = 
+                        await _sender.Send(new GetRegistredTeamsByLeagueIdQuery(leagueId), cancellationToken);
+                    
+                    if (teams.HasNoValue)
+                    {
+                        return View("Error");
+                    }
+
+                    return View(new ComparePlayersViewModel
+                    {
+                        SelectedLeagueId = SelectedLeagueId,
+                        AvailableAwayTeams = new SelectList(teams.Value.Teams, "Id", "Name"),
+                        AvailableHomeTeams = new SelectList(teams.Value.Teams, "Id", "Name"),
+                        SelectedAwayTeamId = teams.Value.Teams.FirstOrDefault()!.Id.ToString(),
+                        SelectedHomeTeamId = teams.Value.Teams.LastOrDefault()!.Id.ToString(),
+                    });
+                }
+
+                if (!string.IsNullOrWhiteSpace(SelectedHomeTeamId) &&
+                    !string.IsNullOrWhiteSpace(SelectedAwayTeamId) &&
+                    int.TryParse(SelectedLeagueId, out leagueId) &&
+                    int.TryParse(SelectedHomeTeamId, out homeTeamId) &&
+                    int.TryParse(SelectedAwayTeamId, out awayTeamId)
+                    )
+                {
+                    var homeTeamPlayers = await _sender
+                               .Send(new GetRosterByTeamIdQuery(homeTeamId, leagueId),
+                                       cancellationToken);
+                    var awayTeamPlayers = await _sender
+                              .Send(new GetRosterByTeamIdQuery(awayTeamId, leagueId),
+                                      cancellationToken);
+
+                    if (homeTeamPlayers.HasNoValue || awayTeamPlayers.HasNoValue)
+                    {
+                        return View("Error");
+                    }
+
+                    return View(new ComparePlayersViewModel
+                    {
+                        SelectedLeagueId = SelectedLeagueId,
+                        AvailableAwayPlayers = new SelectList(awayTeamPlayers.Value.Items, "Id", "Name"),
+                        AvailableHomePlayers = new SelectList(homeTeamPlayers.Value.Items, "Id", "Name"),
+                        SelectedAwayPlayerId = awayTeamPlayers.Value.Items.First().Id.ToString(),
+                        SelectedHomePlayerId = homeTeamPlayers.Value.Items.First().Id.ToString(),
+                    });
+                }
+
+                if (!string.IsNullOrWhiteSpace(SelectedHomeTeamId) &&
+                    !string.IsNullOrWhiteSpace(SelectedAwayTeamId) &&
+                    int.TryParse(SelectedLeagueId, out leagueId) &&
+                    int.TryParse(SelectedHomeTeamId, out homeTeamId) &&
+                    int.TryParse(SelectedAwayTeamId, out awayTeamId) &&
+                    int.TryParse(SelectedHomePlayerId, out homePlayerId) &&
+                    int.TryParse(SelectedAwayPlayerId, out awayPlayerId) 
+                    )
+                {
+                    var teams =
+                        await _sender.Send(new GetRegistredTeamsByLeagueIdQuery(leagueId), cancellationToken);
+
+                    if (teams.HasNoValue)
+                    {
+                        return View("Error");
+                    }
+
+                    return View(new ComparePlayersViewModel
+                    {
+                        SelectedLeagueId = SelectedLeagueId,
+                        AvailableAwayTeams = new SelectList(teams.Value.Teams, "Id", "Name"),
+                        AvailableHomeTeams = new SelectList(teams.Value.Teams, "Id", "Name"),
+                        SelectedAwayTeamId = teams.Value.Teams.FirstOrDefault()!.Id.ToString(),
+                        SelectedHomeTeamId = teams.Value.Teams.LastOrDefault()!.Id.ToString(),
+                    });
+                }
+            }
+
+
+            return View(new ComparePlayersViewModel
             {
 
             });
+        }
+
+        [HttpGet]
+        public async Task<PartialViewResult> 
+            GetPlayersByTeamAndLeague([FromQuery] string? SelectedTeamId = null,
+                                        [FromQuery] string? SelectedLeagueId = null,
+                                        CancellationToken cancellationToken = default)
+        {
+            if(string.IsNullOrWhiteSpace(SelectedTeamId) || 
+                string.IsNullOrWhiteSpace(SelectedLeagueId))
+            {
+                return PartialView("Error");
+            }
+            if(int.TryParse(SelectedTeamId, out var selectedTeamId) &&
+                int.TryParse(SelectedLeagueId, out var selectedLeagueId))
+            {
+                var players = await _sender
+                                .Send(new GetRosterByTeamIdQuery(selectedTeamId, selectedLeagueId), 
+                                        cancellationToken);
+
+                return PartialView("_PlayersPartial", new PlayerItemsViewModelPartial
+                {
+                    AvailablePlayers = new SelectList(players.Value.Items, "Id", "Name"),
+                    SelectedPlayerId = players.Value.Items.First().Id.ToString(),
+                });
+            }
+            return PartialView("Error");
         }
     }
 }

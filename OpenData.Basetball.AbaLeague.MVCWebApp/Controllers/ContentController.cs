@@ -32,7 +32,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             ViewBag.Title = "Leagues";
             var indexContentViewModel = new ContentViewModel()
             {
-                Leagues = results.Value.LeagueResponses
+                Leagues = results.Value.LeagueItems
                 .Select(x => new SingleLeagueViewModel()
                 { 
                     Id = x.Id ?? -1, 

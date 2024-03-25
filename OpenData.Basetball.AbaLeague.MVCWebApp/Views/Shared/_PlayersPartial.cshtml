@@ -1,0 +1,15 @@
+﻿@using OpenData.Basetball.AbaLeague.MVCWebApp.Models.Partial
+
+@model PlayerItemsViewModelPartial;
+
+
+<div class="form-horizontal">
+        <div class="form-group">
+        @Html.LabelFor(model => model.AvailablePlayers)
+            <div class="col-md-10">
+            <select asp-for="SelectedPlayerId"
+                        class="form-control"
+                    asp-items="Model.AvailablePlayers"></select>
+            </div>
+        </div>
+</div>

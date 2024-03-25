@@ -21,7 +21,7 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
                                 string? StandingTableSelector = null
                                 );
 
-    public record LeaguesDto(IEnumerable<LeagueItemDto> LeagueResponses);
+    public record LeaguesDto(IEnumerable<LeagueItemDto> LeagueItems);
 
     public record LeaguesRoster(IEnumerable<int> LeagueIds);
 }

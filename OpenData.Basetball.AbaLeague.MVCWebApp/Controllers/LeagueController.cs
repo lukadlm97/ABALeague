@@ -53,7 +53,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             ViewBag.Title = "Leagues";
             var leagueViewModel = new LeagueViewModel()
             {
-                Leagues = results.Value.LeagueResponses.ToList(),
+                Leagues = results.Value.LeagueItems.ToList(),
                 IsSuccess = true
             };
             return View(leagueViewModel);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OpenData.Basetball.AbaLeague.Domain.Enums;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
+using OpenData.Basetball.AbaLeague.MVCWebApp.Models.Boxscore;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Country;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Player;

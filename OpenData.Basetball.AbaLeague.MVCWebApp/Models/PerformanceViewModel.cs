@@ -1,4 +1,5 @@
 ﻿using OpenData.Basetball.AbaLeague.Domain.Enums;
+using OpenData.Basetball.AbaLeague.MVCWebApp.Models.Boxscore;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 {

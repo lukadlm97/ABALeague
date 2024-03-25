@@ -302,6 +302,24 @@ namespace OpenData.Basetball.AbaLeague.Crawler.Processors.Implementations
             var webDocument = await _documentFether
                 .FetchDocument(matchUrl, cancellationToken);
 
+            try
+            {
+                if (string.IsNullOrWhiteSpace(webDocument
+                                                .QuerySelectorAll("table.match_boxscore_team_table")[0]
+                                                .ToString()) ||
+                       string.IsNullOrWhiteSpace(webDocument
+                                                        .QuerySelectorAll("table.match_boxscore_team_table")[1]
+                                                        .ToString()))
+                {
+                    return (null, null);
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return (null, null);
+            }
+           
+
             var homeTeamPlayers = webDocument.QuerySelectorAll("table.match_boxscore_team_table")[0]
                 .QuerySelectorAll("tbody > tr");
             var name = string.Empty;

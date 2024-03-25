@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
@@ -100,6 +101,22 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         public IQueryable<RosterItem> Get()
         {
             return _dbContext.RosterItems;
+        }
+
+        public IQueryable<RosterItem> GetByLeagueIdAndTeamId(int leagueId, int teamId)
+        {
+            var league = _dbContext.Leagues.First(x => x.Id == leagueId);
+            if (league == null)
+            {
+                return Array.Empty<RosterItem>().AsQueryable();
+            }
+
+            return _dbContext.RosterItems
+                .Include(x => x.Team)
+                .Include(x => x.Player)
+                    .ThenInclude(y=>y.Country)
+                .Include(x => x.League)
+                .Where(x => x.LeagueId == leagueId && x.TeamId == teamId);
         }
     }
 }

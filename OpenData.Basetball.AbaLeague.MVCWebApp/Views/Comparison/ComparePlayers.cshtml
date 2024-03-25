@@ -1,0 +1,90 @@
+﻿@model ComparePlayersViewModel
+
+@if(Model.SelectedLeagueId == null)
+{
+    <div class="form-horizontal">
+        <form asp-controller="Comparison" asp-action="ComparePlayers" method="get">
+            <hr />
+            <div class="form-group">
+                @Html.LabelFor(model => model.AvailableLeagues)
+                <div class="col-md-10">
+                    <select asp-for="SelectedLeagueId"
+                            class="form-control" 
+                            asp-items="Model.AvailableLeagues"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-success">Select</button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+else
+{
+    @if(Model.AvailableHomeTeams != null &&
+          Model.AvailableAwayTeams != null)
+    {
+           <div class="form-horizontal">
+            <form asp-controller="Comparison" asp-action="ComparePlayers" method="get">
+                <input type="hidden" asp-for="@Model.SelectedLeagueId" />
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AvailableHomeTeams)
+                    <div class="col-md-10">
+                        <select asp-for="SelectedHomeTeamId"
+                                class="form-control"
+                                asp-items="Model.AvailableHomeTeams"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AvailableAwayTeams)
+                    <div class="col-md-10">
+                        <select asp-for="SelectedAwayTeamId"
+                                class="form-control"
+                                asp-items="Model.AvailableAwayTeams"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+    if (Model.AvailableHomePlayers != null && Model.AvailableAwayPlayers != null)
+    {
+        <div class="form-horizontal">
+            <form asp-controller="Comparison" asp-action="ComparePlayers" method="get">
+                <input type="hidden" asp-for="@Model.SelectedLeagueId" />
+                <input type="hidden" asp-for="@Model.SelectedHomeTeamId" />
+                <input type="hidden" asp-for="@Model.SelectedAwayTeamId" />
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AvailableHomePlayers)
+                    <div class="col-md-10">
+                        <select asp-for="SelectedHomePlayerId"
+                                class="form-control"
+                                asp-items="Model.AvailableHomePlayers"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AvailableAwayPlayers)
+                    <div class="col-md-10">
+                        <select asp-for="SelectedAwayPlayerId"
+                                class="form-control"
+                                asp-items="Model.AvailableAwayPlayers"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+}
+  

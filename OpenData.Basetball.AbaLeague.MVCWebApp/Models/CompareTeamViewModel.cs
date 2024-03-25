@@ -1,4 +1,6 @@
-﻿namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
+﻿using OpenData.Basetball.AbaLeague.MVCWebApp.Models.Boxscore;
+
+namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
 {
     public class CompareTeamViewModel : CompareItemViewModel
     {

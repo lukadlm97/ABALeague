@@ -1,4 +1,4 @@
-﻿namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
+﻿namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models.Boxscore
 {
     public class BoxscoreDraftByRoundViewModel
     {

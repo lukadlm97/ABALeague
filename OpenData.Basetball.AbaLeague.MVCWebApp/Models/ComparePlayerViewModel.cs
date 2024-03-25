@@ -13,6 +13,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
         public string CurrentTeamRang { get; set; }
         public string CurrentTeamWon { get; set; }
         public string CurrentTeamLost { get; set; }
+        public MatchResultViewModel AdvancedBoxscoreStatsView { get; set; }
 
     }
 }

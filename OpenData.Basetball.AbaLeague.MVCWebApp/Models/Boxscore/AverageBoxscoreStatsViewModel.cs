@@ -1,8 +1,8 @@
-﻿namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
+﻿namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models.Boxscore
 {
     public class AverageBoxscoreStatsViewModel
     {
-       public TimeSpan AvgMinutes { get; set; }
+        public TimeSpan AvgMinutes { get; set; }
         public double? AvgPoints { get; set; }
         public double? AvgTotalRebounds { get; set; }
         public double? AvgAssists { get; set; }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
+using OpenData.Basetball.AbaLeague.MVCWebApp.Models.Boxscore;
 using OpenData.Basketball.AbaLeague.Application.DTOs.BoxScore;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Score;
 using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Commands.AddBoxscoreByMatchResultId;

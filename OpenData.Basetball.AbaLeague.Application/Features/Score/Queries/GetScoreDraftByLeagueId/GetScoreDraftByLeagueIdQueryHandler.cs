@@ -22,18 +22,11 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoreDraftByLeagueId
 {
-    public class GetScoreDraftByLeagueIdQueryHandler : IQueryHandler<GetScoreDraftByLeagueIdQuery, Maybe<ScoreDraftDto>>
+    public class GetScoreDraftByLeagueIdQueryHandler (IUnitOfWork _unitOfWork,
+                                                        IDocumentFetcher _documentFetcher, 
+                                                        ILoggerFactory _loggerFactory)
+        : IQueryHandler<GetScoreDraftByLeagueIdQuery, Maybe<ScoreDraftDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDocumentFetcher _documentFetcher;
-        private readonly ILoggerFactory _loggerFactory;
-
-        public GetScoreDraftByLeagueIdQueryHandler(IUnitOfWork unitOfWork, IDocumentFetcher documentFetcher, ILoggerFactory loggerFactory)
-        {
-            _unitOfWork = unitOfWork;
-            _documentFetcher = documentFetcher;
-            _loggerFactory = loggerFactory;
-        }
         public async Task<Maybe<ScoreDraftDto>> Handle(GetScoreDraftByLeagueIdQuery request, CancellationToken cancellationToken)
         {
             var league = await _unitOfWork.LeagueRepository.Get(request.LeagueId, cancellationToken);
@@ -77,30 +70,32 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetSc
             }
 
             // build appropraite urls using match number
-            IEnumerable<(int matchNo, string url)> matchNoUrlPair = matchNumbers.Select(x =>
-            {
-                string? url = league.ProcessorTypeEnum switch
+            IEnumerable<(int matchNo, string url)> matchNoUrlPair = 
+                matchNumbers.Select(x =>
                 {
-                    Domain.Enums.ProcessorType.Euro => league.BaseUrl +
-                                                        string.Format(league.MatchUrl, x),
-                    Domain.Enums.ProcessorType.Aba => league.BaseUrl +
-                                                        string.Format(league.MatchUrl, x),
-                    Domain.Enums.ProcessorType.Kls => string.Format(league.MatchUrl, x),
-                    Domain.Enums.ProcessorType.Unknow or null or _ => null
-                };
-                if (string.IsNullOrEmpty(url))
-                {
-                    return (x, string.Empty);
-                }
-                return (x, url);
-            });
+                    string? url = league.ProcessorTypeEnum switch
+                    {
+                        Domain.Enums.ProcessorType.Euro => league.BaseUrl +
+                                                            string.Format(league.MatchUrl, x),
+                        Domain.Enums.ProcessorType.Aba => league.BaseUrl +
+                                                            string.Format(league.MatchUrl, x),
+                        Domain.Enums.ProcessorType.Kls => string.Format(league.MatchUrl, x),
+                        Domain.Enums.ProcessorType.Unknow or null or _ => null
+                    };
+                    if (string.IsNullOrEmpty(url))
+                    {
+                        return (x, string.Empty);
+                    }
+
+                    return (x, url);
+                });
 
             // fetch result from API
             var fetchedMatchScoreItems = await processor.GetMatchScores(matchNoUrlPair, cancellationToken);
             if (fetchedMatchScoreItems == null)
             {
                 return Maybe<ScoreDraftDto>.None;
-            }
+            } 
 
             // classify result by next categories
             List<ScoreItemDto> draftItems = new List<ScoreItemDto>();
