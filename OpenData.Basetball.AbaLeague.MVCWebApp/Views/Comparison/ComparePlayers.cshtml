@@ -80,11 +80,54 @@ else
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-success">Search</button>
+                        <button type="submit" class="btn btn-success">Comapare</button>
                     </div>
                 </div>
             </form>
         </div>
     }
 }
+
+@if (Model.IsPlayerComperisonLoaded)
+{
+    <table class="performance-table">
+        <thead>
+            <tr>
+                <th>Player names</th>
+                <th>@Model.HomePlayer.Name</th>
+                <th>@Model.AwayPlayer.Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Games</td>
+                <td>@Model.HomePlayer.GamesPlayed</td>
+                <td>@Model.AwayPlayer.GamesPlayed</td>
+            </tr>
+            <tr>
+                <td>Games</td>
+                <td>@Model.HomePlayer.</td>
+                <td>@Model.AwayPlayer.GamesPlayed</td>
+            </tr>
+        </tbody>
+    </table>
   
+}
+
+
+<style>
+    .performance-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .performance-table th, .performance-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .performance-table th {
+            background-color: #f2f2f2;
+        }
+</style>

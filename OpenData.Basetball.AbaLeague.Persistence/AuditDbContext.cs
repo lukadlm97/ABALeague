@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,15 @@ namespace OpenData.Basetball.AbaLeague.Persistence
             var result = await base.SaveChangesAsync();
 
             return result;
+        }
+
+        public static AuditEntity ToAuditEntity()
+        {
+            return new AuditEntity()
+            {
+                Id = default,
+
+            };
         }
     }
 }

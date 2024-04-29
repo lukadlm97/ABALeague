@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenData.Basetball.AbaLeague.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,3 +14,4 @@ namespace OpenData.Basetball.AbaLeague.Domain.Common
         public int Id { get; set; }
     }
 }
+

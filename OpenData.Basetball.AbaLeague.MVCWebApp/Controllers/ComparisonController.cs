@@ -10,6 +10,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeag
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetRegistredTeamsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerComparisonByPlayerIds;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
@@ -531,7 +532,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     !string.IsNullOrWhiteSpace(SelectedAwayTeamId) &&
                     int.TryParse(SelectedLeagueId, out leagueId) &&
                     int.TryParse(SelectedHomeTeamId, out homeTeamId) &&
-                    int.TryParse(SelectedAwayTeamId, out awayTeamId)
+                    int.TryParse(SelectedAwayTeamId, out awayTeamId) &&
+                    string.IsNullOrEmpty(SelectedHomePlayerId) &&
+                    string.IsNullOrEmpty(SelectedAwayPlayerId)
                     )
                 {
                     var homeTeamPlayers = await _sender
@@ -558,6 +561,8 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
                 if (!string.IsNullOrWhiteSpace(SelectedHomeTeamId) &&
                     !string.IsNullOrWhiteSpace(SelectedAwayTeamId) &&
+                    !string.IsNullOrEmpty(SelectedHomePlayerId) &&
+                    !string.IsNullOrEmpty(SelectedAwayPlayerId) &&
                     int.TryParse(SelectedLeagueId, out leagueId) &&
                     int.TryParse(SelectedHomeTeamId, out homeTeamId) &&
                     int.TryParse(SelectedAwayTeamId, out awayTeamId) &&
@@ -565,10 +570,14 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     int.TryParse(SelectedAwayPlayerId, out awayPlayerId) 
                     )
                 {
-                    var teams =
-                        await _sender.Send(new GetRegistredTeamsByLeagueIdQuery(leagueId), cancellationToken);
+                    var result =
+                        await _sender.Send(new GetPlayerComparisonByPlayerIdsQuery(leagueId, new List<(int, int)>()
+                        {
+                            (homeTeamId, homePlayerId ),
+                            (awayTeamId, awayPlayerId),
+                        }), cancellationToken);
 
-                    if (teams.HasNoValue)
+                    if (result.HasNoValue)
                     {
                         return View("Error");
                     }
@@ -576,10 +585,32 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     return View(new ComparePlayersViewModel
                     {
                         SelectedLeagueId = SelectedLeagueId,
-                        AvailableAwayTeams = new SelectList(teams.Value.Teams, "Id", "Name"),
-                        AvailableHomeTeams = new SelectList(teams.Value.Teams, "Id", "Name"),
-                        SelectedAwayTeamId = teams.Value.Teams.FirstOrDefault()!.Id.ToString(),
-                        SelectedHomeTeamId = teams.Value.Teams.LastOrDefault()!.Id.ToString(),
+                        SelectedAwayTeamId = awayTeamId.ToString(),
+                        SelectedHomeTeamId = homeTeamId.ToString(),
+                        SelectedAwayPlayerId = awayPlayerId.ToString(),
+                        SelectedHomePlayerId = homePlayerId.ToString(),
+                        HomePlayer = new ComparePlayerViewModel
+                        {
+                            Name = result.Value.Items.First().PlayerItem.Name,
+                            GamesPlayed = result.Value.Items.First().MatchSuccessCalcuationDto.GamePlayed,
+                            CorePerformance = new ComparePerformanceItemViewModel
+                            {
+                                AvgAssists = result.Value.Items.First().TotalAndAveragePerformance.AverageAssists ?? 0,
+                                TotalAssists = result.Value.Items.First().TotalAndAveragePerformance.TotalAssists ?? 0,
+                            },
+                            
+                        },
+                        AwayPlayer = new ComparePlayerViewModel
+                        {
+                            Name = result.Value.Items.Last().PlayerItem.Name,
+                            GamesPlayed = result.Value.Items.Last().MatchSuccessCalcuationDto.GamePlayed,
+                            CorePerformance = new ComparePerformanceItemViewModel
+                            {
+                                AvgAssists = result.Value.Items.Last().TotalAndAveragePerformance.AverageAssists ?? 0,
+                                TotalAssists = result.Value.Items.Last().TotalAndAveragePerformance.TotalAssists ?? 0,
+                            }
+                        },
+                        IsPlayerComperisonLoaded = true,
                     });
                 }
             }

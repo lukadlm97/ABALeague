@@ -15,6 +15,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Models
         public string SelectedHomePlayerId { get; set; }
         public SelectList AvailableAwayPlayers { get; set; }
         public string SelectedAwayPlayerId { get; set; }
+        public bool IsPlayerComperisonLoaded { get; set; }
         public ComparePlayerViewModel HomePlayer { get; set; }
         public ComparePlayerViewModel AwayPlayer { get; set; }
     }

@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeagu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.TelegramBot", "OpenData.Basketball.AbaLeague.TelegramBot\OpenData.Basketball.AbaLeague.TelegramBot.csproj", "{4311C73C-9D48-4409-A05D-8BA0CB74F90F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.WebApp", "OpenData.Basketball.AbaLeague.WebApp\OpenData.Basketball.AbaLeague.WebApp.csproj", "{B82665C1-79DC-43F8-B88C-8034895E9560}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.MVCWebApp", "OpenData.Basetball.AbaLeague.MVCWebApp\OpenData.Basetball.AbaLeague.MVCWebApp.csproj", "{1F42EF40-09E7-4E86-A45D-490A6408A289}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basetball.AbaLeague.MVCWebApp", "OpenData.Basetball.AbaLeague.MVCWebApp\OpenData.Basetball.AbaLeague.MVCWebApp.csproj", "{1F42EF40-09E7-4E86-A45D-490A6408A289}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basketball.AbaLeague.API", "OpenData.Basketball.AbaLeague.API\OpenData.Basketball.AbaLeague.API.csproj", "{1EE9C546-5FB0-4F2A-AF99-A6006E7CD1A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,14 +67,14 @@ Global
 		{4311C73C-9D48-4409-A05D-8BA0CB74F90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4311C73C-9D48-4409-A05D-8BA0CB74F90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4311C73C-9D48-4409-A05D-8BA0CB74F90F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B82665C1-79DC-43F8-B88C-8034895E9560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B82665C1-79DC-43F8-B88C-8034895E9560}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B82665C1-79DC-43F8-B88C-8034895E9560}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B82665C1-79DC-43F8-B88C-8034895E9560}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F42EF40-09E7-4E86-A45D-490A6408A289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F42EF40-09E7-4E86-A45D-490A6408A289}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F42EF40-09E7-4E86-A45D-490A6408A289}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F42EF40-09E7-4E86-A45D-490A6408A289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EE9C546-5FB0-4F2A-AF99-A6006E7CD1A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EE9C546-5FB0-4F2A-AF99-A6006E7CD1A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EE9C546-5FB0-4F2A-AF99-A6006E7CD1A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EE9C546-5FB0-4F2A-AF99-A6006E7CD1A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

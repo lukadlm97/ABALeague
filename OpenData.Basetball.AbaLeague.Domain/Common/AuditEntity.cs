@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenData.Basetball.AbaLeague.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,8 @@ namespace OpenData.Basetball.AbaLeague.Domain.Common
         public string CreatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
         public string UpdateBy { get; set; }
+        
+      
+
     }
 }
