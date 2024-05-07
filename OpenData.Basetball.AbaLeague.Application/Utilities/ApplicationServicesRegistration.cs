@@ -19,18 +19,22 @@ namespace OpenData.Basketball.AbaLeague.Application.Utilities
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, 
                                                                         IConfiguration configuration)
         {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheInvalidationBehavior<,>));
+
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IStandingsService, StandingsService>();
+            services.AddScoped<IStatisticsCalculator, StatisticsCalculator>();
+
             return services;
         }
 
         public static IServiceCollection ConfigureAdminApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IDocumentFetcher, DocumentFetcher>();
-            services.AddScoped<IGameService, GameService>();
-            services.AddScoped<IStandingsService, StandingsService>();
-            services.AddScoped<IStatisticsCalculator, StatisticsCalculator>();
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheInvalidationBehavior<,>));
+            services.ConfigureApplicationServices(configuration);
 
             // business logic configurations
             services.Configure<PlayerSettings>(configuration.GetSection(nameof(PlayerSettings)));

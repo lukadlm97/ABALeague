@@ -38,7 +38,7 @@ namespace OpenData.Basetball.AbaLeague.Persistence
             {
                 services.AddDbContextPool<AbaLeagueDbContext>(builder =>
                 {
-                    var connectionString = configuration.GetSection("PersistenceSettings:Database").Value;
+                    var connectionString = configuration.GetSection("PersistenceSettings:BasketballAnalystDatabase").Value;
                     if (connectionString == null)
                     {
                         throw new ArgumentNullException();
