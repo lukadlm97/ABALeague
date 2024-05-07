@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.DTOs.Team
 {
-    public record TeamDto(FrozenSet<TeamItemDto> Teams);
+    public record TeamDto(List<TeamItemDto> Teams);
 }

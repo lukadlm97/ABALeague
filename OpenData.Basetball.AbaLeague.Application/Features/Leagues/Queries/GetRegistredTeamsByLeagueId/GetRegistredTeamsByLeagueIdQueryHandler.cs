@@ -36,7 +36,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                                     .ToList();
             return new TeamDto(teams.Select(x =>
                                             new TeamItemDto(x.Id, x.Name, x.ShortCode, x.CountryId, string.Empty))
-                                                .ToFrozenSet());
+                                                .ToList());
         }
     }
 }

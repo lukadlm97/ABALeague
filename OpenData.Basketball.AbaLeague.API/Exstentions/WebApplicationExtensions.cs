@@ -42,9 +42,9 @@ namespace OpenData.Basketball.AbaLeague.API.Exstentions
 
             #endregion Swagger
 
-            #region auth
+            #region Authorization
             _ = app.UseAuthorization();
-            #endregion auth
+            #endregion Authorization
 
             #region Custom middlewares
             _ = app.UseExceptionHandleMiddleware();
@@ -55,6 +55,7 @@ namespace OpenData.Basketball.AbaLeague.API.Exstentions
             _ = app.MapGroup("/account").MapIdentityApi<ApplicationUser>();
             _ = app.MapSeasonEndpoints();
             _ = app.MapLeagueEndpoints();
+            _ = app.MapTeamEndpoints();
 
             #endregion MinimalApi
 

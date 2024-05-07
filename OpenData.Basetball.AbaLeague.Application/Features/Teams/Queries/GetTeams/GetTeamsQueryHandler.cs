@@ -37,7 +37,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTe
                                                 x.ShortCode,
                                                 x.CountryId, 
                                                 countries?.FirstOrDefault(y=>y.Id==x.CountryId)?.Name!))
-                .ToFrozenSet());
+                .ToList());
 
         }
     }
