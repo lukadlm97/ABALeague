@@ -64,6 +64,7 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                 {
                     return Results.Ok(result.Value);
                 }
+
                 return Results.NotFound();
             }
             catch (Exception ex)

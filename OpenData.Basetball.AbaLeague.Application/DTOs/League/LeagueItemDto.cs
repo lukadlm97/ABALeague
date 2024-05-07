@@ -11,11 +11,11 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
                                 string BoxScoreUrl,
                                 string BaseUrl,
                                 string RosterUrl,
-                                Domain.Enums.ProcessorType ProcessorType,
+                                Domain.Enums.ProcessorType? ProcessorType,
                                 int SeasonId,
                                 string SeasonName,
                                 int? RoundsToPlay,
-                                Domain.Enums.CompetitionOrganizationEnum CompetitionOrganization,
+                                Domain.Enums.CompetitionOrganizationEnum? CompetitionOrganization,
                                 string? StandingRowName = null,
                                 string? StandingRowUrl = null,
                                 string? StandingTableSelector = null

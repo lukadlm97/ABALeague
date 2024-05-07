@@ -5,6 +5,7 @@ using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Season;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetRegistredTeamsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetStandingsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
 
@@ -28,13 +29,13 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                     .RequireAuthorization();
 
             _ = root.MapGet("/", (Delegate) GetLeagueById)
-                   .Produces<LeagueItemDto>()
+                   .Produces(StatusCodes.Status200OK)
                    .ProducesProblem(StatusCodes.Status404NotFound)
                    .ProducesProblem(StatusCodes.Status500InternalServerError)
                    .WithName("GetLeagueById")
                    .RequireAuthorization();
 
-            _ = root.MapGet("/standings", (Delegate)GetLeagueStandingsById)
+            _ = root.MapGet("/standings", (Delegate) GetLeagueStandingsById)
                    .Produces<StandingsDto>()
                    .ProducesProblem(StatusCodes.Status404NotFound)
                    .ProducesProblem(StatusCodes.Status500InternalServerError)
@@ -67,12 +68,26 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
         {
             try
             {
-                var result = await mediator.Send(new GetLeagueByIdQuery(leagueId));
-                if (result.HasValue)
+                var league = await mediator.Send(new GetLeagueByIdQuery(leagueId));
+                if (league.HasNoValue)
                 {
-                    return Results.Ok(result.Value);
+                    return Results.NotFound();
                 }
-                return Results.NotFound();
+                var registredTeams = await mediator.Send(new GetRegistredTeamsByLeagueIdQuery(leagueId), cancellationToken);
+
+                if(registredTeams.HasNoValue)
+                {
+                    return Results.Ok(new
+                    {
+                        League = league.Value
+                    });
+                }
+
+                return Results.Ok(new
+                {
+                    League = league.Value,
+                    RegistredTeams = registredTeams.Value.Teams
+                });
             }
             catch (Exception ex)
             {
