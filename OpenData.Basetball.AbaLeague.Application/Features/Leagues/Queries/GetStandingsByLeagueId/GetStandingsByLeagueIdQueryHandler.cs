@@ -69,7 +69,11 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.Get
                                     league.CompetitionOrganizationEnum,
                                     league.RoundsToPlay ?? 0, 
                                     results.Select(x => x.RoundMatch.Round).Distinct().Count(), 
-                                    list.ToFrozenSet(),
+                                    list
+                                    .OrderByDescending(x => x.WonGames)
+                                        .ThenBy(x => x.LostGames)
+                                            .ThenByDescending(x => x.PointDifference)
+                                    .ToList(),
                                     groupStandings.ToFrozenSet());
         }
     }

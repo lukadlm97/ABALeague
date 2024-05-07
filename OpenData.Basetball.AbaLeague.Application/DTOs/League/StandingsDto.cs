@@ -12,7 +12,7 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
                                 Domain.Enums.CompetitionOrganizationEnum? LeagueCompetitionOrganization,
                                 int TotalRounds,
                                 int PlayedRounds,
-                                FrozenSet<StandingsItemDto>? StandingItems = null,
+                                List<StandingsItemDto>? StandingItems = null,
                                 FrozenSet<GroupStandingsDto>? GroupStandingItems = null,
                                 FrozenSet<BracketStandingsDto>? BracketStandingItems = null
                                 );

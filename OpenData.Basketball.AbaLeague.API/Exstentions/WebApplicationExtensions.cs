@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using OpenData.Basketball.AbaLeague.API.Contexts;
 using OpenData.Basketball.AbaLeague.API.Endpoints;
+using OpenData.Basketball.AbaLeague.API.Middlewares;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -45,10 +46,15 @@ namespace OpenData.Basketball.AbaLeague.API.Exstentions
             _ = app.UseAuthorization();
             #endregion auth
 
+            #region Custom middlewares
+            _ = app.UseExceptionHandleMiddleware();
+            #endregion
+
             #region MinimalApi
 
             _ = app.MapGroup("/account").MapIdentityApi<ApplicationUser>();
             _ = app.MapSeasonEndpoints();
+            _ = app.MapLeagueEndpoints();
 
             #endregion MinimalApi
 

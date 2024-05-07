@@ -4,21 +4,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Season;
 
 namespace OpenData.Basketball.AbaLeague.API.Endpoints
 {
-    public static class Season
+    public static class SeasonEndpoints
     {
         public static WebApplication MapSeasonEndpoints(this WebApplication app)
         {
             var root = app.MapGroup("/api/season")
            .AddEndpointFilterFactory(ValidationFilter.ValidationFilterFactory)
-           .WithTags("Season")
-           .WithDescription("Lookup and Find season")
+           .WithTags("Basketball.Season")
+           .WithDescription("Lookup and find season")
            .WithOpenApi();
 
-            _ = root.MapGet("/all", GetSeasons)
-                    .Produces(StatusCodes.Status200OK)
+            _ = root.MapGet("/all", (Delegate) GetSeasons)
+                    .Produces<List<SeasonItemDto>>()
                     .ProducesProblem(StatusCodes.Status404NotFound)
                     .ProducesProblem(StatusCodes.Status500InternalServerError)
                     .WithName("GetSeasons")
@@ -34,7 +35,7 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                 var result = await mediator.Send(new GetSeasonsQuery());
                 if (result.HasValue)
                 {
-                   return Results.Ok(result.Value);
+                   return Results.Ok(result.Value.SeasonItems);
                 }
                 return Results.NotFound();
             }
@@ -42,6 +43,5 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
             {
                 return Results.Problem(ex.StackTrace, ex.Message, StatusCodes.Status500InternalServerError);
             }
-        }
-    }
+        }    }
 }

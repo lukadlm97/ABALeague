@@ -4,24 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using OpenData.Basketball.AbaLeague.API.Contexts;
 using OpenData.Basketball.AbaLeague.API.Exstentions;
-using OpenData.Basketball.AbaLeague.API.Infrastructures;
 using System;
 
 var builder = WebApplication
     .CreateBuilder(args)
     .ConfigureApplicationBuilder();
 
-
-
 // Add services to the container.
-
 var app = builder
     .Build()
     .ConfigureApplication();
-
-
-
-
 
 try
 {
