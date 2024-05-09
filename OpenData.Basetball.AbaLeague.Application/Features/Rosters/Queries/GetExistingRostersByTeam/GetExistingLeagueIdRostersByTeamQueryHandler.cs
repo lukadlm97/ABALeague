@@ -5,22 +5,22 @@ using OpenData.Basketball.AbaLeague.Domain.Common;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam
 {
-    internal class GetExistingRostersByTeamQueryHandler : IQueryHandler<GetExistingRostersByTeamQuery, Maybe<LeaguesRoster>>
+    internal class GetExistingLeagueIdRostersByTeamQueryHandler : IQueryHandler<GetExistingLeagueIdRostersByTeamQuery, Maybe<LeaguesRoster>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetExistingRostersByTeamQueryHandler(IUnitOfWork unitOfWork)
+        public GetExistingLeagueIdRostersByTeamQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<Maybe<LeaguesRoster>> Handle(GetExistingRostersByTeamQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<LeaguesRoster>> Handle(GetExistingLeagueIdRostersByTeamQuery request, CancellationToken cancellationToken)
         {
             if (request.TeamId <= 0)
             {
                 return Maybe<LeaguesRoster>.None;
             }
 
-            var team = await _unitOfWork.TeamRepository.Get(request.TeamId, cancellationToken);
+            var team =  _unitOfWork.TeamRepository.Get().FirstOrDefault(x=>x.Id == request.TeamId);
             if (team == null)
             {
                 return Maybe<LeaguesRoster>.None;

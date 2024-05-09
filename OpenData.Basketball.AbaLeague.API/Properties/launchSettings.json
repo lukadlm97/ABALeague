@@ -7,7 +7,9 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "OTCSETTINGS__PROTOCOL": "Grpc",
+        "OTCSETTINGS__URL": "http://localhost:4317"
       }
     },
     "Container (Dockerfile)": {

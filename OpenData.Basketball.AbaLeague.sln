@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basetball.AbaLeague.MVCWebApp", "OpenData.Basetball.AbaLeague.MVCWebApp\OpenData.Basetball.AbaLeague.MVCWebApp.csproj", "{1F42EF40-09E7-4E86-A45D-490A6408A289}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenData.Basketball.AbaLeague.API", "OpenData.Basketball.AbaLeague.API\OpenData.Basketball.AbaLeague.API.csproj", "{1EE9C546-5FB0-4F2A-AF99-A6006E7CD1A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenData.Basketball.AbaLeague.API", "OpenData.Basketball.AbaLeague.API\OpenData.Basketball.AbaLeague.API.csproj", "{1EE9C546-5FB0-4F2A-AF99-A6006E7CD1A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -39,7 +39,7 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                    .Produces<StandingsDto>()
                    .ProducesProblem(StatusCodes.Status404NotFound)
                    .ProducesProblem(StatusCodes.Status500InternalServerError)
-                   .WithName("GetLeagueStadningsById")
+                   .WithName("GetLeagueStandingsById")
                    .RequireAuthorization();
 
             return app;

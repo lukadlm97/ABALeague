@@ -216,7 +216,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
 
-            var leagues = await _sender.Send(new GetExistingRostersByTeamQuery(team.Value.Id), cancellationToken);
+            var leagues = await _sender.Send(new GetExistingLeagueIdRostersByTeamQuery(team.Value.Id), cancellationToken);
             if (leagues.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });

@@ -1,9 +1,17 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OpenData.Basketball.AbaLeague.API.Filters;
+using OpenData.Basketball.AbaLeague.Application.DTOs.League;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Season;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterHistoryByTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById;
+using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamGamesByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeams;
 
 namespace OpenData.Basketball.AbaLeague.API.Endpoints
@@ -26,11 +34,32 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                     .RequireAuthorization();
 
             _ = root.MapGet("/", (Delegate) GetTeamById)
-                    .Produces<List<SeasonItemDto>>()
+                    .Produces(StatusCodes.Status200OK)
                     .ProducesProblem(StatusCodes.Status404NotFound)
                     .ProducesProblem(StatusCodes.Status500InternalServerError)
                     .WithName("GetTeamById")
                     .RequireAuthorization();
+
+            _ = root.MapGet("/performanceByLeague", (Delegate) GetTeamByLeagueId)
+                    .Produces(StatusCodes.Status200OK)
+                    .ProducesProblem(StatusCodes.Status404NotFound)
+                    .ProducesProblem(StatusCodes.Status500InternalServerError)
+                    .WithName("GetTeamByLeagueId")
+                    .RequireAuthorization();
+
+            _ = root.MapGet("/roster", (Delegate) GetTeamRosterById)
+                    .Produces(StatusCodes.Status200OK)
+                    .ProducesProblem(StatusCodes.Status404NotFound)
+                    .ProducesProblem(StatusCodes.Status500InternalServerError)
+                    .WithName("GetTeamRosterById")
+                    .RequireAuthorization();
+
+            _ = root.MapGet("/rosterHistory", (Delegate) GetTeamRosterHistoryById)
+                   .Produces(StatusCodes.Status200OK)
+                   .ProducesProblem(StatusCodes.Status404NotFound)
+                   .ProducesProblem(StatusCodes.Status500InternalServerError)
+                   .WithName("GetTeamRosterHistoryById")
+                   .RequireAuthorization();
 
             return app;
         }
@@ -66,6 +95,99 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                 }
 
                 return Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.StackTrace, ex.Message, StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        public static async Task<IResult> GetTeamByLeagueId([FromServices] IMediator mediator,
+                                                      [FromQuery] int teamId,
+                                                      [FromQuery] int leagueId,
+                                                      CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var teamGames = await mediator.Send(new GetTeamGamesByLeagueIdQuery(leagueId, teamId), cancellationToken);
+                var teamRoster = await mediator.Send(new GetRosterByTeamIdQuery(teamId, leagueId), cancellationToken);
+               
+                if (teamGames.HasValue && teamRoster.HasValue)
+                {
+                    return Results.Ok(new
+                    {
+                        TeamDetails = teamGames.Value,
+                        RosterDetails = teamRoster.Value.Items
+                    });
+                }
+
+                return Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.StackTrace, ex.Message, StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        public static async Task<IResult> GetTeamRosterById([FromServices] IMediator mediator,
+                                                    [FromQuery] int teamId,
+                                                   CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var leagueIdsResult =
+                    await mediator.Send(new GetExistingLeagueIdRostersByTeamQuery(teamId), cancellationToken);
+                if (leagueIdsResult.HasNoValue ||
+                    !leagueIdsResult.Value.LeagueIds.Any())
+                {
+                    return Results.NotFound();
+                }
+
+                var latestAvailableRoster =
+                    await mediator.Send(new GetRosterByTeamIdQuery(teamId, 
+                                                                    leagueIdsResult.Value.LeagueIds.Max()));
+                if (latestAvailableRoster.HasValue)
+                {
+                    return Results.Ok(latestAvailableRoster.Value.Items);
+                }
+
+                return Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.StackTrace, ex.Message, StatusCodes.Status500InternalServerError);
+            }
+        } 
+
+        //TODO improve next part of code
+        public static async Task<IResult> GetTeamRosterHistoryById([FromServices] IMediator mediator,
+                                                    [FromQuery] int teamId,
+                                                   CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var leagueIdsResult =
+                    await mediator.Send(new GetExistingLeagueIdRostersByTeamQuery(teamId), cancellationToken);
+                if (leagueIdsResult.HasNoValue ||
+                    !leagueIdsResult.Value.LeagueIds.Any())
+                {
+                    return Results.NotFound();
+                }
+
+                Dictionary<LeagueItemDto,IEnumerable<(string,IEnumerable<RosterItemOldDTO>)>> rosterByLeague =
+                    new Dictionary<LeagueItemDto, IEnumerable<(string, IEnumerable<RosterItemOldDTO>)>>();
+                foreach(var leagueId in leagueIdsResult.Value.LeagueIds)
+                {
+                    var roster = await mediator.Send(new GetRosterHistoryByTeamQuery(teamId, leagueId), cancellationToken);
+                    var league = await mediator.Send(new GetLeagueByIdQuery(leagueId), cancellationToken);
+                    if(roster.HasNoValue || league.HasNoValue)
+                    {
+                        continue;
+                    }
+                    rosterByLeague.Add(league.Value, roster.Value.Rosters);
+                }
+
+                return Results.Ok(rosterByLeague.Select(x=>new { League = x.Key, Roster = x.Value }));
             }
             catch (Exception ex)
             {

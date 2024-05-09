@@ -13,6 +13,10 @@ using OpenData.Basketball.AbaLeague.API.Contexts;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenData.Basketball.AbaLeague.Application.Utilities;
 using OpenData.Basetball.AbaLeague.Persistence;
+using System.Runtime;
+using OpenData.Basketball.AbaLeague.API.Configurations;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
 
 namespace OpenData.Basketball.AbaLeague.API.Exstentions
 {
@@ -102,6 +106,38 @@ namespace OpenData.Basketball.AbaLeague.API.Exstentions
 
             #endregion Project Dependencies
 
+            #region OTLP tracing
+            var logger = LoggerFactory.Create(config =>
+            {
+                config.AddConsole();
+            }).CreateLogger("Program");
+
+            var url = builder.Configuration.GetSection(nameof(OTCSettings) + ":Url").Value;
+            var protocol = builder.Configuration.GetSection(nameof(OTCSettings) + ":Protocol").Value;
+
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(url);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(protocol);
+
+            logger.LogInformation(url);
+            logger.LogInformation(protocol);
+
+            builder.Services.AddOpenTelemetry()
+            .WithTracing(tracerProviderBuilder =>
+            {
+                tracerProviderBuilder
+                    .AddSource(DiagnosticsConfig.ActivitySource.Name)
+                    .ConfigureResource(resource => resource
+                        .AddService(DiagnosticsConfig.ServiceName))
+                    .AddAspNetCoreInstrumentation()
+                   // .AddConsoleExporter()
+                    .AddOtlpExporter(opt =>
+                    {
+                        opt.Endpoint = new Uri(url);
+                        opt.Protocol = protocol.MapProtocolFromConfigs();
+                    });
+            });
+
+            #endregion
             return builder;
         }
     }
