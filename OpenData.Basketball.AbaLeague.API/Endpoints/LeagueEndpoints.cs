@@ -7,6 +7,8 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeag
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetRegistredTeamsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetStandingsByLeagueId;
+using OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByLeagueId;
+using OpenData.Basketball.AbaLeague.Application.Features.Score.Queries.GetScoresByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
 
 namespace OpenData.Basketball.AbaLeague.API.Endpoints
@@ -40,6 +42,20 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                    .ProducesProblem(StatusCodes.Status404NotFound)
                    .ProducesProblem(StatusCodes.Status500InternalServerError)
                    .WithName("GetLeagueStandingsById")
+                   .RequireAuthorization();
+
+            _ = root.MapGet("/scheduled", (Delegate) GetLeagueScheduledMatchesById)
+                   .Produces<StandingsDto>()
+                   .ProducesProblem(StatusCodes.Status404NotFound)
+                   .ProducesProblem(StatusCodes.Status500InternalServerError)
+                   .WithName("GetLeagueScheduledMatchesById")
+                   .RequireAuthorization(); 
+            
+            _ = root.MapGet("/scores", (Delegate) GetLeagueResultMatchesById)
+                   .Produces<StandingsDto>()
+                   .ProducesProblem(StatusCodes.Status404NotFound)
+                   .ProducesProblem(StatusCodes.Status500InternalServerError)
+                   .WithName("GetLeagueResultMatchesById")
                    .RequireAuthorization();
 
             return app;
@@ -104,6 +120,42 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                 if (result.HasValue)
                 {
                     return Results.Ok(result.Value);
+                }
+                return Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.StackTrace, ex.Message, StatusCodes.Status500InternalServerError);
+            }
+        }
+        public static async Task<IResult> GetLeagueScheduledMatchesById([FromQuery] int leagueId,
+                                                    [FromServices] IMediator mediator,
+                                                    CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var scheduledMatches = await mediator.Send(new GetScheduleByLeagueIdQuery(leagueId));
+                if (scheduledMatches.HasValue)
+                {
+                    return Results.Ok(scheduledMatches.Value.ExistingScheduleItems.Items.OrderBy(x=>x.Round));
+                }
+                return Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.StackTrace, ex.Message, StatusCodes.Status500InternalServerError);
+            }
+        }  
+        public static async Task<IResult> GetLeagueResultMatchesById([FromQuery] int leagueId,
+                                                    [FromServices] IMediator mediator,
+                                                    CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var matchesResult = await mediator.Send(new GetScoresByLeagueIdQuery(leagueId));
+                if (matchesResult.HasValue)
+                {
+                    return Results.Ok(matchesResult.Value.ScoreItems.OrderBy(x=>x.Round));
                 }
                 return Results.NotFound();
             }

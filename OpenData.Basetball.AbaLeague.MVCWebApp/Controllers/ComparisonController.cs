@@ -538,10 +538,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     )
                 {
                     var homeTeamPlayers = await _sender
-                               .Send(new GetRosterByTeamIdQuery(homeTeamId, leagueId),
+                               .Send(new GetRosterByLeagueAndTeamIdQuery(homeTeamId, leagueId),
                                        cancellationToken);
                     var awayTeamPlayers = await _sender
-                              .Send(new GetRosterByTeamIdQuery(awayTeamId, leagueId),
+                              .Send(new GetRosterByLeagueAndTeamIdQuery(awayTeamId, leagueId),
                                       cancellationToken);
 
                     if (homeTeamPlayers.HasNoValue || awayTeamPlayers.HasNoValue)
@@ -637,7 +637,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 int.TryParse(SelectedLeagueId, out var selectedLeagueId))
             {
                 var players = await _sender
-                                .Send(new GetRosterByTeamIdQuery(selectedTeamId, selectedLeagueId), 
+                                .Send(new GetRosterByLeagueAndTeamIdQuery(selectedTeamId, selectedLeagueId), 
                                         cancellationToken);
 
                 return PartialView("_PlayersPartial", new PlayerItemsViewModelPartial

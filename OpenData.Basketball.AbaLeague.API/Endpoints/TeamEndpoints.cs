@@ -6,9 +6,9 @@ using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Season;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
-using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetAvailableRosterHistoryByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
-using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterHistoryByTeam;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterPerPositionByTeamAndLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Seasons.Queries.GetSeasons;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamById;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamGamesByLeagueId;
@@ -61,6 +61,13 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                    .WithName("GetTeamRosterHistoryById")
                    .RequireAuthorization();
 
+            _ = root.MapGet("/rosterByPosition", (Delegate) GetLatestTeamRosterByPositionById)
+                    .Produces(StatusCodes.Status200OK)
+                    .ProducesProblem(StatusCodes.Status404NotFound)
+                    .ProducesProblem(StatusCodes.Status500InternalServerError)
+                    .WithName("GetLatestTeamRosterByPositionById")
+                    .RequireAuthorization();
+
             return app;
         }
 
@@ -110,7 +117,7 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
             try
             {
                 var teamGames = await mediator.Send(new GetTeamGamesByLeagueIdQuery(leagueId, teamId), cancellationToken);
-                var teamRoster = await mediator.Send(new GetRosterByTeamIdQuery(teamId, leagueId), cancellationToken);
+                var teamRoster = await mediator.Send(new GetRosterByLeagueAndTeamIdQuery(teamId, leagueId), cancellationToken);
                
                 if (teamGames.HasValue && teamRoster.HasValue)
                 {
@@ -136,7 +143,7 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
             try
             {
                 var leagueIdsResult =
-                    await mediator.Send(new GetExistingLeagueIdRostersByTeamQuery(teamId), cancellationToken);
+                    await mediator.Send(new GetAvailableRosterHistoryByTeamIdQuery(teamId), cancellationToken);
                 if (leagueIdsResult.HasNoValue ||
                     !leagueIdsResult.Value.LeagueIds.Any())
                 {
@@ -144,7 +151,7 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                 }
 
                 var latestAvailableRoster =
-                    await mediator.Send(new GetRosterByTeamIdQuery(teamId, 
+                    await mediator.Send(new GetRosterByLeagueAndTeamIdQuery(teamId, 
                                                                     leagueIdsResult.Value.LeagueIds.Max()));
                 if (latestAvailableRoster.HasValue)
                 {
@@ -159,7 +166,6 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
             }
         } 
 
-        //TODO improve next part of code
         public static async Task<IResult> GetTeamRosterHistoryById([FromServices] IMediator mediator,
                                                     [FromQuery] int teamId,
                                                    CancellationToken cancellationToken = default)
@@ -167,27 +173,57 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
             try
             {
                 var leagueIdsResult =
-                    await mediator.Send(new GetExistingLeagueIdRostersByTeamQuery(teamId), cancellationToken);
+                    await mediator.Send(new GetAvailableRosterHistoryByTeamIdQuery(teamId), cancellationToken);
                 if (leagueIdsResult.HasNoValue ||
                     !leagueIdsResult.Value.LeagueIds.Any())
                 {
                     return Results.NotFound();
                 }
 
-                Dictionary<LeagueItemDto,IEnumerable<(string,IEnumerable<RosterItemOldDTO>)>> rosterByLeague =
-                    new Dictionary<LeagueItemDto, IEnumerable<(string, IEnumerable<RosterItemOldDTO>)>>();
+                Dictionary<LeagueItemDto,IEnumerable<RosterItemDto>> rosterByLeague =
+                    new Dictionary<LeagueItemDto, IEnumerable<RosterItemDto>>();
                 foreach(var leagueId in leagueIdsResult.Value.LeagueIds)
                 {
-                    var roster = await mediator.Send(new GetRosterHistoryByTeamQuery(teamId, leagueId), cancellationToken);
+                    var roster = await mediator.Send(new GetRosterByLeagueAndTeamIdQuery(teamId, leagueId), cancellationToken);
                     var league = await mediator.Send(new GetLeagueByIdQuery(leagueId), cancellationToken);
                     if(roster.HasNoValue || league.HasNoValue)
                     {
                         continue;
                     }
-                    rosterByLeague.Add(league.Value, roster.Value.Rosters);
+                    rosterByLeague.Add(league.Value, roster.Value.Items);
                 }
 
                 return Results.Ok(rosterByLeague.Select(x=>new { League = x.Key, Roster = x.Value }));
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.StackTrace, ex.Message, StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        public static async Task<IResult> GetLatestTeamRosterByPositionById([FromServices] IMediator mediator,
+                                                   [FromQuery] int teamId,
+                                                  CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var leagueIdsResult =
+                    await mediator.Send(new GetAvailableRosterHistoryByTeamIdQuery(teamId), cancellationToken);
+                if (leagueIdsResult.HasNoValue ||
+                    !leagueIdsResult.Value.LeagueIds.Any())
+                {
+                    return Results.NotFound();
+                }
+
+                var latestAvailableRosterByPositions =
+                    await mediator.Send(new GetRosterPerPositionByTeamAndLeagueQuery(teamId,
+                                                                    leagueIdsResult.Value.LeagueIds.Max()));
+                if (latestAvailableRosterByPositions.HasValue)
+                {
+                    return Results.Ok(latestAvailableRosterByPositions.Value);
+                }
+
+                return Results.NotFound();
             }
             catch (Exception ex)
             {

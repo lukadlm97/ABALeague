@@ -216,7 +216,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
 
-            var leagues = await _sender.Send(new GetExistingLeagueIdRostersByTeamQuery(team.Value.Id), cancellationToken);
+            var leagues = await _sender.Send(new GetLeagueIdsForAvailableRostersByTeamIdQuery(team.Value.Id), cancellationToken);
             if (leagues.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
@@ -248,7 +248,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
             int? leagueId = null;
             for (int i = listOfValues.Count() - 1; i > -1; i--)
             {
-                rosterItems = await _sender.Send(new GetRosterByTeamIdQuery(team.Value.Id, listOfValues[i]), cancellationToken);
+                rosterItems = await _sender.Send(new GetRosterByLeagueAndTeamIdQuery(team.Value.Id, listOfValues[i]), cancellationToken);
                 if (rosterItems.HasValue && rosterItems.Value.Items.Any())
                 {
                     leagueId = i;

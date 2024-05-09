@@ -37,7 +37,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error", new InfoDescriptionViewModel() { Description = "missing team id" });
             }
 
-            var rosterItems = await _sender.Send(new GetRosterByTeamIdQuery(teamId ?? 0, leagueId ?? 0), cancellationToken);
+            var rosterItems = await _sender.Send(new GetRosterByLeagueAndTeamIdQuery(teamId ?? 0, leagueId ?? 0), cancellationToken);
 
             if(rosterItems.HasNoValue)
             {

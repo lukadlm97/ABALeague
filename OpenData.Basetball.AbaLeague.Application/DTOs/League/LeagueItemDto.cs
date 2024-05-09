@@ -1,5 +1,7 @@
 ﻿
 
+using System.Collections.Frozen;
+
 namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
 {
     public record LeagueItemDto(int? Id, 
@@ -23,5 +25,5 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.League
 
     public record LeaguesDto(IEnumerable<LeagueItemDto> LeagueItems);
 
-    public record LeaguesRoster(IEnumerable<int> LeagueIds);
+    public record LeagueIdentifiers(FrozenSet<int> LeagueIds);
 }

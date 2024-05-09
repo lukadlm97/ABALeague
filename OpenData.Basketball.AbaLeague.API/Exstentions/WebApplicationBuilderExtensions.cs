@@ -17,6 +17,9 @@ using System.Runtime;
 using OpenData.Basketball.AbaLeague.API.Configurations;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Resources;
+using OpenData.Basketball.AbaLeague.API.Endpoints;
+using OpenTelemetry.Logs;
+using OpenTelemetry;
 
 namespace OpenData.Basketball.AbaLeague.API.Exstentions
 {
@@ -113,29 +116,29 @@ namespace OpenData.Basketball.AbaLeague.API.Exstentions
             }).CreateLogger("Program");
 
             var url = builder.Configuration.GetSection(nameof(OTCSettings) + ":Url").Value;
-            var protocol = builder.Configuration.GetSection(nameof(OTCSettings) + ":Protocol").Value;
 
             ArgumentNullException.ThrowIfNullOrWhiteSpace(url);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(protocol);
 
-            logger.LogInformation(url);
-            logger.LogInformation(protocol);
-
-            builder.Services.AddOpenTelemetry()
-            .WithTracing(tracerProviderBuilder =>
+            builder.Logging.AddOpenTelemetry(options =>
             {
-                tracerProviderBuilder
-                    .AddSource(DiagnosticsConfig.ActivitySource.Name)
-                    .ConfigureResource(resource => resource
-                        .AddService(DiagnosticsConfig.ServiceName))
-                    .AddAspNetCoreInstrumentation()
-                   // .AddConsoleExporter()
-                    .AddOtlpExporter(opt =>
-                    {
-                        opt.Endpoint = new Uri(url);
-                        opt.Protocol = protocol.MapProtocolFromConfigs();
-                    });
+                options
+                    .SetResourceBuilder(
+                        ResourceBuilder.CreateDefault()
+                            .AddService(builder.Environment.ApplicationName))
+                    .AddConsoleExporter();
             });
+            builder.Services.AddOpenTelemetry()
+                .ConfigureResource(resource => resource.AddService(builder.Environment.ApplicationName))
+                .WithTracing(tracing => tracing.AddAspNetCoreInstrumentation(options =>
+                 {
+                     options.Filter = (req) => !req.Request.Path.ToUriComponent().Contains("index.html", StringComparison.OrdinalIgnoreCase)
+                         && !req.Request.Path.ToUriComponent().Contains("swagger", StringComparison.OrdinalIgnoreCase);
+                 })
+                 .AddEntityFrameworkCoreInstrumentation()
+                 .AddConsoleExporter()
+                 .AddOtlpExporter(opts => { opts.Endpoint = new Uri(url);
+                })
+            );
 
             #endregion
             return builder;

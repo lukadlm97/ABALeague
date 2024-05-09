@@ -3,19 +3,20 @@ using OpenData.Basketball.AbaLeague.Application.Abstractions.Messaging;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.Utilities;
 using OpenData.Basketball.AbaLeague.Domain.Common;
+using System.Collections.Frozen;
 using System.Linq;
 
 namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId
 {
-    internal class GetRosterByTeamIdQueryHandler : IQueryHandler<GetRosterByTeamIdQuery,Maybe<RosterDto>>
+    internal class GetRosterByLeagueAndTeamIdQueryHandler : IQueryHandler<GetRosterByLeagueAndTeamIdQuery,Maybe<RosterDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetRosterByTeamIdQueryHandler(IUnitOfWork unitOfWork)
+        public GetRosterByLeagueAndTeamIdQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<Maybe<RosterDto>> Handle(GetRosterByTeamIdQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<RosterDto>> Handle(GetRosterByLeagueAndTeamIdQuery request, CancellationToken cancellationToken)
         {
             if (request.LeagueId <= 0 || request.TeamId <= 0)
             {
@@ -55,7 +56,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                 list.Add(newItem);
             }
 
-            return new RosterDto(list);
+            return new RosterDto(list.ToFrozenSet());
         }
     }
 }
