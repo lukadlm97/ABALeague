@@ -34,11 +34,11 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
                                     .GetByLeagueIdAndTeamId(league.Id, team.Id)
                                     .ToList();
 
-            List<RosterItemDto> list = new List<RosterItemDto>();
+            List<PlayerRosterItemDto> list = new List<PlayerRosterItemDto>();
             foreach (var item in roster)
             {
                 var newItem = 
-                new RosterItemDto(item.PlayerId,
+                new PlayerRosterItemDto(item.PlayerId,
                                 item.LeagueId,
                                 item.DateOfInsertion,
                                 item.EndOfActivePeriod,

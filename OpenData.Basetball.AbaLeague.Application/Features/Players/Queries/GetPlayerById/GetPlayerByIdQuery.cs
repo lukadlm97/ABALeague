@@ -2,11 +2,11 @@
 using OpenData.Basketball.AbaLeague.Application.DTOs.Player;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 
-namespace OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayer
+namespace OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerById
 {
-    public class GetPlayerQuery : IQuery<Maybe<PlayerItemDto>>
+    public class GetPlayerByIdQuery : IQuery<Maybe<PlayerItemDto>>
     {
-        public GetPlayerQuery(int playerId)
+        public GetPlayerByIdQuery(int playerId)
         {
             PlayerId = playerId;
         }

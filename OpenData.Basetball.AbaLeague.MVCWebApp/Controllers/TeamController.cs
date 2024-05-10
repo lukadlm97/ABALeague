@@ -12,7 +12,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBox
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
-using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
+using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetAvailableRosterHistoryByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterPerPositionByTeamAndLeague;
 using OpenData.Basketball.AbaLeague.Application.Features.Schedules.Queries.GetScheduleByTeamId;
@@ -216,7 +216,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
             }
 
-            var leagues = await _sender.Send(new GetLeagueIdsForAvailableRostersByTeamIdQuery(team.Value.Id), cancellationToken);
+            var leagues = await _sender.Send(new GetAvailableRosterHistoryByTeamIdQuery(team.Value.Id), cancellationToken);
             if (leagues.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "cant load team details" });
@@ -508,7 +508,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                 {
                                                     OponentName = x.OponentName,
                                                     OponentId = x.OponentId,
-                                                    OponentCurrentRanking = x.OponentCurrentRanking,
+                                                    OponentCurrentRanking = x.OponentCurrentRanking ?? -1,
                                                     IsHomeGame = x.HomeGame,
                                                     Date = x.Date,
                                                     MatchId = x.MatchNo,

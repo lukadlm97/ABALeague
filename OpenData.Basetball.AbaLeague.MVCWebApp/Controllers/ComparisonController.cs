@@ -12,7 +12,6 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetRegi
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetTeamsByLeagueId;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerComparisonByPlayerIds;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
-using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetExistingRostersByTeam;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Teams.Queries.GetTeamsComparisonByTeamIds;
 using System.Collections.Frozen;

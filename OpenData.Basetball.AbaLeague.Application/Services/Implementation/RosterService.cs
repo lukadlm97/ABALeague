@@ -57,12 +57,12 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
             return outputCollection;
         }
 
-        public async Task<IEnumerable<RosterItemDto>> GetWholeRosterItemDraftRoster(int leagueId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PlayerRosterItemDto>> GetWholeRosterItemDraftRoster(int leagueId, CancellationToken cancellationToken = default)
         {
             var teams = await _unitOfWork.SeasonResourcesRepository.SearchByLeague(leagueId, cancellationToken);
             var players = await _unitOfWork.PlayerRepository.GetAll(cancellationToken);
             List<(int, DraftRosterItemDto)> list = new List<(int, DraftRosterItemDto)>();
-            List<RosterItemDto> outputCollection = new List<RosterItemDto>();
+            List<PlayerRosterItemDto> outputCollection = new List<PlayerRosterItemDto>();
 
             foreach (var team in teams)
             {

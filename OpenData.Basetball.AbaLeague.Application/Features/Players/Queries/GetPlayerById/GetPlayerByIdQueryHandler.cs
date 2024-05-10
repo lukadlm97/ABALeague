@@ -5,18 +5,18 @@ using OpenData.Basketball.AbaLeague.Application.Utilities;
 using OpenData.Basketball.AbaLeague.Domain.Common;
 using System.Collections.Frozen;
 
-namespace OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayer
+namespace OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerById
 {
-    public class GetPlayerQueryHandler : IQueryHandler<GetPlayerQuery, Maybe<PlayerItemDto>>
+    public class GetPlayerByIdQueryHandler : IQueryHandler<GetPlayerByIdQuery, Maybe<PlayerItemDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetPlayerQueryHandler(IUnitOfWork unitOfWork)
+        public GetPlayerByIdQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Maybe<PlayerItemDto>> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
+        public async Task<Maybe<PlayerItemDto>> Handle(GetPlayerByIdQuery request, CancellationToken cancellationToken)
         {
             var player= await _unitOfWork.PlayerRepository.Get(request.PlayerId, cancellationToken);
             var countries = _unitOfWork.CountryRepository.Get().ToList();

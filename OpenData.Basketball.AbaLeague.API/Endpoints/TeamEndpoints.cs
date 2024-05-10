@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OpenData.Basketball.AbaLeague.API.Filters;
+using OpenData.Basketball.AbaLeague.Application.DTOs.Game;
 using OpenData.Basketball.AbaLeague.Application.DTOs.League;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Roster;
 using OpenData.Basketball.AbaLeague.Application.DTOs.Season;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagueById;
 using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeagues;
+using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeaguesBySeasonAndTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetAvailableRosterHistoryByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterByTeamId;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterPerPositionByTeamAndLeague;
@@ -66,6 +68,13 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                     .ProducesProblem(StatusCodes.Status404NotFound)
                     .ProducesProblem(StatusCodes.Status500InternalServerError)
                     .WithName("GetLatestTeamRosterByPositionById")
+                    .RequireAuthorization();
+
+            _ = root.MapGet("/performanceBySeason", (Delegate) GetTeamPerformanceBySeasonId)
+                    .Produces(StatusCodes.Status200OK)
+                    .ProducesProblem(StatusCodes.Status404NotFound)
+                    .ProducesProblem(StatusCodes.Status500InternalServerError)
+                    .WithName("GetTeamPerformanceBySeasonId")
                     .RequireAuthorization();
 
             return app;
@@ -180,8 +189,8 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                     return Results.NotFound();
                 }
 
-                Dictionary<LeagueItemDto,IEnumerable<RosterItemDto>> rosterByLeague =
-                    new Dictionary<LeagueItemDto, IEnumerable<RosterItemDto>>();
+                Dictionary<LeagueItemDto,IEnumerable<PlayerRosterItemDto>> rosterByLeague =
+                    new Dictionary<LeagueItemDto, IEnumerable<PlayerRosterItemDto>>();
                 foreach(var leagueId in leagueIdsResult.Value.LeagueIds)
                 {
                     var roster = await mediator.Send(new GetRosterByLeagueAndTeamIdQuery(teamId, leagueId), cancellationToken);
@@ -224,6 +233,42 @@ namespace OpenData.Basketball.AbaLeague.API.Endpoints
                 }
 
                 return Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.StackTrace, ex.Message, StatusCodes.Status500InternalServerError);
+            }
+        }
+        
+        public static async Task<IResult> GetTeamPerformanceBySeasonId([FromServices] IMediator mediator,
+                                                   [FromQuery] int teamId,
+                                                   [FromQuery] int seasonId,
+                                                  CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var leagueIdsResult =
+                    await mediator.Send(new GetLeaguesBySeasonAndTeamIdQuery(teamId, seasonId), cancellationToken);
+                if (leagueIdsResult.HasNoValue ||
+                    !leagueIdsResult.Value.LeagueIds.Any())
+                {
+                    return Results.NotFound();
+                }
+
+                Dictionary<LeagueItemDto, MatchesDto> performanceByLeague =
+                   new Dictionary<LeagueItemDto, MatchesDto>();
+                foreach (var leagueId in leagueIdsResult.Value.LeagueIds)
+                {
+                    var roster = await mediator.Send(new GetTeamGamesByLeagueIdQuery(teamId, leagueId), cancellationToken);
+                    var league = await mediator.Send(new GetLeagueByIdQuery(leagueId), cancellationToken);
+                    if (roster.HasNoValue || league.HasNoValue)
+                    {
+                        continue;
+                    }
+                    performanceByLeague.Add(league.Value, roster.Value);
+                }
+
+                return Results.Ok(performanceByLeague);
             }
             catch (Exception ex)
             {

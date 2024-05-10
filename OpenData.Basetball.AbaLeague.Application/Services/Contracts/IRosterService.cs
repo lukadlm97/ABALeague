@@ -8,7 +8,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Contracts
             CancellationToken cancellationToken = default);
         Task<IEnumerable<RosterEntryDto>> GetWholeDraftRoster(int leagueId,
             CancellationToken cancellationToken = default);
-        Task<IEnumerable<RosterItemDto>> GetWholeRosterItemDraftRoster(int leagueId,
+        Task<IEnumerable<PlayerRosterItemDto>> GetWholeRosterItemDraftRoster(int leagueId,
             CancellationToken cancellationToken = default);
         Task<IEnumerable<DraftRosterItemDto>> Get(int leagueId, int teamId,
             CancellationToken cancellationToken = default);

@@ -657,10 +657,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     selectedItem.schedules.Add(new ScheduleItemViewModel
                     {
                         Id = item.Id,
-                        AwayTeamId = item.AwayTeamId,
+                        AwayTeamId = item.AwayTeamId ?? -1,
                         AwayTeamName = item.AwayTeamName,
                         DateTime = item.DateTime,
-                        HomeTeamId = item.HomeTeamId,
+                        HomeTeamId = item.HomeTeamId ?? -1,
                         HomeTeamName = item.HomeTeamName,
                         MatchNo = item.MatchNo,
                         Round = item.Round,
@@ -672,10 +672,10 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                     dictionary[item.Round].schedules.Add(new ScheduleItemViewModel
                     {
                         Id = item.Id,
-                        AwayTeamId = item.AwayTeamId,
+                        AwayTeamId = item.AwayTeamId ?? -1,
                         AwayTeamName = item.AwayTeamName,
                         DateTime = item.DateTime,
-                        HomeTeamId = item.HomeTeamId,
+                        HomeTeamId = item.HomeTeamId ?? -1,
                         HomeTeamName = item.HomeTeamName,
                         MatchNo = item.MatchNo,
                         Round = item.Round,

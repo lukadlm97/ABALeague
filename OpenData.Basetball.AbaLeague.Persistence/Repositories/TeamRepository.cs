@@ -22,6 +22,13 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             return _dbContext.Teams;
         }
 
+        public IQueryable<Team> Get(IReadOnlySet<int> ids)
+        {
+            return _dbContext.Teams
+                            .Where(x=> ids.Contains(x.Id))
+                            .AsQueryable();
+        }
+
         public async Task<Team?> GetRoster(int teamId, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Teams.Include(x=>x.RosterItems)

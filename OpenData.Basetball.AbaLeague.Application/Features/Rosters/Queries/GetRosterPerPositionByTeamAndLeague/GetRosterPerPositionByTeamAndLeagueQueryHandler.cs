@@ -43,7 +43,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.Get
             var playersByPositions = players.GroupBy(x => x.PositionEnum)
                 .Select(y => (y.Key,
                     y.Select(z =>
-                                new RosterItemDto(z.Id, 
+                                new PlayerRosterItemDto(z.Id, 
                                 league.Id,
                                 rosterItems.FirstOrDefault(x=>x.PlayerId == z.Id).DateOfInsertion,
                                 rosterItems.FirstOrDefault(x => x.PlayerId == z.Id).EndOfActivePeriod, 

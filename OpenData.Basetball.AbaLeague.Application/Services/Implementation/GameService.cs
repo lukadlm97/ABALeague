@@ -230,23 +230,23 @@ namespace OpenData.Basketball.AbaLeague.Application.Services.Implementation
                     oponentName = item.HomeTeam.Name;
                 }
                 var currentStandingOfOponent = currentStanding.ToList().FirstOrDefault(x => x.TeamId == oponentId);
-                int oponentPosition = -1;
+                int oponentCurrentRanking = -1;
                 IEnumerable<bool> oponentRecentForm = new List<bool>();
                 if(currentStandingOfOponent != null)
                 {
-                    oponentPosition = standingList.IndexOf(currentStandingOfOponent) + 1;
+                    oponentCurrentRanking = standingList.IndexOf(currentStandingOfOponent) + 1;
                     oponentRecentForm = currentStandingOfOponent.RecentForm;
                 }
 
                 matchesOnSchedule.Add(new MatchItemDto(item.Id,
                                                         oponentId, 
                                                         oponentName,
-                                                        oponentPosition,
-                                                        oponentRecentForm,
-                                                        item.DateTime, 
+                                                        item.DateTime,
                                                         item.Round, 
                                                         item.MatchNo, 
-                                                        homeGame));
+                                                        homeGame,
+                                                        oponentCurrentRanking,
+                                                        oponentRecentForm));
 
             }
 

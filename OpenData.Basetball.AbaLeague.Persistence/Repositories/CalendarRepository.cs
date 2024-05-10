@@ -93,5 +93,13 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             var filtered = league.RoundMatches.Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId);
             return filtered;
         }
+
+        public IQueryable<RoundMatch> Get()
+        {
+            return _dbContext.RoundMatches
+                .Include(x => x.HomeTeam)
+                .Include(x => x.AwayTeam)
+                .AsQueryable();
+        }
     }
 }

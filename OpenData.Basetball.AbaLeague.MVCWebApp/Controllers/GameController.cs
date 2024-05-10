@@ -4,7 +4,7 @@ using OpenData.Basetball.AbaLeague.MVCWebApp.Models;
 using OpenData.Basetball.AbaLeague.MVCWebApp.Utilities;
 using OpenData.Basketball.AbaLeague.Application.Features.Boxscore.Queries.GetBoxscoreByMatchResultId;
 using OpenData.Basketball.AbaLeague.Application.Features.Countries.Queries.GetCountries;
-using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayer;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerById;
 using OpenData.Basketball.AbaLeague.Application.Features.Rosters.Queries.GetRosterHistoryByPlayer;
 
 namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers

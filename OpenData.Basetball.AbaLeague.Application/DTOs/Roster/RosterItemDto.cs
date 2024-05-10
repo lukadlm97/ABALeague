@@ -1,28 +1,12 @@
-﻿
-
-using OpenData.Basetball.AbaLeague.Domain.Enums;
-using OpenData.Basketball.AbaLeague.Application.DTOs.Player;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace OpenData.Basketball.AbaLeague.Application.DTOs.Roster
 {
-    public record RosterItemDto(
-        int PlayerId,
-        int LeagueId,
-        DateTime Start,
-        DateTime? End,
-        string Name,
-        PositionEnum Position,
-        int Height,
-        DateTime DateOfBirth,
-        int Age,
-        int CountryId,
-        string CountryName) : PlayerItemDto(PlayerId,
-                                            Name,
-                                            Position, 
-                                            Height, 
-                                            DateOfBirth, 
-                                            Age, 
-                                            CountryId, 
-                                            CountryName);
-
+    public record RosterItemDto(int PlayerId, string PlayerName, 
+        int TeamId, string TeamName, 
+        int LeagueId, string LeagueName);
 }

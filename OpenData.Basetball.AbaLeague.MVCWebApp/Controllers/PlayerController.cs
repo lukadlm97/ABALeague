@@ -12,7 +12,7 @@ using OpenData.Basketball.AbaLeague.Application.Features.Leagues.Queries.GetLeag
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.AddAnotherName;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.CreatePlayer;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Commands.UpdatePlayer;
-using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayer;
+using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerById;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerAnotherNames;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayerGames;
 using OpenData.Basketball.AbaLeague.Application.Features.Players.Queries.GetPlayers;
@@ -43,7 +43,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int playerId, CancellationToken cancellationToken = default)
         {
-            var player = await _sender.Send(new GetPlayerQuery(playerId), cancellationToken);
+            var player = await _sender.Send(new GetPlayerByIdQuery(playerId), cancellationToken);
             var countries = await _sender.Send(new GetCountriesQuery(), cancellationToken);
 
             if (player.HasNoValue || countries.HasNoValue)
@@ -109,7 +109,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             if (playerId.HasValue)
             {
-                var existingPlayer = await _sender.Send(new GetPlayerQuery(playerId.Value), cancellationToken);
+                var existingPlayer = await _sender.Send(new GetPlayerByIdQuery(playerId.Value), cancellationToken);
                 if (existingPlayer.HasNoValue)
                 {
                     return View("Error", new InfoDescriptionViewModel()
@@ -347,7 +347,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
         {
             var gamesResult =
                 await _sender.Send(new GetPlayerGamesQuery(leagueId, teamId, playerId), cancellationToken);
-            var playerResult = await _sender.Send(new GetPlayerQuery(playerId), cancellationToken);
+            var playerResult = await _sender.Send(new GetPlayerByIdQuery(playerId), cancellationToken);
             if (gamesResult.HasNoValue || playerResult.HasNoValue)
             {
                 return View("Error", new InfoDescriptionViewModel() { Description = "not found any peformance" });
@@ -382,7 +382,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                 {
                                                     OponentName = x.OponentName,
                                                     OponentId = x.OponentId,
-                                                    OponentCurrentRanking = x.OponentCurrentRanking,
+                                                    OponentCurrentRanking = x.OponentCurrentRanking ?? -1,
                                                     IsHomeGame = x.HomeGame,
                                                     Date = x.Date,
                                                     MatchId = x.MatchNo,

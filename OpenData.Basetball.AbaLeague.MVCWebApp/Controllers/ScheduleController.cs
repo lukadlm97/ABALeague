@@ -34,9 +34,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                 .Select(x => new ScheduleItemViewModel()
                                                 {
                                                     Id = x.Id,
-                                                    AwayTeamId = x.AwayTeamId,
+                                                    AwayTeamId = x.AwayTeamId ?? -1,
                                                     AwayTeamName = x.AwayTeamName,
-                                                    HomeTeamId = x.HomeTeamId,
+                                                    HomeTeamId = x.HomeTeamId ?? -1,
                                                     HomeTeamName = x.HomeTeamName,
                                                     DateTime = x.DateTime,
                                                     MatchNo = x.MatchNo,
@@ -46,9 +46,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                 .Select(x => new ScheduleItemViewModel()
                                                 {
                                                     Id = x.Id,
-                                                    AwayTeamId = x.AwayTeamId,
+                                                    AwayTeamId = x.AwayTeamId ?? -1,
                                                     AwayTeamName = x.AwayTeamName,
-                                                    HomeTeamId = x.HomeTeamId,
+                                                    HomeTeamId = x.HomeTeamId ?? -1,
                                                     HomeTeamName = x.HomeTeamName,
                                                     DateTime = x.DateTime,
                                                     MatchNo = x.MatchNo,
@@ -58,9 +58,9 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
                                                 .Select(x => new ScheduleItemViewModel()
                                                 {
                                                     Id = x.Id,
-                                                    AwayTeamId = x.AwayTeamId,
+                                                    AwayTeamId = x.AwayTeamId??-1,
                                                     AwayTeamName = x.AwayTeamName,
-                                                    HomeTeamId = x.HomeTeamId,
+                                                    HomeTeamId = x.HomeTeamId ?? -1,
                                                     HomeTeamName = x.HomeTeamName,
                                                     DateTime = x.DateTime,
                                                     MatchNo = x.MatchNo,
@@ -86,7 +86,7 @@ namespace OpenData.Basetball.AbaLeague.MVCWebApp.Controllers
 
             var addingResult = await _sender
                 .Send(new AddScheduleByLeagueIdCommand
-                    (results.Value.DraftScheduleItems.Select(x => new AddScheduleDto(x.HomeTeamId, x.AwayTeamId, x.Round, x.MatchNo, x.DateTime)),
+                    (results.Value.DraftScheduleItems.Select(x => new AddScheduleDto(x.HomeTeamId??-1, x.AwayTeamId??-1, x.Round, x.MatchNo, x.DateTime)),
                     scheduleLeagueId,
                     false), cancellationToken);
             InfoDescriptionViewModel infoViewModel = null;

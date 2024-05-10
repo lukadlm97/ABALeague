@@ -10,5 +10,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
         Task<Team?> GetRoster(int teamId, CancellationToken cancellationToken = default);
         IQueryable<Team> Get();
         IQueryable<Team> GetWithCountry();
+        IQueryable<Team> Get(IReadOnlySet<int> ids);
     }
 }

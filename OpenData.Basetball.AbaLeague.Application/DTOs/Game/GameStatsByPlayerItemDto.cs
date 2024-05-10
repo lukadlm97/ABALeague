@@ -49,8 +49,6 @@ namespace OpenData.Basketball.AbaLeague.Application.DTOs.Game
                             int? MatchResultId = null) : MatchItemDto(RoundMatchId,
                                                                     OponentId,
                                                                     OponentName,
-                                                                    -1,
-                                                                    new List<bool>(),
                                                                     Date,
                                                                     Round,
                                                                     MatchNo,
