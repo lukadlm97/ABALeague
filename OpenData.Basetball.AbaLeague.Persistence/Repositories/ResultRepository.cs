@@ -93,5 +93,9 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
                                   .FirstOrDefaultAsync(x=> x.Id == matchResultId, cancellationToken);    
         }
 
+        public IQueryable<Result> Get()
+        {
+            return _dbContext.Results;
+        }
     }
 }

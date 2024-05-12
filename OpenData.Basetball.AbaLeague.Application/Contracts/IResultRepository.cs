@@ -14,5 +14,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
                                                             CancellationToken cancellationToken = default);
 
         Task<Result?> GetByMatchResult(int matchResultId, CancellationToken cancellationToken = default);
+        IQueryable<Result> Get();
     }
 }

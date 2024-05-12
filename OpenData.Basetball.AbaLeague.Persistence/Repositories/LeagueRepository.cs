@@ -1,4 +1,5 @@
-﻿using OpenData.Basetball.AbaLeague.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OpenData.Basetball.AbaLeague.Domain.Entities;
 using OpenData.Basetball.AbaLeague.Persistence;
 using OpenData.Basetball.AbaLeague.Persistence.Repositories;
 using OpenData.Basketball.AbaLeague.Application.Contracts;
@@ -19,6 +20,15 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
         public IQueryable<League> Get()
         {
             return _dbContext.Leagues;
+        }
+
+        public IQueryable<League> GetIncludedRoundMatches()
+        {
+            return _dbContext.Leagues
+                            .Include(x => x.RoundMatches)
+                                .ThenInclude(y => y.HomeTeam)
+                            .Include(x => x.RoundMatches)
+                                .ThenInclude(x => x.AwayTeam);
         }
 
         public League? SearchLeagueByRoundMatchId(int roundMatchId)

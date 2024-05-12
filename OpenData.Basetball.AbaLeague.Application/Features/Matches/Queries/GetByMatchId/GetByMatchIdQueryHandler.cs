@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenData.Basketball.AbaLeague.Application.Features.Match.Queries.GetByMatchId
+namespace OpenData.Basketball.AbaLeague.Application.Features.Matches.Queries.GetByMatchId
 {
     internal class GetByMatchIdQueryHandler : 
         IQueryHandler<GetByMatchIdQuery, Maybe<ScheduleItemDto>>

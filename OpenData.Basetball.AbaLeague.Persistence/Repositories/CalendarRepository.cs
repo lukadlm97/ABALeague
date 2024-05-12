@@ -12,7 +12,7 @@ using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
 {
-    public class CalendarRepository: GenericRepository<RoundMatch>, ICalendarRepository
+    public class CalendarRepository : GenericRepository<RoundMatch>, ICalendarRepository
     {
         private readonly AbaLeagueDbContext _dbContext;
 
@@ -94,7 +94,7 @@ namespace OpenData.Basketball.AbaLeague.Persistence.Repositories
             return filtered;
         }
 
-        public IQueryable<RoundMatch> Get()
+        public IQueryable<RoundMatch> GetWithTeamsIncluded()
         {
             return _dbContext.RoundMatches
                 .Include(x => x.HomeTeam)

@@ -12,5 +12,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
     {
         League? SearchLeagueByRoundMatchId(int roundMatchId);
         IQueryable<League> Get();
+        IQueryable<League> GetIncludedRoundMatches();
     }
 }

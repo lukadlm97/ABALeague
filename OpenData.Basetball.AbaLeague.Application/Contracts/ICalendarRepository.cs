@@ -8,7 +8,7 @@ using OpenData.Basketball.AbaLeague.Domain.Entities;
 
 namespace OpenData.Basketball.AbaLeague.Application.Contracts
 {
-    public interface ICalendarRepository:IGenericRepository<RoundMatch>
+    public interface ICalendarRepository : IGenericRepository<RoundMatch>
     {
         Task<bool> Exist(int leagueId,int homeTeamId,int awayTeamId,CancellationToken cancellationToken=default);
         Task<IEnumerable<RoundMatch>> SearchByRound(int leagueId, int round,CancellationToken cancellationToken=default);
@@ -21,6 +21,6 @@ namespace OpenData.Basketball.AbaLeague.Application.Contracts
                                                                     int teamId,
                                                                     CancellationToken cancellationToken = default);
 
-        IQueryable<RoundMatch> Get();
+        IQueryable<RoundMatch> GetWithTeamsIncluded();
     }
 }
