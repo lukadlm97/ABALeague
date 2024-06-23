@@ -22,7 +22,7 @@ namespace OpenData.Basketball.AbaLeague.Application.Features.Matches.Queries.Get
         }
         public async Task<Maybe<ScheduleItemDto>> Handle(GetByMatchIdQuery request, CancellationToken cancellationToken)
         {
-            var roundMatch = _unitOfWork.CalendarRepository.Get()
+            var roundMatch = (await _unitOfWork.CalendarRepository.GetAll())
                                         .FirstOrDefault(x=>x.Id == request.MatchId);
             if (roundMatch == null || roundMatch.HomeTeamId == null || roundMatch.AwayTeamId == null)
             {
